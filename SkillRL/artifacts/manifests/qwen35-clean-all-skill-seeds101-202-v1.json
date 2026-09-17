@@ -1,0 +1,83 @@
+{
+  "schema_version": "phase1.all_first_invocation_run_manifest.v1",
+  "run_id": "qwen35-clean-all-skill-seeds101-202-v1",
+  "completed_at": "2026-09-03T11:09:34+08:00",
+  "status": "complete",
+  "repository_commit": "8e66726ed866a4e0a7f053586a41022798192e6c",
+  "protocol": {
+    "path": "phase1/config/qwen35_clean_all_skill_utility_protocol.json",
+    "sha256": "b554a98e26e2b0b8d22eecf89cc18b7b222c8461d95464fdb3ce370dda9254a7",
+    "intervention_version": "phase1.all-first-invocation-payload.v2",
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 20260903
+  },
+  "frozen_inputs": {
+    "skill_bank": {
+      "path": "memory_data/alfworld/claude_style_skills.json",
+      "sha256": "e8a953beac1809591fadf0d3509db5dea6e66b0fb56ddb573cf30e6d8879e909"
+    },
+    "coverage": {
+      "path": "artifacts/anchors/qwen35-clean-all-skill-seeds101-202-v1/coverage.json",
+      "sha256": "e5666a9d1a39983568121ad56ba3df57f7ca79e679c1e7436dc0e1ebfb990e6a"
+    },
+    "placebo_inventory_sha256": "0491d1c50c587226bc989326ad49d4dd97edde68b8366d230300c91ff656a5ec"
+  },
+  "checkpoints": [
+    {"checkpoint_id": "b0", "rl_seed": 0, "global_update": 0},
+    {"checkpoint_id": "seed101-u10", "rl_seed": 101, "global_update": 10},
+    {"checkpoint_id": "seed101-u20", "rl_seed": 101, "global_update": 20},
+    {"checkpoint_id": "seed101-u30", "rl_seed": 101, "global_update": 30},
+    {"checkpoint_id": "seed202-u10", "rl_seed": 202, "global_update": 10},
+    {"checkpoint_id": "seed202-u20", "rl_seed": 202, "global_update": 20},
+    {"checkpoint_id": "seed202-u30", "rl_seed": 202, "global_update": 30}
+  ],
+  "coverage": {
+    "candidate_skill_count": 18,
+    "supported_skill_count": 4,
+    "unsupported_skill_count": 14,
+    "supported_skills": ["cle_003", "cle_004", "cle_006", "gen_002"],
+    "anchors_per_skill": 50,
+    "anchors_per_checkpoint": 200
+  },
+  "outputs": {
+    "index_directory": "artifacts/evaluations/qwen35-clean-all-skill-seeds101-202-v1",
+    "index_file_count": 28,
+    "index_record_count": 4200,
+    "index_bytes": 10092295,
+    "index_inventory_sha256": "18c6e7675019ca3e9b4d50ec5b8d6646f1cc9671f4d36221f41b737339abdf6a",
+    "trajectory_file_count": 4200,
+    "trajectory_bytes": 568653116,
+    "log_file_count": 28,
+    "log_bytes": 1417967,
+    "metrics_directory": "artifacts/metrics/qwen35-clean-all-skill-seeds101-202-v1",
+    "summary_sha256": "60223e5ea88407570625991153b500fd895939a13c97b8b8e62a5f769d521a0c",
+    "integrity_report_sha256": "b1592ceb5de05f6abc8d8292822ec5cae272f87468064f70f89556a7183ab766",
+    "report": "/home/wangyifan/skill-RL/2026-09-03-qwen35-clean-all-skill-cross-seed-utility-results.md",
+    "report_sha256": "16d289c56215c5976c19bf51138d87d6fc86b40e30ce98780b9a24663a5b33a2"
+  },
+  "integrity": {
+    "expected_records": 4200,
+    "record_count": 4200,
+    "duplicate_count": 0,
+    "trajectory_path_unique_count": 4200,
+    "intervention_failure_count": 0,
+    "original_placebo_trigger_prompt_token_mismatches": 0,
+    "trigger_router_score_mismatches_across_arms": 0,
+    "base_original_source_reproduction_mismatch_count": 0
+  },
+  "execution": {
+    "scientific_sample_selection_changed_by_sharding": false,
+    "cle_003": "seven checkpoint-level index files",
+    "cle_004_cle_006_gen_002": "twenty-one checkpoint-by-Skill execution shards",
+    "unique_key": ["checkpoint_id", "skill_id", "anchor_id", "payload_arm"]
+  },
+  "verification": {
+    "phase1_pytest": "33 passed",
+    "ruff": "all checks passed"
+  },
+  "seed303": {
+    "included": false,
+    "reason": "paused at committed update 12; no complete update-20/update-30 milestones",
+    "pause_manifest": "artifacts/manifests/qwen35-clean-formal-seed303-u30-8gpu-s1-20260902-paused-update12.json"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "created_at": "2026-09-11T18:28:56.494485+00:00",
+  "interpretation": "exploratory point estimates; few update clusters; not evidence of seed generalization",
+  "results": [
+    {
+      "D_vs_negative_delta_spearman": 0.4171744419477457,
+      "P_int_vs_signed_delta_spearman": -0.048849466270227834,
+      "direct_D_negative_AUPRC": 0.25,
+      "negative_point_count": 1,
+      "negative_prevalence_AP_baseline": 0.05263157894736842,
+      "scope": "all_updates_exploratory",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "D_vs_negative_delta_spearman": 0.555936987495826,
+      "P_int_vs_signed_delta_spearman": -0.4076871241636057,
+      "direct_D_negative_AUPRC": 0.5,
+      "negative_point_count": 1,
+      "negative_prevalence_AP_baseline": 0.14285714285714285,
+      "scope": "heldout_updates",
+      "units": 7,
+      "updates": 2
+    }
+  ]
+}

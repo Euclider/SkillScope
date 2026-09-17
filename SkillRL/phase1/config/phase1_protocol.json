@@ -1,0 +1,80 @@
+{
+  "schema_version": "phase1.protocol.v1",
+  "frozen_on": "2026-08-25",
+  "source_spec": "/home/wangyifan/skill-RL/2026-08-24-phase1-minimal-validation-repository-and-experiment-spec.md",
+  "repository_commit": "8e66726ed866a4e0a7f053586a41022798192e6c",
+  "smoke_model": "/home/wangyifan/model/Qwen2.5-0.5B-Instruct",
+  "fallback_model": "/home/wangyifan/model/Qwen2.5-1.5B-Instruct",
+  "skill_bank": "phase1/config/frozen_alfworld_skills.json",
+  "retrieval": {
+    "mode": "template",
+    "dynamic_update": false,
+    "task_specific_top_k": 1,
+    "contexts": [
+      "pick_and_place",
+      "look_at_obj_in_light",
+      "clean",
+      "heat",
+      "cool",
+      "pick_two"
+    ]
+  },
+  "training": {
+    "train_games_per_update": 8,
+    "rollouts_per_game": 4,
+    "updates": 30,
+    "checkpoint_ids": [0, 5, 10, 15, 20, 25, 30],
+    "rl_seeds": [101, 202, 303],
+    "gpus_per_seed": 2,
+    "max_environment_steps": 30
+  },
+  "evaluation": {
+    "evaluation_seeds": [11, 22, 33],
+    "development_games_per_context": 8,
+    "heldout_games_per_context": 8,
+    "conditions": ["full_bank", "minus_skill", "no_skill"],
+    "primary_margin": "success(full_bank)-success(minus_skill)",
+    "bootstrap_cluster": "game_id",
+    "minimum_independent_game_clusters": 8,
+    "strict_harmful_flip": "pre_margin_lcb>0 and post_margin_ucb<0",
+    "minimum_eligible_pairs": 4
+  },
+  "fixed_state_probe": {
+    "same_state_across_checkpoints": true,
+    "same_skill_condition_across_checkpoints": true,
+    "greedy_decoding": true,
+    "measures": [
+      "projected_action_flip",
+      "projected_action_admissibility",
+      "constrained_action_js_divergence"
+    ]
+  },
+  "negative_controls": [
+    "zero_update",
+    "shuffled_reward",
+    "random_parameter"
+  ],
+  "capability_gates_for_fallback": {
+    "invalid_action_rate_gt": 0.3,
+    "insufficient_eligible_pairs_lt": 4,
+    "action_protocol_unstable": true
+  },
+  "phase1_go_thresholds": {
+    "real_vs_zero_median_abs_delta_ratio_min": 1.5,
+    "real_vs_zero_bootstrap_ci_excludes_zero": true,
+    "two_of_three_seed_direction_rate_min": 0.6,
+    "mean_cross_seed_spearman_min": 0.3,
+    "strict_harmful_flip_count_min": 12,
+    "strict_harmful_flip_rate_min": 0.05,
+    "continuous_negative_shift_fallback_count_min": 30,
+    "real_vs_shuffled_median_abs_delta_ratio_min": 1.25,
+    "cluster_permutation_p_lt": 0.05
+  },
+  "archive": {
+    "one_json_per_trajectory": true,
+    "idempotent_index": true,
+    "record_full_prompt_and_step_content": true,
+    "record_distinct_skill_count": true,
+    "immutable_run_manifest": true
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": "phase1.model_manifest.v1",
+  "downloaded_on": "2026-08-25",
+  "models": [
+    {
+      "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "role": "smoke",
+      "local_path": "/home/wangyifan/model/Qwen2.5-0.5B-Instruct",
+      "config_sha256": "18e18afcaccafade98daf13a54092927904649e1dd4eba8299ab717d5d94ff45",
+      "weight_file": "model.safetensors",
+      "weight_size_bytes": 988097824,
+      "weight_sha256": "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe",
+      "model_type": "qwen2",
+      "parameter_count": 494032768,
+      "hidden_size": 896,
+      "num_hidden_layers": 24,
+      "vocab_size": 151665,
+      "tensor_count": 290
+    },
+    {
+      "model_id": "Qwen/Qwen2.5-1.5B-Instruct",
+      "role": "formal_fallback",
+      "local_path": "/home/wangyifan/model/Qwen2.5-1.5B-Instruct",
+      "config_sha256": "98d2ff8cc47488d08a2b0b3acf4eb99ef210779b42bd48605f6b8e36acdbf670",
+      "weight_file": "model.safetensors",
+      "weight_size_bytes": 3087467144,
+      "weight_sha256": "dd924a11b4c220f385b51ffa522daea7c9f3d850e31b162bb5661df483c6d3ee",
+      "model_type": "qwen2",
+      "parameter_count": 1543714304,
+      "hidden_size": 1536,
+      "num_hidden_layers": 28,
+      "vocab_size": 151665,
+      "tensor_count": 338
+    }
+  ],
+  "validation": {
+    "huggingface_download_complete": true,
+    "offline_config_load": true,
+    "offline_tokenizer_load": true,
+    "safetensors_header_load": true,
+    "offline_full_model_load": true
+  }
+}

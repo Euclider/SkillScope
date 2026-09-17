@@ -1,0 +1,36 @@
+{
+  "adjacent_condition_interactions": {
+    "full_flip_minus_skill_stable_count": 11,
+    "full_flip_no_skill_stable_count": 15,
+    "full_minus_minus_skill_flip_rate": 0.09999999999999998,
+    "full_minus_no_skill_flip_rate": 0.22499999999999998
+  },
+  "endpoint_condition_interactions": {
+    "full_flip_minus_skill_stable_count": 2,
+    "full_flip_no_skill_stable_count": 3,
+    "full_minus_minus_skill_flip_rate": 0.25,
+    "full_minus_no_skill_flip_rate": 0.375
+  },
+  "endpoint_flip_rate_by_condition": {
+    "full_bank": 0.875,
+    "minus_skill": 0.625,
+    "no_skill": 0.5
+  },
+  "endpoint_mean_js_by_condition": {
+    "full_bank": 0.005255349917955405,
+    "minus_skill": 0.005775309448911581,
+    "no_skill": 0.004573223110015035
+  },
+  "endpoint_transition_rows": 24,
+  "flip_rate_by_condition": {
+    "full_bank": 0.5,
+    "minus_skill": 0.4,
+    "no_skill": 0.275
+  },
+  "mean_js_by_condition": {
+    "full_bank": 0.0025895476417215823,
+    "minus_skill": 0.001277204090039087,
+    "no_skill": 0.0015923774364850446
+  },
+  "probe_transition_rows": 120
+}

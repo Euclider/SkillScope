@@ -1,0 +1,11 @@
+{
+  "root": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1",
+  "protocol_sha256": "0ca78a05b4d58584be39ecfaa9335458b41dfd50ea6e34f80e43be797acbe47a",
+  "superseded_resource_sha256": "9672aeb3cd26c6eabe7b7fee793b8c0d783b4f1806b615d057d35ba41ac65efa",
+  "user_authorized": true,
+  "authorized_on": "2026-09-14",
+  "request": "把评估跑完，不用管磁盘预算跑完后形成完整phase2报告",
+  "scope": "Waive the 200+20 GiB evaluation budget. No new training, no evidence deletion, no changes to frozen science, trajectories or rankings.",
+  "minimum_write_safety_mib": 256,
+  "note": "Only an actual near-full filesystem guard remains for atomic trajectory/metadata writes; it is not a long-term storage reservation."
+}

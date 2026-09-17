@@ -1,0 +1,118 @@
+{
+  "_all": "all",
+  "baseline_invalid_action_rate": 0.3287037037037037,
+  "baseline_label": "Qwen2.5-0.5B-Instruct",
+  "baseline_success_rate": 0.0,
+  "by_condition": [
+    {
+      "baseline_invalid_action_rate": 0.25555555555555554,
+      "baseline_success_rate": 0.0,
+      "candidate_invalid_action_rate": 0.20555555555555555,
+      "candidate_success_rate": 0.0,
+      "invalid_action_rate_delta": -0.04999999999999999,
+      "mean_completion_tokens_per_step_delta": -55.861111111111114,
+      "paired_episodes": 12,
+      "skill_condition": "full_bank",
+      "success_rate_delta": 0.0
+    },
+    {
+      "baseline_invalid_action_rate": 0.22777777777777777,
+      "baseline_success_rate": 0.0,
+      "candidate_invalid_action_rate": 0.21666666666666667,
+      "candidate_success_rate": 0.0,
+      "invalid_action_rate_delta": -0.0111111111111111,
+      "mean_completion_tokens_per_step_delta": -49.65,
+      "paired_episodes": 12,
+      "skill_condition": "minus_skill",
+      "success_rate_delta": 0.0
+    },
+    {
+      "baseline_invalid_action_rate": 0.5027777777777778,
+      "baseline_success_rate": 0.0,
+      "candidate_invalid_action_rate": 0.5,
+      "candidate_success_rate": 0.0,
+      "invalid_action_rate_delta": -0.002777777777777768,
+      "mean_completion_tokens_per_step_delta": -48.025000000000006,
+      "paired_episodes": 12,
+      "skill_condition": "no_skill",
+      "success_rate_delta": 0.0
+    }
+  ],
+  "by_context": [
+    {
+      "baseline_invalid_action_rate": 0.25,
+      "baseline_success_rate": 0.0,
+      "candidate_invalid_action_rate": 0.2222222222222222,
+      "candidate_success_rate": 0.0,
+      "context_id": "clean",
+      "invalid_action_rate_delta": -0.02777777777777779,
+      "mean_completion_tokens_per_step_delta": -46.344444444444456,
+      "paired_episodes": 6,
+      "success_rate_delta": 0.0
+    },
+    {
+      "baseline_invalid_action_rate": 0.39444444444444443,
+      "baseline_success_rate": 0.0,
+      "candidate_invalid_action_rate": 0.37222222222222223,
+      "candidate_success_rate": 0.0,
+      "context_id": "cool",
+      "invalid_action_rate_delta": -0.0222222222222222,
+      "mean_completion_tokens_per_step_delta": -108.90555555555557,
+      "paired_episodes": 6,
+      "success_rate_delta": 0.0
+    },
+    {
+      "baseline_invalid_action_rate": 0.3111111111111111,
+      "baseline_success_rate": 0.0,
+      "candidate_invalid_action_rate": 0.4222222222222222,
+      "candidate_success_rate": 0.0,
+      "context_id": "heat",
+      "invalid_action_rate_delta": 0.1111111111111111,
+      "mean_completion_tokens_per_step_delta": -37.77222222222222,
+      "paired_episodes": 6,
+      "success_rate_delta": 0.0
+    },
+    {
+      "baseline_invalid_action_rate": 0.2777777777777778,
+      "baseline_success_rate": 0.0,
+      "candidate_invalid_action_rate": 0.15555555555555556,
+      "candidate_success_rate": 0.0,
+      "context_id": "look_at_obj_in_light",
+      "invalid_action_rate_delta": -0.12222222222222223,
+      "mean_completion_tokens_per_step_delta": -47.02777777777778,
+      "paired_episodes": 6,
+      "success_rate_delta": 0.0
+    },
+    {
+      "baseline_invalid_action_rate": 0.40555555555555556,
+      "baseline_success_rate": 0.0,
+      "candidate_invalid_action_rate": 0.35,
+      "candidate_success_rate": 0.0,
+      "context_id": "pick_and_place",
+      "invalid_action_rate_delta": -0.05555555555555558,
+      "mean_completion_tokens_per_step_delta": -34.31666666666667,
+      "paired_episodes": 6,
+      "success_rate_delta": 0.0
+    },
+    {
+      "baseline_invalid_action_rate": 0.3333333333333333,
+      "baseline_success_rate": 0.0,
+      "candidate_invalid_action_rate": 0.32222222222222224,
+      "candidate_success_rate": 0.0,
+      "context_id": "pick_two",
+      "invalid_action_rate_delta": -0.011111111111111072,
+      "mean_completion_tokens_per_step_delta": -32.705555555555556,
+      "paired_episodes": 6,
+      "success_rate_delta": 0.0
+    }
+  ],
+  "candidate_invalid_action_rate": 0.3074074074074074,
+  "candidate_label": "Qwen2.5-1.5B-Instruct",
+  "candidate_success_rate": 0.0,
+  "identical_pair_keys": true,
+  "invalid_action_rate_delta": -0.021296296296296313,
+  "mean_completion_tokens_per_step_delta": -51.17870370370372,
+  "paired_episodes": 36,
+  "schema_version": "phase1.smoke_comparison.v1",
+  "success_rate_delta": 0.0
+}

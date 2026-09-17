@@ -1,0 +1,14 @@
+{
+  "all_finite": true,
+  "changed_parameter_count": 4282351644,
+  "config_hash": "519f3acba64bac33c5e96a18ad637ad58eb2c4475888e8d09befb6b8efe53ff9",
+  "fsdp_checkpoint": "/home/wangyifan/skill-RL/SkillRL/artifacts/checkpoints/qwen35-clean-feasibility-seed101-u1-a7-20260831/global_step_1/actor",
+  "fsdp_world_size": 4,
+  "hf_checkpoint": "/home/wangyifan/model/Qwen3.5-4B",
+  "max_absolute_delta": 0.00391840934753418,
+  "parameter_count": 4841450496,
+  "parameter_delta_l2_norm": 0.30255314781835213,
+  "reference_parameter_l2_norm": 832.431171852104,
+  "relative_l2_norm": 0.00036345725394352005,
+  "schema_version": "phase1.hf_to_fsdp_checkpoint_delta.v1"
+}

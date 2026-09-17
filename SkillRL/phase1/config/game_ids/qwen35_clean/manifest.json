@@ -1,0 +1,35 @@
+{
+  "games_per_context": null,
+  "schema_version": "phase1.game_manifest.v1",
+  "selection_seed": 20260831,
+  "splits": {
+    "development": {
+      "clean": {
+        "count": 37,
+        "path": "phase1/config/game_ids/qwen35_clean/development/clean.txt",
+        "sha256": "a5297dc99389dc7853d62250b6ad35aba847a3ce9d2f87d450c79bef625f0499"
+      }
+    },
+    "train": {
+      "clean": {
+        "count": 650,
+        "path": "phase1/config/game_ids/qwen35_clean/train/clean.txt",
+        "sha256": "c771670e2f514b01198fb2be43677965fa6cc56dd97613a5007078112b2c8a1d"
+      }
+    },
+    "valid_seen": {
+      "clean": {
+        "count": 27,
+        "path": "phase1/config/game_ids/qwen35_clean/valid_seen/clean.txt",
+        "sha256": "b3917847bd92510e945572fba1befd56293c7b1c5538e6a8e607100198a74bed"
+      }
+    },
+    "valid_unseen": {
+      "clean": {
+        "count": 31,
+        "path": "phase1/config/game_ids/qwen35_clean/valid_unseen/clean.txt",
+        "sha256": "ff8c0d88d0703b4fe8d1f78cde6662b1887a2c7da4ed0460a8df1886a3bdbb2c"
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "results": [
+    {
+      "ci_excludes_zero_sign_accuracy": null,
+      "conditional_sign_accuracy": null,
+      "model": "zero",
+      "prediction_coverage": 0.0,
+      "rho_signed_delta": null,
+      "signed_MAE": 0.03775510204081632,
+      "test_units": 7,
+      "test_updates": 2
+    },
+    {
+      "ci_excludes_zero_sign_accuracy": 0.0,
+      "conditional_sign_accuracy": 0.5,
+      "model": "dev_mean",
+      "prediction_coverage": 1.0,
+      "rho_signed_delta": null,
+      "signed_MAE": 0.04030612244897958,
+      "test_units": 7,
+      "test_updates": 2
+    },
+    {
+      "ci_excludes_zero_sign_accuracy": 0.0,
+      "conditional_sign_accuracy": 0.5,
+      "model": "old_margin",
+      "prediction_coverage": 1.0,
+      "rho_signed_delta": 0.11651034560709261,
+      "signed_MAE": 0.04076085400098808,
+      "test_units": 7,
+      "test_updates": 2
+    },
+    {
+      "ci_excludes_zero_sign_accuracy": 0.0,
+      "conditional_sign_accuracy": 0.5,
+      "model": "unsigned",
+      "prediction_coverage": 1.0,
+      "rho_signed_delta": -0.2964997266644405,
+      "signed_MAE": 0.06206563654501666,
+      "test_units": 7,
+      "test_updates": 2
+    },
+    {
+      "ci_excludes_zero_sign_accuracy": 0.0,
+      "conditional_sign_accuracy": 0.5,
+      "model": "activation",
+      "prediction_coverage": 1.0,
+      "rho_signed_delta": -0.5188745216627708,
+      "signed_MAE": 0.07092383042750268,
+      "test_units": 7,
+      "test_updates": 2
+    },
+    {
+      "ci_excludes_zero_sign_accuracy": 0.0,
+      "conditional_sign_accuracy": 0.5,
+      "model": "signed",
+      "prediction_coverage": 1.0,
+      "rho_signed_delta": -0.4076871241636057,
+      "signed_MAE": 0.07871211867318308,
+      "test_units": 7,
+      "test_updates": 2
+    },
+    {
+      "ci_excludes_zero_sign_accuracy": 0.0,
+      "conditional_sign_accuracy": 0.5,
+      "model": "opposition",
+      "prediction_coverage": 1.0,
+      "rho_signed_delta": -0.4076871241636057,
+      "signed_MAE": 0.0785251775312791,
+      "test_units": 7,
+      "test_updates": 2
+    }
+  ],
+  "test_updates": [
+    34,
+    35,
+    36
+  ],
+  "training_updates": [
+    31,
+    32
+  ]
+}

@@ -1,0 +1,13 @@
+# Generated downloads, local environments, and runtime files.
+/data/
+/model/
+/envs/
+/miniforge3/
+/miniconda3/
+**/__pycache__/
+**/.pytest_cache/
+**/.ruff_cache/
+**/.cache/
+**/*.py[cod]
+**/*.egg-info/
+*.part

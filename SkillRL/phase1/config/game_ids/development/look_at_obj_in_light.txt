@@ -1,0 +1,8 @@
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/look_at_obj_in_light-Bowl-None-DeskLamp-304/trial_T20190907_232227_752681/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/look_at_obj_in_light-Pillow-None-DeskLamp-309/trial_T20190908_113756_084511/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/look_at_obj_in_light-Book-None-DeskLamp-317/trial_T20190909_201225_052100/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/look_at_obj_in_light-Pen-None-DeskLamp-316/trial_T20190908_061847_951064/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/look_at_obj_in_light-CD-None-DeskLamp-323/trial_T20190908_051124_983144/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/look_at_obj_in_light-Bowl-None-DeskLamp-316/trial_T20190908_230650_245482/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/look_at_obj_in_light-Laptop-None-DeskLamp-324/trial_T20190908_071137_867346/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/look_at_obj_in_light-Laptop-None-DeskLamp-309/trial_T20190907_185713_398582/game.tw-pddl

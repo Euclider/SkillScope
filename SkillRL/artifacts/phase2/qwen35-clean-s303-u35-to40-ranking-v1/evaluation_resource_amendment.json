@@ -1,0 +1,17 @@
+{
+  "root": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1",
+  "protocol_sha256": "0ca78a05b4d58584be39ecfaa9335458b41dfd50ea6e34f80e43be797acbe47a",
+  "scope": "User requested completion of remaining Phase2 evaluations and higher useful GPU concurrency on 2026-09-13; no changes to checkpoints, scientific protocol, 8 logical shards, seeds, prompts, model precision or gold locking.",
+  "disk_reserve_gib": 200,
+  "remaining_write_allowance_gib": 20,
+  "gpu_headroom_mib": 8192,
+  "poll_seconds": 10,
+  "oom_cooldown_seconds": 90,
+  "stages": {
+    "measure": {"max_workers_per_gpu": 3, "worker_budget_mib": 23552},
+    "evaluate": {"max_workers_per_gpu": 4, "worker_budget_mib": 14336}
+  },
+  "ownership": "Use idle GPUs or GPUs occupied exclusively by this scheduler's real workers; never terminate foreign processes or fill memory with dummy tensors.",
+  "checkpoint_boundary": "250GiB pre-training rule is unchanged; already-committed model evaluation uses 200GiB reserve plus 20GiB remaining write allowance.",
+  "retry": "Only GPU OOM in read-only measurement/evaluation is automatically retried. Completed trajectories and committed shards are preserved. Other errors stop with audit."
+}

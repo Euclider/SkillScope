@@ -1,0 +1,22 @@
+{
+  "schema_version": "phase1.original_reproduction_audit.v1",
+  "definition": "Compare the new ORIGINAL payload arm with the archived old FULL_BANK arm using checkpoint_id, game_id, and evaluation seed; require identical action sequence and success.",
+  "comparisons": {
+    "Qwen2.5-1.5B-Instruct": {
+      "pairs": 24,
+      "action_or_success_mismatches": 0
+    },
+    "checkpoint-1": {
+      "pairs": 24,
+      "action_or_success_mismatches": 0
+    },
+    "checkpoint-5": {
+      "pairs": 24,
+      "action_or_success_mismatches": 0
+    }
+  },
+  "total_pairs": 72,
+  "total_action_or_success_mismatches": 0,
+  "old_evaluation_root": "artifacts/evaluations/phase1-step-router-pilot-seed-101-r2/matched-pic_001",
+  "new_evaluation_root": "artifacts/evaluations/phase1-first-invocation-pic_001-seed-101-v1"
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": "phase1.first_invocation_run_status.v1",
+  "run_id": "phase1-first-invocation-pic_001-seed-101-v1",
+  "status": "complete",
+  "completed_date": "2026-08-29",
+  "target_skill_id": "pic_001",
+  "context_id": "pick_and_place",
+  "checkpoint_count": 6,
+  "anchor_occurrence_count": 24,
+  "game_cluster_count": 8,
+  "payload_arms": [
+    "original",
+    "placebo",
+    "null"
+  ],
+  "expected_trajectory_count": 432,
+  "completed_trajectory_count": 432,
+  "failed_trajectory_count": 0,
+  "integrity_failure_count": 0,
+  "primary_result": {
+    "estimand": "delta semantic utility: (original-placebo)_checkpoint2 - (original-placebo)_base",
+    "success_probability_difference": 0.125,
+    "game_cluster_bootstrap_95_ci": [
+      0.041666666666666664,
+      0.25
+    ]
+  },
+  "paths": {
+    "report": "/home/wangyifan/skill-RL/2026-08-29-first-invocation-skill-utility-evaluation-results.md",
+    "protocol": "phase1/config/first_invocation_payload_protocol.json",
+    "anchors": "artifacts/anchors/phase1-first-invocation-pic_001-seed-101-v1/pic_001-anchors.jsonl",
+    "evaluations": "artifacts/evaluations/phase1-first-invocation-pic_001-seed-101-v1",
+    "metrics": "artifacts/metrics/phase1-first-invocation-pic_001-seed-101-v1",
+    "manifest": "artifacts/manifests/phase1-first-invocation-pic_001-seed-101-v1.json"
+  }
+}

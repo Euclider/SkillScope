@@ -1,0 +1,18 @@
+{
+  "bootstrap_resamples": 10000,
+  "checkpoint_endpoint_transitions": 1,
+  "checkpoint_transitions": 2,
+  "control_comparisons": [],
+  "label_counts": {
+    "ambiguous": 2
+  },
+  "rollout_records": 216,
+  "skill_context_checkpoint_rows": 3,
+  "stability": {
+    "events": 2,
+    "mean_pairwise_seed_spearman": NaN,
+    "two_of_three_direction_rate": 0.0
+  },
+  "strict_harmful_flip_rate_non_ambiguous": 0.0,
+  "strict_harmful_flips": 0
+}

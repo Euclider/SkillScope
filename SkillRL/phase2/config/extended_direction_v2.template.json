@@ -1,0 +1,43 @@
+{
+  "schema_version": "phase2.extended.direction.v2",
+  "status": "draft",
+  "note": "Implementation template only. Freeze after pre-update coverage/noise calibration; no new RL is authorized by this template.",
+  "run_id": null,
+  "root": null,
+  "rl_path_id": null,
+  "parent_checkpoint": null,
+  "parent_update": null,
+  "post_updates": [],
+  "windows": [],
+  "window_design_proposal": {"primary_horizon": 5, "sensitivity_horizons": [1, 3], "development_window_count": null, "boundary_window_count": 1, "test_window_count": null},
+  "window_direction": "start_batch_endpoint_projection",
+  "primary_control": "placebo",
+  "primary_estimand": "Delta M_sem = Delta(success_original - success_placebo)",
+  "training": {
+    "run_id_prefix": null, "sampler_seed_base": null, "task_types": [3],
+    "games_per_update": 8, "rollouts_per_game": 4, "validation_games": 27,
+    "lr": 0.000001, "kl_coef": 0.01, "reference": "/home/wangyifan/model/Qwen3.5-4B",
+    "max_prompt_tokens": 2048, "max_response_tokens": 64, "max_environment_steps": 30,
+    "optimizer_restored": true
+  },
+  "evaluation": {
+    "anchor_sets": [], "anchor_count": 0, "shards": 8,
+    "arms": ["original", "placebo", "null"],
+    "old_evidence_seeds": [51011, 51021], "gold_seeds": [52011, 52021, 52031, 52041],
+    "temperature": 0.4, "top_p": 1.0, "max_new_tokens": 64, "history_length": 2,
+    "tau_M": 0.05, "bootstrap_repetitions": 10000
+  },
+  "signals": {
+    "support": "all actual response loss tokens, full vocabulary", "vocab_size": 248320,
+    "inner_product": "identity", "epsilon": 1e-12, "tau_C": 0.0,
+    "minimum_nonzero_advantage_decisions": 20, "minimum_training_games": 4, "minimum_training_trajectories": 8,
+    "primary_aggregation": "token_equal_mean_including_zero_advantage_and_failed_gates",
+    "activation_layers": [8, 16, 24, 32]
+  },
+  "prediction": {
+    "phases": ["all", "initial", "early", "middle", "late"],
+    "base_features": ["old_margin", "old_margin_se", "u_control_norm"],
+    "candidate_features": ["delta_centered_norm", "P_int", "D_contribution", "forward_kl_original"],
+    "minimum_development_windows": 4, "minimum_training_units": 24, "ridge_alpha": 1.0
+  }
+}

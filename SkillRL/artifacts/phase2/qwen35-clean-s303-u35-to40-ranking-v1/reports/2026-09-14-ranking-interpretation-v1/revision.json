@@ -1,0 +1,109 @@
+{
+  "schema": "phase2.report_revision.v1",
+  "created_at": "2026-09-14T02:41:20.293503+00:00",
+  "status": "complete_and_verified",
+  "request": "Append overall ranking, monotonicity and gated/ungated D analyses; refine conclusions.",
+  "analysis_status": "post-hoc descriptive reanalysis; not a new preregistered test",
+  "report": {
+    "path": "/home/wangyifan/skill-RL/2026-09-14-phase2-complete-analysis.md",
+    "sha256": "a1c51eb37b15c2f1df8bce5df044e7f302ddbbd3905962e2e39667667a3f7f50"
+  },
+  "previous_report_sha256": "d2ad5fdfa197014c7ead2a48f70be67c070df54dca036d6a1273c99beff70f97",
+  "edited_sections": [
+    1,
+    7,
+    9
+  ],
+  "appended_sections": [
+    11
+  ],
+  "source_counts": {
+    "old_supported": 19,
+    "old_test_subset": 7,
+    "new_supported": 3
+  },
+  "new_training": false,
+  "new_rollouts": false,
+  "original_data_or_protocol_modified": false,
+  "label": "semantic utility change, ORIGINAL minus PLACEBO; point decline delta<-threshold-1e-12",
+  "decline_thresholds": [
+    0,
+    0.05
+  ],
+  "score_orientations": {
+    "D_contribution": 1,
+    "D_ungated_contribution": 1,
+    "delta_centered_norm": 1,
+    "P_int": -1,
+    "forward_kl_original": 1,
+    "js_original": 1,
+    "u_control_norm": 1
+  },
+  "ranking": "descending risk; average ranks for ties; no-decline mean rank and AP undefined",
+  "source_files": [
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/reports/2026-09-12-observation-audit-v1/all_supported.csv",
+      "sha256": "e86582214c4abeb1687112995db9e106d5d7e5373fd137e8ee65ec7db532465a"
+    },
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/window_metrics/raw_features_and_semantic_utility.csv",
+      "sha256": "8e111dcbe48c2cbf670af30c66dde271612b732ceb1b208b39731d738e333ce6"
+    },
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/protocol.json",
+      "sha256": "ed7c91a550ded5cb952afdb338355898e02fe2027a476424beb939e4d1c9d28e"
+    },
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/protocol.json",
+      "sha256": "0ca78a05b4d58584be39ecfaa9335458b41dfd50ea6e34f80e43be797acbe47a"
+    },
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/signals/calibration.json",
+      "sha256": "d03fc42a480b4e12e6e223da850e4c64e6add731f9f4c3aaef13fb43e5adabb6"
+    },
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/signals/calibration.json",
+      "sha256": "1099d753fb802947e095fcb685d2f7aca10c152738307c055fc9b997b33c40b7"
+    },
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/evaluation_completion.json",
+      "sha256": "7bf2d34beb4b857916902b284f21f003d7e6d69a0763b932f8ad9eda76d16d61"
+    },
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/full_report_completion.json",
+      "sha256": "faeb50f70ba29a4374ee6b91525b97d58cfb7a92279316b0eb30cb40edacacc6"
+    },
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/phase2/direction.py",
+      "sha256": "2477dd6b9215c8140804c2005a6108d5047b80e506d189fe06c99624bcff69d4"
+    },
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/phase2/aggregate.py",
+      "sha256": "799183cfa9ab577dd0a051146817fcce27b596275435954dae6b90a69510725a"
+    }
+  ],
+  "audit_files": [
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/reports/2026-09-14-ranking-interpretation-v1/overall_ranking_audit.csv",
+      "sha256": "6f84e760540d5b3854cc3020ffc10167ac828eb025b752aa1540fee7c7dd6489"
+    },
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/reports/2026-09-14-ranking-interpretation-v1/within_window_ranking_audit.csv",
+      "sha256": "29fd3d1a4763a53036860d42a827c922fe6ae05ac8d3a579f82743135151a360"
+    }
+  ],
+  "verification": {
+    "csv_rows_recomputed": 126,
+    "markdown_data_rows_checked": 28,
+    "source_protocol_and_legacy_report_hashes_unchanged": true,
+    "tau_C": 0,
+    "tau_delta": 1e-8,
+    "epsilon": 1e-12
+  },
+  "libraries": {
+    "pandas": "2.3.3",
+    "scipy": "1.15.3",
+    "scikit_learn": "1.7.2"
+  },
+  "completion_proof_note": "Original full_report_completion.json is preserved and attests the initial report hash, not this later document revision."
+}

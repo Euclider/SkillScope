@@ -1,0 +1,52 @@
+{
+  "schema_version": "phase1.first_invocation_payload_protocol.v1",
+  "target": {
+    "skill_id": "pic_001",
+    "context_id": "pick_and_place",
+    "anchor_policy": "Qwen2.5-1.5B-Instruct checkpoint 0",
+    "anchor_split": "valid_seen",
+    "anchor_eligibility": "first step where frozen Router selected pic_001",
+    "anchor_occurrences": 24,
+    "distinct_anchor_states": 8,
+    "game_clusters": 8
+  },
+  "payload_arms": {
+    "original": "frozen original routing descriptor and original prompt payload",
+    "placebo": "frozen original routing descriptor and task-irrelevant 58-token payload",
+    "null": "frozen original routing descriptor and empty prompt payload"
+  },
+  "continuation": {
+    "prefix": "replay checkpoint-0 archived actions and verify trigger state",
+    "branch_start": "first target-Skill invocation",
+    "after_branch": "free policy actions and free state routing on each branch",
+    "router_descriptor_bank": "original and frozen in all arms",
+    "remaining_horizon": "original 30-step budget minus trigger step",
+    "generation": {
+      "temperature": 0.4,
+      "top_p": 1.0,
+      "max_new_tokens": 512,
+      "common_random_seed": "source eval seed plus absolute environment step"
+    }
+  },
+  "checkpoints": [
+    "Qwen2.5-1.5B-Instruct",
+    "checkpoint-1",
+    "checkpoint-2",
+    "checkpoint-3",
+    "checkpoint-4",
+    "checkpoint-5"
+  ],
+  "estimands": {
+    "semantic_utility": "return(original)-return(placebo)",
+    "total_utility": "return(original)-return(null)",
+    "prompt_nuisance": "return(placebo)-return(null)",
+    "longitudinal_change": "utility(checkpoint-k)-utility(checkpoint-0)"
+  },
+  "statistics": {
+    "pairing": "checkpoint, anchor occurrence, source eval seed",
+    "bootstrap_cluster": "game_id",
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 20260828
+  },
+  "known_scope_limit": "all current pic_001 first-invocation anchors occur at step 0"
+}

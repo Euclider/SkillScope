@@ -1,0 +1,36 @@
+{
+  "base_original_source_reproduction_mismatch_count": 0,
+  "base_original_source_reproduction_mismatches": [],
+  "checkpoint_count": 10,
+  "duplicate_count": 0,
+  "expected_records": 6000,
+  "intervention_failure_count": 0,
+  "intervention_failures": [],
+  "original_placebo_trigger_prompt_token_mismatches": 0,
+  "record_count": 6000,
+  "selected_anchors_per_checkpoint": 200,
+  "supported_skills": [
+    "gen_002",
+    "cle_003",
+    "cle_004",
+    "cle_006"
+  ],
+  "trajectory_path_unique_count": 6000,
+  "trigger_router_score_mismatches_across_arms": 0,
+  "unsupported_skills": [
+    "gen_001",
+    "gen_003",
+    "gen_004",
+    "gen_005",
+    "gen_006",
+    "gen_007",
+    "gen_008",
+    "gen_009",
+    "gen_010",
+    "gen_011",
+    "gen_012",
+    "cle_001",
+    "cle_002",
+    "cle_005"
+  ]
+}

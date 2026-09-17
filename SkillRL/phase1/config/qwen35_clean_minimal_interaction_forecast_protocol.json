@@ -1,0 +1,56 @@
+{
+  "schema_version": "phase1.minimal_interaction_forecast.v1",
+  "analysis_date": "2026-09-04",
+  "analysis_type": "retrospective_exploratory_minimal_forecast",
+  "purpose": "Test whether a no-suffix-rollout top-1 action interaction readout predicts adjacent-window semantic Skill-utility change and whether the association is present in each RL seed.",
+  "source_design": "/home/wangyifan/skill-RL/2026-08-19-policy-update-skill-sign-flip-forecasting-design.md",
+  "source_gold_metrics": "artifacts/metrics/qwen35-clean-all-skill-seeds101-202-303-v1/paired_anchor_effects.parquet",
+  "seeds": [101, 202, 303],
+  "adjacent_windows": [[0, 10], [10, 20], [20, 30]],
+  "analysis_unit": "fixed B0 anchor within RL seed and adjacent update window",
+  "sample_size": {
+    "anchors_per_checkpoint": 200,
+    "transition_rows_per_seed": 600,
+    "total_transition_rows": 1800
+  },
+  "features": {
+    "old_margin": "semantic_success_utility at the pre-window checkpoint",
+    "generic_top1_shift": "PLACEBO first action differs between pre and post checkpoint",
+    "original_top1_shift": "ORIGINAL first action differs between pre and post checkpoint",
+    "top1_interaction_shift": "exclusive-or of original_top1_shift and generic_top1_shift; discrete top-1 approximation to policy-Skill difference-in-differences",
+    "cost_boundary": "Only the first action at fixed archived states is used. No suffix action, environment transition, reward, target reselection, or terminal outcome is a feature."
+  },
+  "labels": {
+    "primary": "utility_changed = semantic_success_utility(post) != semantic_success_utility(pre)",
+    "directional_secondary": "negative_delta = semantic_success_utility(post) < semantic_success_utility(pre)",
+    "continuous_secondary": "delta_semantic_success_utility",
+    "rare_event_audit": "point_harmful_flip = pre semantic_success_utility > 0 and post semantic_success_utility < 0",
+    "strict_harmful_label": "Not modeled because the completed Skill-level evaluation contains zero confirmed harmful sign flips."
+  },
+  "association_test": {
+    "primary_score": "top1_interaction_shift",
+    "effect": "game-equal utility-change rate difference and risk ratio between score=1 and score=0",
+    "bootstrap": "10000 game-cluster resamples within each seed; hierarchical seed then game for pooled estimate",
+    "bootstrap_seed": 20260904
+  },
+  "prediction_test": {
+    "split": "leave-one-RL-seed-out; train on two complete seeds and test on the third",
+    "models": {
+      "prevalence": [],
+      "old_margin": ["old_margin"],
+      "old_plus_generic": ["old_margin", "generic_top1_shift"],
+      "old_plus_interaction": ["old_margin", "generic_top1_shift", "top1_interaction_shift"]
+    },
+    "estimator": "L2-regularized logistic regression with fixed lambda=1.0",
+    "sample_weight": "equal weight to each game within each seed-window",
+    "metrics": ["AUPRC", "Brier score", "log loss"],
+    "no_random_anchor_split": true
+  },
+  "interpretation_guards": [
+    "This is an exploratory minimal validation, not a preregistered confirmatory result.",
+    "The first actions were extracted retrospectively from the first step of archived matched rollouts, but are deployment-available through equivalent one-step fixed-state probes.",
+    "The present checkpoint spacing tests cumulative 10-update windows, not immediate one-update forecasting.",
+    "Shared B0 anchors test cross-seed update-path transfer, not held-out-state or held-out-task generalization.",
+    "Anchor rows are not independent; uncertainty is clustered by game and predictive splitting is by RL seed."
+  ]
+}

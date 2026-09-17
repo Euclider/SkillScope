@@ -1,0 +1,10 @@
+{
+  "run_id": "phase1-step-router-pilot-seed-101",
+  "status": "aborted_before_rollout",
+  "rl_update_started": false,
+  "trajectory_count": 0,
+  "reason": "Ray auto-connected to a stale shared /tmp/ray/ray_current_cluster address (10.176.22.91:8266); GCS was unavailable.",
+  "action": "Preserved manifest and console log; retrying under a new run ID with address=local and a run-specific Ray temp directory.",
+  "manifest": "artifacts/manifests/phase1-step-router-pilot-seed-101.json",
+  "console_log": "artifacts/logs/phase1-step-router-pilot-seed-101.log"
+}

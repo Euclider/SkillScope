@@ -1,0 +1,19 @@
+{
+  "action_format_compliance_rate": 0.6925925925925926,
+  "archive_integrity_passed": true,
+  "capability_gate_invalid_action_rate_lte_0_30": false,
+  "conditions": [
+    "full_bank",
+    "minus_skill",
+    "no_skill"
+  ],
+  "contexts": 6,
+  "environment_steps": 1080,
+  "independent_games": 12,
+  "invalid_action_rate": 0.3074074074074074,
+  "mean_trajectory_length": 30.0,
+  "note": "Two games and one eval seed per context: margins are diagnostic only.",
+  "rollout_records": 36,
+  "schema_version": "phase1.smoke_summary.v1",
+  "success_rate": 0.0
+}

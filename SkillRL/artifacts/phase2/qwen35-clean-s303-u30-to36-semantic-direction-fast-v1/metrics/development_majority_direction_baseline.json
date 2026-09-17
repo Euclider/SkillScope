@@ -1,0 +1,16 @@
+{
+  "always_positive_conditional_accuracy": 0.5,
+  "ci_excludes_zero_points": 1,
+  "ci_excludes_zero_sign_accuracy": 0.0,
+  "conditional_sign_accuracy": 0.5,
+  "evaluated_nonzero_points": 4,
+  "negative_points": 2,
+  "nonzero_point_coverage": 0.5714285714285714,
+  "nonzero_points": 4,
+  "positive_points": 2,
+  "prediction_coverage": 1.0,
+  "sign_agree": 2,
+  "units": 7,
+  "updates": 2,
+  "zero_points": 3
+}

@@ -1,0 +1,1341 @@
+diff --git a/agent_system/environments/env_manager.py b/agent_system/environments/env_manager.py
+index 69beba9..6529202 100755
+--- a/agent_system/environments/env_manager.py
++++ b/agent_system/environments/env_manager.py
+@@ -193,10 +193,13 @@ class SearchEnvironmentManager(EnvironmentManagerBase):
+ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
+     def __init__(self, envs, projection_f, config):
+         self.memory = SimpleMemory()
++        self.prompt_skill_metadata = None
++        self.current_prompt_texts = None
++        self.step_skill_router = None
+ 
+         # Add retrieval memory or skills-only memory if configured
+         if config.env.get('use_skills_only_memory', False):
+-            from agent_system.memory import SkillsOnlyMemory
++            from agent_system.memory import FrozenStepSkillRouter, SkillsOnlyMemory
+             som_cfg = config.env.skills_only_memory
+             self.retrieval_memory = SkillsOnlyMemory(
+                 skills_json_path=som_cfg.skills_json_path,
+@@ -205,8 +208,18 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
+                 task_specific_top_k=som_cfg.get('task_specific_top_k', None),
+             )
+             self.retrieved_memories = None
++            router_cfg = som_cfg.get('step_routing', {})
++            if router_cfg.get('enabled', False):
++                self.step_skill_router = FrozenStepSkillRouter(
++                    include_common_mistakes=router_cfg.get(
++                        'include_common_mistakes', False
++                    )
++                )
+             print(f"[AlfWorldEnvironmentManager] Skills-only memory enabled "
+                   f"(mode={som_cfg.get('retrieval_mode', 'template')})")
++            if self.step_skill_router is not None:
++                print("[AlfWorldEnvironmentManager] Frozen step Skill routing enabled "
++                      f"(router={self.step_skill_router.version})")
+         elif config.env.get('use_retrieval_memory', False):
+             from agent_system.memory import RetrievalMemory
+             self.retrieval_memory = RetrievalMemory(
+@@ -242,9 +255,14 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
+                 mem_config = self.config.env.retrieval_memory
+ 
+             for task in self.tasks:
++                top_k = mem_config.get('top_k', 10)
++                if self.step_skill_router is not None:
++                    top_k = mem_config.get('step_routing', {}).get(
++                        'general_top_k', top_k
++                    )
+                 memories = self.retrieval_memory.retrieve(
+                     task_description=task,
+-                    top_k=mem_config.get('top_k', 10),
++                    top_k=top_k,
+                     similarity_threshold=mem_config.get('similarity_threshold', 0.7),
+                     max_tokens=mem_config.get('max_tokens', 2000),
+                     include_examples=mem_config.get('include_examples', False)
+@@ -255,6 +273,12 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
+         return {'text': full_text_obs, 'image': image_obs, 'anchor': text_obs}, infos
+     
+     def step(self, text_actions: List[str]):
++        raw_model_outputs = list(text_actions)
++        current_observations = list(self.pre_text_obs)
++        current_admissible_actions = [list(items) for items in self.envs.get_admissible_commands]
++        current_prompt_texts = list(self.current_prompt_texts or [''] * len(text_actions))
++        current_skill_metadata = list(self.prompt_skill_metadata or [{} for _ in text_actions])
++
+         actions, valids = self.projection_f(text_actions, self.envs.get_admissible_commands)
+         text_obs, image_obs, rewards, dones, infos = self.envs.step(actions)
+         self.memory.store({'text_obs': self.pre_text_obs, 'action': actions})
+@@ -267,6 +291,14 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
+         # add action_valid to infos
+         for i, info in enumerate(infos):
+             info['is_action_valid'] = to_numpy(valids[i])
++            info['raw_model_output'] = raw_model_outputs[i]
++            info['projected_action'] = actions[i]
++            info['observation'] = current_observations[i]
++            info['next_observation'] = text_obs[i]
++            info['admissible_actions'] = current_admissible_actions[i]
++            info['prompt_text'] = current_prompt_texts[i]
++            info['task_description'] = self.tasks[i]
++            info.update(current_skill_metadata[i])
+ 
+         next_observations = {'text': full_text_obs, 'image': image_obs, 'anchor': text_obs}
+         rewards = to_numpy(rewards)
+@@ -289,6 +321,7 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
+         This function builds the text observation for the agent.
+         """
+         postprocess_text_obs = []
++        prompt_skill_metadata = []
+         if not init and self.config.env.history_length > 0:
+             memory_contexts, valid_lens = self.memory.fetch(
+                     self.config.env.history_length,
+@@ -300,11 +333,67 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
+             reformatted_admissible_actions = "\n ".join(f"'{s}'" for s in admissible_actions[i] if s != 'help')
+ 
+             # Use retrieval memory template if enabled
+-            use_retrieval = (self.retrieval_memory is not None and
+-                           self.retrieved_memories is not None and
+-                           not init)
++            use_retrieval = (
++                self.retrieval_memory is not None
++                and self.retrieved_memories is not None
++                and (not init or self.step_skill_router is not None)
++            )
+ 
+-            if init or self.config.env.history_length <= 0:
++            retrieval = (
++                self.retrieved_memories[i]
++                if self.retrieved_memories is not None
++                else {}
++            )
++            if use_retrieval and self.step_skill_router is not None:
++                retrieval = self.step_skill_router.route(
++                    retrieval,
++                    task_description=self.tasks[i],
++                    current_observation=text_obs[i],
++                    admissible_actions=admissible_actions[i],
++                    history=self.memory[i],
++                    step_index=len(self.memory[i]),
++                )
++            prompt_skill_metadata.append({
++                'retrieved_skill_ids': list(retrieval.get('retrieved_skill_ids', [])),
++                'candidate_skill_ids': list(retrieval.get('candidate_skill_ids', [])),
++                # Upstream currently starts without memory injection. Record
++                # that explicitly instead of attributing retrieved skills to
++                # a prompt which did not contain them.
++                'injected_skill_ids': (
++                    list(retrieval.get('injected_skill_ids', []))
++                    if use_retrieval else []
++                ),
++                'disabled_skill_ids': list(retrieval.get('disabled_skill_ids', [])),
++                'selected_skill_id': retrieval.get('selected_skill_id'),
++                'skill_task_type': retrieval.get('task_type'),
++                'skill_retrieval_mode': retrieval.get('retrieval_mode'),
++                'skill_router_version': retrieval.get('skill_router_version'),
++                'skill_router_scores': dict(retrieval.get('skill_router_scores', {})),
++                'skill_router_score_details': dict(
++                    retrieval.get('skill_router_score_details', {})
++                ),
++                'skill_router_state_flags': list(
++                    retrieval.get('skill_router_state_flags', [])
++                ),
++                'skill_router_selection_reason': retrieval.get(
++                    'skill_router_selection_reason'
++                ),
++            })
++
++            if self.config.get("phase2", {}).get("enabled", False):
++                prompt_skill_metadata[-1]["phase2_payload_text"] = (
++                    self.retrieval_memory.format_for_prompt(retrieval) if use_retrieval else ""
++                )
++
++            if init and use_retrieval:
++                memory_context = self.retrieval_memory.format_for_prompt(retrieval)
++                obs = ALFWORLD_TEMPLATE_NO_HIS_WITH_MEMORY.format(
++                    task_description=self.tasks[i],
++                    current_observation=text_obs[i],
++                    retrieved_memories=memory_context,
++                    admissible_actions=reformatted_admissible_actions,
++                )
++            elif init or self.config.env.history_length <= 0:
+                 obs = ALFWORLD_TEMPLATE_NO_HIS.format(
+                     current_observation=text_obs[i],
+                     admissible_actions=reformatted_admissible_actions
+@@ -312,7 +401,7 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
+             elif use_retrieval:
+                 # Format retrieved memories for prompt
+                 memory_context = self.retrieval_memory.format_for_prompt(
+-                    self.retrieved_memories[i]
++                    retrieval
+                 )
+                 obs = ALFWORLD_TEMPLATE_WITH_MEMORY.format(
+                     task_description=self.tasks[i],
+@@ -335,7 +424,12 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
+                     admissible_actions=reformatted_admissible_actions
+                 )
+ 
++            if self.config.env.alfworld.get('action_only_prompt', False):
++                obs = use_action_only_instruction(obs)
++
+             postprocess_text_obs.append(obs)
++        self.prompt_skill_metadata = prompt_skill_metadata
++        self.current_prompt_texts = list(postprocess_text_obs)
+         return postprocess_text_obs
+ 
+     def _process_batch(self, batch_idx, total_batch_list, total_infos, success):
+@@ -839,6 +933,7 @@ def make_envs(config):
+ 
+         env_kwargs = {
+             'eval_dataset': config.env.alfworld.eval_dataset, # 'eval_in_distribution' or 'eval_out_of_distribution'
++            'task_types': config.env.alfworld.get('task_types', None),
+         }
+         _envs = build_alfworld_envs(alf_config_path, config.env.seed, config.data.train_batch_size, group_n, is_train=True, env_kwargs=env_kwargs, resources_per_worker=resources_per_worker)
+         _val_envs = build_alfworld_envs(alf_config_path, config.env.seed + 1000, config.data.val_batch_size, 1, is_train=False, env_kwargs=env_kwargs, resources_per_worker=resources_per_worker)
+@@ -897,4 +992,4 @@ def make_envs(config):
+         return envs, val_envs
+     else:
+         print("Environment not supported")
+-        exit(1)
+\ No newline at end of file
++        exit(1)
+diff --git a/agent_system/environments/env_package/alfworld/envs.py b/agent_system/environments/env_package/alfworld/envs.py
+index e72f621..8c3ce96 100755
+--- a/agent_system/environments/env_package/alfworld/envs.py
++++ b/agent_system/environments/env_package/alfworld/envs.py
+@@ -92,6 +92,11 @@ class AlfworldEnvs(gym.Env):
+             
+         eval_dataset = env_kwargs.get('eval_dataset', 'eval_in_distribution')
+         config = load_config_file(alf_config_path)
++        task_types = env_kwargs.get('task_types')
++        if task_types is not None:
++            if not task_types or not all(isinstance(item, int) and 1 <= item <= 6 for item in task_types):
++                raise ValueError(f"ALFWorld task_types must be a non-empty subset of [1, 6], got {task_types}")
++            config['env']['task_types'] = list(task_types)
+         env_type = config['env']['type']
+         base_env = get_environment(env_type)(config, train_eval='train' if is_train else eval_dataset)
+         self.multi_modal = (env_type == 'AlfredThorEnv')
+@@ -203,4 +208,4 @@ class AlfworldEnvs(gym.Env):
+             ray.kill(worker)
+ 
+ def build_alfworld_envs(alf_config_path, seed, env_num, group_n, resources_per_worker, is_train=True, env_kwargs={}):
+-    return AlfworldEnvs(alf_config_path, seed, env_num, group_n, resources_per_worker, is_train, env_kwargs)
+\ No newline at end of file
++    return AlfworldEnvs(alf_config_path, seed, env_num, group_n, resources_per_worker, is_train, env_kwargs)
+diff --git a/agent_system/environments/env_package/alfworld/projection.py b/agent_system/environments/env_package/alfworld/projection.py
+index fbf2f79..edca277 100755
+--- a/agent_system/environments/env_package/alfworld/projection.py
++++ b/agent_system/environments/env_package/alfworld/projection.py
+@@ -49,10 +49,17 @@ def alfworld_projection(actions: List[str], action_pools: List[List[str]]):
+         except:
+             actions[i] = actions[i][-30:]
+ 
+-        # check <think>...</think>
++        # Legacy prompts require a think block. Qwen3.5 text-only rollouts use
++        # an explicitly reasoning-free contract; accept it only when the whole
++        # response is exactly one <action>...</action> block.
+         think_start_idx = original_str.find("<think>")
+         think_end_idx = original_str.find("</think>")
+-        if think_start_idx == -1 or think_end_idx == -1:
++        action_only = re.fullmatch(
++            r"\s*<action>\s*.*?\s*</action>\s*",
++            original_str,
++            flags=re.IGNORECASE | re.DOTALL,
++        ) is not None
++        if (think_start_idx == -1 or think_end_idx == -1) and not action_only:
+             valids[i] = 0
+ 
+         # check if contains any Chinese characters
+diff --git a/agent_system/environments/prompts/alfworld.py b/agent_system/environments/prompts/alfworld.py
+index d574cc8..7d0031d 100755
+--- a/agent_system/environments/prompts/alfworld.py
++++ b/agent_system/environments/prompts/alfworld.py
+@@ -14,6 +14,21 @@
+ # limitations under the License.
+ 
+ # --------------------- ALFWorld --------------------- #
++ALFWORLD_ACTION_TURN_MARKER = "Now it's your turn to take an action."
++ALFWORLD_ACTION_ONLY_SUFFIX = """Now it's your turn to take an action.
++Choose exactly one action verbatim from the admissible-action list.
++Return only <action>YOUR ACTION</action>. Do not include reasoning, commentary, or any other text.
++"""
++
++
++def use_action_only_instruction(prompt: str) -> str:
++    """Replace the legacy chain-of-thought request with a parse-safe action contract."""
++    marker_index = prompt.rfind(ALFWORLD_ACTION_TURN_MARKER)
++    if marker_index < 0:
++        raise ValueError("ALFWorld prompt has no action-turn marker")
++    return prompt[:marker_index] + ALFWORLD_ACTION_ONLY_SUFFIX
++
++
+ ALFWORLD_TEMPLATE_NO_HIS = """
+ You are an expert agent operating in the ALFRED Embodied Environment.
+ Your current observation is: {current_observation}
+@@ -24,6 +39,21 @@ You should first reason step-by-step about the current situation. This reasoning
+ Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+ """
+ 
++ALFWORLD_TEMPLATE_NO_HIS_WITH_MEMORY = """
++You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: {task_description}
++Your current observation is: {current_observation}
++
++## Selected Skill For This Step
++
++{retrieved_memories}
++
++Your admissible actions of the current situation are: [{admissible_actions}].
++
++Now it's your turn to take an action.
++You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
++Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
++"""
++
+ ALFWORLD_TEMPLATE = """
+ You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: {task_description}
+ Prior to this step, you have already taken {step_count} step(s). Below are the most recent {history_length} observations and the corresponding actions you took: {action_history}
+@@ -51,4 +81,4 @@ Your admissible actions of the current situation are: [{admissible_actions}].
+ Now it's your turn to take an action.
+ You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+ Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+-"""
+\ No newline at end of file
++"""
+diff --git a/agent_system/memory/__init__.py b/agent_system/memory/__init__.py
+index e5be67e..4359d5d 100755
+--- a/agent_system/memory/__init__.py
++++ b/agent_system/memory/__init__.py
+@@ -13,7 +13,24 @@
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ 
+-from .memory import SimpleMemory, SearchMemory
+-from .retrieval_memory import RetrievalMemory
++from .memory import SearchMemory, SimpleMemory
+ from .skills_only_memory import SkillsOnlyMemory
+-from .skill_updater import SkillUpdater
+\ No newline at end of file
++from .step_skill_router import FrozenStepSkillRouter
++
++__all__ = [
++    "SimpleMemory", "SearchMemory", "SkillsOnlyMemory", "FrozenStepSkillRouter",
++    "RetrievalMemory", "SkillUpdater",
++]
++
++
++def __getattr__(name):
++    """Do not import embedding/LLM dependencies on the template-only path."""
++    if name == "RetrievalMemory":
++        from .retrieval_memory import RetrievalMemory
++
++        return RetrievalMemory
++    if name == "SkillUpdater":
++        from .skill_updater import SkillUpdater
++
++        return SkillUpdater
++    raise AttributeError(name)
+diff --git a/agent_system/memory/skills_only_memory.py b/agent_system/memory/skills_only_memory.py
+index a396257..8c50547 100755
+--- a/agent_system/memory/skills_only_memory.py
++++ b/agent_system/memory/skills_only_memory.py
+@@ -29,7 +29,10 @@ Supports two retrieval modes:
+ 
+ import json
+ import os
+-from typing import Dict, Any, List, Optional
++from collections.abc import Iterator
++from contextlib import contextmanager
++from typing import Any, Dict, List, Optional
++
+ from .base import BaseMemory
+ 
+ 
+@@ -83,12 +86,16 @@ class SkillsOnlyMemory(BaseMemory):
+         if not os.path.exists(skills_json_path):
+             raise FileNotFoundError(f"Skills file not found: {skills_json_path}")
+ 
+-        with open(skills_json_path, 'r') as f:
++        with open(skills_json_path) as f:
+             self.skills = json.load(f)
+ 
+         self.retrieval_mode = retrieval_mode
+         self.embedding_model_path = embedding_model_path or "Qwen/Qwen3-Embedding-0.6B"
+         self.task_specific_top_k = task_specific_top_k
++        # Evaluation-only mask. Training must leave this set empty.  Keeping
++        # the mask on the memory object lets callers apply a condition without
++        # mutating the frozen skill-bank JSON.
++        self.disabled_skill_ids: set[str] = set()
+ 
+         # Lazy-initialised embedding state (only used in embedding mode)
+         self._embedding_model = None
+@@ -124,13 +131,15 @@ class SkillsOnlyMemory(BaseMemory):
+ 
+         # ---- ALFWorld categories ----------------------------------------
+         if 'pick_and_place' in task_specific or 'clean' in task_specific:
+-            if 'look at' in goal and 'under' in goal:
++            if any(keyword in goal for keyword in ('lamp', 'light')):
+                 return 'look_at_obj_in_light'
+-            elif 'clean' in goal:
++            elif ' two ' in f' {goal} ' or goal.startswith('find two'):
++                return 'pick_two'
++            elif any(keyword in goal for keyword in ('clean', 'washed')):
+                 return 'clean'
+-            elif 'heat' in goal:
++            elif any(keyword in goal for keyword in ('heat', 'hot', 'cook', 'warm')):
+                 return 'heat'
+-            elif 'cool' in goal:
++            elif any(keyword in goal for keyword in ('cool', 'chill', 'cold', 'refrigerat')):
+                 return 'cool'
+             elif 'examine' in goal or 'find' in goal:
+                 return 'examine'
+@@ -185,11 +194,11 @@ class SkillsOnlyMemory(BaseMemory):
+         if self._embedding_model is None:
+             try:
+                 from sentence_transformers import SentenceTransformer
+-            except ImportError:
++            except ImportError as error:
+                 raise ImportError(
+                     "sentence-transformers is required for embedding retrieval. "
+                     "Install with: pip install sentence-transformers"
+-                )
++                ) from error
+             print(f"[SkillsOnlyMemory] Loading embedding model: {self.embedding_model_path}")
+             self._embedding_model = SentenceTransformer(self.embedding_model_path)
+             print("[SkillsOnlyMemory] Embedding model ready.")
+@@ -217,7 +226,6 @@ class SkillsOnlyMemory(BaseMemory):
+         if self._skill_embeddings_cache is not None:
+             return self._skill_embeddings_cache
+ 
+-        import numpy as np
+ 
+         general_items = [
+             ('general', None, s)
+@@ -302,6 +310,72 @@ class SkillsOnlyMemory(BaseMemory):
+     # Public interface                                                     #
+     # ------------------------------------------------------------------ #
+ 
++    def set_disabled_skill_ids(self, skill_ids: set[str]) -> None:
++        """Replace the read-only evaluation mask without mutating the bank."""
++        self.disabled_skill_ids = set(skill_ids)
++
++    @contextmanager
++    def temporarily_disabled(self, skill_id: str) -> Iterator[None]:
++        """Disable exactly one skill and restore the previous mask on exit."""
++        if skill_id not in self._get_all_skill_ids():
++            raise KeyError(f"Unknown skill_id: {skill_id}")
++        previous = set(self.disabled_skill_ids)
++        self.disabled_skill_ids = previous | {skill_id}
++        try:
++            yield
++        finally:
++            self.disabled_skill_ids = previous
++
++    @contextmanager
++    def temporarily_disabled_all(self) -> Iterator[None]:
++        """Disable every prompt-memory item and restore the prior mask."""
++        previous = set(self.disabled_skill_ids)
++        self.disabled_skill_ids = self._get_all_prompt_item_ids()
++        try:
++            yield
++        finally:
++            self.disabled_skill_ids = previous
++
++    @staticmethod
++    def _item_id(item: Dict[str, Any]) -> Optional[str]:
++        return item.get('skill_id') or item.get('mistake_id')
++
++    def _apply_evaluation_mask(self, retrieved: Dict[str, Any]) -> Dict[str, Any]:
++        """Return retrieval metadata plus only the items actually injected."""
++        raw_general = list(retrieved.get('general_skills', []))
++        raw_task = list(retrieved.get('task_specific_skills', []))
++        raw_mistakes = list(retrieved.get('mistakes_to_avoid', []))
++        raw_items = raw_general + raw_task + raw_mistakes
++
++        result = dict(retrieved)
++        result['general_skills'] = [
++            item for item in raw_general
++            if self._item_id(item) not in self.disabled_skill_ids
++        ]
++        result['task_specific_skills'] = [
++            item for item in raw_task
++            if self._item_id(item) not in self.disabled_skill_ids
++        ]
++        result['mistakes_to_avoid'] = [
++            item for item in raw_mistakes
++            if self._item_id(item) not in self.disabled_skill_ids
++        ]
++        result['retrieved_skill_ids'] = [
++            item_id for item_id in (self._item_id(item) for item in raw_items)
++            if item_id is not None
++        ]
++        injected_items = (
++            result['general_skills']
++            + result['task_specific_skills']
++            + result['mistakes_to_avoid']
++        )
++        result['injected_skill_ids'] = [
++            item_id for item_id in (self._item_id(item) for item in injected_items)
++            if item_id is not None
++        ]
++        result['disabled_skill_ids'] = sorted(self.disabled_skill_ids)
++        return result
++
+     def retrieve(
+         self,
+         task_description: str,
+@@ -341,14 +415,14 @@ class SkillsOnlyMemory(BaseMemory):
+             )
+             # Still detect task type for bookkeeping / formatting labels
+             task_type = self._detect_task_type(task_description)
+-            return {
++            return self._apply_evaluation_mask({
+                 'general_skills': general_skills,
+                 'task_specific_skills': task_skills,
+                 'mistakes_to_avoid': common_mistakes,
+                 'task_type': task_type,
+                 'task_specific_examples': [],
+                 'retrieval_mode': 'embedding',
+-            }
++            })
+ 
+         # ----------------------------------------------------------------
+         # Template mode: keyword detection + return (sub)set of category skills
+@@ -366,20 +440,25 @@ class SkillsOnlyMemory(BaseMemory):
+         general_skills = dynamic_skills + static_skills[:n_static]
+ 
+         all_task_skills = self.skills.get('task_specific_skills', {}).get(task_type, [])
++        # The upstream ALFWorld bank represents two-object handling as
++        # pic_005 inside pick_and_place rather than a separate category.  Keep
++        # the observable context as pick_two while reusing that full bundle.
++        if task_type == 'pick_two' and not all_task_skills:
++            all_task_skills = self.skills.get('task_specific_skills', {}).get('pick_and_place', [])
+ 
+         if self.task_specific_top_k is not None:
+             task_skills = all_task_skills[:self.task_specific_top_k]
+         else:
+             task_skills = all_task_skills  # original behaviour: return all
+ 
+-        return {
++        return self._apply_evaluation_mask({
+             'general_skills': general_skills,
+             'task_specific_skills': task_skills,
+             'mistakes_to_avoid': common_mistakes,
+             'task_type': task_type,
+             'task_specific_examples': [],
+             'retrieval_mode': 'template',
+-        }
++        })
+ 
+     def format_for_prompt(self, retrieved_memories: Dict[str, Any]) -> str:
+         """
+@@ -542,6 +621,15 @@ class SkillsOnlyMemory(BaseMemory):
+                     ids.add(s['skill_id'])
+         return ids
+ 
++    def _get_all_prompt_item_ids(self) -> set[str]:
++        ids = self._get_all_skill_ids()
++        ids.update(
++            mistake['mistake_id']
++            for mistake in self.skills.get('common_mistakes', [])
++            if mistake.get('mistake_id')
++        )
++        return ids
++
+     def get_skill_count(self) -> Dict[str, int]:
+         return {
+             'general': len(self.skills.get('general_skills', [])),
+diff --git a/agent_system/multi_turn_rollout/rollout_loop.py b/agent_system/multi_turn_rollout/rollout_loop.py
+index d79e678..79da363 100755
+--- a/agent_system/multi_turn_rollout/rollout_loop.py
++++ b/agent_system/multi_turn_rollout/rollout_loop.py
+@@ -386,6 +386,11 @@ class TrajectoryCollector:
+             assert len(rewards) == batch_size, f"env should return rewards for all environments, got {len(rewards)} rewards for {batch_size} environments"
+             batch.non_tensor_batch['rewards'] = torch_to_numpy(rewards, is_object=True)
+             batch.non_tensor_batch['active_masks'] = torch_to_numpy(active_masks, is_object=True)
++
++            if self.config.get("phase2", {}).get("enabled", False) and self._archive_is_train:
++                from phase2.capture import attach_decisions
++                attach_decisions(batch, infos, run_id=self.config.env.phase1_archive.run_id,
++                                 update=self._archive_global_step, step=_step)
+             
+             # Update episode lengths for active environments
+             batch_list: list[dict] = to_list_of_dict(batch)
+@@ -410,6 +415,22 @@ class TrajectoryCollector:
+                     episode_rewards=episode_rewards, 
+                     episode_lengths=episode_lengths,
+                     )
++
++        archive_config = self.config.env.get("phase1_archive", {})
++        if archive_config.get("enabled", False):
++            from phase1.archive import archive_rollout_batch
++
++            archive_rollout_batch(
++                output_dir=archive_config.get("output_dir", "artifacts"),
++                run_id=archive_config["run_id"],
++                split="train" if self._archive_is_train else "validation",
++                global_step=self._archive_global_step,
++                total_batch_list=total_batch_list,
++                total_infos=total_infos,
++                episode_rewards=episode_rewards,
++                episode_lengths=episode_lengths,
++                trajectory_ids=traj_uid,
++            )
+         
+         return total_batch_list, episode_rewards, episode_lengths, success, traj_uid, tool_callings
+     
+@@ -487,6 +508,7 @@ class TrajectoryCollector:
+             actor_rollout_wg, 
+             envs: EnvironmentManagerBase,
+             is_train: bool = True,
++            global_step: int = 0,
+             ) -> DataProto:
+         """
+         Select and run the appropriate rollout loop (dynamic or vanilla).
+@@ -496,10 +518,14 @@ class TrajectoryCollector:
+             actor_rollout_wg: Actor model workers.
+             envs (EnvironmentManagerBase): Environment manager for interaction.
+             is_train (bool): Whether in training mode (affects dynamic sampling).
++            global_step (int): Trainer step used for trajectory provenance.
+ 
+         Returns:
+             DataProto: Final collected trajectory data with metadata.
+         """
++        self._archive_is_train = is_train
++        self._archive_global_step = int(global_step)
++
+         if is_train:
+             gen_batch = gen_batch.repeat(repeat_times=self.config.env.rollout.n, interleave=True)
+             
+diff --git a/requirements.txt b/requirements.txt
+index 3d2d80e..78497ab 100755
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -3,7 +3,7 @@ accelerate
+ codetiming
+ datasets
+ dill
+-flash-attn
++fla-core==0.5.2
+ hydra-core
+ liger-kernel
+ numpy
+@@ -13,11 +13,14 @@ pyarrow>=19.0.0
+ pybind11
+ pylatexenc
+ pre-commit
+-ray[default]
+-tensordict<=0.6.2
++ray[default]>=2.41.0,<=2.50.0
++tensordict>=0.8.0,<=0.10.0,!=0.9.0
++torch==2.10.0
+ torchdata
+-transformers==4.51.1
+-# vllm==0.8.4
++transformers==5.10.4
++vllm==0.19.1
++protobuf==5.29.6
++causal-conv1d==1.7.0
+ wandb
+ packaging>=20.0
+ uvicorn
+diff --git a/scripts/model_merger.py b/scripts/model_merger.py
+index 3bd25ca..9bef71c 100755
+--- a/scripts/model_merger.py
++++ b/scripts/model_merger.py
+@@ -54,11 +54,15 @@ from transformers import (
+     AutoConfig,
+     AutoModelForCausalLM,
+     AutoModelForTokenClassification,
+-    AutoModelForVision2Seq,
+     GenerationConfig,
+     PretrainedConfig,
+ )
+ 
++try:
++    from transformers import AutoModelForVision2Seq
++except ImportError:
++    from transformers import AutoModelForImageTextToText as AutoModelForVision2Seq
++
+ try:
+     # for torch 2.5+
+     from torch.distributed.tensor import DTensor
+@@ -83,6 +87,7 @@ class ModelMergerConfig:
+     tie_word_embedding: bool = False
+     is_value_model: bool = False
+     hf_model_path: Optional[str] = None
++    output_dtype: str = "bfloat16"
+     hf_upload: bool = field(init=False)
+ 
+     def __post_init__(self):
+@@ -105,12 +110,21 @@ class BaseModelMerger(ABC):
+         self.model_config = AutoConfig.from_pretrained(self.hf_model_config_path)
+ 
+     def get_transformers_auto_model_class(self):
+-        if "ForTokenClassification" in self.model_config.architectures[0]:
++        # Some text-only sub-configs (notably Qwen3.5's Qwen3_5TextConfig)
++        # intentionally omit ``architectures``.  FSDP checkpoints produced from
++        # those configs are still causal language models, and Transformers can
++        # resolve them through AutoModelForCausalLM's model-type mapping.
++        architectures = getattr(self.model_config, "architectures", None) or []
++        architecture = architectures[0] if architectures else ""
++
++        if "ForTokenClassification" in architecture:
+             return AutoModelForTokenClassification
+-        elif "ForCausalLM" in self.model_config.architectures[0]:
++        elif "ForCausalLM" in architecture:
+             return AutoModelForCausalLM
+-        elif "ForConditionalGeneration" in self.model_config.architectures[0]:
++        elif "ForConditionalGeneration" in architecture:
+             return AutoModelForVision2Seq
++        elif not architecture:
++            return AutoModelForCausalLM
+ 
+         raise NotImplementedError(f"Unknown architecture {self.model_config.architectures}")
+ 
+@@ -131,7 +145,7 @@ class BaseModelMerger(ABC):
+     def save_hf_model_and_tokenizer(self, state_dict: dict[str, torch.Tensor]):
+         auto_model_class = self.get_transformers_auto_model_class()
+         with init_empty_weights():
+-            model = auto_model_class.from_config(self.model_config, torch_dtype=torch.bfloat16)
++            model = auto_model_class.from_config(self.model_config, torch_dtype=getattr(torch, self.config.output_dtype))
+         model.to_empty(device="cpu")
+         model = self.patch_model_generation_config(model)
+ 
+@@ -242,7 +256,7 @@ class FSDPModelMerger(BaseModelMerger):
+                 # add tensor shard in order of rank to state_dict[key]
+                 tensor = model_state_shard.pop(key)
+                 if isinstance(tensor, DTensor):
+-                    state_dict[key].append(tensor._local_tensor.bfloat16())
++                    state_dict[key].append(tensor._local_tensor.to(getattr(torch, self.config.output_dtype)))
+ 
+                     placements = tuple(tensor.placements)
+                     # replicated placement at dp dimension can be discarded
+@@ -254,7 +268,7 @@ class FSDPModelMerger(BaseModelMerger):
+                     else:
+                         assert param_placements[key] == placements
+                 else:
+-                    state_dict[key].append(tensor.bfloat16())
++                    state_dict[key].append(tensor.to(getattr(torch, self.config.output_dtype)))
+ 
+         del model_state_dict_lst
+ 
+@@ -567,6 +581,7 @@ def main():
+     base_op_parser.add_argument("--hf_model_path", type=str, default=None, help="(Deprecated) Path to the original Hugging Face model for config.")
+     base_op_parser.add_argument("--tie-word-embedding", action="store_true", help="Whether to tie word embedding weights (currently only Megatron supported)")
+     base_op_parser.add_argument("--is-value-model", action="store_true", help="Whether the model is a value model (currently only Megatron supported)")
++    base_op_parser.add_argument("--output_dtype", choices=["bfloat16", "float32"], default="bfloat16")
+ 
+     merge_parser = subparsers.add_parser("merge", parents=[base_op_parser], help="Merge model checkpoints and save.")
+     merge_parser.add_argument("--target_dir", default="tmp", type=str, help="Directory to save the merged huggingface model")
+@@ -586,6 +601,7 @@ def main():
+         "local_dir": args.local_dir,
+         "hf_model_path": args.hf_model_path,
+         "hf_model_config_path": args.local_dir,
++        "output_dtype": args.output_dtype,
+     }
+ 
+     if args.operation == "merge":
+diff --git a/setup.py b/setup.py
+index 10d13e8..237319a 100755
+--- a/setup.py
++++ b/setup.py
+@@ -38,7 +38,9 @@ install_requires = [
+     "ray[default]>=2.41.0,<=2.50.0",
+     "torchdata",
+     "tensordict>=0.8.0,<=0.10.0,!=0.9.0",
+-    "transformers<=4.57.3",
++    # Qwen3.5 support first appears in the Transformers 5.x model registry.
++    # Keep this narrow because vLLM and verl both depend on internal APIs.
++    "transformers>=5.10.4,<5.11",
+     "wandb",
+     "packaging>=20.0",
+     "qwen-vl-utils[decord]",
+@@ -47,9 +49,15 @@ install_requires = [
+ TEST_REQUIRES = ["pytest", "pre-commit", "py-spy"]
+ PRIME_REQUIRES = ["pyext"]
+ GEO_REQUIRES = ["mathruler"]
+-GPU_REQUIRES = ["liger-kernel", "flash-attn"]
++GPU_REQUIRES = [
++    "liger-kernel",
++    # Qwen3.5 uses Gated DeltaNet layers. These packages provide the CUDA/Triton
++    # fast path used by Transformers instead of its much slower torch fallback.
++    "fla-core==0.5.2",
++    "causal-conv1d==1.7.0",
++]
+ MATH_REQUIRES = ["math-verify"]  # Add math-verify as an optional dependency
+-VLLM_REQUIRES = ["tensordict>=0.8.0,<=0.10.0,!=0.9.0", "vllm>=0.8.5,<=0.11.0"]
++VLLM_REQUIRES = ["tensordict>=0.8.0,<=0.10.0,!=0.9.0", "vllm==0.19.1"]
+ SGLANG_REQUIRES = [
+     "tensordict>=0.8.0,<=0.10.0,!=0.9.0",
+     "sglang[srt,openai]==0.5.5",
+diff --git a/verl/third_party/vllm/__init__.py b/verl/third_party/vllm/__init__.py
+index bd2a6d3..e4ee027 100755
+--- a/verl/third_party/vllm/__init__.py
++++ b/verl/third_party/vllm/__init__.py
+@@ -44,6 +44,7 @@ elif vs.parse(package_version) >= vs.parse("0.7.0"):
+     # From 0.6.6.post2 on, vllm supports SPMD inference
+     # See https://github.com/vllm-project/vllm/pull/12071
+ 
++    vllm_version = package_version
+     from vllm import LLM
+     from vllm.distributed import parallel_state
+ else:
+diff --git a/verl/trainer/config/ppo_trainer.yaml b/verl/trainer/config/ppo_trainer.yaml
+index d0f68ba..0ce6a65 100755
+--- a/verl/trainer/config/ppo_trainer.yaml
++++ b/verl/trainer/config/ppo_trainer.yaml
+@@ -301,6 +301,8 @@ env:
+     n: 1 # the group number of envs (for GRPO and GiGPO).
+   alfworld:
+     eval_dataset: eval_in_distribution
++    task_types: null # Optional ALFWorld numeric task IDs; clean-only is [3].
++    action_only_prompt: false
+   search:
+     log_requests: false
+     search_url: "http://127.0.0.1:8000/retrieve" # also support multiple urls: ["http://127.0.0.1:8000/retrieve", "http://127.0.0.1:8001/retrieve"]
+diff --git a/verl/trainer/ppo/ray_trainer.py b/verl/trainer/ppo/ray_trainer.py
+index 3fe7e0a..7f5f926 100755
+--- a/verl/trainer/ppo/ray_trainer.py
++++ b/verl/trainer/ppo/ray_trainer.py
+@@ -467,7 +467,11 @@ class RayPPOTrainer:
+ 
+         # 1. Check total batch size for data correctness
+         real_train_batch_size = config.data.train_batch_size * config.actor_rollout_ref.rollout.n
+-        assert real_train_batch_size % n_gpus == 0, f"real_train_batch_size ({real_train_batch_size}) must be divisible by total n_gpus ({n_gpus})."
++        if config.get("phase2", {}).get("enabled", False) and os.environ.get("PHASE2_ELASTIC_TRAINING") == "1":
++            from phase2.elastic_training import validate_elastic_dispatch
++            validate_elastic_dispatch(config)
++        else:
++            assert real_train_batch_size % n_gpus == 0, f"real_train_batch_size ({real_train_batch_size}) must be divisible by total n_gpus ({n_gpus})."
+ 
+         # A helper function to check "micro_batch_size" vs "micro_batch_size_per_gpu"
+         # We throw an error if the user sets both. The new convention is "..._micro_batch_size_per_gpu".
+@@ -755,6 +759,7 @@ class RayPPOTrainer:
+                                                     actor_rollout_wg=self.actor_rollout_wg,
+                                                     envs=self.val_envs,
+                                                     is_train=False,
++                                                    global_step=self.global_steps,
+                                                     )
+             print('validation generation end')
+             del test_batch
+@@ -1386,6 +1391,7 @@ class RayPPOTrainer:
+                                                                 actor_rollout_wg=self.actor_rollout_wg,
+                                                                 envs=self.envs,
+                                                                 is_train=True,
++                                                                global_step=self.global_steps,
+                                                                 )
+                     if self.config.algorithm.adv_estimator == AdvantageEstimator.REMAX:
+                         with _timer("gen_max", timing_raw):
+@@ -1429,6 +1435,10 @@ class RayPPOTrainer:
+                     # compute global_valid tokens
+                     batch.meta_info["global_token_num"] = torch.sum(batch.batch["attention_mask"], dim=-1).tolist()
+ 
++                    if self.config.get("phase2", {}).get("enabled", False):
++                        from phase2.capture import mark_batch
++                        mark_batch(batch, root=self.config.phase2.root, update=self.global_steps)
++
+                     with _timer("reward", timing_raw):
+                         # compute reward model score
+                         if self.use_rm:
+@@ -1516,6 +1526,22 @@ class RayPPOTrainer:
+                         else:
+                             batch.batch["token_level_rewards"] = batch.batch["token_level_scores"]
+ 
++                        phase1_control = self.config.get("phase1_control", {})
++                        if phase1_control.get("type", "real_rl") == "shuffled_reward":
++                            from phase1.archive import append_jsonl_idempotent
++                            from phase1.controls import apply_shuffled_reward_control
++
++                            shuffle_seed = int(phase1_control.get("seed", 0)) + int(self.global_steps)
++                            batch, shuffle_mapping = apply_shuffled_reward_control(batch, seed=shuffle_seed)
++                            append_jsonl_idempotent(
++                                phase1_control.get("mapping_output", "artifacts/controls/shuffled_reward_mapping.jsonl"),
++                                [
++                                    {**item, "global_step": int(self.global_steps), "shuffle_seed": shuffle_seed}
++                                    for item in shuffle_mapping
++                                ],
++                                unique_fields=("global_step", "group_id", "destination_trajectory_id"),
++                            )
++
+                         # compute advantages, executed on the driver process
+ 
+                         norm_adv_by_std_in_grpo = self.config.algorithm.get("norm_adv_by_std_in_grpo", True)  # GRPO adv normalization factor
+@@ -1537,6 +1563,11 @@ class RayPPOTrainer:
+                             gigpo_similarity_thresh=self.config.algorithm.gigpo.similarity_thresh,
+                         )
+ 
++                    if self.config.get("phase2", {}).get("enabled", False):
++                        from phase2.capture import archive_batch
++                        archive_batch(batch, root=self.config.phase2.root,
++                                      update=self.global_steps, config=self.config)
++
+                     # Update skill bank from training batch (avoids val-data leakage).
+                     if (self.config.env.get('skills_only_memory', {}).get('enable_dynamic_update', False)
+                             and self.config.env.get('skills_only_memory', {}).get('update_skills_from_train', False)):
+@@ -1560,6 +1591,17 @@ class RayPPOTrainer:
+                         actor_output_metrics = reduce_metrics(actor_output.meta_info["metrics"])
+                         metrics.update(actor_output_metrics)
+ 
++                    if self.config.get("phase2", {}).get("enabled", False):
++                        # Same live actor path and fixed old tokens at both endpoints.
++                        # Do not overwrite the old probabilities used by the optimizer.
++                        batch.meta_info["phase2_capture"] = {
++                            "root": self.config.phase2.root,
++                            "update": self.global_steps, "stage": "new",
++                        }
++                        with _timer("phase2_post_log_prob", timing_raw):
++                            phase2_post = self.actor_rollout_wg.compute_log_prob(batch)
++                        batch.batch["phase2_post_log_probs"] = phase2_post.batch["old_log_probs"]
++
+                     # Log rollout generations if enabled
+                     rollout_data_dir = self.config.trainer.get("rollout_data_dir", None)
+                     if rollout_data_dir:
+@@ -1602,6 +1644,20 @@ class RayPPOTrainer:
+                 n_gpus = self.resource_pool_manager.get_n_gpus()
+                 metrics.update(compute_throughout_metrics(batch=batch, timing_raw=timing_raw, n_gpus=n_gpus))
+ 
++                archive_config = self.config.env.get("phase1_archive", {})
++                if archive_config.get("enabled", False):
++                    from phase1.archive import archive_training_step
++
++                    phase1_control = self.config.get("phase1_control", {})
++                    archive_training_step(
++                        output_dir=archive_config.get("output_dir", "artifacts"),
++                        run_id=archive_config["run_id"],
++                        global_step=self.global_steps,
++                        batch=batch,
++                        metrics=metrics,
++                        update_type=phase1_control.get("type", "real_rl"),
++                    )
++
+                 # TODO: make a canonical logger that supports various backend
+                 logger.log(data=metrics, step=self.global_steps)
+ 
+diff --git a/verl/utils/checkpoint/fsdp_checkpoint_manager.py b/verl/utils/checkpoint/fsdp_checkpoint_manager.py
+index f598012..130c69d 100755
+--- a/verl/utils/checkpoint/fsdp_checkpoint_manager.py
++++ b/verl/utils/checkpoint/fsdp_checkpoint_manager.py
+@@ -89,6 +89,10 @@ class FSDPCheckpointManager(BaseCheckpointManager):
+         if local_path is None:
+             return
+ 
++        if os.path.isfile(os.path.join(local_path, "elastic_resume.json")):
++            from phase2.elastic_checkpoint import restore
++            return restore(self, local_path)
++
+         # every rank download its own checkpoint
+         remote_model_path = os.path.join(local_path, f"model_world_size_{self.world_size}_rank_{self.rank}.pt")
+         remote_optim_path = os.path.join(local_path, f"optim_world_size_{self.world_size}_rank_{self.rank}.pt")
+@@ -194,7 +198,16 @@ class FSDPCheckpointManager(BaseCheckpointManager):
+             if unwrap_model.can_generate() and hasattr(model_config, "name_or_path") and model_config.name_or_path:
+                 # Some model's name_or_path is empty if not initialized from pretrained,
+                 # in this cases, we don't save generation config.
+-                generation_config = GenerationConfig.from_pretrained(model_config.name_or_path)
++                try:
++                    generation_config = GenerationConfig.from_pretrained(model_config.name_or_path)
++                except OSError:
++                    # generation_config.json is optional on the Hub.  Recent
++                    # unified checkpoints such as Qwen3.5 rely on generation
++                    # defaults derived from config.json instead.  Checkpoint
++                    # saving must not fail after all model/optimizer shards
++                    # have already been written just because the optional
++                    # file is absent.
++                    generation_config = GenerationConfig.from_model_config(model_config)
+                 generation_config.save_pretrained(local_path)
+             else:
+                 generation_config = None
+@@ -225,7 +238,10 @@ class FSDPCheckpointManager(BaseCheckpointManager):
+ 
+                     auto_model_cls = AutoModelForCausalLM
+                 elif "ForConditionalGeneration" in model_config.architectures[0]:
+-                    from transformers import AutoModelForVision2Seq
++                    try:
++                        from transformers import AutoModelForVision2Seq
++                    except ImportError:
++                        from transformers import AutoModelForImageTextToText as AutoModelForVision2Seq
+ 
+                     auto_model_cls = AutoModelForVision2Seq
+                 else:
+diff --git a/verl/utils/fsdp_utils.py b/verl/utils/fsdp_utils.py
+index 91e9673..26d666c 100755
+--- a/verl/utils/fsdp_utils.py
++++ b/verl/utils/fsdp_utils.py
+@@ -85,7 +85,12 @@ def get_fsdp_wrap_policy(module, config=None, is_lora=False):
+         return None
+ 
+     default_transformer_cls_names_to_wrap = getattr(module, "_no_split_modules", None)
+-    fsdp_transformer_layer_cls_to_wrap = _get_attr("transformer_layer_cls_to_wrap", default_transformer_cls_names_to_wrap)
++    configured_transformer_cls_names = _get_attr("transformer_layer_cls_to_wrap", None)
++    fsdp_transformer_layer_cls_to_wrap = (
++        configured_transformer_cls_names
++        if configured_transformer_cls_names is not None
++        else default_transformer_cls_names_to_wrap
++    )
+     min_num_params = _get_attr("min_num_params", 0)
+     auto_wrap_policy = None
+ 
+@@ -110,10 +115,19 @@ def get_fsdp_wrap_policy(module, config=None, is_lora=False):
+         for layer_class in fsdp_transformer_layer_cls_to_wrap:
+             transformer_cls = get_module_class_from_name(module, layer_class)
+             if transformer_cls is None:
+-                raise Exception("Could not find the transformer layer class to wrap in the model.")
++                # Multimodal checkpoints may advertise both text and vision
++                # no-split classes even when only the text model was loaded.
++                # Missing classes inherited from _no_split_modules are thus
++                # expected for a text-only Qwen3.5 actor.  Explicit user
++                # configuration remains strict so typos still fail fast.
++                if configured_transformer_cls_names is not None:
++                    raise Exception(f"Could not find transformer layer class {layer_class!r} in the model.")
+             else:
+                 transformer_cls_to_wrap.add(transformer_cls)
+ 
++        if not transformer_cls_to_wrap:
++            raise Exception("Could not find any transformer layer class to wrap in the model.")
++
+         transformer_policy = functools.partial(
+             transformer_auto_wrap_policy,
+             transformer_layer_cls=transformer_cls_to_wrap,
+@@ -486,4 +500,4 @@ def layered_summon_lora_params(fsdp_module)->OrderedDict:
+                     lora_params.update(sub_lora_params)
+                     submodule._is_root = False
+                 torch.cuda.empty_cache()
+-    return lora_params
+\ No newline at end of file
++    return lora_params
+diff --git a/verl/utils/vllm_utils.py b/verl/utils/vllm_utils.py
+index 3778877..34f180b 100755
+--- a/verl/utils/vllm_utils.py
++++ b/verl/utils/vllm_utils.py
+@@ -69,7 +69,12 @@ from typing import List
+ 
+ from msgspec import field
+ from packaging import version as vs
+-from vllm.lora.models import LoRAModel
++try:
++    # vLLM 0.19+ moved the model implementation to lora_model.py.
++    from vllm.lora.lora_model import LoRAModel
++except ImportError:
++    # Keep the old path for archived Qwen2.5 environments.
++    from vllm.lora.models import LoRAModel
+ from vllm.lora.request import LoRARequest
+ from vllm.lora.utils import get_adapter_absolute_path
+ from vllm.lora.worker_manager import LRUCacheWorkerLoRAManager
+@@ -243,4 +248,4 @@ class VLLMHijack():
+ 
+ def is_version_ge(pkg:str='vllm', minver:str="0.7.3"):
+     """ check if the package version is greater than or equal to the minimum version """
+-    return vs.parse(get_version(pkg)) >= vs.parse(minver)
+\ No newline at end of file
++    return vs.parse(get_version(pkg)) >= vs.parse(minver)
+diff --git a/verl/workers/actor/dp_actor.py b/verl/workers/actor/dp_actor.py
+index 853b45e..029a93d 100755
+--- a/verl/workers/actor/dp_actor.py
++++ b/verl/workers/actor/dp_actor.py
+@@ -39,8 +39,17 @@ from verl.utils.torch_functional import logprobs_from_logits
+ from verl.utils.ulysses import gather_outpus_and_unpad, ulysses_pad_and_slice_inputs, ulysses_pad
+ from verl.workers.actor import BasePPOActor
+ 
++_flash_attn_padding_import_error = None
+ if is_cuda_available:
+-    from flash_attn.bert_padding import index_first_axis, pad_input, rearrange, unpad_input
++    try:
++        from flash_attn.bert_padding import index_first_axis, pad_input, rearrange, unpad_input
++    except ImportError as exc:
++        # flash-attn is only needed by the remove-padding optimization.  Keep
++        # the regular padded SDPA path usable on CUDA installations where the
++        # optional extension is not installed (for example Qwen3.5 + torch
++        # 2.10).  __init__ raises a targeted error if remove-padding is later
++        # requested.
++        _flash_attn_padding_import_error = exc
+ elif is_npu_available:
+     from transformers.integrations.npu_flash_attention import index_first_axis, pad_input, rearrange, unpad_input
+ 
+@@ -59,6 +68,12 @@ class DataParallelPPOActor(BasePPOActor):
+         self.actor_optimizer = actor_optimizer
+ 
+         self.use_remove_padding = self.config.get("use_remove_padding", False)
++        if self.use_remove_padding and _flash_attn_padding_import_error is not None:
++            raise ImportError(
++                "actor.use_remove_padding requires flash_attn on CUDA; either "
++                "install a compatible flash-attn build or set "
++                "actor_rollout_ref.model.use_remove_padding=false"
++            ) from _flash_attn_padding_import_error
+         print(f"Actor use_remove_padding={self.use_remove_padding}")
+         self.use_fused_kernels = self.config.get("use_fused_kernels", False)
+         print(f"Actor use_fused_kernels={self.use_fused_kernels}")
+@@ -226,6 +241,9 @@ class DataParallelPPOActor(BasePPOActor):
+                     logits.div_(temperature)
+                     logits = logits[:, -response_length - 1 : -1, :]  # (bsz, response_length, vocab_size)
+                     log_probs = logprobs_from_logits(logits, micro_batch["responses"])
++                    if getattr(self, "_phase2_capture", None) and "phase2_row_index" in micro_batch:
++                        from phase2.capture import capture_old_logits
++                        capture_old_logits(logits, log_probs, micro_batch, self._phase2_capture)
+                     if calculate_entropy:
+                         entropy = verl_F.entropy_from_logits(logits)  # (bsz, response_length)
+ 
+@@ -246,7 +264,11 @@ class DataParallelPPOActor(BasePPOActor):
+             print(f"WARN: rank {torch.distributed.get_rank()} grad_norm is not finite: {grad_norm}")
+             self.actor_optimizer.zero_grad()
+         else:
+-            self.actor_optimizer.step()
++            if os.environ.get("PHASE2_CPU_ADAM")=="1":
++                from phase2.elastic_training import cpu_adam_step
++                cpu_adam_step(self.actor_optimizer)
++            else:
++                self.actor_optimizer.step()
+         return grad_norm
+ 
+     @GPUMemoryLogger(role="dp actor", logger=logger)
+@@ -276,6 +298,11 @@ class DataParallelPPOActor(BasePPOActor):
+         use_dynamic_bsz = data.meta_info["use_dynamic_bsz"]
+ 
+         select_keys = ["responses", "input_ids", "attention_mask", "position_ids"]
++        self._phase2_capture = data.meta_info.get("phase2_capture") if self.actor_optimizer is not None else None
++        if self._phase2_capture:
++            if self.use_remove_padding or self.use_fused_kernels:
++                raise ValueError("Phase2 exact live-logit capture requires the unfused padded actor path")
++            select_keys.append("phase2_row_index")
+         batch = data.select(batch_keys=select_keys).batch
+         has_multi_modal_inputs = "multi_modal_inputs" in data.non_tensor_batch.keys()
+ 
+@@ -292,7 +319,8 @@ class DataParallelPPOActor(BasePPOActor):
+ 
+         log_probs_lst = []
+         entropy_lst = []
+-        for micro_batch in micro_batches:
++        phase2_progress = data.meta_info.get("phase2_capture")
++        for micro_index, micro_batch in enumerate(micro_batches):
+             if isinstance(micro_batch, DataProto):
+                 micro_batch = {**micro_batch.batch, **micro_batch.non_tensor_batch}
+             with torch.no_grad():
+@@ -300,6 +328,11 @@ class DataParallelPPOActor(BasePPOActor):
+             log_probs_lst.append(log_probs)
+             if calculate_entropy:
+                 entropy_lst.append(entropy)
++            if phase2_progress and (micro_index % 8 == 0 or micro_index+1 == len(micro_batches)):
++                from phase2.capture import log_forward_progress
++                log_forward_progress(phase2_progress,
++                                     role=phase2_progress.get("stage", "old") if self.actor_optimizer is not None else "reference",
++                                     index=micro_index+1, total=len(micro_batches))
+ 
+         log_probs = torch.concat(log_probs_lst, dim=0)
+         entropys = None
+@@ -311,6 +344,7 @@ class DataParallelPPOActor(BasePPOActor):
+             revert_indices = torch.tensor(get_reverse_idx(indices), dtype=torch.long)
+             log_probs = log_probs[revert_indices]
+ 
++        self._phase2_capture = None
+         return log_probs, entropys
+ 
+     @GPUMemoryLogger(role="dp actor", logger=logger)
+@@ -322,6 +356,9 @@ class DataParallelPPOActor(BasePPOActor):
+         multi_turn = data.meta_info.get("multi_turn", False)
+ 
+         select_keys = ["responses", "input_ids", "attention_mask", "position_ids", "old_log_probs", "advantages"]
++        phase2_capture = data.meta_info.get("phase2_capture")
++        if phase2_capture:
++            select_keys.append("phase2_row_index")
+         if multi_turn:
+             select_keys.append("loss_mask")
+         if self.config.use_kl_loss:
+@@ -331,7 +368,14 @@ class DataParallelPPOActor(BasePPOActor):
+ 
+         # Split to make minibatch iterator for updating the actor
+         # See PPO paper for details. https://arxiv.org/abs/1707.06347
+-        if has_multi_modal_inputs:
++        elastic_odd_world=bool(phase2_capture and os.environ.get("PHASE2_ELASTIC_TRAINING")=="1"
++                               and 32 % torch.distributed.get_world_size())
++        if elastic_odd_world:
++            if has_multi_modal_inputs or self.config.use_dynamic_bsz or self.config.ppo_micro_batch_size_per_gpu!=1:
++                raise ValueError("Odd-world Phase2 accumulation requires the fixed text-only microbatch-one path")
++            from phase2.elastic_training import odd_world_minibatches
++            dataloader=odd_world_minibatches(batch)
++        elif has_multi_modal_inputs:
+             num_mini_batches = data.batch.batch_size[0] // self.config.ppo_mini_batch_size
+             non_tensor_select_keys = ["multi_modal_inputs"]
+             dataloader = data.select(select_keys, non_tensor_select_keys).chunk(num_mini_batches)
+@@ -343,6 +387,10 @@ class DataParallelPPOActor(BasePPOActor):
+             for batch_idx, data in enumerate(dataloader):
+                 # split batch into micro_batches
+                 mini_batch = data
++                if phase2_capture:
++                    from phase2.capture import optimizer_counter
++                    phase2_rows = mini_batch["phase2_row_index"].detach().cpu().tolist()
++                    phase2_before = optimizer_counter(self.actor_optimizer)
+                 if has_multi_modal_inputs:
+                     self.gradient_accumulation = self.config.ppo_mini_batch_size // self.config.ppo_micro_batch_size_per_gpu
+                     num_micro_batches = mini_batch.batch.batch_size[0] // self.config.ppo_micro_batch_size_per_gpu
+@@ -351,7 +399,8 @@ class DataParallelPPOActor(BasePPOActor):
+                     max_token_len = self.config.ppo_max_token_len_per_gpu * self.ulysses_sequence_parallel_size
+                     micro_batches, _ = rearrange_micro_batches(batch=mini_batch, max_token_len=max_token_len)
+                 else:
+-                    self.gradient_accumulation = self.config.ppo_mini_batch_size // self.config.ppo_micro_batch_size_per_gpu
++                    self.gradient_accumulation = (len(mini_batch) if elastic_odd_world else
++                                                  self.config.ppo_mini_batch_size // self.config.ppo_micro_batch_size_per_gpu)
+                     # split batch into micro_batches
+                     micro_batches = mini_batch.split(self.config.ppo_micro_batch_size_per_gpu)
+ 
+@@ -430,6 +479,9 @@ class DataParallelPPOActor(BasePPOActor):
+                         loss = policy_loss * (len(data) / self.config.ppo_mini_batch_size)
+                     else:
+                         loss = policy_loss / self.gradient_accumulation
++                    if elastic_odd_world:
++                        loss = loss * data["phase2_optimizer_weight"].item() * (
++                            torch.distributed.get_world_size()*self.gradient_accumulation/32)
+                     loss.backward()
+ 
+                     data = {
+@@ -441,6 +493,13 @@ class DataParallelPPOActor(BasePPOActor):
+                     append_to_dict(metrics, data)
+ 
+                 grad_norm = self._optimizer_step()
++                if phase2_capture:
++                    from phase2.capture import archive_optimizer_step
++                    archive_optimizer_step(phase2_capture, epoch=epoch, minibatch=batch_idx,
++                                           rows=phase2_rows, before=phase2_before,
++                                           after=optimizer_counter(self.actor_optimizer),
++                                           grad_norm=grad_norm,
++                                           lr=self.actor_optimizer.param_groups[0]["lr"])
+                 data = {"actor/grad_norm": grad_norm.detach().item()}
+                 append_to_dict(metrics, data)
+         self.actor_optimizer.zero_grad()
+diff --git a/verl/workers/fsdp_workers.py b/verl/workers/fsdp_workers.py
+index 7d9b8b4..14058dc 100755
+--- a/verl/workers/fsdp_workers.py
++++ b/verl/workers/fsdp_workers.py
+@@ -185,7 +185,15 @@ class ActorRolloutRefWorker(Worker):
+         from torch import optim
+         from torch.distributed.fsdp import CPUOffload, MixedPrecision
+         from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
+-        from transformers import AutoConfig, AutoModelForCausalLM, AutoModelForVision2Seq
++        from transformers import AutoConfig, AutoModelForCausalLM
++
++        try:
++            # Transformers 4.x name.
++            from transformers import AutoModelForVision2Seq
++        except ImportError:
++            # Transformers 5.x removed AutoModelForVision2Seq in favor of the
++            # more precise image-text auto class.
++            from transformers import AutoModelForImageTextToText as AutoModelForVision2Seq
+ 
+         from verl.utils.model import get_generation_config, print_model_size, update_model_config
+         from verl.utils.torch_dtypes import PrecisionType
+@@ -207,7 +215,12 @@ class ActorRolloutRefWorker(Worker):
+             torch_dtype = PrecisionType.to_dtype(torch_dtype)
+ 
+         # override model kwargs
+-        actor_model_config = AutoConfig.from_pretrained(local_path, trust_remote_code=trust_remote_code, attn_implementation="flash_attention_2")
++        attn_implementation = self.config.model.get("attn_implementation", "sdpa")
++        actor_model_config = AutoConfig.from_pretrained(
++            local_path,
++            trust_remote_code=trust_remote_code,
++            attn_implementation=attn_implementation,
++        )
+                 
+         # patch for kimi-vl
+         if getattr(actor_model_config, "model_type", None) == "kimi_vl":
+@@ -230,7 +243,11 @@ class ActorRolloutRefWorker(Worker):
+ 
+         with init_context(), warnings.catch_warnings():
+             warnings.simplefilter("ignore")
+-            if type(actor_model_config) in AutoModelForVision2Seq._model_mapping.keys():
++            # Qwen3.5 is distributed as a unified vision-language checkpoint,
++            # but ALFWorld is text-only. Loading it through AutoModelForCausalLM
++            # skips the unused vision tower and maps the language-model weights.
++            load_text_only = self.config.model.get("load_text_only", False)
++            if not load_text_only and type(actor_model_config) in AutoModelForVision2Seq._model_mapping.keys():
+                 actor_module_class = AutoModelForVision2Seq
+             else:
+                 actor_module_class = AutoModelForCausalLM
+@@ -413,6 +430,16 @@ class ActorRolloutRefWorker(Worker):
+         elif rollout_name == "vllm":
+             from verl.workers.rollout.vllm_rollout import vllm_mode, vLLMRollout
+             from verl.workers.sharding_manager.fsdp_vllm import FSDPVLLMShardingManager
++            from packaging.version import Version
++            from verl.third_party.vllm import vllm_version
++
++            if Version(vllm_version) >= Version("0.19.0"):
++                raise RuntimeError(
++                    "This SkillRL fork's embedded vLLM sharding manager targets the pre-V1 "
++                    "executor internals and cannot synchronize live RL weights into vLLM "
++                    f"{vllm_version}. Use actor_rollout_ref.rollout.name=hf for Qwen3.5 "
++                    "until the server-based vLLM weight-transfer path is ported."
++                )
+ 
+             log_gpu_memory_usage(f"Before building {rollout_name} rollout", logger=logger)
+             local_path = copy_to_local(self.config.model.path, use_shm=self.config.model.get('use_shm', False))
+@@ -605,7 +632,7 @@ class ActorRolloutRefWorker(Worker):
+         assert self._is_actor
+         if self._is_offload_param:
+             load_fsdp_model_to_gpu(self.actor_module_fsdp)
+-        if self._is_offload_optimizer:
++        if self._is_offload_optimizer and os.environ.get("PHASE2_CPU_ADAM")!="1":
+             load_fsdp_optimizer(optimizer=self.actor_optimizer, device_id=get_torch_device().current_device())
+ 
+         with self.ulysses_sharding_manager:
+diff --git a/verl/workers/rollout/hf_rollout.py b/verl/workers/rollout/hf_rollout.py
+index 4cb6da6..fef7f62 100755
+--- a/verl/workers/rollout/hf_rollout.py
++++ b/verl/workers/rollout/hf_rollout.py
+@@ -66,6 +66,9 @@ class HFRollout(BaseRollout):
+             kwargs = {
+                 "do_sample": False,
+                 "num_beams": 1,
++                "temperature": None,
++                "top_p": None,
++                "top_k": None,
+             }
+         elif is_validate:
+             # do validate and do sample -> use val_kwargs
+@@ -88,9 +91,6 @@ class HFRollout(BaseRollout):
+                 "num_return_sequences": self.config.n,
+             }
+ 
+-        # make config according to generate mode
+-        generation_config = GenerationConfig(**kwargs)
+-
+         idx = prompts.batch["input_ids"]  # (bs, prompt_length)
+         prompt_length = idx.size(1)
+         attention_mask = prompts.batch["attention_mask"]  # left-padded attention_mask
+@@ -99,6 +99,28 @@ class HFRollout(BaseRollout):
+         # used to construct attention_mask
+         eos_token_id = prompts.meta_info["eos_token_id"]
+         pad_token_id = prompts.meta_info["pad_token_id"]
++        # Some text-only projections of unified multimodal checkpoints (for
++        # example Qwen3.5) leave text_config.pad_token_id unset even though
++        # generation correctly uses EOS as padding.  Mirror Transformers'
++        # fallback explicitly because the fixed-length rollout tensor below
++        # must always have a concrete integer padding value.
++        if pad_token_id is None:
++            pad_token_id = eos_token_id
++        if pad_token_id is None:
++            raise ValueError("HF rollout requires either pad_token_id or eos_token_id")
++
++        # Transformers 5 deprecates mixing a GenerationConfig with separate
++        # generation keyword arguments. Keep all generation controls in one
++        # object so this path remains usable for Qwen3.5.
++        generation_config = GenerationConfig(
++            **kwargs,
++            max_new_tokens=response_length,
++            eos_token_id=eos_token_id,
++            pad_token_id=pad_token_id,
++            use_cache=True,
++            output_scores=False,
++            return_dict_in_generate=True,
++        )
+ 
+         self.module.eval()
+         param_ctx = contextlib.nullcontext()
+@@ -111,14 +133,7 @@ class HFRollout(BaseRollout):
+                 input_ids=idx,
+                 attention_mask=attention_mask,
+                 position_ids=position_ids,
+-                do_sample=do_sample,
+-                max_new_tokens=response_length,
+-                eos_token_id=eos_token_id,
+-                pad_token_id=pad_token_id,
+                 generation_config=generation_config,
+-                output_scores=False,  # this is potentially very large
+-                return_dict_in_generate=True,
+-                use_cache=True,
+             )
+ 
+         # TODO: filter out the seq with no answers like ds-chat

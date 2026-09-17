@@ -1,0 +1,108 @@
+{
+  "context_id": "clean",
+  "coverage_seeds": [
+    61011,
+    61021,
+    61031,
+    61041
+  ],
+  "environment_seed": 60000,
+  "evaluation": {
+    "arms": [
+      "original",
+      "placebo",
+      "null"
+    ],
+    "bootstrap_repetitions": 10000,
+    "gold_seeds": [
+      52011,
+      52021,
+      52031,
+      52041
+    ],
+    "history_length": 2,
+    "max_new_tokens": 64,
+    "max_steps": 30,
+    "old_evidence_seeds": [
+      51011,
+      51021
+    ],
+    "tau_M": 0.05,
+    "temperature": 0.4,
+    "top_p": 1.0
+  },
+  "game_count": 31,
+  "game_ids_file": "phase1/config/game_ids/qwen35_clean/valid_unseen/clean.txt",
+  "maximum_anchors_per_skill": 50,
+  "minimum_games": 15,
+  "minimum_occurrences": 30,
+  "parent_rl_seed": 303,
+  "parent_update": 35,
+  "ranking_plan": {
+    "baselines": [
+      "random_expected",
+      "low_old_semantic_utility",
+      "generic_control_update_norm"
+    ],
+    "budgets_fraction": [
+      0.25,
+      0.5
+    ],
+    "budgets_k": [
+      1,
+      2
+    ],
+    "decline_gain": "max(0, -Delta_M_sem)",
+    "event_thresholds": [
+      0.0,
+      0.05
+    ],
+    "future_guard": "Freeze scores and budgets before new post-update gold. Compare identical supported candidate pools within each window; never treat continuation repeats or phase subdivisions as independent update windows. Cross-path/window aggregates require later data and implementation.",
+    "metrics": [
+      "precision_at_k",
+      "recall_at_k",
+      "captured_decline_mass",
+      "within_window_spearman",
+      "within_window_kendall"
+    ],
+    "primary": "Within-window Skill ranking for semantic utility decline; no fitted value regressor is required.",
+    "scores": {
+      "D_contribution": 1,
+      "D_ungated_contribution": 1,
+      "P_int": -1,
+      "delta_centered_norm": 1,
+      "delta_norm": 1,
+      "forward_kl_original": 1,
+      "js_original": 1
+    },
+    "secondary": "Any-change audit uses absolute Delta_M_sem and is reported separately from decline ranking.",
+    "ties": "Expected selection under uniform random ordering within ties; never break using gold.",
+    "zero_event_windows": "Recall and captured decline mass undefined; report counts, do not silently score as zero."
+  },
+  "report_path": "/home/wangyifan/skill-RL/2026-09-12-phase2-ranking-evaluation-queue.md",
+  "resources": {
+    "automatic_checkpoint_deletion": false,
+    "consecutive_idle_polls": 2,
+    "exclusive_gpu_per_worker": true,
+    "idle_used_mib_below": 1500,
+    "idle_utilization_below": 10,
+    "maximum_workers": 8,
+    "minimum_disk_free_gib": 250,
+    "poll_seconds": 30
+  },
+  "root": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1",
+  "run_id": "qwen35-clean-s303-u35-ranking-preparation-v1",
+  "schema_version": "phase2.ranking_preparation.v1",
+  "scope": {
+    "launch_after": "Coverage -> deterministic support freeze -> pre-update ORIGINAL/PLACEBO/NULL baseline only.",
+    "launch_new_rl": false,
+    "modify_old_results": false,
+    "stop_after": "U35 baseline complete, or no supported Skills; new training windows/paths/storage budget remain to be registered."
+  },
+  "shards": 8,
+  "skill_bank": "memory_data/alfworld/claude_style_skills.json",
+  "source_checkpoint": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/checkpoints/global_step_35",
+  "source_model": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035",
+  "source_selection_rule": "Latest completed Phase2 checkpoint U35; not selected by Skill utility or prediction performance. New anchors apply only to future windows starting at U35 or later, never retroactively to old held-out tests.",
+  "status": "frozen"
+}

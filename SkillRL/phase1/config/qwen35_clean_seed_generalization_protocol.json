@@ -1,0 +1,169 @@
+{
+  "schema_version": "phase1.qwen35_clean_seed_generalization.v1.6",
+  "preregistered_at": "2026-08-31",
+  "amended_at": "2026-08-31",
+  "amendment": {
+    "field": "training.max_prompt_tokens",
+    "old_value": 4096,
+    "new_value": 2048,
+    "reason": "The one-update feasibility rollout observed 654 clean prompts with median 635, p99 1138, and maximum 1189 tokens. The smaller cap preserves every observed prompt with 859 tokens of headroom while removing avoidable padded SDPA computation.",
+    "selection_data": "training prompt-length metadata only",
+    "skill_utility_or_action_flip_read": false,
+    "checkpoint_selection_affected": false
+  },
+  "seed_count_correction": {
+    "field": "training.seeds",
+    "superseded_value": [101, 202, 303],
+    "registered_value": [101, 202, 303, 404, 505],
+    "reason": "The formal experiment follows the user-confirmed five-seed design; the temporary three-seed feasibility draft is superseded before formal training starts.",
+    "skill_utility_or_action_flip_read": false,
+    "checkpoint_selection_affected": false
+  },
+  "seed_scope_amendment": {
+    "field": "training.seeds",
+    "amended_at": "2026-08-31",
+    "old_value": [101, 202, 303, 404, 505],
+    "new_value": [101, 202, 303],
+    "reason": "User-directed initial validation scope reduction after seed 101 launch; seeds 404 and 505 are deferred, not excluded based on training performance or Skill utility.",
+    "skill_utility_or_action_flip_read": false,
+    "checkpoint_selection_affected": false
+  },
+  "operational_recovery_amendment": {
+    "amended_at": "2026-09-01",
+    "reason": "Two concurrent jobs were interrupted and later OOMed after unrelated users occupied physical GPUs during training. For restart resilience, internal resumable checkpoints may be saved every 5 updates with only the latest 2 retained.",
+    "recovery_checkpoint_frequency": 5,
+    "recovery_checkpoints_to_keep": 2,
+    "analysis_checkpoint_updates_unchanged": [10, 20, 30],
+    "optimization_hyperparameters_changed": false,
+    "skill_utility_or_action_flip_read": false,
+    "checkpoint_selection_affected": false
+  },
+  "per_update_recovery_amendment": {
+    "amended_at": "2026-09-01",
+    "activation_rule": "Seed 101 switches only after its first complete recovery checkpoint at update 5 has been verified; subsequent runs use this rule from their first update.",
+    "reason": "The shared GPU environment has produced external-contention OOMs. Saving each update limits a future interruption to at most one update, while the measured storage and runtime overhead remain acceptable.",
+    "recovery_checkpoint_frequency": 1,
+    "recovery_checkpoints_to_keep": 2,
+    "analysis_checkpoint_updates_unchanged": [10, 20, 30],
+    "milestone_export": "Immediately convert committed updates 10, 20, and 30 to verified model-only BF16/HF artifacts using a temporary directory followed by atomic rename.",
+    "non_milestone_full_checkpoint_policy": "rolling deletion after the newest checkpoint is fully committed; retain the latest two complete recovery checkpoints",
+    "optimization_hyperparameters_changed": false,
+    "skill_utility_or_action_flip_read": false,
+    "checkpoint_selection_affected": false
+  },
+  "seed303_eight_gpu_execution_amendment": {
+    "amended_at": "2026-09-02",
+    "user_directed": true,
+    "seed": 303,
+    "training_gpu_count": 8,
+    "other_seeds_training_gpu_count": 4,
+    "global_train_batch_unchanged": 32,
+    "ppo_mini_batch_unchanged": 32,
+    "micro_batch_per_gpu": 1,
+    "reason": "All eight A800 GPUs were idle after Seeds 101 and 202 completed; user directed Seed 303 to use all eight GPUs.",
+    "interpretation": "FSDP world size and floating-point reduction/partition order differ from Seeds 101 and 202. Seed 303 is retained in the three-seed analysis with this execution difference disclosed; it is not a pure seed-only replication.",
+    "optimization_hyperparameters_changed": false,
+    "skill_utility_or_action_flip_read": false,
+    "checkpoint_selection_affected": false
+  },
+  "claim_scope": "random_training_path_seed_generalization_only",
+  "model": {
+    "model_id": "Qwen/Qwen3.5-4B",
+    "local_path": "/home/wangyifan/model/Qwen3.5-4B",
+    "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "config_sha256": "ddc63e1c717afa86c865bb5e01313d89d72bb53b97ad4a8a03ba8510c0621670",
+    "text_only": true,
+    "enable_thinking": false,
+    "candidate_base_id": "Qwen3.5-4B-posttrained"
+  },
+  "base_gate": {
+    "selection_data": "valid_seen clean only",
+    "skill_utility_visible_during_selection": false,
+    "required_action_parse_rate": 0.98,
+    "required_admissible_action_rate": 0.98,
+    "required_episode_success": "nonzero",
+    "required_router_evidence": "multiple naturally selected skills including non-initial anchors",
+    "fallback": "one shared warm-up on disjoint clean train games, then freeze a single B0"
+  },
+  "training": {
+    "task_type": "clean",
+    "alfworld_task_type_ids": [3],
+    "rl_algorithm": "GRPO",
+    "rollout_backend": "hf",
+    "seeds": [101, 202, 303],
+    "global_updates_per_seed": 30,
+    "train_games_per_update": 8,
+    "rollouts_per_game": 4,
+    "training_rollouts_per_update": 32,
+    "learning_rate": 1e-6,
+    "kl_coefficient": 0.01,
+    "training_gpu_count": 4,
+    "max_prompt_tokens": 2048,
+    "max_response_tokens": 64,
+    "checkpoint_updates": [10, 20, 30],
+    "validation_updates": [10, 20, 30],
+    "validation_games_per_milestone": 27,
+    "checkpoint_selection_uses_performance": false,
+    "checkpoint_selection_uses_skill_utility": false,
+    "performance_aligned_checkpoints_enabled": false,
+    "validation_metrics_are_explanatory_only": true
+  },
+  "feasibility_gate": {
+    "updates": 1,
+    "seed": 101,
+    "required": [
+      "clean-only environment",
+      "trajectory archive",
+      "nonzero parameter delta",
+      "checkpoint save and restore",
+      "post-update rollout uses updated policy",
+      "small ORIGINAL/PLACEBO/NULL first-invocation evaluation"
+    ]
+  },
+  "skill_bank": {
+    "path": "memory_data/alfworld/claude_style_skills.json",
+    "sha256": "e8a953beac1809591fadf0d3509db5dea6e66b0fb56ddb573cf30e6d8879e909",
+    "frozen_during_rl": true,
+    "general_skill_count": 12,
+    "task_specific_skill_count": 32,
+    "clean_task_specific_skill_count": 6,
+    "unsupported_policy": "report unsupported; never force invocation"
+  },
+  "router": {
+    "protocol_path": "phase1/config/phase1_step_routing_protocol.json",
+    "protocol_sha256": "469bec368dd1bb1251773fe936eac5e62c942ab58fc6d97384189e7a5333f301",
+    "frozen_during_rl": true,
+    "selection": "deterministic state-level routing"
+  },
+  "game_manifests": {
+    "path": "phase1/config/game_ids/qwen35_clean/manifest.json",
+    "train_clean_games": 650,
+    "development_clean_games": 37,
+    "valid_seen_clean_games": 27,
+    "valid_unseen_clean_games": 31,
+    "training_split": "train",
+    "checkpoint_monitor_split": "valid_seen",
+    "gold_skill_utility_split": "valid_unseen",
+    "gold_skill_utility_hidden_until_training_complete": true
+  },
+  "skill_evaluation": {
+    "conditions": ["original", "placebo", "null"],
+    "anchor": "first natural invocation per trajectory per skill",
+    "anchor_phase_bins": {
+      "initial": [0, 0],
+      "early": [1, 4],
+      "middle": [5, 14],
+      "late": [15, null]
+    },
+    "minimum_anchor_occurrences": 30,
+    "minimum_distinct_games": 10,
+    "hierarchy": ["rl_seed", "checkpoint_update", "game", "rollout_seed"],
+    "harmful_flip_definition": "reliably positive baseline semantic utility becomes reliably negative"
+  },
+  "checkpoint_storage": {
+    "milestones": "model-only BF16/HF",
+    "resumable_optimizer_checkpoints_retained": "latest two complete checkpoints for the active seed; update 10/20/30 are permanently retained as verified model-only BF16/HF artifacts; non-milestone full checkpoints rotate",
+    "storage_amendment_basis": "filesystem capacity measured before formal training; no Skill utility or action-flip result used",
+    "trajectory_and_metric_archives": "retain all"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "claims_cross_seed_generalization": false,
+  "completed_window_units": 22,
+  "created_at": "2026-09-14T00:44:18.471630+00:00",
+  "performance": [
+    {
+      "mae_pp": 8.398220244716352,
+      "model": "predicted_delta_zero",
+      "phase": "all",
+      "units": 3,
+      "windows": 1
+    },
+    {
+      "mae_pp": 6.451612903225806,
+      "model": "predicted_delta_zero",
+      "phase": "early",
+      "units": 1,
+      "windows": 1
+    },
+    {
+      "mae_pp": 0.0,
+      "model": "predicted_delta_zero",
+      "phase": "late",
+      "units": 1,
+      "windows": 1
+    },
+    {
+      "mae_pp": 11.06283422459893,
+      "model": "predicted_delta_zero",
+      "phase": "middle",
+      "units": 2,
+      "windows": 1
+    }
+  ],
+  "ranking_candidate_pools": [
+    {
+      "candidate_units": 4,
+      "context_id": "clean",
+      "excluded_units": 1,
+      "global_update": 40,
+      "phase": "all",
+      "shared_skill_ids": [
+        "gen_002",
+        "cle_003",
+        "cle_004"
+      ],
+      "shared_supported_units": 3,
+      "start_update": 35,
+      "window_role": "test"
+    },
+    {
+      "candidate_units": 4,
+      "context_id": "clean",
+      "excluded_units": 3,
+      "global_update": 40,
+      "phase": "early",
+      "shared_skill_ids": [
+        "cle_004"
+      ],
+      "shared_supported_units": 1,
+      "start_update": 35,
+      "window_role": "test"
+    },
+    {
+      "candidate_units": 4,
+      "context_id": "clean",
+      "excluded_units": 4,
+      "global_update": 40,
+      "phase": "initial",
+      "shared_skill_ids": [],
+      "shared_supported_units": 0,
+      "start_update": 35,
+      "window_role": "test"
+    },
+    {
+      "candidate_units": 4,
+      "context_id": "clean",
+      "excluded_units": 3,
+      "global_update": 40,
+      "phase": "late",
+      "shared_skill_ids": [
+        "gen_002"
+      ],
+      "shared_supported_units": 1,
+      "start_update": 35,
+      "window_role": "test"
+    },
+    {
+      "candidate_units": 4,
+      "context_id": "clean",
+      "excluded_units": 2,
+      "global_update": 40,
+      "phase": "middle",
+      "shared_skill_ids": [
+        "gen_002",
+        "cle_003"
+      ],
+      "shared_supported_units": 2,
+      "start_update": 35,
+      "window_role": "test"
+    }
+  ],
+  "ranking_primary": true,
+  "rl_path_id": "seed303-continued-u35-to40-ranking-v1"
+}

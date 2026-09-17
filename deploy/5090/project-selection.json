@@ -1,0 +1,23 @@
+{
+  "source_root": "/home/wangyifan/skill-RL",
+  "snapshot_root": "/home/wangyifan/skill-RL-migration-20260917-nr0jtt4g/project-only/skill-RL",
+  "files": 1736,
+  "bytes": 65730444,
+  "revision_manifests": [
+    "SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/reports/2026-09-14-ranking-interpretation-v1/revision.json",
+    "SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/reports/2026-09-14-phase2-synthesis-v2/revision.json",
+    "SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/reports/2026-09-14-reward-directed-family-v3/revision.json"
+  ],
+  "source_git_modified": false,
+  "includes_source_git_directory": false,
+  "excludes": [
+    "installed environments",
+    "base model weights",
+    "ALFWorld downloads",
+    "RL checkpoints and optimizer states",
+    "raw training/evaluation trajectories",
+    "per-token signal tensors and logprobs",
+    "runtime logs and caches"
+  ],
+  "evidence_scope": "Original reports, protocols, scalar tables, audit inputs and completion receipts; not full replay."
+}

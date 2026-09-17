@@ -1,0 +1,37 @@
+# Key versions read from the active source environment on 2026-09-17.
+# This is a reconstruction baseline, not a claim of validated target installation.
+torch==2.10.0+cu128
+torchvision==0.25.0+cu128
+torchaudio==2.10.0+cu128
+triton==3.6.0
+transformers==5.10.4
+tokenizers==0.22.2
+huggingface-hub==1.29.0
+accelerate==1.14.0
+peft==0.20.0
+datasets==5.0.1
+ray==2.43.0
+tensordict==0.10.0
+torchdata==0.11.0
+numpy==2.2.6
+pandas==2.3.3
+pyarrow==25.0.1
+scipy==1.15.3
+scikit-learn==1.7.2
+protobuf==5.29.6
+hydra-core==1.3.5
+omegaconf==2.3.1
+wandb==0.19.7
+qwen-vl-utils==0.0.14
+decord==0.6.0
+safetensors==0.8.0
+Pillow==12.3.0
+packaging==25.0
+alfworld==0.4.2
+textworld==1.7.0
+gymnasium==0.29.1
+stable-baselines3==2.6.0
+fla-core==0.5.2
+causal-conv1d==1.7.0
+einops==0.8.2
+pytest==9.1.1

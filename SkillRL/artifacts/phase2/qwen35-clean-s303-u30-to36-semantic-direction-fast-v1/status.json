@@ -1,0 +1,7 @@
+{
+  "error": "Free disk below the preregistered 250GiB reserve; stopped at a recovery boundary",
+  "global_update": 36,
+  "pipeline_pid": 2142632,
+  "stage": "stopped_on_error",
+  "updated_at": "2026-09-11T18:28:52.848266+00:00"
+}

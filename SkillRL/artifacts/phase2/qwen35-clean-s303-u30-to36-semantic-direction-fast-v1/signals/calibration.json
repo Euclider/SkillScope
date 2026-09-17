@@ -1,0 +1,9 @@
+{
+  "created_at": "2026-09-09T17:03:47.381589+00:00",
+  "gold_read": false,
+  "noise_max": 0.0,
+  "noise_p95": 0.0,
+  "samples": 498,
+  "source_update": 31,
+  "tau_delta": 1e-08
+}

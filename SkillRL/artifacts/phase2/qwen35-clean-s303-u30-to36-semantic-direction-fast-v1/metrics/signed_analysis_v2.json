@@ -1,0 +1,481 @@
+{
+  "associations": [
+    {
+      "rho_absolute_delta": 0.35033446496180626,
+      "rho_signed_delta": -0.048849466270227834,
+      "role": "signed reward-directed interaction",
+      "scope": "all_updates_exploratory",
+      "signal": "P_int",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.30140507041406794,
+      "rho_signed_delta": -0.4171744419477457,
+      "role": "gated opposition (nonnegative; decline risk)",
+      "scope": "all_updates_exploratory",
+      "signal": "D_contribution",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.577366855663312,
+      "rho_signed_delta": -0.28430389369272596,
+      "role": "ungated opposition sensitivity",
+      "scope": "all_updates_exploratory",
+      "signal": "D_ungated_contribution",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.1644027656804007,
+      "rho_signed_delta": -0.33608432793916754,
+      "role": "update fidelity, not a utility sign",
+      "scope": "all_updates_exploratory",
+      "signal": "C_upd",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": -0.11547337113266239,
+      "rho_signed_delta": -0.13189355892961516,
+      "role": "unsigned skill-conditioned shift",
+      "scope": "all_updates_exploratory",
+      "signal": "u_original_norm",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": -0.05284374611155737,
+      "rho_signed_delta": -0.12505463365178326,
+      "role": "unsigned control shift",
+      "scope": "all_updates_exploratory",
+      "signal": "u_control_norm",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.5225659337698451,
+      "rho_signed_delta": 0.003907957301618227,
+      "role": "unsigned interaction shift",
+      "scope": "all_updates_exploratory",
+      "signal": "delta_norm",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.665439765849241,
+      "rho_signed_delta": -0.06155032750048708,
+      "role": "centered interaction magnitude",
+      "scope": "all_updates_exploratory",
+      "signal": "delta_centered_norm",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.2681330821216059,
+      "rho_signed_delta": -0.20712173698576603,
+      "role": "unsigned distribution shift baseline",
+      "scope": "all_updates_exploratory",
+      "signal": "forward_kl_original",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.34446293761607766,
+      "rho_signed_delta": -0.14264044150906527,
+      "role": "unsigned distribution shift baseline",
+      "scope": "all_updates_exploratory",
+      "signal": "js_original",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.28379048837688214,
+      "rho_signed_delta": 0.06155032750048708,
+      "role": "unsigned activation interaction",
+      "scope": "all_updates_exploratory",
+      "signal": "activation_l8_norm",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.5597522736261262,
+      "rho_signed_delta": 0.06643527412750985,
+      "role": "unsigned activation interaction",
+      "scope": "all_updates_exploratory",
+      "signal": "activation_l16_norm",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.5949814377004978,
+      "rho_signed_delta": 0.055688391548059726,
+      "role": "unsigned activation interaction",
+      "scope": "all_updates_exploratory",
+      "signal": "activation_l24_norm",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.6223818986472311,
+      "rho_signed_delta": -0.06350430615129618,
+      "role": "unsigned activation interaction",
+      "scope": "all_updates_exploratory",
+      "signal": "activation_l32_norm",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": -0.20958793601468448,
+      "rho_signed_delta": -0.022419167686775477,
+      "role": "update-level magnitude (shared by all skills)",
+      "scope": "all_updates_exploratory",
+      "signal": "raw_parameter_delta_l2",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.7975273433573746,
+      "rho_signed_delta": 0.04245150386090237,
+      "role": "independent pre-update evidence baseline",
+      "scope": "all_updates_exploratory",
+      "signal": "old_margin",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.7739490803418612,
+      "rho_signed_delta": 0.20015329185634537,
+      "role": "pre-update evidence uncertainty",
+      "scope": "all_updates_exploratory",
+      "signal": "old_margin_se",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.21598903755623894,
+      "rho_signed_delta": -0.1360561802089722,
+      "role": "existing training rollout baseline",
+      "scope": "all_updates_exploratory",
+      "signal": "train_success",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": -0.49516547282311163,
+      "rho_signed_delta": 0.08890602861181467,
+      "role": "existing training advantage baseline",
+      "scope": "all_updates_exploratory",
+      "signal": "advantage",
+      "units": 19,
+      "updates": 5
+    },
+    {
+      "rho_absolute_delta": 0.6300619191619361,
+      "rho_signed_delta": -0.4076871241636057,
+      "role": "signed reward-directed interaction",
+      "scope": "heldout_updates",
+      "signal": "P_int",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.4076871241636057,
+      "rho_signed_delta": -0.555936987495826,
+      "role": "gated opposition (nonnegative; decline risk)",
+      "scope": "heldout_updates",
+      "signal": "D_contribution",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.555936987495826,
+      "rho_signed_delta": -0.4818120558297158,
+      "role": "ungated opposition sensitivity",
+      "scope": "heldout_updates",
+      "signal": "D_ungated_contribution",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.6300619191619361,
+      "rho_signed_delta": -0.5188745216627708,
+      "role": "update fidelity, not a utility sign",
+      "scope": "heldout_updates",
+      "signal": "C_upd",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.4818120558297158,
+      "rho_signed_delta": -0.2964997266644405,
+      "role": "unsigned skill-conditioned shift",
+      "scope": "heldout_updates",
+      "signal": "u_original_norm",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.4818120558297158,
+      "rho_signed_delta": -0.2964997266644405,
+      "role": "unsigned control shift",
+      "scope": "heldout_updates",
+      "signal": "u_control_norm",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.4818120558297158,
+      "rho_signed_delta": -0.2964997266644405,
+      "role": "unsigned interaction shift",
+      "scope": "heldout_updates",
+      "signal": "delta_norm",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.6300619191619361,
+      "rho_signed_delta": -0.18531232916527532,
+      "role": "centered interaction magnitude",
+      "scope": "heldout_updates",
+      "signal": "delta_centered_norm",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.7783117824941563,
+      "rho_signed_delta": -0.037062465833055065,
+      "role": "unsigned distribution shift baseline",
+      "scope": "heldout_updates",
+      "signal": "forward_kl_original",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.7041868508280462,
+      "rho_signed_delta": 0.037062465833055065,
+      "role": "unsigned distribution shift baseline",
+      "scope": "heldout_updates",
+      "signal": "js_original",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.7783117824941563,
+      "rho_signed_delta": 0.44474958999666075,
+      "role": "unsigned activation interaction",
+      "scope": "heldout_updates",
+      "signal": "activation_l8_norm",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.6671243849949912,
+      "rho_signed_delta": -0.037062465833055065,
+      "role": "unsigned activation interaction",
+      "scope": "heldout_updates",
+      "signal": "activation_l16_norm",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.6671243849949912,
+      "rho_signed_delta": -0.037062465833055065,
+      "role": "unsigned activation interaction",
+      "scope": "heldout_updates",
+      "signal": "activation_l24_norm",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.6300619191619361,
+      "rho_signed_delta": -0.18531232916527532,
+      "role": "unsigned activation interaction",
+      "scope": "heldout_updates",
+      "signal": "activation_l32_norm",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.14978617237881953,
+      "rho_signed_delta": 0.7489308618940976,
+      "role": "update-level magnitude (shared by all skills)",
+      "scope": "heldout_updates",
+      "signal": "raw_parameter_delta_l2",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.6408069008390093,
+      "rho_signed_delta": 0.11651034560709261,
+      "role": "independent pre-update evidence baseline",
+      "scope": "heldout_updates",
+      "signal": "old_margin",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": 0.6538461538461539,
+      "rho_signed_delta": 0.19230769230769232,
+      "role": "pre-update evidence uncertainty",
+      "scope": "heldout_updates",
+      "signal": "old_margin_se",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": -0.14978617237881953,
+      "rho_signed_delta": -0.7489308618940976,
+      "role": "existing training rollout baseline",
+      "scope": "heldout_updates",
+      "signal": "train_success",
+      "units": 7,
+      "updates": 2
+    },
+    {
+      "rho_absolute_delta": -0.8153742483272114,
+      "rho_signed_delta": -0.11118739749916519,
+      "role": "existing training advantage baseline",
+      "scope": "heldout_updates",
+      "signal": "advantage",
+      "units": 7,
+      "updates": 2
+    }
+  ],
+  "by_update": [
+    {
+      "D_vs_decline": -0.7745966692414834,
+      "P_vs_signed_delta": 0.7745966692414834,
+      "always_positive_conditional_accuracy": 1.0,
+      "ci_excludes_zero_points": 0,
+      "ci_excludes_zero_sign_accuracy": null,
+      "conditional_sign_accuracy": 1.0,
+      "evaluated_nonzero_points": 1,
+      "negative_points": 0,
+      "nonzero_point_coverage": 0.25,
+      "nonzero_points": 1,
+      "positive_points": 1,
+      "prediction_coverage": 1.0,
+      "sign_agree": 1,
+      "units": 4,
+      "update": 31,
+      "updates": 1,
+      "zero_points": 3
+    },
+    {
+      "D_vs_decline": -0.632455532033676,
+      "P_vs_signed_delta": 0.632455532033676,
+      "always_positive_conditional_accuracy": 0.5,
+      "ci_excludes_zero_points": 0,
+      "ci_excludes_zero_sign_accuracy": null,
+      "conditional_sign_accuracy": 0.5,
+      "evaluated_nonzero_points": 2,
+      "negative_points": 1,
+      "nonzero_point_coverage": 0.5,
+      "nonzero_points": 2,
+      "positive_points": 1,
+      "prediction_coverage": 1.0,
+      "sign_agree": 1,
+      "units": 4,
+      "update": 32,
+      "updates": 1,
+      "zero_points": 2
+    },
+    {
+      "D_vs_decline": 0.7745966692414834,
+      "P_vs_signed_delta": 0.2581988897471611,
+      "always_positive_conditional_accuracy": 0.0,
+      "ci_excludes_zero_points": 0,
+      "ci_excludes_zero_sign_accuracy": null,
+      "conditional_sign_accuracy": 0.0,
+      "evaluated_nonzero_points": 1,
+      "negative_points": 1,
+      "nonzero_point_coverage": 0.25,
+      "nonzero_points": 1,
+      "positive_points": 0,
+      "prediction_coverage": 1.0,
+      "sign_agree": 0,
+      "units": 4,
+      "update": 33,
+      "updates": 1,
+      "zero_points": 3
+    },
+    {
+      "D_vs_decline": -0.5,
+      "P_vs_signed_delta": 0.5,
+      "always_positive_conditional_accuracy": 1.0,
+      "ci_excludes_zero_points": 0,
+      "ci_excludes_zero_sign_accuracy": null,
+      "conditional_sign_accuracy": 1.0,
+      "evaluated_nonzero_points": 2,
+      "negative_points": 0,
+      "nonzero_point_coverage": 0.6666666666666666,
+      "nonzero_points": 2,
+      "positive_points": 2,
+      "prediction_coverage": 1.0,
+      "sign_agree": 2,
+      "units": 3,
+      "update": 34,
+      "updates": 1,
+      "zero_points": 1
+    },
+    {
+      "D_vs_decline": 0.7378647873726218,
+      "P_vs_signed_delta": -0.7378647873726218,
+      "always_positive_conditional_accuracy": 0.0,
+      "ci_excludes_zero_points": 1,
+      "ci_excludes_zero_sign_accuracy": 0.0,
+      "conditional_sign_accuracy": 0.0,
+      "evaluated_nonzero_points": 2,
+      "negative_points": 2,
+      "nonzero_point_coverage": 0.5,
+      "nonzero_points": 2,
+      "positive_points": 0,
+      "prediction_coverage": 1.0,
+      "sign_agree": 0,
+      "units": 4,
+      "update": 35,
+      "updates": 1,
+      "zero_points": 2
+    }
+  ],
+  "created_at": "2026-09-11T18:28:56.933906+00:00",
+  "direction_counts": [
+    {
+      "always_positive_conditional_accuracy": 0.5,
+      "ci_excludes_zero_points": 1,
+      "ci_excludes_zero_sign_accuracy": 0.0,
+      "conditional_sign_accuracy": 0.5,
+      "evaluated_nonzero_points": 8,
+      "negative_points": 4,
+      "nonzero_point_coverage": 0.42105263157894735,
+      "nonzero_points": 8,
+      "positive_points": 4,
+      "prediction_coverage": 1.0,
+      "scope": "all_updates_exploratory",
+      "sign_agree": 4,
+      "units": 19,
+      "updates": 5,
+      "zero_points": 11
+    },
+    {
+      "always_positive_conditional_accuracy": 0.5,
+      "ci_excludes_zero_points": 1,
+      "ci_excludes_zero_sign_accuracy": 0.0,
+      "conditional_sign_accuracy": 0.5,
+      "evaluated_nonzero_points": 4,
+      "negative_points": 2,
+      "nonzero_point_coverage": 0.5714285714285714,
+      "nonzero_points": 4,
+      "positive_points": 2,
+      "prediction_coverage": 1.0,
+      "scope": "heldout_updates",
+      "sign_agree": 2,
+      "units": 7,
+      "updates": 2,
+      "zero_points": 3
+    }
+  ],
+  "interpretation": "descriptive only; shared update/skill and adjacent-endpoint dependence; no feature selection or independence claim"
+}

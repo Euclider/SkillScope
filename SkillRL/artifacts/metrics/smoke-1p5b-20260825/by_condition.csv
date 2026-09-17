@@ -1,0 +1,4 @@
+skill_condition,episodes,success_rate,invalid_actions,environment_steps,invalid_action_rate,action_format_compliance_rate,mean_trajectory_length,median_trajectory_length,max_step_failure_rate,target_skill_retrieval_coverage,target_skill_injection_coverage,mean_unique_skill_count,mean_prompt_tokens,mean_completion_tokens
+full_bank,12,0.0,74,360,0.20555555555555555,0.7944444444444445,30.0,30.0,1.0,1.0,1.0,2.0,18697.416666666668,2270.5833333333335
+minus_skill,12,0.0,78,360,0.21666666666666667,0.7833333333333333,30.0,30.0,1.0,1.0,0.0,1.0,17011.416666666668,2178.6666666666665
+no_skill,12,0.0,180,360,0.5,0.5,30.0,30.0,1.0,1.0,0.0,0.0,15520.583333333334,1765.4166666666667

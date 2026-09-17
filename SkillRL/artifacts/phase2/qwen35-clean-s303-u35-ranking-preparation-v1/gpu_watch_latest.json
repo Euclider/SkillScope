@@ -1,0 +1,67 @@
+{
+  "at": "2026-09-12T16:58:58.250682+00:00",
+  "confirmed_idle_gpus": [
+    2,
+    3,
+    5
+  ],
+  "disk_free_gib": 352.92282485961914,
+  "disk_ok": true,
+  "gpus": [
+    {
+      "gpu": 0,
+      "total_mib": 81920,
+      "used_mib": 63952,
+      "utilization": 100
+    },
+    {
+      "gpu": 1,
+      "total_mib": 81920,
+      "used_mib": 64162,
+      "utilization": 100
+    },
+    {
+      "gpu": 2,
+      "total_mib": 81920,
+      "used_mib": 13,
+      "utilization": 0
+    },
+    {
+      "gpu": 3,
+      "total_mib": 81920,
+      "used_mib": 13,
+      "utilization": 0
+    },
+    {
+      "gpu": 4,
+      "total_mib": 81920,
+      "used_mib": 40386,
+      "utilization": 100
+    },
+    {
+      "gpu": 5,
+      "total_mib": 81920,
+      "used_mib": 13,
+      "utilization": 0
+    },
+    {
+      "gpu": 6,
+      "total_mib": 81920,
+      "used_mib": 13,
+      "utilization": 0
+    },
+    {
+      "gpu": 7,
+      "total_mib": 81920,
+      "used_mib": 69628,
+      "utilization": 0
+    }
+  ],
+  "idle_gpus": [
+    2,
+    3,
+    5,
+    6
+  ],
+  "stage": "baseline"
+}

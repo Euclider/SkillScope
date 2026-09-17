@@ -1,0 +1,97 @@
+{
+  "context_skill_selection_counts": {
+    "clean": {
+      "cle_003": 336,
+      "cle_004": 430,
+      "cle_005": 13,
+      "cle_006": 38,
+      "gen_002": 230
+    },
+    "cool": {
+      "coo_001": 438,
+      "coo_003": 10,
+      "coo_004": 18,
+      "coo_005": 40,
+      "gen_001": 7,
+      "gen_002": 237,
+      "gen_003": 149,
+      "gen_005": 1
+    },
+    "heat": {
+      "gen_002": 119,
+      "gen_003": 175,
+      "gen_005": 7,
+      "hea_001": 20,
+      "hea_002": 257,
+      "hea_005": 22
+    },
+    "look_at_obj_in_light": {
+      "gen_001": 134,
+      "gen_002": 7,
+      "gen_003": 17,
+      "loo_001": 26,
+      "loo_003": 42,
+      "loo_004": 348,
+      "loo_005": 131
+    },
+    "pick_and_place": {
+      "gen_001": 221,
+      "gen_002": 247,
+      "gen_003": 595,
+      "gen_005": 31,
+      "pic_001": 475,
+      "pic_002": 6
+    },
+    "pick_two": {
+      "gen_001": 167,
+      "gen_003": 255,
+      "pic_001": 151,
+      "pic_005": 276
+    }
+  },
+  "created_at": "2026-08-25T15:43:50.303996+00:00",
+  "max_distinct_selected_skills": 6,
+  "mean_distinct_selected_skills": 3.57,
+  "mean_routing_switches": 8.425,
+  "mean_trajectory_length": 28.38,
+  "multi_skill_trajectory_count": 199,
+  "pilot_gate": {
+    "at_least_two_distinct_selected_skills_in_some_multistep_trajectories": true,
+    "router_version_constant": true,
+    "selected_skill_matches_injected_skill_each_step": true
+  },
+  "routing_invariant_violation_count": 0,
+  "routing_invariant_violations": [],
+  "run_id": "phase1-step-router-pilot-seed-101-r2",
+  "schema_version": "phase1.step_routing_summary.v1",
+  "skill_router_versions": [
+    "alfworld-observable-phase-router-v1"
+  ],
+  "skill_selection_counts": {
+    "cle_003": 336,
+    "cle_004": 430,
+    "cle_005": 13,
+    "cle_006": 38,
+    "coo_001": 438,
+    "coo_003": 10,
+    "coo_004": 18,
+    "coo_005": 40,
+    "gen_001": 529,
+    "gen_002": 840,
+    "gen_003": 1191,
+    "gen_005": 39,
+    "hea_001": 20,
+    "hea_002": 257,
+    "hea_005": 22,
+    "loo_001": 26,
+    "loo_003": 42,
+    "loo_004": 348,
+    "loo_005": 131,
+    "pic_001": 626,
+    "pic_002": 6,
+    "pic_005": 276
+  },
+  "success_rate": 0.125,
+  "successful_trajectory_count": 25,
+  "trajectory_count": 200
+}

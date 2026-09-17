@@ -1,0 +1,4 @@
+skill_condition,paired_episodes,baseline_success_rate,candidate_success_rate,success_rate_delta,baseline_invalid_action_rate,candidate_invalid_action_rate,invalid_action_rate_delta,mean_completion_tokens_per_step_delta
+full_bank,12,0.0,0.0,0.0,0.25555555555555554,0.20555555555555555,-0.04999999999999999,-55.861111111111114
+minus_skill,12,0.0,0.0,0.0,0.22777777777777777,0.21666666666666667,-0.0111111111111111,-49.65
+no_skill,12,0.0,0.0,0.0,0.5027777777777778,0.5,-0.002777777777777768,-48.025000000000006

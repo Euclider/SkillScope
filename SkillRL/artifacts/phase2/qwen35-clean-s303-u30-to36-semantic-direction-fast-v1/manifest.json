@@ -1,0 +1,10 @@
+{
+  "created_at": "2026-09-09T15:52:44.304633+00:00",
+  "parent_checkpoint": "/home/wangyifan/skill-RL/SkillRL/artifacts/checkpoints/qwen35-clean-formal-seed303-u30-resume12-s2-20260903/global_step_30",
+  "phase1_report_sha256": "e080b2b4dcd58bc44bd7d4e97cbd3a044abee372791bc818e9cce5b5c09d23a7",
+  "primary_control": "placebo",
+  "protocol_sha256": "f2523c4776b7586c8d01c5b173678ce3dfd63fb3c4ba3e8eb4b3ca5a80644535",
+  "repo_worktree_fingerprint": "f17d046160825a698f865027fe2410ede182f5a756f8be4b8406392394b428d6",
+  "skill_bank_sha256": "e8a953beac1809591fadf0d3509db5dea6e66b0fb56ddb573cf30e6d8879e909",
+  "training_started": false
+}

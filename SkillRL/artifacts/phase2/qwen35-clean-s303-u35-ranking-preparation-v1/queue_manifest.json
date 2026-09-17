@@ -1,0 +1,134 @@
+{
+  "created_at": "2026-09-12T05:11:04.979552+00:00",
+  "input_sha256": {
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/chat_template.jinja": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/config.json": "eb1934f744bc97af31ee2d55dfb395a3672faed13a876d11d96c0a51082cd357",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/generation_config.json": "b0ab9b08b02e1279c8b888ebd70656a4a62eac52861e5e74dbfc288d6253069f",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/model.safetensors": "4f34a3d76be85232e82c43e89ba419450937e1af8c962ccecf33b43d80494dbf",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/phase2_export.json": "3fc5439772b911b6ae58f600efcaef7de98cbb3868a61f81aaae0880a37f9f5e",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/processor_config.json": "d89ef49ce9cd37fbf510158e13c1ef063d9286411c1ec9049932dbe0487143b1",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/tokenizer.json": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/tokenizer_config.json": "792fa3f0cb88b111e54ef3134c873531008c4df471d108da17903426e308aa7b",
+    "/home/wangyifan/skill-RL/SkillRL/memory_data/alfworld/claude_style_skills.json": "e8a953beac1809591fadf0d3509db5dea6e66b0fb56ddb573cf30e6d8879e909",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/config/game_ids/qwen35_clean/valid_unseen/clean.txt": "ff8c0d88d0703b4fe8d1f78cde6662b1887a2c7da4ed0460a8df1886a3bdbb2c"
+  },
+  "input_stats": {
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/chat_template.jinja": {
+      "bytes": 7756,
+      "mtime_ns": 1789136610956644706
+    },
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/config.json": {
+      "bytes": 1978,
+      "mtime_ns": 1789136589077358256
+    },
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/generation_config.json": {
+      "bytes": 179,
+      "mtime_ns": 1789136589077358256
+    },
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/model.safetensors": {
+      "bytes": 19365851624,
+      "mtime_ns": 1789136604887565096
+    },
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/phase2_export.json": {
+      "bytes": 432,
+      "mtime_ns": 1789136616400716215
+    },
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/processor_config.json": {
+      "bytes": 1191,
+      "mtime_ns": 1789136610955644693
+    },
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/tokenizer.json": {
+      "bytes": 19989325,
+      "mtime_ns": 1789136611123646898
+    },
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/models/u0035/tokenizer_config.json": {
+      "bytes": 1165,
+      "mtime_ns": 1789136610956644706
+    },
+    "/home/wangyifan/skill-RL/SkillRL/memory_data/alfworld/claude_style_skills.json": {
+      "bytes": 22594,
+      "mtime_ns": 1787643663911417710
+    },
+    "/home/wangyifan/skill-RL/SkillRL/phase1/config/game_ids/qwen35_clean/valid_unseen/clean.txt": {
+      "bytes": 4999,
+      "mtime_ns": 1788170407449967700
+    }
+  },
+  "queue_sha256": "f94cd1ee30ec825a649b72d63c3267993f3fde04e772aae68017f12f90a740a5",
+  "source_archive_sha256": "0d18c65c254fb76bd2c9257bc8900742e343377872507882c63c47d7c0880d98",
+  "source_sha256": {
+    "/home/wangyifan/skill-RL/SkillRL/agent_system/environments/env_package/alfworld/projection.py": "c6127362989861c46badc0c11715593bdc5a404b4d6f2b4e9eecf305f0a55e23",
+    "/home/wangyifan/skill-RL/SkillRL/agent_system/environments/prompts/alfworld.py": "482a4cbc00d9db1816bc3fcaa9935378c479686ba5cf9de263b93af1ca9bd1cb",
+    "/home/wangyifan/skill-RL/SkillRL/agent_system/memory/__init__.py": "5cbd23ad88a1c9c3de8ac5afbc6b55c541cee3756c64e64326351cf9fae1ccbe",
+    "/home/wangyifan/skill-RL/SkillRL/agent_system/memory/base.py": "cdb84ed42fdc426fa7a97d50f812b60eb6fb0e932fa32fdcc55680a321aa5db7",
+    "/home/wangyifan/skill-RL/SkillRL/agent_system/memory/memory.py": "d9940bf9d49442f76667b80aff7e80b7c93f37bef015b06641e60229bb3f0d9c",
+    "/home/wangyifan/skill-RL/SkillRL/agent_system/memory/retrieval_memory.py": "144398d3df722627841dee77d30e8d7f86b98d049acaec12b72b4688cefbec2a",
+    "/home/wangyifan/skill-RL/SkillRL/agent_system/memory/skill_updater.py": "d2c8df9b9bfad2b01d31c9515e97133010ba17c6e37435968d4ba741a71125a9",
+    "/home/wangyifan/skill-RL/SkillRL/agent_system/memory/skills_only_memory.py": "b720615a4c1db5b504f593feafe45637b54328b7e2ed287909bf3e0dad623511",
+    "/home/wangyifan/skill-RL/SkillRL/agent_system/memory/step_skill_router.py": "1d03723c0f1e5fc7866494b7892bbc5ab6f9a3dea34ba76176fc10d4f64c6b0f",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/__init__.py": "d9a98e2f09303d39641dffe80702b7e72194ff8f6d3b68190ecc751c19d6cd1b",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/action_probe.py": "0fff6897d0d9f6c080b5eca991c1ff6255d7abbd9be9b2bf7a9a44451d5e294d",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/archive.py": "474c59c046910477074e7556a589b0117fe34bbcc5b830c34eba1645b6f897ec",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/build_all_first_invocation_anchors.py": "e0f95b4ade05db492d4a27e4d4cc807ae9585f77ea5bb660bf06ca168e81df50",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/build_first_invocation_anchors.py": "a8704e25952e225185d8d1fcbd4d0fd4dc01344082d75c42c2da2afae41f5ef0",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/capture_probe_states.py": "b23eed3c1e575236bdc55b4a7b40f2310d953fb40f3ea1626ccdf315d5489884",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/compute_action_probe_metrics.py": "ed5d671b10ef3cda317386f95e17904cb6601de22e5a7e2d4349c02ec2e0b913",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/compute_all_first_invocation_metrics.py": "2a1201d928f9820f8834eb40b080f2dad3ed42d2fd7569c9bfdaba86fd46b9d8",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/compute_first_invocation_metrics.py": "91f93f240a7d3a491d742a7a653e9d4f13a551202722eb4d9ea6ad777af2084a",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/compute_phase1_metrics.py": "476909ccdc125facd54eb9d81bbca4e442e8b6258116342deba72bfbac5e0045",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/compute_smoke_comparison.py": "845ae67340d35814efb13f9576acafa89568fb5b9859863351cd138e00eea37e",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/compute_smoke_metrics.py": "1bc7bb320d8b56e1bca4cff3a88d7fc71a2638c2a0aefe943678d907ff323b9d",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/conditions.py": "126c24563e8d11a31cbc4e2d6a7d18354839018ecd7f6c9e55e4bd33a012f481",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/controls.py": "f675105ca7ea22d76d672535c98639983291f48c6d4e87ddbd0b0be1ba9a8ddc",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/create_payload_placebo.py": "ffc9330827b28c759a7266a7cb0d95e1fdc69ec2086e7c85b6dd38ea7ce20e35",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/create_random_parameter_control.py": "863a4eeb057c8fcf9aa7c4dde39a752bd53b0a05677f1e814595697f4ede5efc",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/create_run_manifest.py": "be4a805f0584d4b702d5618f2e91b5e7cab32ce0e9588b36be9fa564a5d90039",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/eval_all_first_invocation_utility.py": "e6d2cac0caa6b0065894dbeb23f6c1b8089fc2315d5bd9d09db5d46820f6b890",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/eval_first_invocation_utility.py": "89db015009f0f60678209da15228f067bf562a6ef5d5240d2971df3cde820f98",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/eval_skill_margin.py": "4918d200758d2433b98edd84f1105a56d9f8c360abc95680558ae58a9789ca72",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/first_invocation.py": "066f221ff3b8ba3e26179254ba59417ce99ee4ac479e99a8d6a21dd973fa3d8f",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/measure_checkpoint_delta.py": "258c17443a2f258062d47856a8f8c204efcc79627b2bc59fd142c8ed5d9e8eef",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/measure_hf_to_fsdp_delta.py": "0bac89f8721f6c3baa78b9f2870d8e3751951a373cd14b6a40ebd9b955d70c3f",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/metrics.py": "4d6e5aa9902e7178ec67d8b712094b9e602d0680410246cc993070a358317b6f",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/minimal_interaction_forecast.py": "92f34f2f8434be6a46eb83dd8f32e5228aae6f3a324b56b32eacaa5f903a2dd5",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/preflight.py": "3b1e1647ab386ac5b8dd2d99bd3b708ff0dc8ff6d4aea838b44efb1d18d9e1b2",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/qwen35_compat_preflight.py": "97e4db44cb9c66726c456d6e3a3ba156e85c1edc49a27007508d58dfcf364439",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/select_game_ids.py": "65c69deb276a5f560a01be6fba5da32ce5c7aea5b04a3dc6c403fe88f636a20d",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/summarize_b0_clean.py": "ea7f636541b825ca05c5a5cfbb7a8ef815faa6b07d64b616f1d5e45a2cb97e91",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/summarize_step_routing.py": "86fe3650d5e3f5b8b65ffe76b4936b19dd12656f9481c43e097e58441728973c",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/summarize_three_seed_utility.py": "1786543e1c351ad247b9ddb12702942ec643169e8c102f66220b2da377283a95",
+    "/home/wangyifan/skill-RL/SkillRL/phase1/watch_qwen35_checkpoints.py": "c7f4535b4052c38f4201cda8daac989c6db1481e4eaad94adaffc91c8646c415",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/__init__.py": "b3fce1e6a24284c6df3a868669004ee8be2776f6425c68a213c4102b1f552e4e",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/aggregate.py": "799183cfa9ab577dd0a051146817fcce27b596275435954dae6b90a69510725a",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/audit.py": "f1c218a60ee90042b5f27a92656847a3a6f8aa280f9f9dc515bb4d9bce899cc1",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/capture.py": "642883a01708f313e3a26a088573dbae3645967207e28cf52cb207099c7b2940",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/coverage_audit.py": "24131447f959d52ab4556c0b5a48fc87f6351901fc05055b6a65a5979e4fbd1e",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/direction.py": "2477dd6b9215c8140804c2005a6108d5047b80e506d189fe06c99624bcff69d4",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/discussion_snapshot.py": "e892ff2ae987ffa728dbf42756d10f83a31b1e2133c04540565c0b8f7c3147a4",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/elastic_checkpoint.py": "8d5d4cb61f796696305a708cbe7a35faf53a615d363783a64f295c2d660f1da5",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/elastic_odd_smoke.py": "dc3791d640ecbe482b9d752ce687ca506a1d7a63837c5a1ce673a50b02542298",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/elastic_restore_smoke.py": "5d1bb01bf4bfc3042e9143e4a25815b7f0eb41322680b99a98e079d9037438d4",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/elastic_training.py": "f91bacc0d5510546ce895dddc7ceb471aaa2d79e2dca2cb1eddb556b17456e24",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/evaluate.py": "11d07648e0fb905d73089ca467c211f71be4c6e0905265b64b0f956dedc787c0",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/export_model.py": "4539b2272ec683e2d9306859881b7747d8ee91b0122c663fcc54fc50c0e22b82",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/forecast.py": "ecf516c1e111c52ec40cd7d04de165286a338d6f15d23c59a53542b79e226037",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/launch_training.py": "f95d5f98b88775e9bbe323698f75c48c987d788c691132dcaea736448a329af7",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/measure.py": "2ef42ae3060ae253a0fff745dd000698b2d41af45efc2451d899221239d307ed",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/observation_audit.py": "77fcf5978466318871b9e32677ea72a87203829a0ccaae7601684dcb5b64b958",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/preparation_report.py": "115d27dddd27a829bd7fe11ccf80d6c042a05f1a6910ddacf294fc33aa495777",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/prepare.py": "328e35798220813640432e41983ecbc271fccd7cfe65d75d97e9704217e678e9",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/protocol.py": "480951dbd4bdcfa9419afef0ddb85893e5220f768c6031b65bb6f783cb6e649d",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/provenance.py": "fa194f4df4a899c740f9349dd05d7aa624402e46a6954bd56c0e9614a2ca26c7",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/queued_preparation.py": "9cc7a4d75c5c84a2e7c195bbda8d11368817a7540bbd7391b18373b50fea9220",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/recover_failed_update.py": "598dcb4ca3cd4cc5300a8edc7cc3a553e76a78ab3bb64c525e71a4038b7d13a4",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/report.py": "9d461c8f495fff45970cd48dd0c40da761bf26d4261ff6f602e0dbd7b28476a6",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/resource_watch.py": "2bb2525e257d67fb03217af89ea67eeef65a8f596a17aa2b6ee09594e777bcf0",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/run_extended.py": "4683c78216523f391e468a48dcd489b6bf2d38aaa4fd1965a9dd72e9e1c538f9",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/run_fast.py": "7b7913a67fa29ffbefbcc267685e235cf8b4d5f270b206b11eb656b48e750e58",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/signed_analysis.py": "d5e46977517fb83ac0ef03add9dd9d68592e125532a0365f0c6ea230171de30a",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/utilities.py": "a52bfcc4dc9fd95a80280603fae812353e190c54a5efaaca64a06f1f605f7d31",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/watch_training_resources.py": "1905ecfa67f197083f6605335c2de67d1cfda4c829842a0c7b0834cf1893be49",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/window_forecast.py": "491f9f5a2316e3f0b39f0822c27eae3a0522de7c65eb2f58bb2d4b5221f45f4d",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/window_report.py": "ee0fa1bb5018d07a09bb394c3d5616cbdb75af156280d98fb55732bfbee36f69"
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "schema_version": "phase1.fixed_state_and_matched_evaluation_summary.v1",
+  "source_rl_run_id": "phase1-step-router-pilot-seed-101-r2",
+  "status": "complete",
+  "target": {
+    "skill_id": "pic_001",
+    "skill_title": "Systematic First-Pass Search",
+    "context_id": "pick_and_place",
+    "selection_rationale": {
+      "pilot_invocations": 475,
+      "pilot_triggered_trajectories": 59,
+      "pilot_game_clusters": 22,
+      "pilot_successful_triggered_trajectories": 14
+    }
+  },
+  "action_probe": {
+    "source_state_count": 8,
+    "source_game_clusters": 8,
+    "source_state_step_indices": [0],
+    "checkpoint_order": [
+      "Qwen2.5-1.5B-Instruct",
+      "checkpoint-1",
+      "checkpoint-2",
+      "checkpoint-3",
+      "checkpoint-4",
+      "checkpoint-5"
+    ],
+    "conditions": ["full_bank", "minus_skill", "no_skill"],
+    "record_count": 144,
+    "adjacent_transition_count": 120,
+    "endpoint_transition_count": 24,
+    "adjacent_flip_rate": {
+      "full_bank": 0.5,
+      "minus_skill": 0.4,
+      "no_skill": 0.275
+    },
+    "adjacent_mean_js_divergence": {
+      "full_bank": 0.0025895476417215823,
+      "minus_skill": 0.001277204090039087,
+      "no_skill": 0.0015923774364850446
+    },
+    "base_to_checkpoint_5_flip_rate": {
+      "full_bank": 0.875,
+      "minus_skill": 0.625,
+      "no_skill": 0.5
+    },
+    "base_to_checkpoint_5_mean_js_divergence": {
+      "full_bank": 0.005255349917955405,
+      "minus_skill": 0.005775309448911581,
+      "no_skill": 0.004573223110015035
+    },
+    "base_to_checkpoint_5_condition_interaction": {
+      "full_minus_minus_skill_flip_rate": 0.25,
+      "full_minus_no_skill_flip_rate": 0.375,
+      "full_flip_minus_skill_stable_count": 2,
+      "full_flip_no_skill_stable_count": 3
+    }
+  },
+  "matched_episode_evaluation": {
+    "split": "valid_seen",
+    "game_clusters": 8,
+    "evaluation_seeds": [11, 22, 33],
+    "conditions": ["full_bank", "minus_skill", "no_skill"],
+    "evaluated_checkpoints": [
+      "Qwen2.5-1.5B-Instruct",
+      "checkpoint-1",
+      "checkpoint-5"
+    ],
+    "rollout_records": 216,
+    "full_bank_eligible_records": 72,
+    "duplicate_key_count": 0,
+    "routing_invariant_violation_count": 0,
+    "success_counts": {
+      "Qwen2.5-1.5B-Instruct": {
+        "full_bank": 0,
+        "minus_skill": 1,
+        "no_skill": 0
+      },
+      "checkpoint-1": {
+        "full_bank": 3,
+        "minus_skill": 2,
+        "no_skill": 0
+      },
+      "checkpoint-5": {
+        "full_bank": 1,
+        "minus_skill": 1,
+        "no_skill": 2
+      }
+    },
+    "success_denominator_per_checkpoint_condition": 24,
+    "full_minus_skill_margin": {
+      "Qwen2.5-1.5B-Instruct": {
+        "estimate": -0.041666666666666664,
+        "cluster_bootstrap_95_lcb": -0.125,
+        "cluster_bootstrap_95_ucb": 0.0
+      },
+      "checkpoint-1": {
+        "estimate": 0.041666666666666664,
+        "cluster_bootstrap_95_lcb": -0.08333333333333333,
+        "cluster_bootstrap_95_ucb": 0.16666666666666666
+      },
+      "checkpoint-5": {
+        "estimate": 0.0,
+        "cluster_bootstrap_95_lcb": 0.0,
+        "cluster_bootstrap_95_ucb": 0.0
+      }
+    },
+    "margin_transitions": {
+      "base_to_checkpoint_1": {
+        "delta": 0.08333333333333333,
+        "label": "ambiguous"
+      },
+      "checkpoint_1_to_checkpoint_5": {
+        "delta": -0.041666666666666664,
+        "label": "ambiguous"
+      },
+      "base_to_checkpoint_5": {
+        "delta": 0.041666666666666664,
+        "label": "ambiguous"
+      }
+    },
+    "mean_invalid_action_count_per_trajectory": {
+      "Qwen2.5-1.5B-Instruct": 12.152777777777779,
+      "checkpoint-1": 0.1111111111111111,
+      "checkpoint-5": 0.0
+    },
+    "bootstrap_resamples": 10000,
+    "strict_harmful_sign_flip_count": 0,
+    "abstention": true,
+    "abstention_reason": "All pre/post Skill-margin intervals cross or touch zero; the observed event count is too small for a non-ambiguous utility-shift label."
+  },
+  "conclusion": {
+    "fixed_state_action_shift_observed": true,
+    "skill_condition_interaction_candidate_observed": true,
+    "causal_skill_utility_shift_established": false,
+    "harmful_skill_sign_flip_established": false
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": "phase2.semantic_direction.fast.v1",
+  "registered_at": "2026-09-09",
+  "report_deadline_local": "2026-09-11T08:00:00+08:00",
+  "run_id": "qwen35-clean-s303-u30-to36-semantic-direction-fast-v1",
+  "root": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1",
+  "parent_checkpoint": "/home/wangyifan/skill-RL/SkillRL/artifacts/checkpoints/qwen35-clean-formal-seed303-u30-resume12-s2-20260903/global_step_30",
+  "parent_rl_seed": 303,
+  "post_updates": [31, 32, 33, 34, 35, 36],
+  "development_updates": [31, 32],
+  "boundary_transition": 33,
+  "test_updates": [34, 35, 36],
+  "training": {
+    "gpus": 8, "lr": 0.000001, "kl_coef": 0.01,
+    "games_per_update": 8, "rollouts_per_game": 4,
+    "max_prompt_tokens": 2048, "max_response_tokens": 64,
+    "max_environment_steps": 30,
+    "sampler_seed_rule": "30300 + global_post_update",
+    "optimizer_restored": true,
+    "reference": "/home/wangyifan/model/Qwen3.5-4B",
+    "checkpoint_retention": "all six full checkpoints for fast cohort; no Phase1 deletion"
+  },
+  "primary_control": "placebo",
+  "primary_estimand": "Delta M_sem = Delta (success_original - success_placebo)",
+  "secondary_control": "null",
+  "signals": {
+    "support": "all actual response tokens, full vocabulary",
+    "vocab_size": 248320,
+    "inner_product": "identity",
+    "epsilon": 1e-12,
+    "tau_C": 0.0,
+    "tau_delta": "max(1e-8, 10 * same-checkpoint repeat-forward noise p95), fixed before gold",
+    "primary_aggregation": "token_equal_mean_including_zero_advantage_and_failed_gates",
+    "secondary_aggregation": "decision_equal_mean",
+    "minimum_nonzero_advantage_decisions": 20,
+    "minimum_training_games": 4,
+    "minimum_training_trajectories": 8,
+    "activation_layers": [8, 16, 24, 32],
+    "jvp_probe_decisions": 8,
+    "jvp_status": "engineering_gate_required; never substitute a norm for JVP"
+  },
+  "evaluation": {
+    "anchors_dir": "artifacts/anchors/qwen35-clean-all-skill-seeds101-202-v1/selected",
+    "placebo_dir": "artifacts/controls/qwen35-clean-all-skill-seeds101-202-v1",
+    "skills": ["cle_003", "cle_004", "cle_006", "gen_002"],
+    "anchor_count": 200,
+    "arms": ["original", "placebo", "null"],
+    "old_evidence_seeds": [41011],
+    "gold_seeds": [42011],
+    "temperature": 0.4, "top_p": 1.0,
+    "max_new_tokens": 64, "history_length": 2,
+    "tau_M": 0.05,
+    "first_release_suffix_count": 8400
+  },
+  "scope": {
+    "claim": "prospective exploratory single-selected-parent-seed directional validation",
+    "fast_release_priority": ["exact_training_evidence", "P_int_D_t", "paired_semantic_utility", "raw_parameter_and_activation", "time_holdout_direct_scores", "JVP_engineering"],
+    "deferred_until_core_release": ["12-update_extension", "extra_continuation_repeats", "shuffled_reward_update", "independent_batch_update", "random_parameter_update", "full_baseline_cost_curves"],
+    "no_selection_on_phase2_signal_or_gold": true,
+    "phase1_results_unchanged": true,
+    "small_test_update_count_disclosed": true
+  }
+}

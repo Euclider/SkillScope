@@ -1,0 +1,66 @@
+{
+  "general_skills": [
+    {
+      "skill_id": "gen_001",
+      "title": "Systematic Exploration",
+      "principle": "Search every plausible surface or container exactly once before revisiting; prioritize unopened or unseen locations to cover the whole room methodically.",
+      "when_to_apply": "Anytime the goal object count is not yet met and unexplored locations remain."
+    }
+  ],
+  "task_specific_skills": {
+    "pick_and_place": [
+      {
+        "skill_id": "pic_001",
+        "title": "Systematic First-Pass Search",
+        "principle": "Maintain a checklist of all visible and closed containers/surfaces; open or inspect each unseen candidate exactly once before revisiting any location.",
+        "when_to_apply": "After reading the goal and before acquiring every required object."
+      }
+    ],
+    "look_at_obj_in_light": [
+      {
+        "skill_id": "loo_001",
+        "title": "Seek Lamp Surfaces First",
+        "principle": "Head straight to furniture that commonly hosts a desklamp (desk, sidetable, nightstand) because the target must end up under that light.",
+        "when_to_apply": "Right after parsing a look-at-object-under-desklamp goal."
+      }
+    ],
+    "clean": [
+      {
+        "skill_id": "cle_001",
+        "title": "Phase-Ordered Plan",
+        "principle": "Always execute clean tasks in the fixed sequence: 1) locate & acquire target object, 2) bring it to an available water source/sink to clean, 3) navigate to final location, 4) place object.",
+        "when_to_apply": "As soon as the goal specifies the object must be clean before placement."
+      }
+    ],
+    "heat": [
+      {
+        "skill_id": "hea_001",
+        "title": "Secure Exact Target First",
+        "principle": "Always identify and pick up the exact object type named in the goal before interacting with the microwave or destination, ignoring look-alikes (e.g., don’t substitute a mug for a cup).",
+        "when_to_apply": "After spotting any candidate object or during initial search phase; before opening/using appliances."
+      }
+    ],
+    "cool": [
+      {
+        "skill_id": "coo_001",
+        "title": "Systematic Object Hunt",
+        "principle": "Sweep every unvisited surface and open each closed container until the exact required object is found; never loop over already-checked empty spots.",
+        "when_to_apply": "Immediately after receiving a cool-task and before any object is held."
+      }
+    ],
+    "pick_two": [
+      {
+        "skill_id": "pic_005",
+        "title": "Track Counts for Multiples",
+        "principle": "Maintain a tally of how many target objects are required, held, and already placed; stop searching only after the placed count meets the goal.",
+        "when_to_apply": "Throughout tasks demanding two or more instances of the same object."
+      }
+    ]
+  },
+  "common_mistakes": [],
+  "metadata": {
+    "source": "memory_data/alfworld/claude_style_skills.json",
+    "selection_rule": "one general exploration skill and one task-specific skill for each of the six ALFWorld task types; pic_005 is routed to pick_two",
+    "frozen": true
+  }
+}

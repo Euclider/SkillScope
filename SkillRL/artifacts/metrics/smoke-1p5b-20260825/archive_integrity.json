@@ -1,0 +1,9 @@
+{
+  "actual_rollout_records": 36,
+  "duplicate_unique_keys": 0,
+  "expected_rollout_records": 36,
+  "missing_trajectory_paths": [],
+  "passed": true,
+  "steps_with_missing_fields": {},
+  "unreadable_trajectory_paths": []
+}

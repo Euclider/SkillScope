@@ -1,0 +1,36 @@
+{
+  "all_units": 19,
+  "created_at": "2026-09-12T04:06:46.233677+00:00",
+  "heldout_units": 7,
+  "outputs_sha256": {
+    "all_supported.csv": "e86582214c4abeb1687112995db9e106d5d7e5373fd137e8ee65ec7db532465a",
+    "appendix.md": "e7dfdeefb7601f4c31397e9790fd1d1d1131da560aac53e7418cd82f10aee851",
+    "comparisons.csv": "3b274c1f005ffc08827087e530c8723e69514b08af7955c597533ededfb5ebdb",
+    "heldout.csv": "ea76cbe13ee2eacfe3d746bb46284ba8d37eddb213fed4c2fb7152f318c43cdb"
+  },
+  "post_hoc": true,
+  "source_sha256": {
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/metrics/anchor_margins.parquet": "dbeed1a96218628657680e679fa297e393cdaba588720aa13261bc63c7da4ab2",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/metrics/signal_utility_pairs.parquet": "c35529ee955066e76f0c8d48cf8e6b4954b7f8633f0a03a0ed1e3c609c8a0503",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/protocol.json": "ed7c91a550ded5cb952afdb338355898e02fe2027a476424beb939e4d1c9d28e",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/signals/u0031/parameter_delta.json": "c655a3ffd9129bf9c76be4f626ed5929f68df377b19a5e51c36319d37aeb0ff2",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/signals/u0031/skill_context_features.parquet": "e10fa27cd09bb2e6f369531f31435e8af41e92b5f6cef6ffa7b53498b6a268ec",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/signals/u0032/parameter_delta.json": "7f37963018a701743e9ae15182b76f75e77ef01b430e6dcf651b250314d44928",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/signals/u0032/skill_context_features.parquet": "e01c27e3dd3c9a528e763a9ff871be6cf8bb4aff9b7e482f8846e7dbd4716a86",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/signals/u0033/parameter_delta.json": "1fb1fd8f65b2458082875f0a47a007ddd15c7b3234c8d4d1acab9b191acf5431",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/signals/u0033/skill_context_features.parquet": "0429ef33db1d4394f4462a444f4892e4e50b4e23481806f77d677a54aa9ce677",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/signals/u0034/parameter_delta.json": "077778157bf2f63b5e56f9c37e7141166412a81574f4216dfb19d5bbf9806fa6",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/signals/u0034/skill_context_features.parquet": "defc5b06fcd894970df28d05f7ea52f013618c30cd488be84b60c876a629fad1",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/signals/u0035/parameter_delta.json": "ac3a1de2401af17ddb106de28e2b04ac59cb7dd06a90ff44396e41020f3b542c",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/signals/u0035/skill_context_features.parquet": "6e949a3c33f9f519d1898ea16df30fb707fca036446e8aa7afc3f3f222104916",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/training_steps/phase2-s303-fast-u31/step-000031.json": "1e64319bf8ca423eab4ca65fd484d4b8b378b5b36cee04844370f30d79acaed9",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/training_steps/phase2-s303-fast-u32/step-000032.json": "f5c52bf25d3bfb3f8d24d4202ed55c419e8d34306665551bbc44f2c8859278fa",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/training_steps/phase2-s303-fast-u33/step-000033.json": "693f3d81287fd3977a96f78fd598442c4bba4e8f9fe8bcddb096ca7ba8970e8c",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/training_steps/phase2-s303-fast-u34/step-000034.json": "7e97b0acfc3b668bc3d904cad42b49edcdf4728c24f3500b6349001afb85935a",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/training_steps/phase2-s303-fast-u35/step-000035.json": "3dca126423da41d06f39732d479217b94d5369c4cb9115a58dd699fa06ed9513",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/observation_audit.py": "77fcf5978466318871b9e32677ea72a87203829a0ccaae7601684dcb5b64b958",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/signed_analysis.py": "d5e46977517fb83ac0ef03add9dd9d68592e125532a0365f0c6ea230171de30a",
+    "/home/wangyifan/skill-RL/SkillRL/phase2/utilities.py": "5bae8ff019606d6406273f3e5bacb37f4c3b46df319ec5f5a3820b17a4948720"
+  },
+  "test_is_subset": true
+}

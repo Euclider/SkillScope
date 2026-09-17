@@ -1,0 +1,34 @@
+{
+  "schema_version": "phase1.completed_seed_checkpoint_cleanup.v1",
+  "run_id": "qwen35-clean-formal-seed202-u30-resume10-s1-20260902",
+  "reason": "Seed completed and C1/C2/C3 model-only analysis artifacts verified; release rolling optimizer checkpoints before Seed 303.",
+  "removed_at": "2026-09-02T23:31:59+08:00",
+  "removed_full_checkpoints": [
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/artifacts/checkpoints/qwen35-clean-formal-seed202-u30-resume10-s1-20260902/global_step_29",
+      "total_bytes": 53032819758,
+      "world_size": 4,
+      "model_shards": 4,
+      "optimizer_shards": 4,
+      "extra_state_shards": 4
+    },
+    {
+      "path": "/home/wangyifan/skill-RL/SkillRL/artifacts/checkpoints/qwen35-clean-formal-seed202-u30-resume10-s1-20260902/global_step_30",
+      "total_bytes": 53032819758,
+      "world_size": 4,
+      "model_shards": 4,
+      "optimizer_shards": 4,
+      "extra_state_shards": 4
+    }
+  ],
+  "retained_model_only": [
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/model_only/qwen35-clean-formal-seed202-u30-c1-update10",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/model_only/qwen35-clean-formal-seed202-u30-c2-update20",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/model_only/qwen35-clean-formal-seed202-u30-c3-update30"
+  ],
+  "retained_model_only_validation": {
+    "model_bytes_each": 9682950504,
+    "tensor_count_each": 427,
+    "model_type": "qwen3_5_text"
+  }
+}

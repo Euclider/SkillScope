@@ -1,0 +1,501 @@
+{
+  "checkpoint_id": "u0035",
+  "condition": "full_bank",
+  "context_id": "clean",
+  "coverage": [
+    {
+      "distinct_games": 0,
+      "distinct_states": 0,
+      "kind": "general",
+      "natural_occurrences": 0,
+      "phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "gen_001",
+      "supported": false,
+      "title": "Systematic Exploration",
+      "trigger_step_max": null,
+      "trigger_step_mean": null,
+      "trigger_step_min": null,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 29,
+      "distinct_states": 72,
+      "kind": "general",
+      "natural_occurrences": 84,
+      "phase_counts": {
+        "early": 57,
+        "initial": 0,
+        "late": 3,
+        "middle": 24
+      },
+      "selected_distinct_games": 29,
+      "selected_occurrences": 50,
+      "selected_phase_counts": {
+        "early": 26,
+        "initial": 0,
+        "late": 1,
+        "middle": 23
+      },
+      "skill_id": "gen_002",
+      "supported": true,
+      "title": "Immediate Acquisition",
+      "trigger_step_max": 29,
+      "trigger_step_mean": 4.630952380952381,
+      "trigger_step_min": 1,
+      "unsupported_reason": null
+    },
+    {
+      "distinct_games": 0,
+      "distinct_states": 0,
+      "kind": "general",
+      "natural_occurrences": 0,
+      "phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "gen_003",
+      "supported": false,
+      "title": "Destination First Policy",
+      "trigger_step_max": null,
+      "trigger_step_mean": null,
+      "trigger_step_min": null,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 0,
+      "distinct_states": 0,
+      "kind": "general",
+      "natural_occurrences": 0,
+      "phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "gen_004",
+      "supported": false,
+      "title": "Track Counts & Progress",
+      "trigger_step_max": null,
+      "trigger_step_mean": null,
+      "trigger_step_min": null,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 0,
+      "distinct_states": 0,
+      "kind": "general",
+      "natural_occurrences": 0,
+      "phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "gen_005",
+      "supported": false,
+      "title": "Use State-Changing Tools Early",
+      "trigger_step_max": null,
+      "trigger_step_mean": null,
+      "trigger_step_min": null,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 0,
+      "distinct_states": 0,
+      "kind": "general",
+      "natural_occurrences": 0,
+      "phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "gen_006",
+      "supported": false,
+      "title": "Establish Spatial Relations",
+      "trigger_step_max": null,
+      "trigger_step_mean": null,
+      "trigger_step_min": null,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 0,
+      "distinct_states": 0,
+      "kind": "general",
+      "natural_occurrences": 0,
+      "phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "gen_007",
+      "supported": false,
+      "title": "Open Before Judging Empty",
+      "trigger_step_max": null,
+      "trigger_step_mean": null,
+      "trigger_step_min": null,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 0,
+      "distinct_states": 0,
+      "kind": "general",
+      "natural_occurrences": 0,
+      "phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "gen_008",
+      "supported": false,
+      "title": "Avoid Redundant Rechecks",
+      "trigger_step_max": null,
+      "trigger_step_mean": null,
+      "trigger_step_min": null,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 0,
+      "distinct_states": 0,
+      "kind": "general",
+      "natural_occurrences": 0,
+      "phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "gen_009",
+      "supported": false,
+      "title": "Plan with Landmarks",
+      "trigger_step_max": null,
+      "trigger_step_mean": null,
+      "trigger_step_min": null,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 0,
+      "distinct_states": 0,
+      "kind": "general",
+      "natural_occurrences": 0,
+      "phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "gen_010",
+      "supported": false,
+      "title": "Progressive Goal Decomposition",
+      "trigger_step_max": null,
+      "trigger_step_mean": null,
+      "trigger_step_min": null,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 0,
+      "distinct_states": 0,
+      "kind": "general",
+      "natural_occurrences": 0,
+      "phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "gen_011",
+      "supported": false,
+      "title": "Efficient Relation Search",
+      "trigger_step_max": null,
+      "trigger_step_mean": null,
+      "trigger_step_min": null,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 0,
+      "distinct_states": 0,
+      "kind": "general",
+      "natural_occurrences": 0,
+      "phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "gen_012",
+      "supported": false,
+      "title": "Terminate Only On Success",
+      "trigger_step_max": null,
+      "trigger_step_mean": null,
+      "trigger_step_min": null,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 0,
+      "distinct_states": 0,
+      "kind": "task_specific",
+      "natural_occurrences": 0,
+      "phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "cle_001",
+      "supported": false,
+      "title": "Phase-Ordered Plan",
+      "trigger_step_max": null,
+      "trigger_step_mean": null,
+      "trigger_step_min": null,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 11,
+      "distinct_states": 18,
+      "kind": "task_specific",
+      "natural_occurrences": 18,
+      "phase_counts": {
+        "early": 5,
+        "initial": 0,
+        "late": 8,
+        "middle": 5
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "cle_002",
+      "supported": false,
+      "title": "Pick Before You Wander",
+      "trigger_step_max": 27,
+      "trigger_step_mean": 12.833333333333334,
+      "trigger_step_min": 3,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 31,
+      "distinct_states": 104,
+      "kind": "task_specific",
+      "natural_occurrences": 111,
+      "phase_counts": {
+        "early": 69,
+        "initial": 0,
+        "late": 1,
+        "middle": 41
+      },
+      "selected_distinct_games": 31,
+      "selected_occurrences": 50,
+      "selected_phase_counts": {
+        "early": 20,
+        "initial": 0,
+        "late": 0,
+        "middle": 30
+      },
+      "skill_id": "cle_003",
+      "supported": true,
+      "title": "Sink First for Cleaning",
+      "trigger_step_max": 18,
+      "trigger_step_mean": 4.585585585585585,
+      "trigger_step_min": 2,
+      "unsupported_reason": null
+    },
+    {
+      "distinct_games": 31,
+      "distinct_states": 52,
+      "kind": "task_specific",
+      "natural_occurrences": 114,
+      "phase_counts": {
+        "early": 111,
+        "initial": 0,
+        "late": 0,
+        "middle": 3
+      },
+      "selected_distinct_games": 31,
+      "selected_occurrences": 50,
+      "selected_phase_counts": {
+        "early": 50,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "cle_004",
+      "supported": true,
+      "title": "Systematic Container Sweep",
+      "trigger_step_max": 7,
+      "trigger_step_mean": 1.131578947368421,
+      "trigger_step_min": 1,
+      "unsupported_reason": null
+    },
+    {
+      "distinct_games": 7,
+      "distinct_states": 11,
+      "kind": "task_specific",
+      "natural_occurrences": 11,
+      "phase_counts": {
+        "early": 1,
+        "initial": 0,
+        "late": 1,
+        "middle": 9
+      },
+      "selected_distinct_games": 0,
+      "selected_occurrences": 0,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 0,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "cle_005",
+      "supported": false,
+      "title": "State Verification Before Drop",
+      "trigger_step_max": 20,
+      "trigger_step_mean": 10.0,
+      "trigger_step_min": 4,
+      "unsupported_reason": "requires >= 30 occurrences and >= 15 games"
+    },
+    {
+      "distinct_games": 31,
+      "distinct_states": 31,
+      "kind": "task_specific",
+      "natural_occurrences": 124,
+      "phase_counts": {
+        "early": 0,
+        "initial": 124,
+        "late": 0,
+        "middle": 0
+      },
+      "selected_distinct_games": 31,
+      "selected_occurrences": 50,
+      "selected_phase_counts": {
+        "early": 0,
+        "initial": 50,
+        "late": 0,
+        "middle": 0
+      },
+      "skill_id": "cle_006",
+      "supported": true,
+      "title": "Use Location Priors",
+      "trigger_step_max": 0,
+      "trigger_step_mean": 0.0,
+      "trigger_step_min": 0,
+      "unsupported_reason": null
+    }
+  ],
+  "eligible_skill_count": 18,
+  "maximum_selected_per_skill": 50,
+  "minimum_distinct_games": 15,
+  "minimum_occurrences": 30,
+  "schema_version": "phase1.all_first_invocation_coverage.v1",
+  "source_trajectory_count": 124,
+  "supported_skill_count": 4,
+  "unsupported_skill_count": 14
+}

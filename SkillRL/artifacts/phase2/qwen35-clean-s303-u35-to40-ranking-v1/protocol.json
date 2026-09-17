@@ -1,0 +1,211 @@
+{
+  "baseline_protocol_sha256": "08ddc27cfa234d6ca5794f2b898a4e8e79f927169f2daf54ab3b66bd1354ce4a",
+  "baseline_source": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1",
+  "evaluation": {
+    "anchor_count": 200,
+    "anchor_sets": [
+      {
+        "anchors_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/support/selected/clean/gen_002.jsonl",
+        "anchors_sha256": "d3c29b761a470458b2bb2e852c920402df846552cca359d72965a021d0d3d6a1",
+        "context_id": "clean",
+        "placebo_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/controls/gen_002.json",
+        "placebo_sha256": "48cc93b4351aaa4692673f7887195354062a93c2dfd44356c577ea988c87927e",
+        "skill_id": "gen_002"
+      },
+      {
+        "anchors_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/support/selected/clean/cle_003.jsonl",
+        "anchors_sha256": "0bc2a0a114a7c018ddcef7d1aeb5241e14f1568fb192a025467d02cb7c830c48",
+        "context_id": "clean",
+        "placebo_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/controls/cle_003.json",
+        "placebo_sha256": "9cccca3155bc34b0f8b0ea7c367c0879a5ce676b511643c1110eb7bd02495b4e",
+        "skill_id": "cle_003"
+      },
+      {
+        "anchors_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/support/selected/clean/cle_004.jsonl",
+        "anchors_sha256": "d82e75974c983d80645c9005c6047b5df1f111caf4d224ff16c2b5840ed48653",
+        "context_id": "clean",
+        "placebo_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/controls/cle_004.json",
+        "placebo_sha256": "07801d9768acfa753434f10a842dc9a60543e1b2f8662f2005d0d47445ecc932",
+        "skill_id": "cle_004"
+      },
+      {
+        "anchors_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/support/selected/clean/cle_006.jsonl",
+        "anchors_sha256": "4cc61c0c4f064e83fd898afd92c54c5725cc731d0c7d3b9a677ad9a7107abe57",
+        "context_id": "clean",
+        "placebo_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/controls/cle_006.json",
+        "placebo_sha256": "8180c3f8db860bc0f8cab86b7d34ce799375857dda71999099e455317ce93046",
+        "skill_id": "cle_006"
+      }
+    ],
+    "arms": [
+      "original",
+      "placebo",
+      "null"
+    ],
+    "bootstrap_repetitions": 10000,
+    "gold_seeds": [
+      52011,
+      52021,
+      52031,
+      52041
+    ],
+    "history_length": 2,
+    "max_new_tokens": 64,
+    "max_steps": 30,
+    "old_evidence_seeds": [
+      51011,
+      51021
+    ],
+    "shards": 8,
+    "tau_M": 0.05,
+    "temperature": 0.4,
+    "top_p": 1.0
+  },
+  "note": "User approved first 5-update window on 2026-09-13. Direct within-window ranking is primary; no fitted regressor is needed. Not a multi-window or cross-seed result.",
+  "parent_checkpoint": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/checkpoints/global_step_35",
+  "parent_rl_seed": 303,
+  "parent_update": 35,
+  "post_updates": [
+    36,
+    37,
+    38,
+    39,
+    40
+  ],
+  "prediction": {
+    "base_features": [
+      "old_margin",
+      "old_margin_se",
+      "u_control_norm"
+    ],
+    "candidate_features": [
+      "delta_centered_norm",
+      "P_int",
+      "D_contribution",
+      "forward_kl_original"
+    ],
+    "enable_fitted_models": false,
+    "minimum_development_windows": 4,
+    "minimum_training_units": 24,
+    "phases": [
+      "all",
+      "initial",
+      "early",
+      "middle",
+      "late"
+    ],
+    "ridge_alpha": 1.0
+  },
+  "primary_control": "placebo",
+  "primary_estimand": "Delta M_sem = Delta(success_original - success_placebo)",
+  "ranking": {
+    "baselines": [
+      "random_expected",
+      "low_old_semantic_utility",
+      "generic_control_update_norm"
+    ],
+    "bootstrap_status": "Paired game/continuation CIs for each utility change; ranking metrics descriptive in this first single window, not a cross-window significance claim",
+    "budgets_fraction": [
+      0.25,
+      0.5
+    ],
+    "budgets_k": [
+      1,
+      2
+    ],
+    "decline_gain": "max(0, -Delta_M_sem)",
+    "event_thresholds": [
+      0.0,
+      0.05
+    ],
+    "future_guard": "Freeze scores and budgets before new post-update gold. Compare identical supported candidate pools within each window; never treat continuation repeats or phase subdivisions as independent update windows. Cross-path/window aggregates require later data and implementation.",
+    "metrics": [
+      "precision_at_k",
+      "recall_at_k",
+      "captured_decline_mass",
+      "within_window_spearman",
+      "within_window_kendall"
+    ],
+    "primary": "Within-window Skill ranking for semantic utility decline; no fitted value regressor is required.",
+    "scores": {
+      "D_contribution": 1,
+      "D_ungated_contribution": 1,
+      "P_int": -1,
+      "activation_l16_norm": 1,
+      "activation_l24_norm": 1,
+      "activation_l32_norm": 1,
+      "activation_l8_norm": 1,
+      "delta_centered_norm": 1,
+      "delta_norm": 1,
+      "forward_kl_original": 1,
+      "js_original": 1,
+      "old_margin": -1,
+      "u_control_norm": 1,
+      "u_original_norm": 1
+    },
+    "secondary": "Any-change audit uses absolute Delta_M_sem and is reported separately from decline ranking.",
+    "shared_candidate_pool": "Identical naturally supported complete-case Skills for all fixed scores, separately within each window/context/phase",
+    "ties": "Expected selection under uniform random ordering within ties; never break using gold.",
+    "zero_event_windows": "Recall and captured decline mass undefined; report counts, do not silently score as zero."
+  },
+  "registered_at": "2026-09-12T21:54:04.139803+00:00",
+  "report_path": "/home/wangyifan/skill-RL/2026-09-13-phase2-u35-to40-ranking-execution.md",
+  "rl_path_id": "seed303-continued-u35-to40-ranking-v1",
+  "root": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1",
+  "run_id": "qwen35-clean-s303-u35-to40-ranking-v1",
+  "schema_version": "phase2.extended.direction.v2",
+  "signals": {
+    "activation_layers": [
+      8,
+      16,
+      24,
+      32
+    ],
+    "epsilon": 1e-12,
+    "inner_product": "identity",
+    "minimum_nonzero_advantage_decisions": 20,
+    "minimum_training_games": 4,
+    "minimum_training_trajectories": 8,
+    "primary_aggregation": "token_equal_mean_including_zero_advantage_and_failed_gates",
+    "support": "all actual response loss tokens, full vocabulary",
+    "tau_C": 0.0,
+    "vocab_size": 248320
+  },
+  "status": "frozen",
+  "storage": {
+    "boundary_reserve_gib": 250,
+    "keep_full_recovery": 2,
+    "minimum_next_update_allowance_gib": 100,
+    "note": "Three full checkpoints can transiently coexist while the newest commits. Rotation happens only after native commit and validation. No old source cohort deletion except separately approved six conversion copies.",
+    "projected_transient_reserve_gib": 200,
+    "release_completed_conversions": true,
+    "retain_all_live_logprobs_and_alignment": true,
+    "retain_every_fp32_policy": true,
+    "rolling_recovery_authorized": true
+  },
+  "training": {
+    "games_per_update": 8,
+    "kl_coef": 0.01,
+    "lr": 1e-06,
+    "max_environment_steps": 30,
+    "max_prompt_tokens": 2048,
+    "max_response_tokens": 64,
+    "optimizer_restored": true,
+    "reference": "/home/wangyifan/model/Qwen3.5-4B",
+    "rollouts_per_game": 4,
+    "run_id_prefix": "phase2-s303-ranking-v1",
+    "sampler_seed_base": 30300,
+    "task_types": [
+      3
+    ],
+    "validation_games": 27
+  },
+  "window_direction": "start_batch_endpoint_projection",
+  "windows": [
+    {
+      "end": 40,
+      "role": "test",
+      "start": 35
+    }
+  ]
+}

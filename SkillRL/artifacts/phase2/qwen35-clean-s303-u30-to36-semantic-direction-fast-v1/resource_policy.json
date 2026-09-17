@@ -1,0 +1,18 @@
+{
+  "allocation": "all currently free GPUs at update boundaries, 1 through 8 ranks",
+  "approved_at_local": "2026-09-10T16:15:00+08:00",
+  "authorization": "User: 可以，不要空等，有几张卡就用几张",
+  "global_optimizer_decision_batch": 32,
+  "gold_protocol_and_forecast_splits_unchanged": true,
+  "interpretation": "one continued parent seed with resource/backend changes; not bitwise 8-GPU continuation",
+  "kl_coefficient": 0.01,
+  "learning_rate": 1e-06,
+  "minimum_free_gpu_memory_usage_mib_threshold": 1500,
+  "odd_world_sizes": "zero-weight synchronization slots keep exact global 32-decision gradient normalization",
+  "one_or_two_gpus": "CPU AdamW moments/arithmetic to reduce GPU memory; same optimizer hyperparameters",
+  "resize_during_update": false,
+  "schema_version": "phase2.elastic_resources.v1",
+  "source_checkpoints_immutable": true,
+  "training_rollouts_per_global_update": 32,
+  "world_size_changes": "lossless model and optimizer redistribution; scheduler preserved; deterministic distinct rank RNG seeds"
+}

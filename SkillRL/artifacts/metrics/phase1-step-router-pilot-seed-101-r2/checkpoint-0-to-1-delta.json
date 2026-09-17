@@ -1,0 +1,14 @@
+{
+  "all_finite": true,
+  "changed_parameter_count": 1770695160,
+  "config_hash": "49f8047ad949fa2ebaa3e5b89478fc0fc4053b83e8e0138f07a084f0233e48b1",
+  "fsdp_checkpoint": "/home/wangyifan/skill-RL/SkillRL/artifacts/checkpoints/phase1-step-router-pilot-seed-101-r2/global_step_1/actor",
+  "fsdp_world_size": 2,
+  "hf_checkpoint": "/home/wangyifan/model/Qwen2.5-1.5B-Instruct",
+  "max_absolute_delta": 2.9006972908973694e-05,
+  "parameter_count": 1777088000,
+  "parameter_delta_l2_norm": 0.23185064998541782,
+  "reference_parameter_l2_norm": 1687.3942657975272,
+  "relative_l2_norm": 0.00013740158698230276,
+  "schema_version": "phase1.hf_to_fsdp_checkpoint_delta.v1"
+}

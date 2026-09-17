@@ -1,0 +1,37 @@
+{
+  "schema_version": "phase1.run_status.v1",
+  "run_id": "phase1-fixed-state-and-matched-pic_001-seed-101",
+  "source_rl_run_id": "phase1-step-router-pilot-seed-101-r2",
+  "status": "complete",
+  "completed_at": "2026-08-26",
+  "skill_id": "pic_001",
+  "context_id": "pick_and_place",
+  "action_probe_records": 144,
+  "matched_rollout_records": 216,
+  "matched_trajectory_files": 216,
+  "evaluated_checkpoints": [
+    "Qwen2.5-1.5B-Instruct",
+    "checkpoint-1",
+    "checkpoint-5"
+  ],
+  "action_probe_checkpoints": [
+    "Qwen2.5-1.5B-Instruct",
+    "checkpoint-1",
+    "checkpoint-2",
+    "checkpoint-3",
+    "checkpoint-4",
+    "checkpoint-5"
+  ],
+  "duplicate_key_count": 0,
+  "routing_invariant_violation_count": 0,
+  "result": "fixed_state_shift_observed_but_episode_utility_shift_ambiguous",
+  "artifacts": {
+    "summary": "artifacts/metrics/phase1-step-router-pilot-seed-101-r2/evaluation-summary.json",
+    "probe_states": "artifacts/probes/phase1-step-router-pilot-seed-101-r2/pic_001-states.jsonl",
+    "action_probe_records": "artifacts/evaluations/phase1-step-router-pilot-seed-101-r2/action-probe-pic_001.jsonl",
+    "action_probe_metrics": "artifacts/metrics/phase1-step-router-pilot-seed-101-r2/action-probe-pic_001",
+    "matched_records": "artifacts/evaluations/phase1-step-router-pilot-seed-101-r2/matched-pic_001",
+    "matched_metrics": "artifacts/metrics/phase1-step-router-pilot-seed-101-r2/matched-pic_001",
+    "report": "/home/wangyifan/skill-RL/2026-08-26-fixed-state-and-matched-evaluation-results.md"
+  }
+}

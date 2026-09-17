@@ -1,0 +1,103 @@
+{
+  "games_per_context": 8,
+  "schema_version": "phase1.game_manifest.v1",
+  "selection_seed": 20260825,
+  "splits": {
+    "development": {
+      "clean": {
+        "count": 8,
+        "path": "phase1/config/game_ids/development/clean.txt",
+        "sha256": "fe81d89541b863be29d4ede77977ea44ad80bb1e3ad5cb372afb066fdee00d73"
+      },
+      "cool": {
+        "count": 8,
+        "path": "phase1/config/game_ids/development/cool.txt",
+        "sha256": "cef9cc882baf0752bd1e1df0ba4aeb79298df9a605e7277072751238c27edb29"
+      },
+      "heat": {
+        "count": 8,
+        "path": "phase1/config/game_ids/development/heat.txt",
+        "sha256": "3998087600d7ddc4461d300e73e98549cc3cf0713b2f97715e922906d847ecaf"
+      },
+      "look_at_obj_in_light": {
+        "count": 8,
+        "path": "phase1/config/game_ids/development/look_at_obj_in_light.txt",
+        "sha256": "665f17585bb81dc4033e53fa5a1d7935d8e0aba559894a11a04beb5094e7c192"
+      },
+      "pick_and_place": {
+        "count": 8,
+        "path": "phase1/config/game_ids/development/pick_and_place.txt",
+        "sha256": "49ab32ed4650e7ca1e489d604fd76d45391b6fc900bfe61c7f965684a1abe2f5"
+      },
+      "pick_two": {
+        "count": 8,
+        "path": "phase1/config/game_ids/development/pick_two.txt",
+        "sha256": "2f9b3105b8471c48e24cecea636a3b33db669ced961e73336c4f5db044c514a9"
+      }
+    },
+    "valid_seen": {
+      "clean": {
+        "count": 8,
+        "path": "phase1/config/game_ids/valid_seen/clean.txt",
+        "sha256": "0bba44d875a1babba93d3e6856acec7099d2b485dc3f0f82db2e3888cd6e4101"
+      },
+      "cool": {
+        "count": 8,
+        "path": "phase1/config/game_ids/valid_seen/cool.txt",
+        "sha256": "da80a5d78e872036c8f1c8f32832e7d0e74e3a58d4d6d0846959efcb2eb773b3"
+      },
+      "heat": {
+        "count": 8,
+        "path": "phase1/config/game_ids/valid_seen/heat.txt",
+        "sha256": "949c7a6fbb0f517ca4489dc5d9af805be81bba9bbaa9270cb86f2be2e57888ef"
+      },
+      "look_at_obj_in_light": {
+        "count": 8,
+        "path": "phase1/config/game_ids/valid_seen/look_at_obj_in_light.txt",
+        "sha256": "57cabd0ab96c072dd4d3afa714116ad2e539e807db84272a3d2f29cb605bb1cd"
+      },
+      "pick_and_place": {
+        "count": 8,
+        "path": "phase1/config/game_ids/valid_seen/pick_and_place.txt",
+        "sha256": "c6b5a201373e60a44d2e6f3a4b5001fedac55444fe273677c5b4599b6b6a211d"
+      },
+      "pick_two": {
+        "count": 8,
+        "path": "phase1/config/game_ids/valid_seen/pick_two.txt",
+        "sha256": "56f7c6c404d1b1b47640823121f620893c95f711250f0c837eca95c0831216c1"
+      }
+    },
+    "valid_unseen": {
+      "clean": {
+        "count": 8,
+        "path": "phase1/config/game_ids/valid_unseen/clean.txt",
+        "sha256": "0a340dd83e44395a7a597e3518172998ad555efe1d11ccae4ce43802abf2eebd"
+      },
+      "cool": {
+        "count": 8,
+        "path": "phase1/config/game_ids/valid_unseen/cool.txt",
+        "sha256": "10b1c2caeb78526c1d57936b814dd79edd773789fe790560333669cf56967025"
+      },
+      "heat": {
+        "count": 8,
+        "path": "phase1/config/game_ids/valid_unseen/heat.txt",
+        "sha256": "f494b8e22125cdd8c205ce0dea6882c343ff8983d63b817bca37c3c9d8869310"
+      },
+      "look_at_obj_in_light": {
+        "count": 8,
+        "path": "phase1/config/game_ids/valid_unseen/look_at_obj_in_light.txt",
+        "sha256": "aae3adcefa25cbbc6ca290d933e3827ae9e139c88a9fdea95da795fa82d5ddb1"
+      },
+      "pick_and_place": {
+        "count": 8,
+        "path": "phase1/config/game_ids/valid_unseen/pick_and_place.txt",
+        "sha256": "f38eb89d569d51ec93a89b3968c04b7d46b47d7963c830d230d587a7c6d95b23"
+      },
+      "pick_two": {
+        "count": 8,
+        "path": "phase1/config/game_ids/valid_unseen/pick_two.txt",
+        "sha256": "48f13df452bc22335a2ec3f5a438778f4b486016a2a3839ae16ac12ba2c96580"
+      }
+    }
+  }
+}

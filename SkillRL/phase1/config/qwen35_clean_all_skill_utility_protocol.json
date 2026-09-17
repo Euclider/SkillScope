@@ -1,0 +1,89 @@
+{
+  "schema_version": "phase1.qwen35_clean_all_skill_utility.v1",
+  "preregistered_at": "2026-09-03",
+  "purpose": "Comprehensive first-natural-invocation Skill marginal-utility evaluation across completed RL seeds 101 and 202.",
+  "policy_checkpoints": [
+    {"checkpoint_id": "b0", "rl_seed": 0, "global_update": 0, "path": "/home/wangyifan/model/Qwen3.5-4B"},
+    {"checkpoint_id": "seed101-u10", "rl_seed": 101, "global_update": 10, "path": "artifacts/model_only/qwen35-clean-formal-seed101-u30-c1-update10"},
+    {"checkpoint_id": "seed101-u20", "rl_seed": 101, "global_update": 20, "path": "artifacts/model_only/qwen35-clean-formal-seed101-u30-c2-update20"},
+    {"checkpoint_id": "seed101-u30", "rl_seed": 101, "global_update": 30, "path": "artifacts/model_only/qwen35-clean-formal-seed101-u30-c3-update30"},
+    {"checkpoint_id": "seed202-u10", "rl_seed": 202, "global_update": 10, "path": "artifacts/model_only/qwen35-clean-formal-seed202-u30-c1-update10"},
+    {"checkpoint_id": "seed202-u20", "rl_seed": 202, "global_update": 20, "path": "artifacts/model_only/qwen35-clean-formal-seed202-u30-c2-update20"},
+    {"checkpoint_id": "seed202-u30", "rl_seed": 202, "global_update": 30, "path": "artifacts/model_only/qwen35-clean-formal-seed202-u30-c3-update30"}
+  ],
+  "anchor_support": {
+    "source_policy": "b0",
+    "split": "valid_unseen",
+    "task_type": "clean",
+    "game_count": 31,
+    "generation_seeds": [1101, 2202, 3303],
+    "source_trajectory_count": 93,
+    "anchor_definition": "first natural Router selection per source trajectory per Skill",
+    "fixed_across_checkpoints_and_rl_seeds": true,
+    "reward_used_for_anchor_or_skill_selection": false,
+    "phase_bins": {
+      "initial": [0, 0],
+      "early": [1, 4],
+      "middle": [5, 14],
+      "late": [15, null]
+    }
+  },
+  "skill_eligibility": {
+    "candidate_set": "12 general plus 6 clean task-specific Skills from the frozen Bank",
+    "natural_occurrences_minimum": 30,
+    "distinct_games_minimum": 10,
+    "selected_occurrences_maximum": 50,
+    "cap_rule": "deterministic round-robin by game, then generation seed and trigger step",
+    "unsupported_policy": "report as unsupported; never force invocation",
+    "selection_reads_reward_or_post_rl_behavior": false
+  },
+  "intervention": {
+    "protocol_version": "phase1.all-first-invocation-payload.v2",
+    "arms": ["original", "placebo", "null"],
+    "router_descriptor_bank_identical_across_arms": true,
+    "prefix_before_first_invocation_replayed_exactly": true,
+    "suffix_rollout_free_after_intervention": true,
+    "target_payload_intervention_persists_on_later_target_skill_selections": true,
+    "placebo": "original section header and bullet template, task-unrelated typography content, exactly tokenizer-token matched to the original Skill payload",
+    "null": "same Router selection but empty policy-prompt payload",
+    "temperature": 0.4,
+    "top_p": 1.0,
+    "max_steps": 30,
+    "max_new_tokens_per_action": 64,
+    "history_length": 2
+  },
+  "estimands": {
+    "semantic_utility": "R(original) - R(placebo)",
+    "total_utility": "R(original) - R(null)",
+    "prompt_nuisance": "R(placebo) - R(null)",
+    "longitudinal_semantic_change": "U_sem(post checkpoint) - U_sem(B0) on identical anchors",
+    "harmful_sign_flip": "B0 game-cluster 95% CI strictly positive and post-checkpoint game-cluster 95% CI strictly negative",
+    "action_flip": "original first action differs from placebo first action; direction is assigned only by suffix cumulative reward"
+  },
+  "statistics": {
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 20260903,
+    "within_seed_cluster": "game",
+    "cross_seed_hierarchy": ["rl_seed", "game", "generation_seed"],
+    "rl_seed_count": 2,
+    "cross_seed_claim_limit": "two seeds provide preliminary replication evidence, not a precise population variance estimate",
+    "report": [
+      "per-Skill utility by checkpoint",
+      "per-Skill longitudinal Delta utility",
+      "initial/early/middle/late anchor strata",
+      "positive/negative/zero anchor proportions",
+      "first-action flip and suffix divergence",
+      "cross-seed direction agreement",
+      "reliable harmful flips",
+      "unsupported and uncertain Skills"
+    ]
+  },
+  "selection_guards": {
+    "checkpoint_selection_uses_performance": false,
+    "checkpoint_selection_uses_skill_utility": false,
+    "skill_support_selection_uses_reward": false,
+    "seed303_excluded_reason": "training paused at update 12; no complete C2/C3 yet",
+    "skill_bank_frozen": true,
+    "router_frozen": true
+  }
+}

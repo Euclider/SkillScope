@@ -1,0 +1,7 @@
+context_id,skill_id,preliminary_full_minus_skill_margin,paired_samples
+clean,cle_001,0.0,2
+cool,coo_001,0.0,2
+heat,hea_001,0.0,2
+look_at_obj_in_light,loo_001,0.0,2
+pick_and_place,pic_001,0.0,2
+pick_two,pic_005,0.0,2

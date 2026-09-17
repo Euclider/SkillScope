@@ -1,0 +1,107 @@
+{
+  "schema_version": "phase1.protocol.v2",
+  "frozen_on": "2026-08-25",
+  "source_proposal": "/home/wangyifan/skill-RL/2026-08-21-proposal-advantages-and-roadmap.md",
+  "source_spec": "/home/wangyifan/skill-RL/2026-08-24-phase1-minimal-validation-repository-and-experiment-spec.md",
+  "supersedes_for_rl_validation": "phase1/config/phase1_protocol.json",
+  "preserves_archived_smoke_protocol": true,
+  "model": "/home/wangyifan/model/Qwen2.5-1.5B-Instruct",
+  "skill_bank": "memory_data/alfworld/claude_style_skills.json",
+  "skill_bank_policy": {
+    "frozen_during_rl": true,
+    "general_skill_count": 12,
+    "task_specific_skill_counts": {
+      "pick_and_place": 5,
+      "look_at_obj_in_light": 5,
+      "clean": 6,
+      "heat": 5,
+      "cool": 5,
+      "examine": 6
+    },
+    "common_mistake_count": 11,
+    "common_mistakes_routable": false,
+    "dynamic_update": false
+  },
+  "step_routing": {
+    "enabled": true,
+    "router_version": "alfworld-observable-phase-router-v1",
+    "router_frozen_during_rl": true,
+    "observables": [
+      "task_description",
+      "current_observation",
+      "admissible_actions",
+      "action_observation_history",
+      "step_index"
+    ],
+    "uses_policy_parameters": false,
+    "uses_reward_or_success": false,
+    "candidate_scope": "all_general_plus_all_detected_task_type_skills",
+    "skills_injected_per_step": 1,
+    "inject_on_initial_step": true,
+    "pick_two_candidate_category": "pick_and_place"
+  },
+  "training": {
+    "pilot": {
+      "rl_seeds": [101],
+      "train_games": 8,
+      "rollouts_per_game": 4,
+      "epochs": 5,
+      "checkpoint_ids": [0, 1, 2, 3, 4, 5]
+    },
+    "formal_after_pilot_gate": {
+      "rl_seeds": [101, 202, 303],
+      "train_games_per_update": 8,
+      "rollouts_per_game": 4,
+      "epochs": 30,
+      "checkpoint_ids": [0, 5, 10, 15, 20, 25, 30]
+    },
+    "gpus_per_seed": 2,
+    "max_environment_steps": 30,
+    "update_type": "real_rl"
+  },
+  "attribution": {
+    "unit": "step_level_selected_skill_invocation",
+    "trajectory_skill_utility": "sum of step-level marginal effects over invocations of that skill",
+    "selection_conditioned_reporting": true,
+    "required_per_step_fields": [
+      "candidate_skill_ids",
+      "selected_skill_id",
+      "injected_skill_ids",
+      "skill_router_version",
+      "skill_router_scores",
+      "skill_router_state_flags",
+      "prompt_text",
+      "observation",
+      "admissible_actions",
+      "projected_action",
+      "reward",
+      "next_observation"
+    ]
+  },
+  "evaluation": {
+    "evaluation_seeds": [11, 22, 33],
+    "conditions": ["full_bank", "minus_skill", "no_skill"],
+    "primary_margin": "success(full_bank)-success(minus_skill)",
+    "fixed_state_primary": "action_distribution_with_selected_skill versus rerouted_minus_skill at identical state",
+    "skill_eligibility": "skill was selected at least once in the matched full-bank trajectory",
+    "bootstrap_cluster": "game_id",
+    "minimum_independent_game_clusters": 8,
+    "minimum_eligible_pairs": 4
+  },
+  "pilot_gate": {
+    "nonzero_policy_update": true,
+    "trajectory_archive_schema": "phase1.trajectory.v2",
+    "selected_skill_matches_injected_skill_each_step": true,
+    "router_version_constant": true,
+    "skill_bank_hash_constant": true,
+    "at_least_two_distinct_selected_skills_in_some_multistep_trajectories": true
+  },
+  "archive": {
+    "one_json_per_trajectory": true,
+    "idempotent_index": true,
+    "record_full_prompt_and_step_content": true,
+    "record_candidate_selected_and_injected_skill_ids": true,
+    "record_per_trajectory_skill_selection_counts": true,
+    "immutable_run_manifest": true
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "evaluation": {
+    "anchor_count": 200,
+    "anchor_sets": [
+      {
+        "anchors_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/support/selected/clean/gen_002.jsonl",
+        "anchors_sha256": "d3c29b761a470458b2bb2e852c920402df846552cca359d72965a021d0d3d6a1",
+        "context_id": "clean",
+        "placebo_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/controls/gen_002.json",
+        "placebo_sha256": "48cc93b4351aaa4692673f7887195354062a93c2dfd44356c577ea988c87927e",
+        "skill_id": "gen_002"
+      },
+      {
+        "anchors_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/support/selected/clean/cle_003.jsonl",
+        "anchors_sha256": "0bc2a0a114a7c018ddcef7d1aeb5241e14f1568fb192a025467d02cb7c830c48",
+        "context_id": "clean",
+        "placebo_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/controls/cle_003.json",
+        "placebo_sha256": "9cccca3155bc34b0f8b0ea7c367c0879a5ce676b511643c1110eb7bd02495b4e",
+        "skill_id": "cle_003"
+      },
+      {
+        "anchors_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/support/selected/clean/cle_004.jsonl",
+        "anchors_sha256": "d82e75974c983d80645c9005c6047b5df1f111caf4d224ff16c2b5840ed48653",
+        "context_id": "clean",
+        "placebo_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/controls/cle_004.json",
+        "placebo_sha256": "07801d9768acfa753434f10a842dc9a60543e1b2f8662f2005d0d47445ecc932",
+        "skill_id": "cle_004"
+      },
+      {
+        "anchors_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/support/selected/clean/cle_006.jsonl",
+        "anchors_sha256": "4cc61c0c4f064e83fd898afd92c54c5725cc731d0c7d3b9a677ad9a7107abe57",
+        "context_id": "clean",
+        "placebo_path": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1/controls/cle_006.json",
+        "placebo_sha256": "8180c3f8db860bc0f8cab86b7d34ce799375857dda71999099e455317ce93046",
+        "skill_id": "cle_006"
+      }
+    ],
+    "arms": [
+      "original",
+      "placebo",
+      "null"
+    ],
+    "bootstrap_repetitions": 10000,
+    "gold_seeds": [
+      52011,
+      52021,
+      52031,
+      52041
+    ],
+    "history_length": 2,
+    "max_new_tokens": 64,
+    "max_steps": 30,
+    "old_evidence_seeds": [
+      51011,
+      51021
+    ],
+    "shards": 8,
+    "tau_M": 0.05,
+    "temperature": 0.4,
+    "top_p": 1.0
+  },
+  "parent_rl_seed": 303,
+  "parent_update": 35,
+  "primary_control": "placebo",
+  "rl_path_id": "seed303-u35-preparation-only",
+  "root": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-ranking-preparation-v1",
+  "run_id": "qwen35-clean-s303-u35-ranking-preparation-v1",
+  "schema_version": "phase2.preupdate_baseline.v1",
+  "skill_bank_sha256": "e8a953beac1809591fadf0d3509db5dea6e66b0fb56ddb573cf30e6d8879e909",
+  "status": "frozen"
+}

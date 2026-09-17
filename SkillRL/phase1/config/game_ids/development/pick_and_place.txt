@@ -1,0 +1,8 @@
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_and_place_simple-AlarmClock-None-Dresser-319/trial_T20190910_195319_108102/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_and_place_simple-Pillow-None-ArmChair-321/trial_T20190908_104900_888704/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_and_place_simple-Glassbottle-None-Cabinet-17/trial_T20190906_182221_722403/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_and_place_simple-KeyChain-None-Sofa-225/trial_T20190908_131129_251514/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_and_place_simple-ToiletPaper-None-ToiletPaperHanger-412/trial_T20190907_181227_790902/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_and_place_simple-PepperShaker-None-CounterTop-27/trial_T20190909_010859_836097/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_and_place_simple-KeyChain-None-SideTable-322/trial_T20190909_091733_848923/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_and_place_simple-Tomato-None-Microwave-13/trial_T20190908_125127_168939/game.tw-pddl

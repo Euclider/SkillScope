@@ -1,0 +1,8 @@
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_cool_then_place_in_recep-Potato-None-Microwave-5/trial_T20190910_115040_425451/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_cool_then_place_in_recep-Lettuce-None-DiningTable-24/trial_T20190908_062436_694989/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_cool_then_place_in_recep-Pot-None-DiningTable-27/trial_T20190909_013328_302952/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_cool_then_place_in_recep-Mug-None-CoffeeMachine-14/trial_T20190906_182932_157770/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_cool_then_place_in_recep-WineBottle-None-Cabinet-17/trial_T20190907_064115_485667/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_cool_then_place_in_recep-Pot-None-CounterTop-5/trial_T20190908_073249_042493/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_cool_then_place_in_recep-Bowl-None-Shelf-20/trial_T20190908_034339_870890/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_cool_then_place_in_recep-Lettuce-None-CounterTop-24/trial_T20190908_015109_682752/game.tw-pddl

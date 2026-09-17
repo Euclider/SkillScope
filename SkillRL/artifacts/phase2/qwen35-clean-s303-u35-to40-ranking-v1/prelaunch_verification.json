@@ -1,0 +1,12 @@
+{
+  "deleted_legacy_conversions": 6,
+  "new_window_tests": 10,
+  "phase1_report_sha256": "e080b2b4dcd58bc44bd7d4e97cbd3a044abee372791bc818e9cce5b5c09d23a7",
+  "protocol_sha256": "0ca78a05b4d58584be39ecfaa9335458b41dfd50ea6e34f80e43be797acbe47a",
+  "released_logical_bytes": 302814387216,
+  "test_command": "python -m pytest tests/phase1 tests/phase2 -q",
+  "test_seconds": 11.61,
+  "tests_passed": 208,
+  "u40_gold_opened": false,
+  "verified_imported_baseline_rows": 3600
+}

@@ -1,0 +1,8 @@
+{
+  "config_hash": "4e2c83089a76d54aad80332fc5a9773cb6d3bb52b1e0303f6d940b2c8b7c4b7b",
+  "parameter_count": 1543714304,
+  "parameter_delta_l2_norm": 0.2061702189592196,
+  "post_checkpoint": "artifacts/merged_checkpoints/phase1-step-router-pilot-seed-101-r2/checkpoint-5",
+  "pre_checkpoint": "artifacts/merged_checkpoints/phase1-step-router-pilot-seed-101-r2/checkpoint-1",
+  "schema_version": "phase1.checkpoint_delta.v1"
+}

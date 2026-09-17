@@ -1,0 +1,36 @@
+ M agent_system/environments/env_manager.py
+ M agent_system/environments/env_package/alfworld/envs.py
+ M agent_system/environments/env_package/alfworld/projection.py
+ M agent_system/environments/prompts/alfworld.py
+ M agent_system/memory/__init__.py
+ M agent_system/memory/skills_only_memory.py
+ M agent_system/multi_turn_rollout/rollout_loop.py
+ M requirements.txt
+ M scripts/model_merger.py
+ M setup.py
+ M verl/third_party/vllm/__init__.py
+ M verl/trainer/config/ppo_trainer.yaml
+ M verl/trainer/ppo/ray_trainer.py
+ M verl/utils/checkpoint/fsdp_checkpoint_manager.py
+ M verl/utils/fsdp_utils.py
+ M verl/utils/vllm_utils.py
+ M verl/workers/actor/dp_actor.py
+ M verl/workers/fsdp_workers.py
+ M verl/workers/rollout/hf_rollout.py
+?? .gitignore
+?? agent_system/memory/step_skill_router.py
+?? artifacts/
+?? environment.yml
+?? environment/
+?? examples/grpo_trainer/run_alfworld_phase1.sh
+?? examples/grpo_trainer/run_alfworld_phase1_qwen35.sh
+?? examples/grpo_trainer/run_alfworld_phase1_step_router.sh
+?? examples/grpo_trainer/run_qwen35_clean_seed_formal.sh
+?? outputs/
+?? phase1/
+?? phase2/
+?? scripts/download_phase1_model.sh
+?? scripts/run_phase1_smoke.sh
+?? scripts/run_qwen35_b0_clean_monitor.sh
+?? tests/phase1/
+?? tests/phase2/

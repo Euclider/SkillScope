@@ -1,0 +1,38 @@
+{
+  "package:torch": {
+    "status": "pass",
+    "message": "installed=2.10.0; expected=2.10.0"
+  },
+  "package:transformers": {
+    "status": "pass",
+    "message": "installed=5.10.4; expected=5.10.4"
+  },
+  "package:vllm": {
+    "status": "pass",
+    "message": "installed=0.19.1; expected=0.19.1"
+  },
+  "package:fla-core": {
+    "status": "pass",
+    "message": "installed=0.5.2; expected=0.5.2"
+  },
+  "package:causal-conv1d": {
+    "status": "pass",
+    "message": "installed=1.7.0; expected=1.7.0"
+  },
+  "qwen35_registry": {
+    "status": "pass",
+    "message": "AutoModelForCausalLM mapping=True; class=Qwen3_5ForCausalLM"
+  },
+  "cuda": {
+    "status": "pass",
+    "message": "available=True; count=1; runtime=12.8"
+  },
+  "qwen35_kernel_forward_backward": {
+    "status": "pass",
+    "message": "loss=4.839205; dtype=bf16"
+  },
+  "local_model": {
+    "status": "pass",
+    "message": "path=/home/wangyifan/model/Qwen3.5-4B; exists=True"
+  }
+}

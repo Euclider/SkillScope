@@ -1,0 +1,90 @@
+{
+  "schema_version": "phase1.minimal_interaction_forecast_manifest.v1",
+  "run_id": "qwen35-clean-minimal-interaction-forecast-v1",
+  "completed_at": "2026-09-04T19:07:45+08:00",
+  "status": "complete",
+  "repository_commit": "8e66726ed866a4e0a7f053586a41022798192e6c",
+  "analysis_type": "retrospective_exploratory_minimal_forecast",
+  "protocol": {
+    "path": "phase1/config/qwen35_clean_minimal_interaction_forecast_protocol.json",
+    "sha256": "760cc145c9454baee7c3bc507c6fd3239682a38c4334dac5811b23c8a6527f10"
+  },
+  "implementation": {
+    "path": "phase1/minimal_interaction_forecast.py",
+    "sha256": "92f34f2f8434be6a46eb83dd8f32e5228aae6f3a324b56b32eacaa5f903a2dd5"
+  },
+  "source": {
+    "paired_effects": "artifacts/metrics/qwen35-clean-all-skill-seeds101-202-303-v1/paired_anchor_effects.parquet",
+    "seed_count": 3,
+    "seeds": [101, 202, 303],
+    "adjacent_windows_per_seed": 3,
+    "anchors_per_window": 200
+  },
+  "outputs": {
+    "directory": "artifacts/metrics/qwen35-clean-minimal-interaction-forecast-v1",
+    "transition_dataset": {
+      "path": "artifacts/metrics/qwen35-clean-minimal-interaction-forecast-v1/transition_dataset.parquet",
+      "bytes": 301955,
+      "sha256": "f3a131fc615991ed65bc84cdc8bbcb2432d69000f3f03324202724f1cbcdf203"
+    },
+    "association_metrics": {
+      "path": "artifacts/metrics/qwen35-clean-minimal-interaction-forecast-v1/association_metrics.parquet",
+      "bytes": 9293,
+      "sha256": "7d9be6f7647284f5fb585ea663675313010d2ed61dcb05a4122acb23957488d4"
+    },
+    "stratified_association_metrics": {
+      "path": "artifacts/metrics/qwen35-clean-minimal-interaction-forecast-v1/stratified_association_metrics.parquet",
+      "bytes": 7181,
+      "sha256": "c212c8eed145471d07d4d86643a3af11cd8ed0be003a107988942fe712048c06"
+    },
+    "loso_metrics": {
+      "path": "artifacts/metrics/qwen35-clean-minimal-interaction-forecast-v1/loso_metrics.parquet",
+      "bytes": 6026,
+      "sha256": "8bb339fdc22e57b93b995fd253f85798192bc4efb29f46f060f7873af2fe4baf"
+    },
+    "summary": {
+      "path": "artifacts/metrics/qwen35-clean-minimal-interaction-forecast-v1/summary.json",
+      "bytes": 25598,
+      "sha256": "4063511ff8ecdcd7c1b4b4ad93af9bc68dd8b3294a776e4ea001661656672ffe"
+    },
+    "report": {
+      "path": "/home/wangyifan/skill-RL/2026-09-04-qwen35-clean-all-skill-three-seed-utility-results.md",
+      "sha256": "e080b2b4dcd58bc44bd7d4e97cbd3a044abee372791bc818e9cce5b5c09d23a7",
+      "appended_section": 15
+    }
+  },
+  "integrity": {
+    "transition_rows": 1800,
+    "expected_transition_rows": 1800,
+    "utility_changed_count": 249,
+    "negative_delta_count": 100,
+    "point_harmful_flip_count": 5,
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 20260904,
+    "prediction_split": "leave-one-RL-seed-out",
+    "random_anchor_split_used": false,
+    "suffix_or_reward_feature_used": false
+  },
+  "headline_results": {
+    "utility_change_rate_difference_pp": {
+      "seed101": 20.97,
+      "seed202": 29.52,
+      "seed303": 29.78,
+      "hierarchical_pooled": 26.49
+    },
+    "utility_change_rate_difference_ci_excludes_zero_all_seeds": true,
+    "loso_auprc_macro": {
+      "prevalence": 0.137575,
+      "old_margin": 0.165326,
+      "old_plus_generic": 0.192081,
+      "old_plus_interaction": 0.273501
+    },
+    "interaction_improves_utility_change_auprc_all_held_out_seeds": true,
+    "interaction_incrementally_predicts_negative_direction_all_seeds": false,
+    "confirmed_skill_level_harmful_flip_count": 0
+  },
+  "verification": {
+    "ruff": "all checks passed",
+    "phase1_pytest": "33 passed"
+  }
+}

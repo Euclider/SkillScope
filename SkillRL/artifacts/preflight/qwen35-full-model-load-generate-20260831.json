@@ -1,0 +1,51 @@
+{
+  "schema_version": "phase1.qwen35_full_model_validation.v1",
+  "date": "2026-08-31",
+  "model_id": "Qwen/Qwen3.5-4B",
+  "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+  "model_path": "/home/wangyifan/model/Qwen3.5-4B",
+  "integrity": {
+    "index_tensor_bytes": 9319737856,
+    "index_tensor_count": 738,
+    "seen_tensor_count": 738,
+    "missing_tensor_count": 0,
+    "unexpected_tensor_count": 0,
+    "shards": [
+      {
+        "name": "model.safetensors-00001-of-00002.safetensors",
+        "file_bytes": 5329398688,
+        "tensor_count": 87,
+        "etag_sha256": "26a93f066e1916adb13453dae5a0c707c0fbc71299ed98779571a907b8e74c61"
+      },
+      {
+        "name": "model.safetensors-00002-of-00002.safetensors",
+        "file_bytes": 3990429408,
+        "tensor_count": 651,
+        "etag_sha256": "cb544bd9bfae93dc59b0f22b292f5933573854a7f9b97835c67060d7d910e188"
+      }
+    ]
+  },
+  "text_only_load": {
+    "status": "pass",
+    "model_class": "Qwen3_5ForCausalLM",
+    "config_class": "Qwen3_5TextConfig",
+    "parameter_count": 4205751296,
+    "dtype": "bfloat16",
+    "attn_implementation": "sdpa",
+    "load_seconds": 7.979,
+    "cuda_allocated_gib_after_load": 7.936
+  },
+  "generation": {
+    "enable_thinking": false,
+    "direct_transformers": {
+      "status": "pass",
+      "generated_tokens_before_eos": 8,
+      "output": "go to table 1\n"
+    },
+    "skillrl_hf_rollout": {
+      "status": "pass",
+      "response_tensor_shape": [1, 16],
+      "decoded_output": "go to table 1"
+    }
+  }
+}

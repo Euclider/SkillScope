@@ -1,0 +1,36 @@
+{
+  "additional_simple_forecast_baselines": [
+    "zero delta",
+    "development mean delta",
+    "development majority nonzero direction (tie abstains)"
+  ],
+  "all_signal_correlations": "descriptive all-signal table, not post-hoc feature selection",
+  "already_observed_updates": [
+    31,
+    32,
+    33
+  ],
+  "approved_local_date": "2026-09-10",
+  "authorization": "User accepted continuous signed utility analysis and requested GPU monitoring/resume",
+  "development_updates_unchanged": [
+    31,
+    32
+  ],
+  "embargo_update_unchanged": 33,
+  "existing_equations_gates_and_model_feature_sets_unchanged": true,
+  "existing_primary_CI_direction_threshold": 0.05,
+  "extra_CI_excludes_zero_count": "descriptive coverage diagnostic only, not replacement gold labels",
+  "generalization_limit": "one parent seed, four frozen supported skills, three heldout updates; no new seed/skill generalization claim",
+  "heldout_updates_not_yet_evaluated_at_amendment": [
+    34,
+    35,
+    36
+  ],
+  "no_selection_of_skill_checkpoint_feature_or_threshold_using_new_labels": true,
+  "point_sign_audit": "conditional on nonzero observed point changes and nonzero predictions, with coverage; not a reliable-direction label",
+  "primary_forecast_metric": "MAE on all supported skill-update units, including zero and uncertain changes",
+  "primary_signed_readout": "P_int, with existing C_upd and unsigned baselines",
+  "primary_target": "signed Delta M_sem = Delta (success ORIGINAL - success PLACEBO)",
+  "schema_version": "phase2.signed_analysis.v2",
+  "secondary_target": "D_t and decline risk; harmful flip not required"
+}

@@ -1,0 +1,92 @@
+{
+  "schema_version": "phase1.qwen35_clean_all_skill_utility.v2",
+  "preregistered_at": "2026-09-04",
+  "purpose": "Extend the frozen-anchor comprehensive first-natural-invocation Skill marginal-utility evaluation from RL seeds 101/202 to the completed seed 303 without changing support selection or intervention settings.",
+  "extension_of": {
+    "path": "phase1/config/qwen35_clean_all_skill_utility_protocol.json",
+    "sha256": "b554a98e26e2b0b8d22eecf89cc18b7b222c8461d95464fdb3ce370dda9254a7",
+    "completed_run_manifest": "artifacts/manifests/qwen35-clean-all-skill-seeds101-202-v1.json"
+  },
+  "policy_checkpoints": [
+    {"checkpoint_id": "b0", "rl_seed": 0, "global_update": 0, "path": "/home/wangyifan/model/Qwen3.5-4B"},
+    {"checkpoint_id": "seed101-u10", "rl_seed": 101, "global_update": 10, "path": "artifacts/model_only/qwen35-clean-formal-seed101-u30-c1-update10"},
+    {"checkpoint_id": "seed101-u20", "rl_seed": 101, "global_update": 20, "path": "artifacts/model_only/qwen35-clean-formal-seed101-u30-c2-update20"},
+    {"checkpoint_id": "seed101-u30", "rl_seed": 101, "global_update": 30, "path": "artifacts/model_only/qwen35-clean-formal-seed101-u30-c3-update30"},
+    {"checkpoint_id": "seed202-u10", "rl_seed": 202, "global_update": 10, "path": "artifacts/model_only/qwen35-clean-formal-seed202-u30-c1-update10"},
+    {"checkpoint_id": "seed202-u20", "rl_seed": 202, "global_update": 20, "path": "artifacts/model_only/qwen35-clean-formal-seed202-u30-c2-update20"},
+    {"checkpoint_id": "seed202-u30", "rl_seed": 202, "global_update": 30, "path": "artifacts/model_only/qwen35-clean-formal-seed202-u30-c3-update30"},
+    {"checkpoint_id": "seed303-u10", "rl_seed": 303, "global_update": 10, "path": "artifacts/model_only/qwen35-clean-formal-seed303-u30-c1-update10"},
+    {"checkpoint_id": "seed303-u20", "rl_seed": 303, "global_update": 20, "path": "artifacts/model_only/qwen35-clean-formal-seed303-u30-c2-update20"},
+    {"checkpoint_id": "seed303-u30", "rl_seed": 303, "global_update": 30, "path": "artifacts/model_only/qwen35-clean-formal-seed303-u30-c3-update30"}
+  ],
+  "anchor_support": {
+    "source_policy": "b0",
+    "source_directory": "artifacts/anchors/qwen35-clean-all-skill-seeds101-202-v1/selected",
+    "coverage_path": "artifacts/anchors/qwen35-clean-all-skill-seeds101-202-v1/coverage.json",
+    "coverage_sha256": "e5666a9d1a39983568121ad56ba3df57f7ca79e679c1e7436dc0e1ebfb990e6a",
+    "split": "valid_unseen",
+    "task_type": "clean",
+    "game_count": 31,
+    "generation_seeds": [1101, 2202, 3303],
+    "source_trajectory_count": 93,
+    "supported_skills": ["cle_003", "cle_004", "cle_006", "gen_002"],
+    "anchors_per_skill": 50,
+    "fixed_across_checkpoints_and_rl_seeds": true,
+    "reward_used_for_anchor_or_skill_selection": false,
+    "phase_bins": {
+      "initial": [0, 0],
+      "early": [1, 4],
+      "middle": [5, 14],
+      "late": [15, null]
+    }
+  },
+  "intervention": {
+    "protocol_version": "phase1.all-first-invocation-payload.v2",
+    "arms": ["original", "placebo", "null"],
+    "router_descriptor_bank_identical_across_arms": true,
+    "prefix_before_first_invocation_replayed_exactly": true,
+    "suffix_rollout_free_after_intervention": true,
+    "target_payload_intervention_persists_on_later_target_skill_selections": true,
+    "placebo_directory": "artifacts/controls/qwen35-clean-all-skill-seeds101-202-v1",
+    "temperature": 0.4,
+    "top_p": 1.0,
+    "max_steps": 30,
+    "max_new_tokens_per_action": 64,
+    "history_length": 2
+  },
+  "estimands": {
+    "semantic_utility": "R(original) - R(placebo)",
+    "total_utility": "R(original) - R(null)",
+    "prompt_nuisance": "R(placebo) - R(null)",
+    "longitudinal_semantic_change": "U_sem(post checkpoint) - U_sem(B0) on identical anchors",
+    "harmful_sign_flip": "B0 game-cluster 95% CI strictly positive and post-checkpoint game-cluster 95% CI strictly negative",
+    "action_flip": "original first action differs from placebo first action; direction is assigned only by suffix cumulative reward"
+  },
+  "statistics": {
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 20260904,
+    "within_seed_cluster": "game",
+    "cross_seed_hierarchy": ["rl_seed", "game", "generation_seed"],
+    "rl_seed_count": 3,
+    "report": [
+      "per-Skill utility by checkpoint",
+      "per-Skill longitudinal Delta utility",
+      "initial/early/middle/late anchor strata",
+      "positive/negative/zero anchor proportions",
+      "first-action flip and suffix divergence",
+      "cross-seed direction agreement",
+      "reliable harmful flips",
+      "unsupported and uncertain Skills",
+      "global performance versus Skill utility"
+    ]
+  },
+  "selection_guards": {
+    "checkpoint_selection_uses_performance": false,
+    "checkpoint_selection_uses_skill_utility": false,
+    "skill_support_selection_uses_reward": false,
+    "seed303_added_only_after_fixed_milestones_completed": true,
+    "skill_bank_frozen": true,
+    "router_frozen": true,
+    "anchors_and_placebos_reused_byte_for_byte": true
+  }
+}

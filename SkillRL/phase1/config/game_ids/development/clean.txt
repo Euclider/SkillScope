@@ -1,0 +1,8 @@
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_clean_then_place_in_recep-Cloth-None-Drawer-416/trial_T20190908_040722_151303/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_clean_then_place_in_recep-Ladle-None-Drawer-30/trial_T20190908_005155_378803/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_clean_then_place_in_recep-Cloth-None-Drawer-423/trial_T20190908_140728_318318/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_clean_then_place_in_recep-SoapBar-None-GarbageCan-416/trial_T20190907_024728_127108/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_clean_then_place_in_recep-SoapBar-None-Toilet-420/trial_T20190908_043134_210616/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_clean_then_place_in_recep-Fork-None-SideTable-21/trial_T20190909_041401_796447/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_clean_then_place_in_recep-DishSponge-None-Shelf-20/trial_T20190907_222456_204496/game.tw-pddl
+/home/wangyifan/skill-RL/data/alfworld/json_2.1.1/valid_train/pick_clean_then_place_in_recep-Cloth-None-Toilet-406/trial_T20190908_102735_461565/game.tw-pddl

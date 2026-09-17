@@ -1,0 +1,24 @@
+{
+  "duplicate_checkpoint_anchor_arm_count": 0,
+  "original_placebo_trigger_prompt_token_mismatches": 0,
+  "payload_intervention_failure_count": 0,
+  "payload_intervention_failures": [],
+  "records_per_checkpoint": {
+    "Qwen2.5-1.5B-Instruct": 72,
+    "checkpoint-1": 72,
+    "checkpoint-2": 72,
+    "checkpoint-3": 72,
+    "checkpoint-4": 72,
+    "checkpoint-5": 72
+  },
+  "records_per_payload_arm": {
+    "null": 144,
+    "original": 144,
+    "placebo": 144
+  },
+  "trajectory_count": 432,
+  "trajectory_failure_count": 0,
+  "trajectory_failures": [],
+  "trigger_router_score_mismatches_across_arms": 0,
+  "unique_trajectory_path_count": 432
+}

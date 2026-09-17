@@ -1,0 +1,70 @@
+{
+  "candidate_pools": [
+    {
+      "candidate_units": 4,
+      "context_id": "clean",
+      "excluded_units": 1,
+      "global_update": 40,
+      "phase": "all",
+      "shared_skill_ids": [
+        "gen_002",
+        "cle_003",
+        "cle_004"
+      ],
+      "shared_supported_units": 3,
+      "start_update": 35,
+      "window_role": "test"
+    },
+    {
+      "candidate_units": 4,
+      "context_id": "clean",
+      "excluded_units": 3,
+      "global_update": 40,
+      "phase": "early",
+      "shared_skill_ids": [
+        "cle_004"
+      ],
+      "shared_supported_units": 1,
+      "start_update": 35,
+      "window_role": "test"
+    },
+    {
+      "candidate_units": 4,
+      "context_id": "clean",
+      "excluded_units": 4,
+      "global_update": 40,
+      "phase": "initial",
+      "shared_skill_ids": [],
+      "shared_supported_units": 0,
+      "start_update": 35,
+      "window_role": "test"
+    },
+    {
+      "candidate_units": 4,
+      "context_id": "clean",
+      "excluded_units": 3,
+      "global_update": 40,
+      "phase": "late",
+      "shared_skill_ids": [
+        "gen_002"
+      ],
+      "shared_supported_units": 1,
+      "start_update": 35,
+      "window_role": "test"
+    },
+    {
+      "candidate_units": 4,
+      "context_id": "clean",
+      "excluded_units": 2,
+      "global_update": 40,
+      "phase": "middle",
+      "shared_skill_ids": [
+        "gen_002",
+        "cle_003"
+      ],
+      "shared_supported_units": 2,
+      "start_update": 35,
+      "window_role": "test"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-12",
+  "regression_command": "python -m pytest tests/phase1 tests/phase2 -q",
+  "regression_passed": 198,
+  "regression_seconds": 8.72,
+  "new_queue_tests": 9,
+  "preflight": {
+    "expected_clean_games_present": 31,
+    "single_game_reset_passed": true,
+    "reset_admissible_actions": 28,
+    "preflight_environment_steps": 0,
+    "gpu_forward_test_performed_before_queue": false
+  },
+  "scope": "Queue preparation and pre-update evaluation only; no new RL or historical result changes. Runtime progress is in status.json and gpu_watch_latest.json."
+}

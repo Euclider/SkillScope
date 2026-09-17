@@ -1,0 +1,34 @@
+{
+  "schema_version": "phase1.paused_training_run.v1",
+  "run_id": "qwen35-clean-formal-seed303-u30-8gpu-s1-20260902",
+  "paused_at": "2026-09-03T09:01:00+08:00",
+  "reason": "User requested preserving current Seed 303 state and releasing GPUs for comprehensive Seed 101/202 Skill utility evaluation.",
+  "latest_committed_update": 12,
+  "resume_checkpoint": "/home/wangyifan/skill-RL/SkillRL/artifacts/checkpoints/qwen35-clean-formal-seed303-u30-8gpu-s1-20260902/global_step_12",
+  "retained_full_checkpoints": [
+    {
+      "global_update": 11,
+      "total_bytes": 53033829306,
+      "world_size": 8,
+      "model_shards": 8,
+      "optimizer_shards": 8,
+      "extra_state_shards": 8
+    },
+    {
+      "global_update": 12,
+      "total_bytes": 53033829306,
+      "world_size": 8,
+      "model_shards": 8,
+      "optimizer_shards": 8,
+      "extra_state_shards": 8
+    }
+  ],
+  "retained_model_only": "/home/wangyifan/skill-RL/SkillRL/artifacts/model_only/qwen35-clean-formal-seed303-u30-c1-update10",
+  "retained_model_only_validation": {
+    "model_bytes": 9682950504,
+    "tensor_count": 427,
+    "model_type": "qwen3_5_text"
+  },
+  "partial_update_policy": "Any rollout generated after committed update 12 and before termination is retained as interruption provenance but excluded from completed-update analysis.",
+  "resume_rule": "Resume from global_step_12 with a new continuation run ID and the same 8-way FSDP configuration."
+}

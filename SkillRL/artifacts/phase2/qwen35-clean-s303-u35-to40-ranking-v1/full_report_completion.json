@@ -1,0 +1,19 @@
+{
+  "created_at": "2026-09-14T00:44:24.355023+00:00",
+  "generator_sha256": "ca26e543c084b6253fcc4931c4ff37aef589c66fca6c660fe17faf5cdb6499a5",
+  "output": "/home/wangyifan/skill-RL/2026-09-14-phase2-complete-analysis.md",
+  "report_plan_sha256": "2824b309eca68c2b2a85a0b2482bb09fe95da16eae1bfd662be433df60ebabd0",
+  "report_sha256": "d2ad5fdfa197014c7ead2a48f70be67c070df54dca036d6a1273c99beff70f97",
+  "scope": "Completed legacy single-update pilot plus fully verified U35-to40 window; not all proposed future Phase2/Phase3 experiments",
+  "sources": {
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/reports/2026-09-12-observation-audit-v1/all_supported.csv": "e86582214c4abeb1687112995db9e106d5d7e5373fd137e8ee65ec7db532465a",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/reports/2026-09-12-observation-audit-v1/comparisons.csv": "3b274c1f005ffc08827087e530c8723e69514b08af7955c597533ededfb5ebdb",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u30-to36-semantic-direction-fast-v1/reports/2026-09-12-observation-audit-v1/heldout.csv": "ea76cbe13ee2eacfe3d746bb46284ba8d37eddb213fed4c2fb7152f318c43cdb",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/evaluation_completion.json": "7bf2d34beb4b857916902b284f21f003d7e6d69a0763b932f8ad9eda76d16d61",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/protocol.json": "0ca78a05b4d58584be39ecfaa9335458b41dfd50ea6e34f80e43be797acbe47a",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/window_metrics/ranking_metrics.csv": "722408332465fabc7fdf60febd25efd72824247037f22184248ee59cb033e748",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/window_metrics/raw_features_and_semantic_utility.csv": "8e111dcbe48c2cbf670af30c66dde271612b732ceb1b208b39731d738e333ce6",
+    "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/window_metrics/utility_units.parquet": "de8a796c7807f779c716af56aa7eaccbc637990064df0a2516979ede48fc8753"
+  },
+  "status": "complete"
+}

@@ -1,0 +1,10 @@
+{
+  "run_id": "phase1-step-router-pilot-seed-101-r1",
+  "status": "aborted_before_rollout",
+  "rl_update_started": false,
+  "trajectory_count": 0,
+  "reason": "The run-specific Ray temp directory made the AF_UNIX plasma-store socket path exceed the 107-byte limit.",
+  "action": "Preserved manifest and console log; shortened the Ray temp directory in the launcher and retrying under a new run ID.",
+  "manifest": "artifacts/manifests/phase1-step-router-pilot-seed-101-r1.json",
+  "console_log": "artifacts/logs/phase1-step-router-pilot-seed-101-r1.log"
+}

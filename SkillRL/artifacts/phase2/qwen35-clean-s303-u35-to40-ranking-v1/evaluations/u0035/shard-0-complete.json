@@ -1,0 +1,9 @@
+{
+  "created_at": "2026-09-12T21:54:59.529181+00:00",
+  "imported_without_new_rollout": true,
+  "jobs": 450,
+  "max_jobs": null,
+  "protocol_sha256": "0ca78a05b4d58584be39ecfaa9335458b41dfd50ea6e34f80e43be797acbe47a",
+  "shard": 0,
+  "shards": 8
+}

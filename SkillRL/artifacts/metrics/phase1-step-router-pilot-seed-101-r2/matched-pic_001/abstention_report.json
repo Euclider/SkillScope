@@ -1,0 +1,45 @@
+{
+  "abstention_count": 4,
+  "by_reason": {
+    "post_margin_ambiguous": 2,
+    "pre_margin_ambiguous": 2
+  },
+  "records": [
+    {
+      "abstain_reason": "pre_margin_ambiguous",
+      "context_id": "pick_and_place",
+      "post_checkpoint_id": "checkpoint-1",
+      "pre_checkpoint_id": "Qwen2.5-1.5B-Instruct",
+      "rl_seed": 101,
+      "skill_id": "pic_001",
+      "update_type": "real_rl"
+    },
+    {
+      "abstain_reason": "post_margin_ambiguous",
+      "context_id": "pick_and_place",
+      "post_checkpoint_id": "checkpoint-1",
+      "pre_checkpoint_id": "Qwen2.5-1.5B-Instruct",
+      "rl_seed": 101,
+      "skill_id": "pic_001",
+      "update_type": "real_rl"
+    },
+    {
+      "abstain_reason": "pre_margin_ambiguous",
+      "context_id": "pick_and_place",
+      "post_checkpoint_id": "checkpoint-5",
+      "pre_checkpoint_id": "checkpoint-1",
+      "rl_seed": 101,
+      "skill_id": "pic_001",
+      "update_type": "real_rl"
+    },
+    {
+      "abstain_reason": "post_margin_ambiguous",
+      "context_id": "pick_and_place",
+      "post_checkpoint_id": "checkpoint-5",
+      "pre_checkpoint_id": "checkpoint-1",
+      "rl_seed": 101,
+      "skill_id": "pic_001",
+      "update_type": "real_rl"
+    }
+  ]
+}

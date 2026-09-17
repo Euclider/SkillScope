@@ -1,0 +1,5 @@
+update,control,paired_anchor_repeats,first_action_flip,suffix_action_divergence,reward_disagreement,original_suffix_unique_skills,original_suffix_steps
+35,placebo,800,0.2975,0.505,0.14625,2.7325,18.69625
+35,null,800,0.2875,0.50875,0.13625,2.7325,18.69625
+40,placebo,800,0.23875,0.40125,0.15,2.7275,13.46125
+40,null,800,0.22625,0.3975,0.1575,2.7275,13.46125

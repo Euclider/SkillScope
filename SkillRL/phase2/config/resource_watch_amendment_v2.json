@@ -1,0 +1,14 @@
+{
+  "schema_version": "phase2.resource_watch.v2",
+  "approved_local_date": "2026-09-10",
+  "poll_seconds": 30,
+  "idle_memory_used_less_than_mib": 1500,
+  "idle_utilization_less_than_percent": 10,
+  "consecutive_idle_samples": 2,
+  "allocation": "all devices idle in two consecutive samples; recheck after conversion",
+  "automatic_retry": "CUDA OOM during actor_rollout_init_model only, before Training Progress or any training/evaluation/optimizer artifacts",
+  "no_retry_for_runtime_errors_or_partial_updates": true,
+  "no_other_process_termination": true,
+  "disk_reserve_gib": 250,
+  "note": "Shared GPU availability cannot be atomically reserved across unrelated jobs; archive startup OOM attempts and wait for resources again"
+}

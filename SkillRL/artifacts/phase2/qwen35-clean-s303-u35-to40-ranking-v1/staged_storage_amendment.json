@@ -1,0 +1,10 @@
+{
+  "created_at": "2026-09-13T06:50:50.820900+00:00",
+  "order": "durable captures/native commit -> verified latest-two rotation -> FP32 export",
+  "protocol_sha256": "0ca78a05b4d58584be39ecfaa9335458b41dfd50ea6e34f80e43be797acbe47a",
+  "root": "/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1",
+  "scope": "execution resources only; scientific protocol and 200/250GiB safeguards unchanged",
+  "scratch_parent": "/dev/shm/skillrl-phase2-u40-37z1sgne",
+  "update": 40,
+  "volatile_data": "only reconstructable conversion; native source and every experimental evidence file remain on persistent disk"
+}

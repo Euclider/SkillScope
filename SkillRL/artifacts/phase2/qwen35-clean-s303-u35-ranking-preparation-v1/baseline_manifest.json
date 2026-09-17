@@ -1,0 +1,7 @@
+{
+  "anchor_count": 200,
+  "expected_suffixes": 3600,
+  "protocol_sha256": "08ddc27cfa234d6ca5794f2b898a4e8e79f927169f2daf54ab3b66bd1354ce4a",
+  "queue_sha256": "f94cd1ee30ec825a649b72d63c3267993f3fde04e772aae68017f12f90a740a5",
+  "supported_skills": 4
+}

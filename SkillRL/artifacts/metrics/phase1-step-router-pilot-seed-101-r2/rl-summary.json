@@ -1,0 +1,120 @@
+{
+  "schema_version": "phase1.rl_pilot_summary.v1",
+  "run_id": "phase1-step-router-pilot-seed-101-r2",
+  "status": "complete",
+  "model": "/home/wangyifan/model/Qwen2.5-1.5B-Instruct",
+  "algorithm": "GRPO",
+  "update_type": "real_rl",
+  "rl_seed": 101,
+  "training": {
+    "games": 8,
+    "rollouts_per_game": 4,
+    "updates": 5,
+    "max_environment_steps": 30,
+    "learning_rate": 0.000001,
+    "total_trajectories": 160,
+    "successful_trajectories": 23,
+    "aggregate_success_rate": 0.14375
+  },
+  "validation": {
+    "games_per_update": 8,
+    "updates": 5,
+    "total_trajectories": 40,
+    "successful_trajectories": 2,
+    "aggregate_success_rate": 0.05
+  },
+  "steps": [
+    {
+      "global_step": 1,
+      "train_success_rate": 0.09375,
+      "validation_success_rate": 0.0,
+      "train_mean_reward": 0.9375,
+      "valid_action_ratio": 0.7203390002250671,
+      "actor_grad_norm": 4.497359077135722,
+      "actor_pg_loss": 0.007267012946520758,
+      "actor_kl_loss": 0.036969974637031555,
+      "actor_ppo_kl": 0.00653752365298129,
+      "step_seconds": 840.979451470077
+    },
+    {
+      "global_step": 2,
+      "train_success_rate": 0.03125,
+      "validation_success_rate": 0.0,
+      "train_mean_reward": 0.3125,
+      "valid_action_ratio": 0.971875011920929,
+      "actor_grad_norm": 4.030345932642619,
+      "actor_pg_loss": 0.03226561211049557,
+      "actor_kl_loss": 0.017549457028508186,
+      "actor_ppo_kl": 0.0008843298223079424,
+      "step_seconds": 823.1567338434979
+    },
+    {
+      "global_step": 3,
+      "train_success_rate": 0.1875,
+      "validation_success_rate": 0.125,
+      "train_mean_reward": 1.875,
+      "valid_action_ratio": 0.9897727370262146,
+      "actor_grad_norm": 3.698773159512452,
+      "actor_pg_loss": 0.029381526735695926,
+      "actor_kl_loss": 0.005179381929337978,
+      "actor_ppo_kl": 0.0016009474278689596,
+      "step_seconds": 796.7083528889343
+    },
+    {
+      "global_step": 4,
+      "train_success_rate": 0.21875,
+      "validation_success_rate": 0.125,
+      "train_mean_reward": 2.1875,
+      "valid_action_ratio": 0.9976415038108826,
+      "actor_grad_norm": 2.3131985162143356,
+      "actor_pg_loss": -0.0033510269526884242,
+      "actor_kl_loss": 0.05631702020764351,
+      "actor_ppo_kl": 0.0014932523676316981,
+      "step_seconds": 754.718455798924
+    },
+    {
+      "global_step": 5,
+      "train_success_rate": 0.1875,
+      "validation_success_rate": 0.0,
+      "train_mean_reward": 1.875,
+      "valid_action_ratio": 0.9956140518188477,
+      "actor_grad_norm": 2.0614482779055834,
+      "actor_pg_loss": 0.07551491191904795,
+      "actor_kl_loss": 0.0068489182740449905,
+      "actor_ppo_kl": 0.0014358840021406905,
+      "step_seconds": 780.667035613209
+    }
+  ],
+  "parameter_update_evidence": {
+    "all_step_grad_norms_nonzero_and_finite": true,
+    "checkpoint_0_to_1_l2": 0.23185064998541782,
+    "checkpoint_0_to_1_relative_l2": 0.00013740158698230276,
+    "checkpoint_0_to_5_l2": 0.4091767730359946,
+    "checkpoint_0_to_5_relative_l2": 0.00024249031855196092,
+    "checkpoint_0_to_5_max_absolute_delta": 0.00008519738912582397,
+    "parameter_count": 1777088000,
+    "all_finite": true
+  },
+  "routing": {
+    "trajectory_count": 200,
+    "total_routed_steps": 5676,
+    "mean_trajectory_length": 28.38,
+    "multi_skill_trajectory_count": 199,
+    "mean_distinct_selected_skills": 3.57,
+    "max_distinct_selected_skills": 6,
+    "mean_routing_switches": 8.425,
+    "distinct_selected_skill_ids": 22,
+    "routing_invariant_violation_count": 0,
+    "router_version": "alfworld-observable-phase-router-v1"
+  },
+  "pilot_gate": {
+    "nonzero_policy_update": true,
+    "trajectory_archive_schema": "phase1.trajectory.v2",
+    "selected_skill_matches_injected_skill_each_step": true,
+    "router_version_constant": true,
+    "skill_bank_hash_constant": true,
+    "multi_skill_trajectory_exists": true,
+    "passed": true
+  },
+  "interpretation": "This run validates the real-RL, state-routed Skill, checkpoint, and archive pipeline. It does not by itself establish a causal Skill utility shift; fixed-state and matched full-bank/minus-skill/no-skill evaluations remain required."
+}

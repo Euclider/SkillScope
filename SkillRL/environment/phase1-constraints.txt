@@ -1,0 +1,17 @@
+numpy==1.26.4
+torch==2.6.0
+torchvision==0.21.0
+torchaudio==2.6.0
+transformers==4.51.1
+huggingface-hub==0.30.2
+tokenizers==0.21.1
+vllm==0.8.4
+ray==2.43.0
+tensordict==0.10.0
+alfworld==0.4.2
+gymnasium==0.29.1
+stable-baselines3==2.6.0
+flash-attn==2.7.4.post1
+wandb==0.19.7
+opentelemetry-api==1.26.0
+protobuf==4.25.9
