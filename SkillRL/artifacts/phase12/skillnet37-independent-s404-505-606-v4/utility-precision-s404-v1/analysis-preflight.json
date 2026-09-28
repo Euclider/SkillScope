@@ -1,0 +1,17 @@
+{
+  "candidate_pools_identical": true,
+  "existing_continuations": 7272,
+  "independent_metrics": {
+    "independently_checked_rows": 5700,
+    "libraries": [
+      "sklearn",
+      "scipy"
+    ],
+    "passed": true
+  },
+  "new_environment_rollouts": 0,
+  "original_ranking_rows_reproduced": 5700,
+  "original_two_repeat_units": 176,
+  "score_columns": 285,
+  "status": "PASS"
+}

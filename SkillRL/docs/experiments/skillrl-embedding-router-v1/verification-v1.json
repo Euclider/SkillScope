@@ -1,0 +1,113 @@
+{
+  "schema_version": "skillrl.embedding_router_verification.v1",
+  "status": "COMPONENT_AND_OFFLINE_VERIFIED_NOT_RL",
+  "date_utc": "2026-09-18",
+  "user_decision": "Official Qwen3-Embedding-0.6B; visible-state full-SkillNet37 top-1 adaptation; preserve readout protocol.",
+  "implementation_source_sha256": {
+    "agent_system/environments/env_manager.py": "716085eda0897dda2b920db3bf3fe1e5e55aa541ccad599b7b7a874d41f21a77",
+    "agent_system/memory/skillnet_runtime.py": "164c0628a2a929c76c907cfb9dccad69e962f67e1823000aae73061f6999d821",
+    "agent_system/memory/skillrl_embedding_router.py": "59f41b47a13ddaad3f9b7cd839f487ec821277e27601c99f698f3f68aee6af4b",
+    "configs/alfworld_skillnet37_embedding_router.yaml": "0bfdc4c82135f8973ca471d28eea73510a5cbcfebea006e7f1f976cdf5ebc817",
+    "configs/skillnet37_router_qwen3_embedding_v1.json": "d1fc18a18537e65d4503d65d46187b8b63d21d9a884f6332262dbbb2dda778c8",
+    "requirements-skillrl-embedding-router.txt": "5d9f3664bdf091ec378c77b9025d8101a5baa325bee494615716aa8f41e9790f",
+    "scripts/test_skillrl_embedding_router.py": "6822f849f2eb455caafc716cf6bb1a5cdd7131b6db14ec58af6d4cd351e2f004",
+    "skillnet_cohort/common.py": "9653ab5f93bde7f29991ee0208c7a702343855ed78a2bfdd3d57f958675c9566",
+    "skillnet_cohort/evaluate.py": "4c6a607d57d612273915fb92d0a1a5ab2493a615cf10d0f84d2b2898096cc940",
+    "skillnet_cohort/preflight.py": "8611836672622c3ec32f69c99b6dfc08d08dea5c8ae7b2589feda4760872e52c",
+    "skillnet_cohort/prepare.py": "589370dc52d89e793a9831ec8b21d29f534e56c811b5e171d837e9b53ab47b3a",
+    "skillnet_cohort/run.py": "1d80f36f8e8312f2cde8433c461522fbd0af84448d3d59e8965e205282cbacbb",
+    "skillnet_cohort/runtime.py": "91cd054bbe285c527d3f92ae7cb99daf62fc2dfa8229aba2b47983ee5f5b5733",
+    "skillnet_cohort/segmented_training.py": "c86b2eafb1ca292cd442da5229e3e277683d64c054d209de9e6ca6bf0b915ba0",
+    "skillnet_cohort/support.py": "f4739b3b8b0bf32c1eb96c919d72447394bee9c17080c784b4636927d82b29b8",
+    "skillnet_cohort/training.py": "1db8b4a48d1d06905e1bd7d4cb7904e045e94ea38df88e333cde7f8075bac08a",
+    "tests/skill_router/test_skillrl_embedding_router.py": "b76973e852d1443c4c193921c1a17d5937fb2c7ab6c71c8f1b4b391c10f769fa",
+    "tests/skillnet_cohort/test_embedding_runtime.py": "8f5fb8bd6182c3f081b81d9830fb7fbadb52072048146195e0e53b11fdab9547"
+  },
+  "preserved_source_sha256": {
+    "agent_system/memory/external_skill_router.py": "66b117b2c1eb4240b7561d6be9cf51c1fb9b96fd19a0000aa19e3d043ae0b101",
+    "agent_system/memory/router_cache.py": "0d1edb4f2811cdbcd26ae8c844f34154e4b3506f23020a472981d8c7705271df",
+    "configs/skillnet37_router_gpt54mini_v1.json": "5ccf799ef9dac6bd3a128df08087689996f986b45f485ccf869b3c42458c7895",
+    "phase3/routing.py": "c45b111cc3fee966a78635e0314ad5707befdbe5fce057d0619e968b904cf51d",
+    "phase3/api.py": "6ffa78058c0bfcbb2f6dde323af826a0e66507cae353aaaa4d0984c8f4e61256"
+  },
+  "environment": {
+    "python": "/mnt/workspace/users/wangyifan/.venvs/skillnet-phase12-20260917/bin/python",
+    "dependency_added": "sentence-transformers==6.0.1",
+    "dependency_install_mode": "uv pip install --no-deps; existing training dependencies not upgraded",
+    "model_path": "/mnt/workspace/users/wangyifan/model/Qwen3-Embedding-0.6B",
+    "hf_revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+    "model_network_activity": "Pinned model download only; synthetic inference was offline with socket connections forbidden."
+  },
+  "tests": {
+    "pytest_arguments": [
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--junitxml=docs/experiments/skillrl-embedding-router-v1/offline-tests-v1.xml",
+      "tests/skill_router",
+      "tests/skill_bank",
+      "tests/skillnet_cohort",
+      "tests/experiment_settings",
+      "tests/phase1",
+      "tests/phase2/test_extended_protocol.py",
+      "tests/phase2/test_counter_input.py",
+      "tests/phase2/test_ranking_window.py",
+      "tests/phase3"
+    ],
+    "passed": 398,
+    "failed": 0,
+    "reported_elapsed_seconds": 70.1,
+    "junit_path": "offline-tests-v1.xml",
+    "junit_sha256": "3ccb462067f2a4c4e8915325286631b4ee15876f8734571546c9235acbdfff0d"
+  },
+  "static_preflight": {
+    "status": "STATIC_READY_EXECUTION_LOCKED",
+    "errors": [],
+    "record": "preflight-v1.json",
+    "sha256": "495ba107813cb91802a258d0fca7b22410d942a5d12c31f1a2155ed4c87f7e42",
+    "preparation": "preparation-s404-8gpu/manifest.json",
+    "preparation_sha256": "3b731d125adc0731b193f59821dea7f5dd0d54d6d94d17fb908deeafdb35c7fe"
+  },
+  "synthetic_model_smoke": {
+    "first_attempt": "smoke-cpu-20260918-v1/failure.json",
+    "first_attempt_status": "failed after two successful local decisions; lazy dependency import changed Python RNG; retained",
+    "corrected_attempt": "smoke-cpu-20260918-v2/report.json",
+    "corrected_attempt_sha256": "7aafd847b8f982642f904222fd405ff7ae051747009d6a1e811773b3b6bf78e0",
+    "status": "passed",
+    "local_decisions": 2,
+    "cache_replays": 2,
+    "external_api_calls": 0,
+    "trainable_parameters": 0,
+    "device": "cpu",
+    "torch_threads": 4,
+    "rng_preserved": [
+      "Python",
+      "NumPy",
+      "Torch CPU"
+    ],
+    "cuda_rng_tested": false,
+    "both_states_selected": "skillnet:alfworld-clean-object",
+    "maximum_cosine_change_between_states": 0.05959033966064453,
+    "quality_caveat": "Second synthetic state already had a clean mug; successful integration/replay is not evidence of correct next-step selection, broader coverage, or higher benchmark success."
+  },
+  "not_performed": [
+    "RL launch",
+    "real ALFWorld rollout",
+    "paid router/editor API requests",
+    "rerunning old experiments",
+    "overwriting old reports",
+    "git commit",
+    "git rollback",
+    "GitHub push",
+    "Phase3 growth-bank router migration",
+    "8-GPU forward/backward/restore with the new router"
+  ],
+  "next_scope": [
+    "New local-call/storage authorization for new cohort/cache",
+    "8-GPU coexistence and checkpoint/restore validation",
+    "Migrate all four Phase3 branches to the same versioned growth-bank embedding adapter before their launch; o3 editor unchanged"
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "claims_cross_seed_generalization": false,
+  "completed_window_units": 36,
+  "created_at": "2026-09-20T10:01:22.625571+00:00",
+  "performance": [
+    {
+      "mae_pp": 4.166666666666666,
+      "model": "predicted_delta_zero",
+      "phase": "all",
+      "units": 3,
+      "windows": 1
+    },
+    {
+      "mae_pp": 9.821428571428571,
+      "model": "predicted_delta_zero",
+      "phase": "early",
+      "units": 2,
+      "windows": 1
+    },
+    {
+      "mae_pp": 0.0,
+      "model": "predicted_delta_zero",
+      "phase": "initial",
+      "units": 1,
+      "windows": 1
+    },
+    {
+      "mae_pp": 0.0,
+      "model": "predicted_delta_zero",
+      "phase": "late",
+      "units": 1,
+      "windows": 1
+    },
+    {
+      "mae_pp": 12.5,
+      "model": "predicted_delta_zero",
+      "phase": "middle",
+      "units": 2,
+      "windows": 1
+    }
+  ],
+  "ranking_candidate_pools": [
+    {
+      "candidate_units": 5,
+      "context_id": "all_alfworld",
+      "excluded_units": 2,
+      "global_update": 5,
+      "phase": "all",
+      "shared_skill_ids": [
+        "skillnet:alfworld-appliance-navigator",
+        "skillnet:alfworld-device-operator",
+        "skillnet:alfworld-storage-explorer"
+      ],
+      "shared_supported_units": 3,
+      "start_update": 0,
+      "window_role": "test"
+    },
+    {
+      "candidate_units": 5,
+      "context_id": "all_alfworld",
+      "excluded_units": 3,
+      "global_update": 5,
+      "phase": "early",
+      "shared_skill_ids": [
+        "skillnet:alfworld-device-operator",
+        "skillnet:alfworld-storage-explorer"
+      ],
+      "shared_supported_units": 2,
+      "start_update": 0,
+      "window_role": "test"
+    },
+    {
+      "candidate_units": 5,
+      "context_id": "all_alfworld",
+      "excluded_units": 4,
+      "global_update": 5,
+      "phase": "initial",
+      "shared_skill_ids": [
+        "skillnet:alfworld-appliance-navigator"
+      ],
+      "shared_supported_units": 1,
+      "start_update": 0,
+      "window_role": "test"
+    },
+    {
+      "candidate_units": 5,
+      "context_id": "all_alfworld",
+      "excluded_units": 4,
+      "global_update": 5,
+      "phase": "late",
+      "shared_skill_ids": [
+        "skillnet:alfworld-device-operator"
+      ],
+      "shared_supported_units": 1,
+      "start_update": 0,
+      "window_role": "test"
+    },
+    {
+      "candidate_units": 5,
+      "context_id": "all_alfworld",
+      "excluded_units": 3,
+      "global_update": 5,
+      "phase": "middle",
+      "shared_skill_ids": [
+        "skillnet:alfworld-appliance-navigator",
+        "skillnet:alfworld-device-operator"
+      ],
+      "shared_supported_units": 2,
+      "start_update": 0,
+      "window_role": "test"
+    }
+  ],
+  "ranking_primary": true,
+  "rl_path_id": "skillnet37-s404"
+}

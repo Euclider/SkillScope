@@ -1,0 +1,286 @@
+{
+  "schema_version": "skillrl.external_router_build_verification.v1",
+  "created_at_utc": "2026-09-17T13:43:43Z",
+  "status": "implemented_and_single_live_smoke_passed",
+  "scope": "External GPT-5.4 mini routing backend and CPU integration; not a benchmark experiment",
+  "user_confirmed": {
+    "model": "gpt-5.4-mini",
+    "base_url": "https://api.zhizengzeng.com/v1",
+    "authorized_live_test": "one small connectivity test"
+  },
+  "environment": {
+    "python_executable": "/mnt/workspace/users/wangyifan/.venvs/skillnet-router-20260917-sdk3141/bin/python",
+    "python_version": "3.12.13",
+    "system_openai_before": "2.48.0",
+    "system_openai_after": "2.48.0",
+    "sdk_latest_observed_from": "https://pypi.org/pypi/openai/json",
+    "package_versions": {
+      "openai": "3.14.1",
+      "httpx2": "2.13.0",
+      "httpcore2": "2.13.0",
+      "pydantic": "2.13.5",
+      "pydantic-core": "2.46.5",
+      "anyio": "4.15.1",
+      "jiter": "0.17.0",
+      "typing-extensions": "4.16.0",
+      "typing-inspection": "0.4.4",
+      "truststore": "0.10.4",
+      "sniffio": "1.3.1",
+      "idna": "3.19",
+      "h11": "0.16.0",
+      "annotated-types": "0.8.0",
+      "omegaconf": "2.3.0",
+      "antlr4-python3-runtime": "4.9.3",
+      "PyYAML": "6.0.3",
+      "pytest": "9.1.1"
+    },
+    "installation_scope": "New isolated venv with system-site-packages; no global SDK upgrade",
+    "setup_issue": "Default uv cache at /opt/uv/cache was not writable; installation succeeded with uv --no-cache, without permission changes",
+    "git_available": false
+  },
+  "profile": {
+    "schema_version": "skillrl.external_router_profile.v1",
+    "bank_manifest_sha256": "0767ff7578b1e997119a36b5f636fec6ebc1d0ac600ffb40b1e599065b7fe514",
+    "router_version": "skillnet37-external-llm-step-v1",
+    "system_prompt_sha256": "51147edab1b4fb741b11e03be2db6ea5fdc25878b2fd2407af8ac2fa84323d11",
+    "api_key_env": "SKILLNET_ROUTER_API_KEY",
+    "router": {
+      "base_url": "https://api.zhizengzeng.com/v1",
+      "model": "gpt-5.4-mini",
+      "sdk_version": "3.14.1",
+      "reasoning_effort": "none",
+      "temperature": 0,
+      "max_completion_tokens": 128,
+      "history_length": 2,
+      "timeout_seconds": 30,
+      "max_input_utf8_bytes": 65536,
+      "expected_response_model": null
+    }
+  },
+  "protocol_hash": "947890c5b48a04d3a28b3e0c02260f7e7db73cc4029a0d026ec4d4ac4d5bdffd",
+  "live_test": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 /mnt/workspace/users/wangyifan/.venvs/skillnet-router-20260917-sdk3141/bin/python -B -m scripts.test_skillnet_router --cache docs/experiments/skillnet37-router-v1/live-smoke/router.sqlite3 --prompt-api-key",
+    "exit_code": 0,
+    "decision_created_at_utc": "2026-09-17T13:30:50.371802+00:00",
+    "real_model_api_requests": 1,
+    "automatic_retries": 0,
+    "synthetic_state_only": true,
+    "historical_trajectories_sent": false,
+    "result_path": "live-smoke-result.json",
+    "selected_skill_id": "skillnet:alfworld-clean-object",
+    "latency_ms": 9142.901,
+    "usage": {
+      "prompt_tokens": 4269,
+      "completion_tokens": 19,
+      "total_tokens": 4288,
+      "cached_input_tokens": 0,
+      "reasoning_tokens": 0
+    },
+    "requested_model": "gpt-5.4-mini",
+    "response_model": "gpt-5.4-mini",
+    "system_fingerprint": null,
+    "provider_charge_amount": null,
+    "backend_weights_independently_verified": false
+  },
+  "persistent_replay": {
+    "invocations_after_initial_smoke": 2,
+    "additional_live_api_requests": 0,
+    "required_key": false,
+    "latest_result_path": "cache-replay-result.json",
+    "final_cache_stats": {
+      "api_attempts": 1,
+      "successful_decisions": 1,
+      "failed_attempts": 0,
+      "cache_hits": 5,
+      "max_api_calls": 1
+    }
+  },
+  "offline_tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 /mnt/workspace/users/wangyifan/.venvs/skillnet-router-20260917-sdk3141/bin/python -B -m pytest -q -p no:cacheprovider tests/skill_router tests/skill_bank tests/phase1/test_step_skill_router.py tests/phase1/test_skill_mask.py tests/phase1/test_step_routing_summary.py tests/phase1/test_trajectory_archive.py tests/phase1/test_training_step_archive.py",
+    "exit_code": 0,
+    "passed": 171,
+    "summary": "171 passed in 6.19s",
+    "new_router_and_integration_cases": 55,
+    "previous_bank_cases": 104,
+    "legacy_regression_cases": 12,
+    "real_api_calls": 0,
+    "real_alfworld_rollouts": 0,
+    "policy_forwards": 0,
+    "new_sdk_mock_transport_verified": true,
+    "modified_python_syntax_verified": true,
+    "overlay_has_missing_cache_path_and_zero_default_call_budget": true,
+    "not_full_historical_test_suite": true
+  },
+  "preservation": {
+    "baseline": {
+      "protected_file_count": 20251,
+      "protected_content_bytes": 2189820796,
+      "protected_tree_sha256": "4a91e91726ed45412128c48c6149c0246f450c943a8249e81fff84d4102f39a8",
+      "planned_edit_baselines": {
+        "SkillRL/agent_system/environments/env_manager.py": {
+          "sha256": "d9b61965b9bb15d7f98720a7d70acafc8af10cf172b3d2f32f381a4da91f57bc",
+          "bytes": 45228
+        },
+        "SkillRL/phase1/archive.py": {
+          "sha256": "474c59c046910477074e7556a589b0117fe34bbcc5b830c34eba1645b6f897ec",
+          "bytes": 13541
+        },
+        "SkillRL/phase1/eval_first_invocation_utility.py": {
+          "sha256": "89db015009f0f60678209da15228f067bf562a6ef5d5240d2971df3cde820f98",
+          "bytes": 15507
+        }
+      },
+      "excluded": [
+        ".git"
+      ]
+    },
+    "after": {
+      "protected_file_count": 20251,
+      "protected_content_bytes": 2189820796,
+      "protected_tree_sha256": "4a91e91726ed45412128c48c6149c0246f450c943a8249e81fff84d4102f39a8"
+    },
+    "protected_files_unchanged": true,
+    "intentional_modified_files": [
+      {
+        "path": "SkillRL/agent_system/environments/env_manager.py",
+        "bytes": 46959,
+        "sha256": "2e8c176f4f3ec603987300377d9a08f1637c182f59e6641d02cce43d42899539"
+      },
+      {
+        "path": "SkillRL/phase1/archive.py",
+        "bytes": 13667,
+        "sha256": "76e275beb924a885154ef6d0bd749aca69c4226b966f835c0bf028d8cff19048"
+      },
+      {
+        "path": "SkillRL/phase1/eval_first_invocation_utility.py",
+        "bytes": 15633,
+        "sha256": "7b47550fecb55fae5924820768d2e2489a07bc52beb2b4244b11f8eb71d2286d"
+      }
+    ],
+    "new_paths_excluded": [
+      "SkillRL/agent_system/memory/external_skill_router.py",
+      "SkillRL/agent_system/memory/router_cache.py",
+      "SkillRL/agent_system/memory/skillnet_runtime.py",
+      "SkillRL/configs/skillnet37_router_gpt54mini_v1.json",
+      "SkillRL/requirements-router.txt",
+      "SkillRL/tests/skill_router",
+      "SkillRL/scripts/test_skillnet_router.py",
+      "SkillRL/docs/experiments/skillnet37-router-v1",
+      "2026-09-17-skillnet37-external-router-setting.md",
+      "SkillRL/configs/alfworld_skillnet37_external_router.yaml"
+    ],
+    "algorithm": "Sorted relative paths; SHA-256 each existing file (or 'symlink:'+target for file links), then SHA-256(path + NUL + file_digest + LF). Excludes .git, three declared edited files, and declared new paths.",
+    "previous_skillnet_snapshot_and_manifest_unchanged": true,
+    "old_router_and_bank_unchanged": true,
+    "historical_reports_and_handoff_unchanged": true,
+    "commits_resets_or_rollbacks_performed": false
+  },
+  "secret_handling": {
+    "credential_source": "Echo-disabled getpass -> process-local SKILLNET_ROUTER_API_KEY, removed on exit",
+    "shared_OPENAI_API_KEY_fallback": false,
+    "key_written_to_project_files": false,
+    "credential_pattern_matches_in_new_and_modified_project_files": 0,
+    "raw_sdk_exception_or_response_body_logging": false
+  },
+  "artifact_hashes": [
+    {
+      "path": "SkillRL/agent_system/environments/env_manager.py",
+      "bytes": 46959,
+      "sha256": "2e8c176f4f3ec603987300377d9a08f1637c182f59e6641d02cce43d42899539"
+    },
+    {
+      "path": "SkillRL/phase1/archive.py",
+      "bytes": 13667,
+      "sha256": "76e275beb924a885154ef6d0bd749aca69c4226b966f835c0bf028d8cff19048"
+    },
+    {
+      "path": "SkillRL/phase1/eval_first_invocation_utility.py",
+      "bytes": 15633,
+      "sha256": "7b47550fecb55fae5924820768d2e2489a07bc52beb2b4244b11f8eb71d2286d"
+    },
+    {
+      "path": "SkillRL/agent_system/memory/external_skill_router.py",
+      "bytes": 16550,
+      "sha256": "13069769510b1509cacd693eeee4d71fdf779d12f94addc40cf8c72ab5e1d170"
+    },
+    {
+      "path": "SkillRL/agent_system/memory/router_cache.py",
+      "bytes": 7097,
+      "sha256": "0d1edb4f2811cdbcd26ae8c844f34154e4b3506f23020a472981d8c7705271df"
+    },
+    {
+      "path": "SkillRL/agent_system/memory/skillnet_runtime.py",
+      "bytes": 804,
+      "sha256": "0425e00acc616c17f3d877009a3c7f765e97fe3a3ab15c47adb3477410659fcd"
+    },
+    {
+      "path": "SkillRL/configs/alfworld_skillnet37_external_router.yaml",
+      "bytes": 473,
+      "sha256": "e44c64ff6c0b334da703be0b23c9c154e16a9fe19a3ed061c0ac295f400d49c4"
+    },
+    {
+      "path": "SkillRL/configs/skillnet37_router_gpt54mini_v1.json",
+      "bytes": 690,
+      "sha256": "5ccf799ef9dac6bd3a128df08087689996f986b45f485ccf869b3c42458c7895"
+    },
+    {
+      "path": "SkillRL/docs/experiments/skillnet37-router-v1/cache-replay-result.json",
+      "bytes": 1611,
+      "sha256": "4ebd163a6df9e981ea2da5dff2865441c98edc83bf3e15c8f30841c0e20315cb"
+    },
+    {
+      "path": "SkillRL/docs/experiments/skillnet37-router-v1/live-smoke/router.sqlite3",
+      "bytes": 40960,
+      "sha256": "95625907841e681417710261f7ced45250dc88cb5a6548756579871ae3d610f9"
+    },
+    {
+      "path": "SkillRL/docs/experiments/skillnet37-router-v1/live-smoke/router.sqlite3.locks/433af88a5c6183d27f7179108301a37931bf8b03db4ddbcaf9930ec1ecb99139.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "SkillRL/docs/experiments/skillnet37-router-v1/live-smoke-result.json",
+      "bytes": 1582,
+      "sha256": "5e541c9426f4d3403484e8e61c4b4e0200f5e4519b537eb675fe5bb188e1c490"
+    },
+    {
+      "path": "SkillRL/requirements-router.txt",
+      "bytes": 206,
+      "sha256": "aeb50c353137e0e8d93322f5f9e0f61815b8da4642c148605f23719c1df9959f"
+    },
+    {
+      "path": "SkillRL/scripts/test_skillnet_router.py",
+      "bytes": 3931,
+      "sha256": "714277964077697b3c47f33cc18ef429a290f7e09b71f64a27f56833dc5318dd"
+    },
+    {
+      "path": "SkillRL/tests/skill_router/test_environment_integration.py",
+      "bytes": 6223,
+      "sha256": "0ed9e31375350ac92afce265d92adc316da152815206d468685a17e2259e93e1"
+    },
+    {
+      "path": "SkillRL/tests/skill_router/test_external_skill_router.py",
+      "bytes": 14488,
+      "sha256": "2936d8d8bd510d1c48e133920045ff7c02f1041cd5e3e74f366c6aab541c4c73"
+    },
+    {
+      "path": "2026-09-17-skillnet37-external-router-setting.md",
+      "bytes": 15704,
+      "sha256": "af4c4cd8298ae1eca728219f97016b7bd85ba377290f705b9005d90495baacf2"
+    }
+  ],
+  "artifact_hash_scope": "Final implementation, settings, tests, live evidence, cache and narrative archive; this verification file excludes itself. The SQLite hash corresponds to one API attempt and five cache hits.",
+  "references": [
+    "https://developers.openai.com/api/docs/models/gpt-5.4-mini",
+    "https://developers.openai.com/api/reference/python/resources/chat/subresources/completions/methods/create",
+    "https://developers.openai.com/api/docs/libraries"
+  ],
+  "skill_used": "OpenAI Docs: checked SDK/API/model parameter contract; fixed requested model, no substitution",
+  "remaining_work": [
+    "Audit Qwen actor prompt token budget and token-matched PLACEBO across 37 packages",
+    "Freeze new seed, all-task game/split manifests, update window and full-run budget",
+    "Wire the new frozen cohort driver explicitly to the factory; historical Phase1/Phase2 CLI defaults remain legacy",
+    "Clarify third-party backend snapshot guarantees before claims of immutable model weights",
+    "Full experiment-stack/GPU compatibility and benchmark evaluation are not tested"
+  ]
+}

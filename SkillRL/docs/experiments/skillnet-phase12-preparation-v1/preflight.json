@@ -1,0 +1,53 @@
+{
+  "status": "STATIC_READY_EXECUTION_LOCKED",
+  "errors": [],
+  "versions": {
+    "torch": "2.11.0",
+    "torchvision": "0.26.0",
+    "fastapi": "0.141.1",
+    "uvicorn": "0.51.0",
+    "transformers": "5.10.4",
+    "ray": "2.43.0",
+    "hydra-core": "1.3.2",
+    "tensordict": "0.10.0",
+    "torchdata": "0.11.0",
+    "pandas": "2.3.3",
+    "pyarrow": "19.0.1",
+    "textworld": "1.7.0",
+    "gymnasium": "0.29.1",
+    "alfworld": "0.4.2",
+    "openai": "3.14.1"
+  },
+  "entrypoint_imports": {
+    "verl.trainer.main_ppo": "imported",
+    "verl.workers.fsdp_workers": "imported",
+    "phase2.measure": "imported",
+    "phase2.evaluate": "imported",
+    "phase2.aggregate": "imported",
+    "phase2.window_forecast": "imported"
+  },
+  "seed": 404,
+  "bank_count": 37,
+  "placebo_count": 37,
+  "game_counts": {
+    "train": 3553,
+    "valid_seen": 140,
+    "valid_unseen": 134
+  },
+  "training": "150 iterations, 16 groups x 8; complete train pool sampling, not exhaustive epochs",
+  "full_eval_job_count": 274,
+  "readout_windows": 30,
+  "capture_enabled": true,
+  "phase3_required": false,
+  "training_started": false,
+  "api_calls": 0,
+  "writes": 0,
+  "remaining_execution_gates": [
+    "Explicit router/storage budgets and scoped execution authorization",
+    "Actual four-GPU forward/backward/restore feasibility, not inferred from imports/CPU tests",
+    "Runtime full-prompt coverage; strict overflow guard is installed, but no real states were run"
+  ],
+  "artifacts_generated_during_future_execution": [
+    "FP32 B0/endpoint snapshots, natural-anchor support, committed predictions, and O/P/N outcomes"
+  ]
+}

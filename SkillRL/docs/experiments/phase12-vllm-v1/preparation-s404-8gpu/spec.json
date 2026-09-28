@@ -1,0 +1,170 @@
+{
+  "bank_manifest_sha256": "0767ff7578b1e997119a36b5f636fec6ebc1d0ac600ffb40b1e599065b7fe514",
+  "budget_profile": {
+    "path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/configs/phase12_single_window_v3.json",
+    "settings": {
+      "actor_optimizer_offload": true,
+      "anchor_source_seeds": [
+        61011
+      ],
+      "capture_protocol": "exact_live_full_vocab_fp32",
+      "completion_claim": "single_seed_u0_to_u5_with_full_seen_unseen_evaluation",
+      "evidence_seeds": [
+        62011
+      ],
+      "execution_authorized": false,
+      "finish_reserve_seconds": 10800,
+      "gold_seeds": [
+        63011,
+        63021
+      ],
+      "gold_skill_selection": "sha256_daybudget_s404_natural_support_v1",
+      "hard_limit_seconds": 108000,
+      "iterations": 5,
+      "max_new_tokens": 512,
+      "max_steps": 50,
+      "maximum_anchors_per_skill": 12,
+      "maximum_gold_skills": 12,
+      "minimum_anchor_games": 10,
+      "minimum_anchor_occurrences": 30,
+      "parallel_evaluation_workers": 8,
+      "profile_id": "s404-single-window-v3",
+      "rollout_microbatch_per_gpu": 2,
+      "schema_version": "skillnet.phase12.budget_profile.v1",
+      "scientific_scope_confirmed": true,
+      "target_hours": [
+        15,
+        30
+      ],
+      "utility_splits": [
+        "valid_unseen"
+      ],
+      "window_horizon": 5
+    },
+    "sha256": "be7548bdeb6d18c3e550233975e3a67165ac02d307dcf90651b3ed7a1e0751a1"
+  },
+  "data_root": "/mnt/workspace/users/wangyifan/skill-RL/data/alfworld",
+  "evaluation": {
+    "anchor_source_seeds": [
+      61011
+    ],
+    "evidence_seeds": [
+      62011
+    ],
+    "full_game_traversal": true,
+    "gold_seeds": [
+      63011,
+      63021
+    ],
+    "gold_skill_selection": "sha256_daybudget_s404_natural_support_v1",
+    "history_length": 2,
+    "max_new_tokens": 512,
+    "max_prompt_tokens": 4096,
+    "max_steps": 50,
+    "maximum_anchors_per_skill": 12,
+    "maximum_gold_skills": 12,
+    "minimum_anchor_games": 10,
+    "minimum_anchor_occurrences": 30,
+    "parallel_workers": 8,
+    "performance_seeds": [
+      61001
+    ],
+    "splits": [
+      "valid_seen",
+      "valid_unseen"
+    ],
+    "temperature": 0.4,
+    "top_p": 1.0,
+    "utility_splits": [
+      "valid_unseen"
+    ]
+  },
+  "execution": {
+    "approved": false,
+    "finish_reserve_seconds": 10800,
+    "gpu_forward_validated": false,
+    "hard_limit_seconds": 108000,
+    "router_max_api_calls": 0,
+    "router_max_local_calls": 0,
+    "storage_budget_bytes": null
+  },
+  "inference_profile": {
+    "path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/configs/phase12_vllm_v1.json",
+    "settings": {
+      "backend": "vllm_v1",
+      "dtype": "bfloat16",
+      "enable_chunked_prefill": true,
+      "enable_prefix_caching": false,
+      "enforce_eager": true,
+      "evaluation_parallelism": "eight_gpu_shards_sequential_episodes_per_shard",
+      "execution_authorized": false,
+      "gpu_memory_utilization": 0.45,
+      "max_model_len": 4608,
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "schema_version": "skillnet.inference.v1",
+      "seed": 404,
+      "tensor_parallel_size": 1,
+      "torch_version": "2.11.0",
+      "transformers_version": "5.10.4",
+      "vllm_version": "0.22.0",
+      "weight_sync": "inprocess_public_apply_model_fsdp_sharded_v1"
+    },
+    "sha256": "9683d367af764790ceaf63cc02751f0d992562d192aea9d66402b96094821584"
+  },
+  "model_path": "/mnt/workspace/users/wangyifan/model/Qwen3.5-4B",
+  "phase3": {
+    "enabled": false,
+    "required_for_phase12": false
+  },
+  "prompt_audit": {
+    "complete_runtime_prompt_verified": false,
+    "overflow_policy": "raise before generation; no silent truncation/drop",
+    "payload_max_tokens": 1967,
+    "payload_min_tokens": 402,
+    "placebos": 37
+  },
+  "readout": {
+    "anchor_strategy": "natural calls at each window start, fixed across paired endpoints",
+    "capture": "actual batch/advantage/old-new FP32 vocabulary distributions at every update",
+    "fit_new_models": false,
+    "horizon": 5,
+    "primary_score": "gated_D",
+    "score_frozen_before_gold": true,
+    "support": {
+      "minimum_games": 4,
+      "minimum_nonzero_decisions": 20,
+      "minimum_trajectories": 8
+    },
+    "unsupported": "abstain; never assign zero risk",
+    "windows": [
+      {
+        "end": 5,
+        "role": "test",
+        "start": 0
+      }
+    ]
+  },
+  "router_backend": "skillrl_embedding_state_batch",
+  "router_device": "cpu",
+  "router_model_path": "/mnt/workspace/users/wangyifan/model/Qwen3-Embedding-0.6B",
+  "router_profile_sha256": "091b514862df2358b06cae7e5db71ce5233d134d8ca2dfda2f220490ba28fb4b",
+  "schema_version": "skillnet.phase12.v1",
+  "seed": 404,
+  "seed_confirmed": true,
+  "status": "prepared_not_authorized",
+  "training": {
+    "actor_optimizer_offload": true,
+    "games_per_iteration": 16,
+    "gpus": 8,
+    "group_size": 8,
+    "iterations": 5,
+    "microbatch_per_gpu": 1,
+    "monitor_episodes": 64,
+    "monitor_every": 5,
+    "ppo_minibatch_rows": 128,
+    "rollout_microbatch_per_gpu": 2,
+    "sampling": "SkillRL 16 groups x 8 trajectories; complete six-task train pool, not exhaustive traversal",
+    "save_every": 5
+  }
+}

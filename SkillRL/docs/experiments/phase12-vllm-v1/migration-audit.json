@@ -1,0 +1,100 @@
+{
+  "schema_version": "skillnet.migration.audit.v1",
+  "status": "PARAMETER_CONFIRMATION_PENDING_GPU_UNVERIFIED",
+  "date_utc": "2026-09-18",
+  "assets": [
+    {
+      "path": "configs/phase12_vllm_v1.json",
+      "sha256": "9683d367af764790ceaf63cc02751f0d992562d192aea9d66402b96094821584"
+    },
+    {
+      "path": "configs/phase12_single_window_v3.json",
+      "sha256": "be7548bdeb6d18c3e550233975e3a67165ac02d307dcf90651b3ed7a1e0751a1"
+    },
+    {
+      "path": "skillnet_cohort/inference.py",
+      "sha256": "11c99004b35949540fe532cfe2e07bc0f51fbed681eeb11d1a9324caf7415ba4"
+    },
+    {
+      "path": "skillnet_cohort/vllm_backend.py",
+      "sha256": "165da93f0a1a2b5b59af1095bfc61fcb1fc0f5457f9ad371c75fa6fcbf14fd97"
+    },
+    {
+      "path": "skillnet_cohort/vllm_qwen35.py",
+      "sha256": "fb770d1f176fdfd74751027bee609cc7102be304ea1d842bc4269a8adc190259"
+    },
+    {
+      "path": "skillnet_cohort/prepare.py",
+      "sha256": "0748759e593d97da991b713f862f2b5ae8d5df9d5b53f4682a81a3dd68f8d33b"
+    },
+    {
+      "path": "skillnet_cohort/common.py",
+      "sha256": "fabac61827993d28c1d47e88031df03a46962a4b2baa8085b591b99dbcc864e4"
+    },
+    {
+      "path": "skillnet_cohort/runtime.py",
+      "sha256": "2acddfe378fa6bb88cf7b5977befab6c784f98ec8079332a80a04b3b5456f5fe"
+    },
+    {
+      "path": "skillnet_cohort/day_budget.py",
+      "sha256": "7d95d177b280628e76075d95a3768978ca8c9cef3ad1fccabe87646b00c60e10"
+    },
+    {
+      "path": "skillnet_cohort/training.py",
+      "sha256": "e8482f1ecf657bb44baca3a925c505202636f1796471b7c6598e5d6b3c033c09"
+    },
+    {
+      "path": "skillnet_cohort/evaluate.py",
+      "sha256": "f80070e8da98900cf3f17e559c02ed32824f7fa35ec89588a9e03c9629e8a982"
+    },
+    {
+      "path": "skillnet_cohort/gpu_preflight.py",
+      "sha256": "1c6157f7aa7604f64ee82340241516fe58bce8f8990fc9e5e1ce969a2d7169f9"
+    },
+    {
+      "path": "verl/workers/fsdp_workers.py",
+      "sha256": "f407e9fd23c90cd091c776e6fea8f7c1cb9e92efd97034d2cc28daf4b016ac4d"
+    },
+    {
+      "path": "verl/workers/rollout/vllm_v1.py",
+      "sha256": "a4b9b3a20e037890ab3135af11216487ad5d7b034a36e3ffe8f503a05aa567f6"
+    },
+    {
+      "path": "verl/workers/sharding_manager/fsdp_vllm_v1.py",
+      "sha256": "fc7805291f67a2db8a47b189b2c1fda9a7d75a4951b0924fcf468ed6d23a43bb"
+    },
+    {
+      "path": "phase2/evaluate.py",
+      "sha256": "9b66b4f5201bfcada73b0649281c2fcefaa741bd44d0a7ff3b2680ebcd118b79"
+    },
+    {
+      "path": "tests/skillnet_cohort/test_vllm_backend.py",
+      "sha256": "6e2a82ee1c1c6ddba35a55fecd02dbb2e4659823cf485f56440ef4498626bb5d"
+    },
+    {
+      "path": "requirements-vllm-phase12.in",
+      "sha256": "84254cb2b478069158b8723e61e6d60c7ce8bdc9c5ff50713402e80929e33929"
+    },
+    {
+      "path": "requirements-vllm-phase12.lock",
+      "sha256": "c7c5d178dca623df5b8642ab785d0b91fd2f152ef5d6a95388039f4f4377395b"
+    },
+    {
+      "path": "docs/experiments/phase12-vllm-v1/adapter-tests-final.xml",
+      "sha256": "a31c67c56cce4690a7498d20abf699a6f68d393e09f16fda41e8669a1c6dc4a7"
+    },
+    {
+      "path": "docs/experiments/phase12-vllm-v1/resolved-training-review.json",
+      "sha256": "990cf6eba5948f07e5f6def2b9a1c4b2bcd138b31b1ac1cb823839634b5bc3b7"
+    }
+  ],
+  "offline_regression_tests": 445,
+  "latest_targeted_tests": 10,
+  "targeted_tests_overlap_regression": true,
+  "gpu_engine_weight_loading": false,
+  "gpu_preflight_started": false,
+  "formal_rl_started": false,
+  "external_api_calls": 0,
+  "execution_authorized": false,
+  "old_evidence_hashes_verified_unchanged": true
+}

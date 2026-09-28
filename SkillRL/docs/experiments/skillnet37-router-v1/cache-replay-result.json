@@ -1,0 +1,48 @@
+{
+  "status": "synthetic_router_and_cache_replay_passed",
+  "benchmark_experiment": false,
+  "candidate_count": 37,
+  "selected_skill_id": "skillnet:alfworld-clean-object",
+  "payload_utf8_bytes": 4040,
+  "bank_manifest_sha256": "0767ff7578b1e997119a36b5f636fec6ebc1d0ac600ffb40b1e599065b7fe514",
+  "first_call": {
+    "completion_id": "chatcmpl-EP6ULhka9C9qaSLepXINkAHxUL6TM",
+    "latency_ms": 0,
+    "provider_cost": null,
+    "provider_endpoint": "https://api.zhizengzeng.com/v1",
+    "request_id": "2026091732c411aa541e630724ae4e08966aed38",
+    "requested_model": "gpt-5.4-mini",
+    "response_model": "gpt-5.4-mini",
+    "sdk_version": "3.14.1",
+    "system_fingerprint": null,
+    "usage": {
+      "cached_input_tokens": 0,
+      "completion_tokens": 0,
+      "prompt_tokens": 0,
+      "reasoning_tokens": 0,
+      "total_tokens": 0
+    },
+    "protocol_hash": "947890c5b48a04d3a28b3e0c02260f7e7db73cc4029a0d026ec4d4ac4d5bdffd",
+    "input_hash": "44190a939eb4010eec19ee43adc72ce86d47821f3c5ded8741d8a33bd71d4f81",
+    "cache_key": "433af88a5c6183d27f7179108301a37931bf8b03db4ddbcaf9930ec1ecb99139",
+    "cache_hit": true,
+    "api_calls_this_step": 0,
+    "source_decision_latency_ms": 9142.901,
+    "source_decision_usage": {
+      "cached_input_tokens": 0,
+      "completion_tokens": 19,
+      "prompt_tokens": 4269,
+      "reasoning_tokens": 0,
+      "total_tokens": 4288
+    }
+  },
+  "replay_cache_hit": true,
+  "live_api_calls_this_invocation": 0,
+  "cache_stats": {
+    "api_attempts": 1,
+    "successful_decisions": 1,
+    "failed_attempts": 0,
+    "cache_hits": 5,
+    "max_api_calls": 1
+  }
+}

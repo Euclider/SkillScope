@@ -1,0 +1,470 @@
+{
+  "caveat": "Depends on current runtime os.walk ordering; verify actual rollout game IDs too.",
+  "environment_started": false,
+  "kind": "read_only_sampling_projection",
+  "records": [
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_two_obj_and_place-Pan-None-CounterTop-14/trial_T20190918_175910_161432/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Newspaper-None-DeskLamp-224/trial_T20190909_091628_986448/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Mug-None-CoffeeMachine-5/trial_T20190908_170305_166722/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Candle-None-Cabinet-412/trial_T20190908_222902_113581/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Statue-None-SideTable-214/trial_T20190909_035314_885391/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Newspaper-None-CoffeeTable-222/trial_T20190908_205540_806550/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Candle-None-CounterTop-411/trial_T20190906_200812_843662/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Egg-None-DiningTable-15/trial_T20190908_042125_390836/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Pot-None-Shelf-7/trial_T20190907_024924_873513/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-Cabinet-22/trial_T20190908_072939_855818/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Cloth-None-CounterTop-410/trial_T20190907_181320_769618/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Laptop-None-Bed-302/trial_T20190908_112452_253912/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-SprayBottle-None-Cabinet-403/trial_T20190907_123359_561127/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Bread-None-DiningTable-16/trial_T20190908_035642_699545/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Lettuce-None-Fridge-4/trial_T20190907_163708_735211/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Pencil-None-Drawer-316/trial_T20190907_003944_188608/game.tw-pddl"
+      ],
+      "seed": 404,
+      "task_counts": {
+        "look_at_obj_in_light": 1,
+        "pick_and_place_simple": 3,
+        "pick_clean_then_place_in_recep": 2,
+        "pick_cool_then_place_in_recep": 3,
+        "pick_heat_then_place_in_recep": 2,
+        "pick_two_obj_and_place": 5
+      },
+      "unique_games": 16,
+      "update": 1
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-Fridge-16/trial_T20190907_210941_026899/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-Drawer-409/trial_T20190907_040420_175845/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Candle-None-Drawer-427/trial_T20190909_043917_251333/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Pot-None-StoveBurner-7/trial_T20190907_051334_995569/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-CreditCard-None-Dresser-311/trial_T20190907_201834_073281/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Egg-None-Fridge-20/trial_T20190907_224538_972488/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-ToiletPaper-None-ToiletPaperHanger-412/trial_T20190907_181314_264466/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-AlarmClock-None-DeskLamp-302/trial_T20190908_192820_480968/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Glassbottle-None-Fridge-1/trial_T20190906_210352_897478/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Cup-None-DiningTable-24/trial_T20190909_020256_557442/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Potato-None-GarbageCan-17/trial_T20190908_204111_799665/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Cup-None-Shelf-20/trial_T20190907_155120_145168/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-ToiletPaper-None-ToiletPaperHanger-427/trial_T20190908_121628_520773/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-1/trial_T20190907_222837_842651/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Cloth-None-Toilet-402/trial_T20190906_201408_789070/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-KeyChain-None-Dresser-217/trial_T20190908_133414_664426/game.tw-pddl"
+      ],
+      "seed": 404,
+      "task_counts": {
+        "look_at_obj_in_light": 1,
+        "pick_and_place_simple": 3,
+        "pick_clean_then_place_in_recep": 2,
+        "pick_cool_then_place_in_recep": 4,
+        "pick_heat_then_place_in_recep": 3,
+        "pick_two_obj_and_place": 3
+      },
+      "unique_games": 16,
+      "update": 2
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Mug-None-SideTable-21/trial_T20190907_153718_648592/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Pencil-None-DeskLamp-307/trial_T20190909_014411_219923/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-CounterTop-22/trial_T20190909_023544_721677/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Egg-None-CounterTop-12/trial_T20190908_215643_953236/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Cloth-None-Cabinet-405/trial_T20190907_080924_812825/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-GarbageCan-420/trial_T20190906_201023_015139/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-RemoteControl-None-Sofa-212/trial_T20190907_235247_981744/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-CounterTop-1/trial_T20190909_115633_911483/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Candle-None-Cabinet-406/trial_T20190908_165708_885279/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-Shelf-5/trial_T20190906_203744_920699/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-CellPhone-None-Bed-313/trial_T20190907_092308_442494/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Pen-None-GarbageCan-321/trial_T20190907_201720_953919/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-Toilet-405/trial_T20190909_070029_031921/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Apple-None-DiningTable-15/trial_T20190906_192109_267294/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Cloth-None-Cart-430/trial_T20190906_194203_696787/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Bowl-None-Fridge-21/trial_T20190909_014336_206275/game.tw-pddl"
+      ],
+      "seed": 404,
+      "task_counts": {
+        "look_at_obj_in_light": 1,
+        "pick_and_place_simple": 1,
+        "pick_clean_then_place_in_recep": 4,
+        "pick_cool_then_place_in_recep": 2,
+        "pick_heat_then_place_in_recep": 4,
+        "pick_two_obj_and_place": 4
+      },
+      "unique_games": 16,
+      "update": 3
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_two_obj_and_place-Candle-None-Drawer-411/trial_T20190909_064620_649713/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Bowl-None-DeskLamp-302/trial_T20190908_030636_661532/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Plate-None-Cabinet-28/trial_T20190907_035752_332060/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Mug-None-Dresser-311/trial_T20190909_152854_416951/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-DishSponge-None-Cart-430/trial_T20190908_123550_524298/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Mug-None-DeskLamp-323/trial_T20190907_041056_308386/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-HandTowel-None-CounterTop-418/trial_T20190909_102747_643981/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Pen-None-Shelf-319/trial_T20190907_203155_907620/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Pen-None-Dresser-327/trial_T20190912_025637_251961/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Mug-None-CoffeeMachine-14/trial_T20190906_213507_741596/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Mug-None-CoffeeMachine-5/trial_T20190908_170305_166722/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-SprayBottle-None-GarbageCan-426/trial_T20190908_052109_948840/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Bowl-None-Fridge-21/trial_T20190909_014405_823537/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-DiningTable-16/trial_T20190908_015247_818796/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-SoapBar-None-GarbageCan-416/trial_T20190908_020828_777495/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Kettle-None-Cabinet-3/trial_T20190909_151623_379326/game.tw-pddl"
+      ],
+      "seed": 404,
+      "task_counts": {
+        "look_at_obj_in_light": 2,
+        "pick_and_place_simple": 4,
+        "pick_clean_then_place_in_recep": 3,
+        "pick_cool_then_place_in_recep": 1,
+        "pick_heat_then_place_in_recep": 2,
+        "pick_two_obj_and_place": 4
+      },
+      "unique_games": 16,
+      "update": 4
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Bread-None-CounterTop-15/trial_T20190907_000245_890595/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Knife-None-DiningTable-26/trial_T20190908_133611_882723/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Mug-None-CoffeeMachine-13/trial_T20190906_211135_782663/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Egg-None-SideTable-21/trial_T20190907_044013_708280/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Lettuce-None-CounterTop-30/trial_T20190909_033139_582791/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Pan-None-DiningTable-23/trial_T20190909_005801_641557/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Book-None-ArmChair-229/trial_T20190906_203051_143723/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-RemoteControl-None-CoffeeTable-202/trial_T20190907_075335_280493/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Egg-None-CounterTop-27/trial_T20190909_002151_489665/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Laptop-None-Desk-307/trial_T20190909_005113_233838/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-WineBottle-None-CounterTop-16/trial_T20190907_165337_245316/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-DishSponge-None-Drawer-427/trial_T20190909_001329_772865/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Apple-None-Microwave-22/trial_T20190908_000205_582040/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-Fridge-2/trial_T20190909_030845_198194/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-Shelf-20/trial_T20190918_185821_186807/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-SideTable-21/trial_T20190908_121815_131020/game.tw-pddl"
+      ],
+      "seed": 404,
+      "task_counts": {
+        "pick_and_place_simple": 1,
+        "pick_clean_then_place_in_recep": 3,
+        "pick_cool_then_place_in_recep": 6,
+        "pick_heat_then_place_in_recep": 3,
+        "pick_two_obj_and_place": 3
+      },
+      "unique_games": 16,
+      "update": 5
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/look_at_obj_in_light-CellPhone-None-DeskLamp-320/trial_T20190908_093231_036941/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Laptop-None-DeskLamp-324/trial_T20190908_071112_878672/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-CounterTop-422/trial_T20190908_125025_238872/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-DishSponge-None-CounterTop-403/trial_T20190908_144337_493760/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-KeyChain-None-SideTable-326/trial_T20190908_161022_255067/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-14/trial_T20190907_012050_928961/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Pencil-None-DeskLamp-306/trial_T20190907_235903_897904/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Fork-None-SideTable-21/trial_T20190909_041423_781798/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Pan-None-StoveBurner-2/trial_T20190906_215744_388781/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Pot-None-StoveBurner-4/trial_T20190906_190656_137258/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-CreditCard-None-Sofa-207/trial_T20190909_090035_107554/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Cup-None-Microwave-1/trial_T20190909_150843_298006/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Newspaper-None-Ottoman-210/trial_T20190907_144808_904739/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Pencil-None-Drawer-327/trial_T20190918_171204_045094/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Bowl-None-Desk-327/trial_T20190908_040620_961547/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Egg-None-SideTable-21/trial_T20190908_033911_286565/game.tw-pddl"
+      ],
+      "seed": 505,
+      "task_counts": {
+        "look_at_obj_in_light": 3,
+        "pick_and_place_simple": 1,
+        "pick_clean_then_place_in_recep": 6,
+        "pick_cool_then_place_in_recep": 1,
+        "pick_heat_then_place_in_recep": 1,
+        "pick_two_obj_and_place": 4
+      },
+      "unique_games": 16,
+      "update": 1
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Egg-None-Microwave-20/trial_T20190908_051908_943025/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Kettle-None-Shelf-1/trial_T20190907_011745_444370/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Lettuce-None-DiningTable-26/trial_T20190906_200751_569799/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-Toilet-422/trial_T20190908_204626_280695/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Apple-None-CounterTop-2/trial_T20190908_112534_364453/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Pillow-None-Ottoman-208/trial_T20190906_172125_756234/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-SoapBottle-None-GarbageCan-421/trial_T20190908_045256_126150/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Watch-None-CoffeeTable-222/trial_T20190908_032421_426650/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-Shelf-20/trial_T20190907_021648_434341/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-PepperShaker-None-Drawer-5/trial_T20190908_195340_064065/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Bowl-None-Desk-327/trial_T20190908_040715_288858/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Mug-None-CoffeeMachine-7/trial_T20190908_071121_293695/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-CD-None-Dresser-323/trial_T20190908_005542_694744/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-CD-None-DeskLamp-316/trial_T20190909_114559_561870/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-CellPhone-None-DeskLamp-318/trial_T20190909_005934_726946/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Newspaper-None-ArmChair-216/trial_T20190907_074138_151478/game.tw-pddl"
+      ],
+      "seed": 505,
+      "task_counts": {
+        "look_at_obj_in_light": 2,
+        "pick_and_place_simple": 6,
+        "pick_clean_then_place_in_recep": 1,
+        "pick_cool_then_place_in_recep": 3,
+        "pick_heat_then_place_in_recep": 1,
+        "pick_two_obj_and_place": 3
+      },
+      "unique_games": 16,
+      "update": 2
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_two_obj_and_place-PepperShaker-None-Cabinet-8/trial_T20190912_115403_916426/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Pillow-None-DeskLamp-309/trial_T20190908_113820_480741/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-SoapBottle-None-Cabinet-417/trial_T20190906_192320_630856/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Potato-None-DiningTable-4/trial_T20190909_113957_013325/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-SideTable-3/trial_T20190909_050256_765736/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Book-None-Cabinet-310/trial_T20190908_154212_187931/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-Cabinet-1/trial_T20190909_090951_740727/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-CellPhone-None-DeskLamp-318/trial_T20190909_005855_117187/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Mug-None-CoffeeMachine-4/trial_T20190907_053101_214309/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Cup-None-Microwave-26/trial_T20190907_231307_110058/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Pan-None-StoveBurner-26/trial_T20190907_103701_866410/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Book-None-DeskLamp-328/trial_T20190908_062929_997479/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Lettuce-None-Fridge-6/trial_T20190918_184629_005371/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-SprayBottle-None-Drawer-423/trial_T20190909_071948_483717/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Vase-None-DeskLamp-216/trial_T20190906_200458_622810/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Bread-None-DiningTable-15/trial_T20190907_030851_016828/game.tw-pddl"
+      ],
+      "seed": 505,
+      "task_counts": {
+        "look_at_obj_in_light": 4,
+        "pick_and_place_simple": 2,
+        "pick_clean_then_place_in_recep": 1,
+        "pick_cool_then_place_in_recep": 2,
+        "pick_heat_then_place_in_recep": 3,
+        "pick_two_obj_and_place": 4
+      },
+      "unique_games": 16,
+      "update": 3
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_two_obj_and_place-HandTowel-None-Toilet-427/trial_T20190909_030304_583247/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-CD-None-Shelf-330/trial_T20190906_201328_424086/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Candle-None-CounterTop-417/trial_T20190909_142343_223524/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Apple-None-DiningTable-4/trial_T20190908_104413_450768/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Pencil-None-DeskLamp-303/trial_T20190909_064559_200594/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Watch-None-CoffeeTable-209/trial_T20190909_020425_925699/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Apple-None-DiningTable-15/trial_T20190906_192043_926936/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-SprayBottle-None-GarbageCan-420/trial_T20190909_141726_511777/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Bowl-None-DeskLamp-307/trial_T20190908_204915_583447/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-Toilet-429/trial_T20190906_222257_632416/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Cup-None-Cabinet-6/trial_T20190908_165804_877612/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-CellPhone-None-Drawer-302/trial_T20190907_235412_132976/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-SprayBottle-None-Toilet-429/trial_T20190907_033916_156076/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-ToiletPaper-None-ToiletPaperHanger-417/trial_T20190908_043859_833063/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Potato-None-CounterTop-14/trial_T20190908_053512_113312/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-SideTable-21/trial_T20190908_121815_131020/game.tw-pddl"
+      ],
+      "seed": 505,
+      "task_counts": {
+        "look_at_obj_in_light": 2,
+        "pick_and_place_simple": 4,
+        "pick_clean_then_place_in_recep": 3,
+        "pick_cool_then_place_in_recep": 2,
+        "pick_heat_then_place_in_recep": 1,
+        "pick_two_obj_and_place": 4
+      },
+      "unique_games": 16,
+      "update": 4
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Kettle-None-Shelf-1/trial_T20190906_182430_397766/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Bread-None-GarbageCan-15/trial_T20190906_230136_323065/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-24/trial_T20190907_144750_235743/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-SprayBottle-None-Toilet-429/trial_T20190907_033916_156076/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Kettle-None-StoveBurner-3/trial_T20190907_054250_215208/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-CellPhone-None-Desk-327/trial_T20190907_162342_304038/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Tomato-None-GarbageCan-2/trial_T20190908_111837_382989/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Cup-None-Shelf-1/trial_T20190909_151825_980574/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Pot-None-StoveBurner-7/trial_T20190907_051125_923567/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-Fridge-18/trial_T20190908_142308_771790/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-SoapBottle-None-GarbageCan-418/trial_T20190909_071000_671838/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-SideTable-3/trial_T20190909_050408_729839/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-DishSponge-None-Shelf-401/trial_T20190908_072206_068474/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Cup-None-DiningTable-24/trial_T20190909_020224_927852/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-SoapBottle-None-Cabinet-417/trial_T20190906_192320_630856/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Pillow-None-DeskLamp-305/trial_T20190909_110717_764199/game.tw-pddl"
+      ],
+      "seed": 505,
+      "task_counts": {
+        "look_at_obj_in_light": 1,
+        "pick_and_place_simple": 1,
+        "pick_clean_then_place_in_recep": 4,
+        "pick_cool_then_place_in_recep": 2,
+        "pick_heat_then_place_in_recep": 5,
+        "pick_two_obj_and_place": 3
+      },
+      "unique_games": 16,
+      "update": 5
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_two_obj_and_place-Candle-None-Toilet-417/trial_T20190907_182724_868283/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-CreditCard-None-DiningTable-329/trial_T20190909_013555_714877/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-CD-None-DeskLamp-320/trial_T20190907_224502_133384/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-AlarmClock-None-DeskLamp-320/trial_T20190908_082347_537952/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Book-None-Bed-328/trial_T20190907_060344_224282/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Tomato-None-Fridge-12/trial_T20190906_190441_327141/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Plate-None-Microwave-7/trial_T20190907_170059_704503/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Potato-None-SideTable-21/trial_T20190907_040322_742837/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-WateringCan-None-Shelf-214/trial_T20190907_031049_207882/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-AlarmClock-None-DeskLamp-314/trial_T20190908_042454_725701/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Candle-None-Cabinet-428/trial_T20190909_053819_460818/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-Drawer-413/trial_T20190908_004844_910818/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Fork-None-DiningTable-15/trial_T20190907_203221_946933/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-AlarmClock-None-DeskLamp-320/trial_T20190908_082347_537952/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-GarbageCan-5/trial_T20190908_144144_976529/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-SoapBottle-None-CounterTop-411/trial_T20190907_111029_579247/game.tw-pddl"
+      ],
+      "seed": 606,
+      "task_counts": {
+        "look_at_obj_in_light": 4,
+        "pick_and_place_simple": 1,
+        "pick_clean_then_place_in_recep": 2,
+        "pick_cool_then_place_in_recep": 1,
+        "pick_heat_then_place_in_recep": 2,
+        "pick_two_obj_and_place": 6
+      },
+      "unique_games": 15,
+      "update": 1
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Cloth-None-Cabinet-405/trial_T20190907_080943_173175/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Tomato-None-Fridge-12/trial_T20190906_190625_937922/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-AlarmClock-None-DeskLamp-327/trial_T20190909_101936_297661/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-SprayBottle-None-Toilet-417/trial_T20190908_071724_127813/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-HandTowel-None-Cabinet-412/trial_T20190906_200550_674090/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Pan-None-Fridge-1/trial_T20190908_105504_396709/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Bowl-None-Cabinet-25/trial_T20190908_073559_391749/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-CounterTop-22/trial_T20190909_023638_397924/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Lettuce-None-DiningTable-24/trial_T20190908_062406_725126/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-CreditCard-None-DiningTable-329/trial_T20190918_154254_505630/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Fork-None-Drawer-8/trial_T20190908_132042_019953/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Pan-None-CounterTop-12/trial_T20190908_062452_694113/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Pen-None-Shelf-320/trial_T20190907_174259_205684/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-DishSponge-None-Toilet-427/trial_T20190908_234308_183420/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-SoapBar-None-Cart-401/trial_T20190907_054853_603987/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-SoapBottle-None-GarbageCan-417/trial_T20190909_120121_758074/game.tw-pddl"
+      ],
+      "seed": 606,
+      "task_counts": {
+        "look_at_obj_in_light": 1,
+        "pick_and_place_simple": 3,
+        "pick_clean_then_place_in_recep": 4,
+        "pick_cool_then_place_in_recep": 3,
+        "pick_heat_then_place_in_recep": 2,
+        "pick_two_obj_and_place": 3
+      },
+      "unique_games": 16,
+      "update": 2
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-DiningTable-20/trial_T20190908_001123_581082/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Potato-None-Microwave-11/trial_T20190908_215946_926015/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-TissueBox-None-Drawer-427/trial_T20190909_060953_266728/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Cup-None-Shelf-1/trial_T20190907_181520_113143/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-ToiletPaper-None-GarbageCan-416/trial_T20190906_202104_886119/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Kettle-None-DiningTable-7/trial_T20190907_144338_014196/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-SoapBar-None-Cabinet-408/trial_T20190908_032511_198283/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-ToiletPaper-None-Drawer-409/trial_T20190906_193444_042317/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-CD-None-Dresser-323/trial_T20190908_005542_694744/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Book-None-DiningTable-329/trial_T20190909_062819_013401/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-SoapBottle-None-Drawer-423/trial_T20190909_064813_906845/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Pillow-None-Sofa-221/trial_T20190908_175303_977893/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Vase-None-DiningTable-227/trial_T20190909_050706_578681/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Apple-None-Microwave-14/trial_T20190909_120203_117379/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Bread-None-DiningTable-16/trial_T20190908_173209_222002/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-AlarmClock-None-Desk-318/trial_T20190910_021620_491490/game.tw-pddl"
+      ],
+      "seed": 606,
+      "task_counts": {
+        "pick_and_place_simple": 5,
+        "pick_clean_then_place_in_recep": 4,
+        "pick_cool_then_place_in_recep": 2,
+        "pick_heat_then_place_in_recep": 1,
+        "pick_two_obj_and_place": 4
+      },
+      "unique_games": 16,
+      "update": 3
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Bread-None-CounterTop-15/trial_T20190909_085448_256298/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Mug-None-CoffeeMachine-11/trial_T20190907_164431_737459/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Spatula-None-Drawer-22/trial_T20190907_145132_203684/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-Pan-None-CounterTop-8/trial_T20190908_105520_133293/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-PepperShaker-None-CounterTop-27/trial_T20190909_010836_535047/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Book-None-DeskLamp-309/trial_T20190907_175916_775742/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-AlarmClock-None-DeskLamp-328/trial_T20190908_175801_507648/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-Cabinet-8/trial_T20190907_170428_184361/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Bread-None-CounterTop-11/trial_T20190908_030106_508574/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Bowl-None-Shelf-1/trial_T20190909_070255_772779/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Cup-None-Microwave-26/trial_T20190907_231307_110058/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-CellPhone-None-SideTable-310/trial_T20190908_123211_754215/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-RemoteControl-None-ArmChair-209/trial_T20190911_073110_194622/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-CellPhone-None-DeskLamp-316/trial_T20190907_075452_465579/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-CD-None-Shelf-310/trial_T20190908_130024_429688/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Book-None-DeskLamp-324/trial_T20190907_014417_271891/game.tw-pddl"
+      ],
+      "seed": 606,
+      "task_counts": {
+        "look_at_obj_in_light": 4,
+        "pick_and_place_simple": 3,
+        "pick_clean_then_place_in_recep": 2,
+        "pick_cool_then_place_in_recep": 2,
+        "pick_heat_then_place_in_recep": 2,
+        "pick_two_obj_and_place": 3
+      },
+      "unique_games": 16,
+      "update": 4
+    },
+    {
+      "game_ids": [
+        "json_2.1.1/train/pick_two_obj_and_place-Cloth-None-Drawer-427/trial_T20190908_130926_765289/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-Fridge-12/trial_T20190908_095835_636521/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Egg-None-DiningTable-11/trial_T20190908_021917_263280/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-CD-None-Dresser-323/trial_T20190908_005459_168199/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-RemoteControl-None-ArmChair-223/trial_T20190908_163723_604442/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-CD-None-Shelf-326/trial_T20190910_060853_032012/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Cup-None-CounterTop-22/trial_T20190909_022057_173698/game.tw-pddl",
+        "json_2.1.1/train/pick_clean_then_place_in_recep-Egg-None-DiningTable-23/trial_T20190908_083733_678856/game.tw-pddl",
+        "json_2.1.1/train/pick_heat_then_place_in_recep-Potato-None-Fridge-6/trial_T20190907_125630_644421/game.tw-pddl",
+        "json_2.1.1/train/pick_cool_then_place_in_recep-Lettuce-None-DiningTable-21/trial_T20190909_045111_863875/game.tw-pddl",
+        "json_2.1.1/train/look_at_obj_in_light-Pencil-None-DeskLamp-303/trial_T20190909_064559_200594/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-Cup-None-CounterTop-4/trial_T20190908_095244_390748/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-CellPhone-None-Desk-312/trial_T20190908_021751_687867/game.tw-pddl",
+        "json_2.1.1/train/pick_and_place_simple-ToiletPaper-None-ToiletPaperHanger-423/trial_T20190908_022339_158366/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-CreditCard-None-ArmChair-227/trial_T20190907_075752_838584/game.tw-pddl",
+        "json_2.1.1/train/pick_two_obj_and_place-CellPhone-None-Dresser-327/trial_T20190908_042509_028087/game.tw-pddl"
+      ],
+      "seed": 606,
+      "task_counts": {
+        "look_at_obj_in_light": 1,
+        "pick_and_place_simple": 5,
+        "pick_clean_then_place_in_recep": 2,
+        "pick_cool_then_place_in_recep": 1,
+        "pick_heat_then_place_in_recep": 3,
+        "pick_two_obj_and_place": 4
+      },
+      "unique_games": 16,
+      "update": 5
+    }
+  ]
+}

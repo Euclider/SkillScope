@@ -1,0 +1,634 @@
+{
+  "benchmark_experiment": false,
+  "created_at_utc": "2026-09-18T04:44:50.173617+00:00",
+  "device": "cpu",
+  "elapsed_seconds": 21.775,
+  "external_api_calls": 0,
+  "kind": "synthetic_embedding_router_component_smoke",
+  "performance_claim": "No ALFWorld policy success/coverage/8-GPU coexistence claim; these are synthetic states.",
+  "profile_sha256": "d1fc18a18537e65d4503d65d46187b8b63d21d9a884f6332262dbbb2dda778c8",
+  "protocol": {
+    "automatic_retries": 0,
+    "bank_manifest_sha256": "0767ff7578b1e997119a36b5f636fec6ebc1d0ac600ffb40b1e599065b7fe514",
+    "catalog": [
+      {
+        "description": "Navigates the agent to a target appliance (microwave, stove, fridge, or sinkbasin) needed for object processing. Use when you are holding an object that needs heating, cooling, or cleaning and must move to the correct appliance station. Identifies the required appliance from the task context and executes the movement action.",
+        "name": "alfworld-appliance-navigator",
+        "skill_id": "skillnet:alfworld-appliance-navigator"
+      },
+      {
+        "description": "Prepares a household appliance (microwave, oven, toaster, fridge) for use by ensuring it is in the correct open/closed state. Use when the agent needs to heat, cool, or cook an item and must first open or close the appliance before placing an object inside. Takes an appliance identifier as input and outputs a confirmation that the appliance is ready for the next action.",
+        "name": "alfworld-appliance-preparer",
+        "skill_id": "skillnet:alfworld-appliance-preparer"
+      },
+      {
+        "description": "Cleans a specified object using an appropriate cleaning receptacle (e.g., sinkbasin). Use when a task requires an object to be in a clean state (e.g., \"clean potato\", \"wash apple\") before proceeding. Navigates to the cleaning location, performs the clean action, and confirms the object is now clean.",
+        "name": "alfworld-clean-object",
+        "skill_id": "skillnet:alfworld-clean-object"
+      },
+      {
+        "description": "Operates a device or appliance (like a desklamp, microwave, or fridge) to interact with another object. Use when the task requires using a tool on a target item (e.g., \"look at laptop under the desklamp\", \"heat potato with microwave\"). Locates both the device and target object, co-locates them, and executes the appropriate use action (toggle, heat, cool, or clean).",
+        "name": "alfworld-device-operator",
+        "skill_id": "skillnet:alfworld-device-operator"
+      },
+      {
+        "description": "Performs an initial scan of the ALFWorld environment to identify all visible objects and receptacles. Use when you first enter an environment and need to build a mental map for task planning. Processes raw observation text into a structured list of entities, categorizing them as objects or receptacles.",
+        "name": "alfworld-environment-scanner",
+        "skill_id": "skillnet:alfworld-environment-scanner"
+      },
+      {
+        "description": "Parses the natural language task goal to extract actionable sub-objectives and required objects. Trigger this skill whenever a new task is assigned to break down complex instructions into clear, sequential targets. It interprets phrases like 'look at X under Y' to identify target objects (pillow), reference objects (desklamp), and spatial relationships (under).",
+        "name": "alfworld-goal-interpreter",
+        "skill_id": "skillnet:alfworld-goal-interpreter"
+      },
+      {
+        "description": "Uses a heating appliance (microwave, stoveburner, oven) to apply heat to a specified object. Use when the task requires warming or cooking an item (e.g., \"heat some egg\", \"warm the mug\") and a heating appliance is available. Takes the object name and appliance name as input and outputs the object in a heated state, ready for placement at the task's target location.",
+        "name": "alfworld-heat-object-with-appliance",
+        "skill_id": "skillnet:alfworld-heat-object-with-appliance"
+      },
+      {
+        "description": "Use when the agent must collect and track multiple instances of the same object type in ALFWorld (e.g., \"put two cellphone in bed\"). This skill maintains a count of collected versus needed objects, guides systematic searching through receptacles, and ensures each found object is placed at the target before searching for the next.",
+        "name": "alfworld-inventory-management",
+        "skill_id": "skillnet:alfworld-inventory-management"
+      },
+      {
+        "description": "Navigates to a suspected location and identifies a target object. Use when your goal requires finding a specific object (e.g., \"potato\", \"plate\") and its location is not immediately known. Moves to a relevant receptacle (like a fridge or cabinet), checks its contents, and outputs the object's location or confirms its absence.",
+        "name": "alfworld-locate-target-object",
+        "skill_id": "skillnet:alfworld-locate-target-object"
+      },
+      {
+        "description": "Moves the agent to a specified receptacle or object location within the Alfworld environment. Use this skill when the agent needs to physically approach a target to inspect or interact with it, such as when checking an object's state or preparing for pickup. The skill takes a target location name as input and executes the 'go to' action, resulting in the agent being positioned at the destination for subsequent operations.",
+        "name": "alfworld-location-navigator",
+        "skill_id": "skillnet:alfworld-location-navigator"
+      },
+      {
+        "description": "Plans a path to move the agent between receptacles to search for target objects. Use this when you need to traverse the environment to reach a specific location or systematically explore multiple areas. It takes the current location and destination receptacle as input, and outputs the next 'go to' action to approach the target.",
+        "name": "alfworld-navigation-planner",
+        "skill_id": "skillnet:alfworld-navigation-planner"
+      },
+      {
+        "description": "Cools a held object using an appropriate cooling appliance such as a fridge or freezer. Use when the task requires reducing the temperature of an object (e.g., \"cool some pot\", \"chill the mug\") and the agent is already holding the object. Performs the ALFWorld `cool` action and outputs the cooled object ready for subsequent placement or serving steps.",
+        "name": "alfworld-object-cooler",
+        "skill_id": "skillnet:alfworld-object-cooler"
+      },
+      {
+        "description": "This skill disposes of an object by placing it into a disposal receptacle like a garbage can. It should be triggered when the task requires discarding an object (e.g., 'put it in garbagecan') and the agent is at the disposal location with the object in hand. The skill executes the 'put' action to place the object in/on the target receptacle, completing the disposal subtask.",
+        "name": "alfworld-object-disposer",
+        "skill_id": "skillnet:alfworld-object-disposer"
+      },
+      {
+        "description": "Heats a specified object using an available heating appliance (e.g., microwave, stoveburner). Use when you are holding an object that requires heating and need to navigate to and operate the heating appliance. Takes the object and appliance as inputs and results in the object being in a heated state.",
+        "name": "alfworld-object-heater",
+        "skill_id": "skillnet:alfworld-object-heater"
+      },
+      {
+        "description": "Use when the agent needs to find a specific object in ALFWorld that is not currently in inventory and whose location is unknown. This skill parses the environment observation, ranks receptacles by likelihood of containing the target object using common-sense reasoning, and outputs a navigation action to the most promising location.",
+        "name": "alfworld-object-locator",
+        "skill_id": "skillnet:alfworld-object-locator"
+      },
+      {
+        "description": "Picks up a specified object from a given receptacle. Use this skill when the agent has located a required object and needs to acquire it for later use, such as taking an item from a surface or container. The skill requires the object and source receptacle as inputs, executing a 'take' action to transfer the object into the agent's inventory, enabling further manipulation like placement or usage.",
+        "name": "alfworld-object-picker",
+        "skill_id": "skillnet:alfworld-object-picker"
+      },
+      {
+        "description": "Places a held object onto or into a target receptacle. Trigger this skill when the agent is carrying an object and needs to deposit it at a specific location to complete a task, such as installing an item on a holder or storing it in a container. It takes the object and destination receptacle as inputs, performing a 'put' action to finalize the object's positioning according to the task goal.",
+        "name": "alfworld-object-placer",
+        "skill_id": "skillnet:alfworld-object-placer"
+      },
+      {
+        "description": "This skill picks up a target object from a specified receptacle after the object has been visually confirmed. Use this skill when the agent has located an object in a receptacle and needs to acquire it. It requires the object and source receptacle as inputs and results in the object being added to the agent's inventory.",
+        "name": "alfworld-object-retriever",
+        "skill_id": "skillnet:alfworld-object-retriever"
+      },
+      {
+        "description": "Inspects a receptacle's contents by navigating to it and reading the observation. Use when you need to check what is on or inside a receptacle (e.g., \"what's on the shelf\", \"is the holder empty\", \"check the table for items\"). Executes `go to {receptacle}`, parses the observation listing items present, and decides whether to take an item, search elsewhere, or proceed.",
+        "name": "alfworld-object-state-inspector",
+        "skill_id": "skillnet:alfworld-object-state-inspector"
+      },
+      {
+        "description": "Uses an appliance to change the state of an object (cooling, heating, or cleaning). Use when the task requires altering an object's temperature or cleanliness using a specific device (e.g., cooling with a fridge, heating with a microwave, cleaning with a sinkbasin). Takes the object, target state, and appliance as inputs and executes the corresponding modifier action.",
+        "name": "alfworld-object-state-modifier",
+        "skill_id": "skillnet:alfworld-object-state-modifier"
+      },
+      {
+        "description": "Use when the agent is holding an object and needs to place it into a target receptacle in ALFWorld. This skill checks receptacle suitability, opens closed containers if needed, and executes the `put` command to store the object. It handles both open surfaces (countertops, beds) and closed containers (drawers, cabinets).",
+        "name": "alfworld-object-storer",
+        "skill_id": "skillnet:alfworld-object-storer"
+      },
+      {
+        "description": "Picks up a target object from its current receptacle and moves it to a specified destination receptacle. Use when you have located an object and need to relocate it to complete a task (e.g., moving a laptop to a desk). Takes the object identifier, source receptacle, and destination receptacle as inputs and outputs the action sequence to take, transport, and place the object.",
+        "name": "alfworld-object-transporter",
+        "skill_id": "skillnet:alfworld-object-transporter"
+      },
+      {
+        "description": "This skill opens a closed receptacle to access its contents. It should be triggered when an agent needs to interact with items inside a closed container (e.g., fridge, microwave, drawer). The skill takes a receptacle identifier as input, performs the open action, and outputs the observation of the interior, enabling subsequent item retrieval or placement.",
+        "name": "alfworld-open-receptacle",
+        "skill_id": "skillnet:alfworld-open-receptacle"
+      },
+      {
+        "description": "Closes an open receptacle to maintain environment tidiness after inspection. Use when you have finished searching a container (drawer, cabinet, fridge) and no longer need it open. Takes a receptacle identifier as input and outputs confirmation that the receptacle is closed, preventing clutter during multi-step search tasks.",
+        "name": "alfworld-receptacle-closer",
+        "skill_id": "skillnet:alfworld-receptacle-closer"
+      },
+      {
+        "description": "Searches for a suitable empty or appropriately occupied receptacle (like a shelf or table) to place an object. Use when you are holding an object that needs to be stored or placed and must find a receptacle that meets the placement criteria. Examines candidate receptacles by navigating to and inspecting each one until a suitable location is found.",
+        "name": "alfworld-receptacle-finder",
+        "skill_id": "skillnet:alfworld-receptacle-finder"
+      },
+      {
+        "description": "Plans and executes movement to a target receptacle within the ALFWorld environment. Use when the agent needs to reach a specific location before interacting with objects there (e.g., go to fridge to cool an item, go to garbagecan to dispose of an item). Takes a receptacle identifier as input, executes the `go to` action, and outputs confirmation of arrival at the destination.",
+        "name": "alfworld-receptacle-navigator",
+        "skill_id": "skillnet:alfworld-receptacle-navigator"
+      },
+      {
+        "description": "This skill opens a closed receptacle to allow access to its contents or to enable interaction with it. It should be triggered when the agent encounters a closed receptacle (e.g., 'The fridge 1 is closed.') that must be opened to proceed with a task, such as cooling an item with a fridge or taking an object from inside a cabinet. The skill outputs the 'open' action on the specified receptacle.",
+        "name": "alfworld-receptacle-opener",
+        "skill_id": "skillnet:alfworld-receptacle-opener"
+      },
+      {
+        "description": "This skill opens or closes a receptacle (like a fridge, cabinet, or microwave) to access its interior or secure it. It should be triggered when an object needs to be placed inside/retrieved from a closed container, or when an open container should be closed (e.g., for energy efficiency or task cleanliness). The skill decides the appropriate 'open' or 'close' action based on the receptacle's current state and the task context.",
+        "name": "alfworld-receptacle-operator",
+        "skill_id": "skillnet:alfworld-receptacle-operator"
+      },
+      {
+        "description": "This skill verifies and prepares a target receptacle for receiving an object. It is triggered before placing an item into a receptacle (e.g., a garbage can) to ensure the receptacle is accessible and suitable. The skill involves navigating to the receptacle, observing its state (e.g., open/closed, occupied), and performing any necessary preparatory actions like opening it, resulting in a ready-to-use target location.",
+        "name": "alfworld-receptacle-preparer",
+        "skill_id": "skillnet:alfworld-receptacle-preparer"
+      },
+      {
+        "description": "This skill searches for a specific receptacle (e.g., garbage can, cabinet) by systematically exploring the environment, checking multiple locations until found. Trigger when the target receptacle is not initially visible, often after scanning nearby areas. It outputs the receptacle's location and may involve navigating through multiple waypoints.",
+        "name": "alfworld-receptacle-searcher",
+        "skill_id": "skillnet:alfworld-receptacle-searcher"
+      },
+      {
+        "description": "Systematically searches a sequence of likely locations for a target object based on common sense. Use when you need to find a specific object and know which receptacles to check but not which one contains it. Takes a list of candidate receptacles, orchestrates navigation and inspection, and outputs when the target is found or all locations are exhausted.",
+        "name": "alfworld-search-pattern-executor",
+        "skill_id": "skillnet:alfworld-search-pattern-executor"
+      },
+      {
+        "description": "Re-examines previously visited locations to confirm the absence of a target object or to check for overlooked items. Use when an initial search fails to find enough objects or when double-checking is required before concluding task failure. Systematically revisits receptacles, re-opens closed containers, and re-inspects contents to ensure no viable location was missed.",
+        "name": "alfworld-search-verifier",
+        "skill_id": "skillnet:alfworld-search-verifier"
+      },
+      {
+        "description": "Systematically explores storage receptacles (drawers, cabinets, shelves) to find an appropriate placement location for an object. Use when the agent needs to store an item but the exact target receptacle is unknown or ambiguous. Opens, inspects, and closes candidate receptacles to assess suitability, then places the object in the best match.",
+        "name": "alfworld-storage-explorer",
+        "skill_id": "skillnet:alfworld-storage-explorer"
+      },
+      {
+        "description": "Use when the agent needs to check whether an ALFWorld task objective has been met after completing a sub-action (e.g., placing an object). This skill parses the task goal, evaluates the latest environment observation, and outputs a verification decision — task complete, task incomplete, or action ineffective — to guide the next step.",
+        "name": "alfworld-task-verifier",
+        "skill_id": "skillnet:alfworld-task-verifier"
+      },
+      {
+        "description": "Manages the temperature state of an object by placing it into an appropriate appliance (fridge for cooling, microwave for heating). Use when the task requires modifying an object's temperature property, such as \"cool some bread\" or \"heat some food\". Takes the object identifier, temperature-modifying receptacle, and final target receptacle as inputs, and outputs the object at the target location with its temperature state changed.",
+        "name": "alfworld-temperature-regulator",
+        "skill_id": "skillnet:alfworld-temperature-regulator"
+      },
+      {
+        "description": "Searches for a specified tool or device (e.g., a desklamp, knife, or sponge) within the ALFWorld environment by checking relevant surfaces. Use when you need a tool to interact with another object as part of a task but the tool is not in your inventory or immediate vicinity. Takes a tool name as implicit input and navigates to likely storage spots (sidetables, shelves, countertops) until the tool is found.",
+        "name": "alfworld-tool-locator",
+        "skill_id": "skillnet:alfworld-tool-locator"
+      },
+      {
+        "description": "Use when the agent needs to apply a tool to a target object in ALFWorld to accomplish an interaction such as cleaning, heating, cooling, or examining. This skill handles locating both the tool and target object, then executing the correct environment action (e.g., `clean`, `heat`, `cool`, `use`) to progress the task.",
+        "name": "alfworld-tool-user",
+        "skill_id": "skillnet:alfworld-tool-user"
+      }
+    ],
+    "config": {
+      "attn_implementation": "sdpa",
+      "dtype": "float32",
+      "embedding_dim": 1024,
+      "encode_batch_size": 8,
+      "history_length": 2,
+      "max_input_utf8_bytes": 65536,
+      "max_prompt_tokens": 8192,
+      "model": "Qwen/Qwen3-Embedding-0.6B",
+      "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+      "sentence_transformers_version": "6.0.1",
+      "tokenizers_version": "0.22.2",
+      "torch_version": "2.11.0",
+      "transformers_version": "5.10.4"
+    },
+    "device": "cpu",
+    "external_api_calls": 0,
+    "model_files": {
+      "1_Pooling/config.json": "37bf193fa101f19101bfad9c31d3eb0f786e247b7b1e5cb7f007d730eed1ddbd",
+      "config.json": "b5bf1f51fc45be473a54718cef92448d90a1be001bf9b9a44b8c7f10a19feaa9",
+      "config_sentence_transformers.json": "10667c72ddb772627bf1780cb7f86af8e2ae0032b8c243c731172064105c6961",
+      "generation_config.json": "28396d421a2108acce96383f6a7de78008f7f1b17f807958f3c14c51dbfb65fb",
+      "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+      "model.safetensors": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+      "modules.json": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf",
+      "tokenizer.json": "def76fb086971c7867b829c23a26261e38d9d74e02139253b38aeb9df8b4b50a",
+      "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+      "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    },
+    "query_formatter": "canonical-visible-state-json-v1-no-extra-prompt",
+    "selection_count": 1,
+    "similarity": "l2-normalized-fp32-dot-product",
+    "skill_texts": [
+      "alfworld-appliance-navigator. Navigates the agent to a target appliance (microwave, stove, fridge, or sinkbasin) needed for object processing. Use when you are holding an object that needs heating, cooling, or cleaning and must move to the correct appliance station. Identifies the required appliance from the task context and executes the movement action.",
+      "alfworld-appliance-preparer. Prepares a household appliance (microwave, oven, toaster, fridge) for use by ensuring it is in the correct open/closed state. Use when the agent needs to heat, cool, or cook an item and must first open or close the appliance before placing an object inside. Takes an appliance identifier as input and outputs a confirmation that the appliance is ready for the next action.",
+      "alfworld-clean-object. Cleans a specified object using an appropriate cleaning receptacle (e.g., sinkbasin). Use when a task requires an object to be in a clean state (e.g., \"clean potato\", \"wash apple\") before proceeding. Navigates to the cleaning location, performs the clean action, and confirms the object is now clean.",
+      "alfworld-device-operator. Operates a device or appliance (like a desklamp, microwave, or fridge) to interact with another object. Use when the task requires using a tool on a target item (e.g., \"look at laptop under the desklamp\", \"heat potato with microwave\"). Locates both the device and target object, co-locates them, and executes the appropriate use action (toggle, heat, cool, or clean).",
+      "alfworld-environment-scanner. Performs an initial scan of the ALFWorld environment to identify all visible objects and receptacles. Use when you first enter an environment and need to build a mental map for task planning. Processes raw observation text into a structured list of entities, categorizing them as objects or receptacles.",
+      "alfworld-goal-interpreter. Parses the natural language task goal to extract actionable sub-objectives and required objects. Trigger this skill whenever a new task is assigned to break down complex instructions into clear, sequential targets. It interprets phrases like 'look at X under Y' to identify target objects (pillow), reference objects (desklamp), and spatial relationships (under).",
+      "alfworld-heat-object-with-appliance. Uses a heating appliance (microwave, stoveburner, oven) to apply heat to a specified object. Use when the task requires warming or cooking an item (e.g., \"heat some egg\", \"warm the mug\") and a heating appliance is available. Takes the object name and appliance name as input and outputs the object in a heated state, ready for placement at the task's target location.",
+      "alfworld-inventory-management. Use when the agent must collect and track multiple instances of the same object type in ALFWorld (e.g., \"put two cellphone in bed\"). This skill maintains a count of collected versus needed objects, guides systematic searching through receptacles, and ensures each found object is placed at the target before searching for the next.",
+      "alfworld-locate-target-object. Navigates to a suspected location and identifies a target object. Use when your goal requires finding a specific object (e.g., \"potato\", \"plate\") and its location is not immediately known. Moves to a relevant receptacle (like a fridge or cabinet), checks its contents, and outputs the object's location or confirms its absence.",
+      "alfworld-location-navigator. Moves the agent to a specified receptacle or object location within the Alfworld environment. Use this skill when the agent needs to physically approach a target to inspect or interact with it, such as when checking an object's state or preparing for pickup. The skill takes a target location name as input and executes the 'go to' action, resulting in the agent being positioned at the destination for subsequent operations.",
+      "alfworld-navigation-planner. Plans a path to move the agent between receptacles to search for target objects. Use this when you need to traverse the environment to reach a specific location or systematically explore multiple areas. It takes the current location and destination receptacle as input, and outputs the next 'go to' action to approach the target.",
+      "alfworld-object-cooler. Cools a held object using an appropriate cooling appliance such as a fridge or freezer. Use when the task requires reducing the temperature of an object (e.g., \"cool some pot\", \"chill the mug\") and the agent is already holding the object. Performs the ALFWorld `cool` action and outputs the cooled object ready for subsequent placement or serving steps.",
+      "alfworld-object-disposer. This skill disposes of an object by placing it into a disposal receptacle like a garbage can. It should be triggered when the task requires discarding an object (e.g., 'put it in garbagecan') and the agent is at the disposal location with the object in hand. The skill executes the 'put' action to place the object in/on the target receptacle, completing the disposal subtask.",
+      "alfworld-object-heater. Heats a specified object using an available heating appliance (e.g., microwave, stoveburner). Use when you are holding an object that requires heating and need to navigate to and operate the heating appliance. Takes the object and appliance as inputs and results in the object being in a heated state.",
+      "alfworld-object-locator. Use when the agent needs to find a specific object in ALFWorld that is not currently in inventory and whose location is unknown. This skill parses the environment observation, ranks receptacles by likelihood of containing the target object using common-sense reasoning, and outputs a navigation action to the most promising location.",
+      "alfworld-object-picker. Picks up a specified object from a given receptacle. Use this skill when the agent has located a required object and needs to acquire it for later use, such as taking an item from a surface or container. The skill requires the object and source receptacle as inputs, executing a 'take' action to transfer the object into the agent's inventory, enabling further manipulation like placement or usage.",
+      "alfworld-object-placer. Places a held object onto or into a target receptacle. Trigger this skill when the agent is carrying an object and needs to deposit it at a specific location to complete a task, such as installing an item on a holder or storing it in a container. It takes the object and destination receptacle as inputs, performing a 'put' action to finalize the object's positioning according to the task goal.",
+      "alfworld-object-retriever. This skill picks up a target object from a specified receptacle after the object has been visually confirmed. Use this skill when the agent has located an object in a receptacle and needs to acquire it. It requires the object and source receptacle as inputs and results in the object being added to the agent's inventory.",
+      "alfworld-object-state-inspector. Inspects a receptacle's contents by navigating to it and reading the observation. Use when you need to check what is on or inside a receptacle (e.g., \"what's on the shelf\", \"is the holder empty\", \"check the table for items\"). Executes `go to {receptacle}`, parses the observation listing items present, and decides whether to take an item, search elsewhere, or proceed.",
+      "alfworld-object-state-modifier. Uses an appliance to change the state of an object (cooling, heating, or cleaning). Use when the task requires altering an object's temperature or cleanliness using a specific device (e.g., cooling with a fridge, heating with a microwave, cleaning with a sinkbasin). Takes the object, target state, and appliance as inputs and executes the corresponding modifier action.",
+      "alfworld-object-storer. Use when the agent is holding an object and needs to place it into a target receptacle in ALFWorld. This skill checks receptacle suitability, opens closed containers if needed, and executes the `put` command to store the object. It handles both open surfaces (countertops, beds) and closed containers (drawers, cabinets).",
+      "alfworld-object-transporter. Picks up a target object from its current receptacle and moves it to a specified destination receptacle. Use when you have located an object and need to relocate it to complete a task (e.g., moving a laptop to a desk). Takes the object identifier, source receptacle, and destination receptacle as inputs and outputs the action sequence to take, transport, and place the object.",
+      "alfworld-open-receptacle. This skill opens a closed receptacle to access its contents. It should be triggered when an agent needs to interact with items inside a closed container (e.g., fridge, microwave, drawer). The skill takes a receptacle identifier as input, performs the open action, and outputs the observation of the interior, enabling subsequent item retrieval or placement.",
+      "alfworld-receptacle-closer. Closes an open receptacle to maintain environment tidiness after inspection. Use when you have finished searching a container (drawer, cabinet, fridge) and no longer need it open. Takes a receptacle identifier as input and outputs confirmation that the receptacle is closed, preventing clutter during multi-step search tasks.",
+      "alfworld-receptacle-finder. Searches for a suitable empty or appropriately occupied receptacle (like a shelf or table) to place an object. Use when you are holding an object that needs to be stored or placed and must find a receptacle that meets the placement criteria. Examines candidate receptacles by navigating to and inspecting each one until a suitable location is found.",
+      "alfworld-receptacle-navigator. Plans and executes movement to a target receptacle within the ALFWorld environment. Use when the agent needs to reach a specific location before interacting with objects there (e.g., go to fridge to cool an item, go to garbagecan to dispose of an item). Takes a receptacle identifier as input, executes the `go to` action, and outputs confirmation of arrival at the destination.",
+      "alfworld-receptacle-opener. This skill opens a closed receptacle to allow access to its contents or to enable interaction with it. It should be triggered when the agent encounters a closed receptacle (e.g., 'The fridge 1 is closed.') that must be opened to proceed with a task, such as cooling an item with a fridge or taking an object from inside a cabinet. The skill outputs the 'open' action on the specified receptacle.",
+      "alfworld-receptacle-operator. This skill opens or closes a receptacle (like a fridge, cabinet, or microwave) to access its interior or secure it. It should be triggered when an object needs to be placed inside/retrieved from a closed container, or when an open container should be closed (e.g., for energy efficiency or task cleanliness). The skill decides the appropriate 'open' or 'close' action based on the receptacle's current state and the task context.",
+      "alfworld-receptacle-preparer. This skill verifies and prepares a target receptacle for receiving an object. It is triggered before placing an item into a receptacle (e.g., a garbage can) to ensure the receptacle is accessible and suitable. The skill involves navigating to the receptacle, observing its state (e.g., open/closed, occupied), and performing any necessary preparatory actions like opening it, resulting in a ready-to-use target location.",
+      "alfworld-receptacle-searcher. This skill searches for a specific receptacle (e.g., garbage can, cabinet) by systematically exploring the environment, checking multiple locations until found. Trigger when the target receptacle is not initially visible, often after scanning nearby areas. It outputs the receptacle's location and may involve navigating through multiple waypoints.",
+      "alfworld-search-pattern-executor. Systematically searches a sequence of likely locations for a target object based on common sense. Use when you need to find a specific object and know which receptacles to check but not which one contains it. Takes a list of candidate receptacles, orchestrates navigation and inspection, and outputs when the target is found or all locations are exhausted.",
+      "alfworld-search-verifier. Re-examines previously visited locations to confirm the absence of a target object or to check for overlooked items. Use when an initial search fails to find enough objects or when double-checking is required before concluding task failure. Systematically revisits receptacles, re-opens closed containers, and re-inspects contents to ensure no viable location was missed.",
+      "alfworld-storage-explorer. Systematically explores storage receptacles (drawers, cabinets, shelves) to find an appropriate placement location for an object. Use when the agent needs to store an item but the exact target receptacle is unknown or ambiguous. Opens, inspects, and closes candidate receptacles to assess suitability, then places the object in the best match.",
+      "alfworld-task-verifier. Use when the agent needs to check whether an ALFWorld task objective has been met after completing a sub-action (e.g., placing an object). This skill parses the task goal, evaluates the latest environment observation, and outputs a verification decision — task complete, task incomplete, or action ineffective — to guide the next step.",
+      "alfworld-temperature-regulator. Manages the temperature state of an object by placing it into an appropriate appliance (fridge for cooling, microwave for heating). Use when the task requires modifying an object's temperature property, such as \"cool some bread\" or \"heat some food\". Takes the object identifier, temperature-modifying receptacle, and final target receptacle as inputs, and outputs the object at the target location with its temperature state changed.",
+      "alfworld-tool-locator. Searches for a specified tool or device (e.g., a desklamp, knife, or sponge) within the ALFWorld environment by checking relevant surfaces. Use when you need a tool to interact with another object as part of a task but the tool is not in your inventory or immediate vicinity. Takes a tool name as implicit input and navigates to likely storage spots (sidetables, shelves, countertops) until the tool is found.",
+      "alfworld-tool-user. Use when the agent needs to apply a tool to a target object in ALFWorld to accomplish an interaction such as cleaning, heating, cooling, or examining. This skill handles locating both the tool and target object, then executing the correct environment action (e.g., `clean`, `heat`, `cool`, `use`) to progress the task."
+    ],
+    "tie_break": "first-in-canonical-bank-order",
+    "upstream_commit": "8e66726ed866a4e0a7f053586a41022798192e6c",
+    "version": "skillrl-embedding-state-top1-v1"
+  },
+  "protocol_hash": "2a5128c53f05c9e09f2cc951c0fa3694f271fa2289306098b2db5d58e87f7f72",
+  "rng_preserved": {
+    "cuda": true,
+    "numpy": true,
+    "python": true,
+    "torch_cpu": true
+  },
+  "states": [
+    {
+      "accounting": {
+        "api_calls_this_step": 0,
+        "backend": "skillrl_embedding_state",
+        "cache_hit": false,
+        "cache_key": "4137f89bc69d332091f387bfe3dff3f916b1ee8d0188817dc58b534baa9afe57",
+        "index_encoding": {
+          "encode_latency_ms": 8223.246,
+          "input_tokens": 2968,
+          "texts": 37
+        },
+        "input_hash": "44190a939eb4010eec19ee43adc72ce86d47821f3c5ded8741d8a33bd71d4f81",
+        "latency_ms": 21454.04,
+        "local_calls_this_step": 1,
+        "model_files_sha256": "9d6d898b1f0bfe3b48ec04c3118cbd46ce01a164d53b7b78068ced7c2b5107ae",
+        "model_revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+        "protocol_hash": "2a5128c53f05c9e09f2cc951c0fa3694f271fa2289306098b2db5d58e87f7f72",
+        "provider_cost": 0.0,
+        "provider_cost_currency": "USD",
+        "provider_cost_scope": "external_api_only",
+        "provider_endpoint": null,
+        "query_encoding": {
+          "encode_latency_ms": 336.894,
+          "input_tokens": 124,
+          "texts": 1
+        },
+        "requested_model": "Qwen/Qwen3-Embedding-0.6B",
+        "response_model": "Qwen/Qwen3-Embedding-0.6B",
+        "source_decision_index_encoding": {
+          "encode_latency_ms": 8223.246,
+          "input_tokens": 2968,
+          "texts": 37
+        },
+        "source_decision_latency_ms": 21454.04,
+        "source_decision_query_encoding": {
+          "encode_latency_ms": 336.894,
+          "input_tokens": 124,
+          "texts": 1
+        },
+        "source_decision_usage": {
+          "cached_input_tokens": 0,
+          "completion_tokens": 0,
+          "prompt_tokens": 3092,
+          "reasoning_tokens": 0,
+          "total_tokens": 3092
+        },
+        "usage": {
+          "cached_input_tokens": 0,
+          "completion_tokens": 0,
+          "prompt_tokens": 3092,
+          "reasoning_tokens": 0,
+          "total_tokens": 3092
+        }
+      },
+      "payload_sha256": "e66d5e94ef858d65134b4dce0067a5770887a564c288beb4405a5b7d036b7af3",
+      "replay_accounting": {
+        "api_calls_this_step": 0,
+        "backend": "skillrl_embedding_state",
+        "cache_hit": true,
+        "cache_key": "4137f89bc69d332091f387bfe3dff3f916b1ee8d0188817dc58b534baa9afe57",
+        "index_encoding": {
+          "encode_latency_ms": 0,
+          "input_tokens": 0,
+          "texts": 0
+        },
+        "input_hash": "44190a939eb4010eec19ee43adc72ce86d47821f3c5ded8741d8a33bd71d4f81",
+        "latency_ms": 0.0,
+        "local_calls_this_step": 0,
+        "model_files_sha256": "9d6d898b1f0bfe3b48ec04c3118cbd46ce01a164d53b7b78068ced7c2b5107ae",
+        "model_revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+        "protocol_hash": "2a5128c53f05c9e09f2cc951c0fa3694f271fa2289306098b2db5d58e87f7f72",
+        "provider_cost": 0.0,
+        "provider_cost_currency": "USD",
+        "provider_cost_scope": "external_api_only",
+        "provider_endpoint": null,
+        "query_encoding": {
+          "encode_latency_ms": 0,
+          "input_tokens": 0,
+          "texts": 0
+        },
+        "requested_model": "Qwen/Qwen3-Embedding-0.6B",
+        "response_model": "Qwen/Qwen3-Embedding-0.6B",
+        "source_decision_index_encoding": {
+          "encode_latency_ms": 8223.246,
+          "input_tokens": 2968,
+          "texts": 37
+        },
+        "source_decision_latency_ms": 21454.04,
+        "source_decision_query_encoding": {
+          "encode_latency_ms": 336.894,
+          "input_tokens": 124,
+          "texts": 1
+        },
+        "source_decision_usage": {
+          "cached_input_tokens": 0,
+          "completion_tokens": 0,
+          "prompt_tokens": 3092,
+          "reasoning_tokens": 0,
+          "total_tokens": 3092
+        },
+        "usage": {
+          "cached_input_tokens": 0,
+          "completion_tokens": 0,
+          "prompt_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 0
+        }
+      },
+      "scores": {
+        "skillnet:alfworld-appliance-navigator": 0.6738765239715576,
+        "skillnet:alfworld-appliance-preparer": 0.6307318210601807,
+        "skillnet:alfworld-clean-object": 0.7640420198440552,
+        "skillnet:alfworld-device-operator": 0.6634261608123779,
+        "skillnet:alfworld-environment-scanner": 0.49355462193489075,
+        "skillnet:alfworld-goal-interpreter": 0.529969334602356,
+        "skillnet:alfworld-heat-object-with-appliance": 0.6064683794975281,
+        "skillnet:alfworld-inventory-management": 0.644106388092041,
+        "skillnet:alfworld-locate-target-object": 0.6368657350540161,
+        "skillnet:alfworld-location-navigator": 0.588330090045929,
+        "skillnet:alfworld-navigation-planner": 0.5457825064659119,
+        "skillnet:alfworld-object-cooler": 0.6484435796737671,
+        "skillnet:alfworld-object-disposer": 0.6495770215988159,
+        "skillnet:alfworld-object-heater": 0.5924056768417358,
+        "skillnet:alfworld-object-locator": 0.5630180835723877,
+        "skillnet:alfworld-object-picker": 0.6739794015884399,
+        "skillnet:alfworld-object-placer": 0.6679112911224365,
+        "skillnet:alfworld-object-retriever": 0.6591375470161438,
+        "skillnet:alfworld-object-state-inspector": 0.6285914182662964,
+        "skillnet:alfworld-object-state-modifier": 0.646064043045044,
+        "skillnet:alfworld-object-storer": 0.6804835200309753,
+        "skillnet:alfworld-object-transporter": 0.6351451873779297,
+        "skillnet:alfworld-open-receptacle": 0.632231593132019,
+        "skillnet:alfworld-receptacle-closer": 0.6630822420120239,
+        "skillnet:alfworld-receptacle-finder": 0.6948608160018921,
+        "skillnet:alfworld-receptacle-navigator": 0.635613203048706,
+        "skillnet:alfworld-receptacle-opener": 0.6445136666297913,
+        "skillnet:alfworld-receptacle-operator": 0.6710684299468994,
+        "skillnet:alfworld-receptacle-preparer": 0.6428413391113281,
+        "skillnet:alfworld-receptacle-searcher": 0.620951235294342,
+        "skillnet:alfworld-search-pattern-executor": 0.5748266577720642,
+        "skillnet:alfworld-search-verifier": 0.5083293318748474,
+        "skillnet:alfworld-storage-explorer": 0.6674135327339172,
+        "skillnet:alfworld-task-verifier": 0.47164106369018555,
+        "skillnet:alfworld-temperature-regulator": 0.6271780729293823,
+        "skillnet:alfworld-tool-locator": 0.5950661897659302,
+        "skillnet:alfworld-tool-user": 0.5918670892715454
+      },
+      "selected_skill_id": "skillnet:alfworld-clean-object",
+      "state": {
+        "admissible_actions": [
+          "clean mug 1 with sinkbasin 1",
+          "go to cabinet 1",
+          "inventory"
+        ],
+        "current_observation": "You are at sinkbasin 1. You are holding mug 1, which has not yet been cleaned.",
+        "history": [
+          {
+            "action": "take mug 1 from countertop 1",
+            "observation": "On countertop 1, you see mug 1."
+          },
+          {
+            "action": "go to sinkbasin 1",
+            "observation": "You pick up mug 1 from countertop 1."
+          }
+        ],
+        "step_index": 2,
+        "task_description": "put a clean mug in cabinet 1"
+      }
+    },
+    {
+      "accounting": {
+        "api_calls_this_step": 0,
+        "backend": "skillrl_embedding_state",
+        "cache_hit": false,
+        "cache_key": "eb90aead54070b1479ae54cd61215fd358ffec87708088efee7861daed856081",
+        "index_encoding": {
+          "encode_latency_ms": 0.0,
+          "input_tokens": 0,
+          "texts": 0
+        },
+        "input_hash": "82780cf66d934f64a8937f14cbff85d9fd902a4129d54f710c88fb426bff5a6c",
+        "latency_ms": 285.416,
+        "local_calls_this_step": 1,
+        "model_files_sha256": "9d6d898b1f0bfe3b48ec04c3118cbd46ce01a164d53b7b78068ced7c2b5107ae",
+        "model_revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+        "protocol_hash": "2a5128c53f05c9e09f2cc951c0fa3694f271fa2289306098b2db5d58e87f7f72",
+        "provider_cost": 0.0,
+        "provider_cost_currency": "USD",
+        "provider_cost_scope": "external_api_only",
+        "provider_endpoint": null,
+        "query_encoding": {
+          "encode_latency_ms": 283.227,
+          "input_tokens": 124,
+          "texts": 1
+        },
+        "requested_model": "Qwen/Qwen3-Embedding-0.6B",
+        "response_model": "Qwen/Qwen3-Embedding-0.6B",
+        "source_decision_index_encoding": {
+          "encode_latency_ms": 0.0,
+          "input_tokens": 0,
+          "texts": 0
+        },
+        "source_decision_latency_ms": 285.416,
+        "source_decision_query_encoding": {
+          "encode_latency_ms": 283.227,
+          "input_tokens": 124,
+          "texts": 1
+        },
+        "source_decision_usage": {
+          "cached_input_tokens": 0,
+          "completion_tokens": 0,
+          "prompt_tokens": 124,
+          "reasoning_tokens": 0,
+          "total_tokens": 124
+        },
+        "usage": {
+          "cached_input_tokens": 0,
+          "completion_tokens": 0,
+          "prompt_tokens": 124,
+          "reasoning_tokens": 0,
+          "total_tokens": 124
+        }
+      },
+      "payload_sha256": "e66d5e94ef858d65134b4dce0067a5770887a564c288beb4405a5b7d036b7af3",
+      "replay_accounting": {
+        "api_calls_this_step": 0,
+        "backend": "skillrl_embedding_state",
+        "cache_hit": true,
+        "cache_key": "eb90aead54070b1479ae54cd61215fd358ffec87708088efee7861daed856081",
+        "index_encoding": {
+          "encode_latency_ms": 0,
+          "input_tokens": 0,
+          "texts": 0
+        },
+        "input_hash": "82780cf66d934f64a8937f14cbff85d9fd902a4129d54f710c88fb426bff5a6c",
+        "latency_ms": 0.0,
+        "local_calls_this_step": 0,
+        "model_files_sha256": "9d6d898b1f0bfe3b48ec04c3118cbd46ce01a164d53b7b78068ced7c2b5107ae",
+        "model_revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+        "protocol_hash": "2a5128c53f05c9e09f2cc951c0fa3694f271fa2289306098b2db5d58e87f7f72",
+        "provider_cost": 0.0,
+        "provider_cost_currency": "USD",
+        "provider_cost_scope": "external_api_only",
+        "provider_endpoint": null,
+        "query_encoding": {
+          "encode_latency_ms": 0,
+          "input_tokens": 0,
+          "texts": 0
+        },
+        "requested_model": "Qwen/Qwen3-Embedding-0.6B",
+        "response_model": "Qwen/Qwen3-Embedding-0.6B",
+        "source_decision_index_encoding": {
+          "encode_latency_ms": 0.0,
+          "input_tokens": 0,
+          "texts": 0
+        },
+        "source_decision_latency_ms": 285.416,
+        "source_decision_query_encoding": {
+          "encode_latency_ms": 283.227,
+          "input_tokens": 124,
+          "texts": 1
+        },
+        "source_decision_usage": {
+          "cached_input_tokens": 0,
+          "completion_tokens": 0,
+          "prompt_tokens": 124,
+          "reasoning_tokens": 0,
+          "total_tokens": 124
+        },
+        "usage": {
+          "cached_input_tokens": 0,
+          "completion_tokens": 0,
+          "prompt_tokens": 0,
+          "reasoning_tokens": 0,
+          "total_tokens": 0
+        }
+      },
+      "scores": {
+        "skillnet:alfworld-appliance-navigator": 0.6911735534667969,
+        "skillnet:alfworld-appliance-preparer": 0.6751410961151123,
+        "skillnet:alfworld-clean-object": 0.7690417766571045,
+        "skillnet:alfworld-device-operator": 0.6866061687469482,
+        "skillnet:alfworld-environment-scanner": 0.5275450944900513,
+        "skillnet:alfworld-goal-interpreter": 0.555845320224762,
+        "skillnet:alfworld-heat-object-with-appliance": 0.6291614770889282,
+        "skillnet:alfworld-inventory-management": 0.677330493927002,
+        "skillnet:alfworld-locate-target-object": 0.6688439846038818,
+        "skillnet:alfworld-location-navigator": 0.6240361332893372,
+        "skillnet:alfworld-navigation-planner": 0.569927990436554,
+        "skillnet:alfworld-object-cooler": 0.6790772676467896,
+        "skillnet:alfworld-object-disposer": 0.6836192607879639,
+        "skillnet:alfworld-object-heater": 0.616108775138855,
+        "skillnet:alfworld-object-locator": 0.5894507765769958,
+        "skillnet:alfworld-object-picker": 0.6994453072547913,
+        "skillnet:alfworld-object-placer": 0.7137348651885986,
+        "skillnet:alfworld-object-retriever": 0.689674973487854,
+        "skillnet:alfworld-object-state-inspector": 0.654107928276062,
+        "skillnet:alfworld-object-state-modifier": 0.6743592619895935,
+        "skillnet:alfworld-object-storer": 0.7362101078033447,
+        "skillnet:alfworld-object-transporter": 0.6775734424591064,
+        "skillnet:alfworld-open-receptacle": 0.681301474571228,
+        "skillnet:alfworld-receptacle-closer": 0.7125256061553955,
+        "skillnet:alfworld-receptacle-finder": 0.7279518842697144,
+        "skillnet:alfworld-receptacle-navigator": 0.6726174354553223,
+        "skillnet:alfworld-receptacle-opener": 0.6947332620620728,
+        "skillnet:alfworld-receptacle-operator": 0.730658769607544,
+        "skillnet:alfworld-receptacle-preparer": 0.6851005554199219,
+        "skillnet:alfworld-receptacle-searcher": 0.6433230638504028,
+        "skillnet:alfworld-search-pattern-executor": 0.6005445122718811,
+        "skillnet:alfworld-search-verifier": 0.5292917490005493,
+        "skillnet:alfworld-storage-explorer": 0.7132515907287598,
+        "skillnet:alfworld-task-verifier": 0.5080884695053101,
+        "skillnet:alfworld-temperature-regulator": 0.6692770719528198,
+        "skillnet:alfworld-tool-locator": 0.6263729333877563,
+        "skillnet:alfworld-tool-user": 0.617907702922821
+      },
+      "selected_skill_id": "skillnet:alfworld-clean-object",
+      "state": {
+        "admissible_actions": [
+          "put mug 1 in/on cabinet 1",
+          "close cabinet 1",
+          "inventory"
+        ],
+        "current_observation": "You are at cabinet 1. Cabinet 1 is open. You are holding mug 1, which is now clean.",
+        "history": [
+          {
+            "action": "clean mug 1 with sinkbasin 1",
+            "observation": "You are at sinkbasin 1 holding a dirty mug."
+          },
+          {
+            "action": "go to cabinet 1",
+            "observation": "You clean mug 1 using sinkbasin 1."
+          }
+        ],
+        "step_index": 4,
+        "task_description": "put a clean mug in cabinet 1"
+      }
+    }
+  ],
+  "stats": {
+    "cache_hits": 2,
+    "external_api_calls": 0,
+    "failed_attempts": 0,
+    "local_attempts": 2,
+    "max_local_calls": 2,
+    "successful_decisions": 2
+  },
+  "status": "passed",
+  "torch_threads": 4,
+  "trainable_parameters": 0,
+  "training_started": false
+}

@@ -1,0 +1,457 @@
+{
+  "actor_rollout_ref": {
+    "actor": {
+      "checkpoint": {
+        "contents": [
+          "model",
+          "optimizer",
+          "extra"
+        ]
+      },
+      "clip_ratio": 0.2,
+      "clip_ratio_c": 3.0,
+      "clip_ratio_high": 0.2,
+      "clip_ratio_low": 0.2,
+      "entropy_coeff": 0.001,
+      "fsdp_config": {
+        "cpu_shard_init": true,
+        "fsdp_size": -1,
+        "offload_policy": false,
+        "optimizer_offload": true,
+        "param_offload": false,
+        "reshard_after_forward": true,
+        "wrap_policy": {
+          "min_num_params": 0
+        }
+      },
+      "grad_clip": 1.0,
+      "invalid_action_penalty_coef": 0.1,
+      "kl_loss_coef": 0.01,
+      "kl_loss_type": "low_var_kl",
+      "loss_agg_mode": "token-mean",
+      "optim": {
+        "lr": 1e-06,
+        "lr_warmup_steps": -1,
+        "lr_warmup_steps_ratio": 0.0,
+        "min_lr_ratio": 0.0,
+        "num_cycles": 0.5,
+        "total_training_steps": 5,
+        "warmup_style": "constant",
+        "weight_decay": 0.01
+      },
+      "policy_loss": {
+        "loss_mode": "vanilla"
+      },
+      "ppo_epochs": 1,
+      "ppo_max_token_len_per_gpu": 16384,
+      "ppo_micro_batch_size": null,
+      "ppo_micro_batch_size_per_gpu": 1,
+      "ppo_mini_batch_size": 128,
+      "shuffle": false,
+      "strategy": "fsdp",
+      "ulysses_sequence_parallel_size": 1,
+      "use_dynamic_bsz": false,
+      "use_invalid_action_penalty": true,
+      "use_kl_loss": true,
+      "use_torch_compile": false
+    },
+    "cohort_seed": 505,
+    "hybrid_engine": true,
+    "model": {
+      "attn_implementation": "sdpa",
+      "enable_activation_offload": false,
+      "enable_gradient_checkpointing": true,
+      "external_lib": null,
+      "load_text_only": true,
+      "lora_alpha": 16,
+      "lora_rank": 0,
+      "override_config": {},
+      "path": "/mnt/workspace/users/wangyifan/model/Qwen3.5-4B",
+      "target_modules": "all-linear",
+      "trust_remote_code": false,
+      "use_fused_kernels": false,
+      "use_liger": false,
+      "use_remove_padding": false,
+      "use_shm": false
+    },
+    "ref": {
+      "fsdp_config": {
+        "cpu_shard_init": true,
+        "param_offload": true,
+        "reshard_after_forward": true,
+        "wrap_policy": {
+          "min_num_params": 0
+        }
+      },
+      "log_prob_max_token_len_per_gpu": 16384,
+      "log_prob_micro_batch_size": null,
+      "log_prob_micro_batch_size_per_gpu": 1,
+      "log_prob_use_dynamic_bsz": false,
+      "strategy": "fsdp",
+      "ulysses_sequence_parallel_size": 1,
+      "use_torch_compile": false
+    },
+    "rollout": {
+      "chat_scheduler": null,
+      "disable_log_stats": true,
+      "do_sample": true,
+      "dtype": "bfloat16",
+      "enable_chunked_prefill": true,
+      "enable_prefix_caching": false,
+      "enforce_eager": true,
+      "engine_kwargs": {
+        "sglang": {
+          "attention_backend": null
+        },
+        "vllm": {
+          "swap_space": null
+        }
+      },
+      "free_cache_engine": false,
+      "gpu_memory_utilization": 0.45,
+      "ignore_eos": false,
+      "inference_profile": {
+        "path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/configs/phase12_vllm_v1.json",
+        "settings": {
+          "backend": "vllm_v1",
+          "dtype": "bfloat16",
+          "enable_chunked_prefill": true,
+          "enable_prefix_caching": false,
+          "enforce_eager": true,
+          "evaluation_parallelism": "eight_gpu_shards_sequential_episodes_per_shard",
+          "execution_authorized": false,
+          "gpu_memory_utilization": 0.45,
+          "max_model_len": 4608,
+          "max_num_batched_tokens": 8192,
+          "max_num_seqs": 16,
+          "schema_version": "skillnet.inference.v1",
+          "seed": 404,
+          "tensor_parallel_size": 1,
+          "torch_version": "2.11.0",
+          "transformers_version": "5.10.4",
+          "vllm_version": "0.22.0",
+          "weight_sync": "inprocess_public_apply_model_fsdp_sharded_v1"
+        },
+        "sha256": "9683d367af764790ceaf63cc02751f0d992562d192aea9d66402b96094821584"
+      },
+      "layered_summon": false,
+      "load_format": "dummy",
+      "log_prob_max_token_len_per_gpu": 16384,
+      "log_prob_micro_batch_size": null,
+      "log_prob_micro_batch_size_per_gpu": 1,
+      "log_prob_use_dynamic_bsz": false,
+      "max_model_len": 4608,
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "micro_batch_size": 16,
+      "mode": "sync",
+      "multi_turn": {
+        "enable": false,
+        "format": "chatml",
+        "max_turns": null,
+        "tool_config_path": null
+      },
+      "n": 1,
+      "name": "vllm_v1",
+      "prompt_length": 4096,
+      "response_length": 512,
+      "seed": 505,
+      "temperature": 1.0,
+      "tensor_model_parallel_size": 1,
+      "top_k": 0,
+      "top_p": 1.0,
+      "use_fire_sampling": false,
+      "val_kwargs": {
+        "do_sample": true,
+        "n": 1,
+        "temperature": 0.4,
+        "top_k": 0,
+        "top_p": 1.0
+      }
+    }
+  },
+  "algorithm": {
+    "adv_estimator": "grpo",
+    "filter_groups": {
+      "enable": false,
+      "max_num_gen_batches": 10
+    },
+    "gamma": 1.0,
+    "gigpo": {
+      "enable_similarity": false,
+      "mode": "mean_norm",
+      "similarity_thresh": 0.95,
+      "step_advantage_w": 1.0
+    },
+    "kl_ctrl": {
+      "horizon": 10000,
+      "kl_coef": 0.001,
+      "target_kl": 0.1,
+      "type": "fixed"
+    },
+    "kl_penalty": "kl",
+    "lam": 1.0,
+    "norm_adv_by_std_in_grpo": true,
+    "pf_ppo": {
+      "reweight_method": "pow",
+      "weight_pow": 2.0
+    },
+    "use_kl_in_reward": false,
+    "use_pf_ppo": false
+  },
+  "alignment_run": {
+    "archive_dir": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-505/trajectories",
+    "model_path": "/mnt/workspace/users/wangyifan/model/Qwen3.5-4B",
+    "output_dir": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-505/checkpoints",
+    "ray_temp_dir": "/tmp/sn-3c911d1dc3ff",
+    "router_cache": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-505/router.sqlite3",
+    "run_id": "skillnet37-s505",
+    "seed": 505,
+    "train_files": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-independent-v4/prepared-v2/preparation-s505-8gpu/datasets/train.parquet",
+    "val_files": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-independent-v4/prepared-v2/preparation-s505-8gpu/datasets/seen-monitor.parquet"
+  },
+  "critic": {
+    "checkpoint": {
+      "contents": [
+        "model",
+        "optimizer",
+        "extra"
+      ]
+    },
+    "cliprange_value": 0.5,
+    "forward_max_token_len_per_gpu": 32768,
+    "forward_micro_batch_size": null,
+    "forward_micro_batch_size_per_gpu": null,
+    "grad_clip": 1.0,
+    "loss_agg_mode": "token-mean",
+    "model": {
+      "enable_activation_offload": false,
+      "enable_gradient_checkpointing": true,
+      "external_lib": null,
+      "fsdp_config": {
+        "fsdp_size": -1,
+        "offload_policy": false,
+        "optimizer_offload": false,
+        "param_offload": false,
+        "reshard_after_forward": true,
+        "wrap_policy": {
+          "min_num_params": 0
+        }
+      },
+      "lora_alpha": 16,
+      "lora_rank": 0,
+      "override_config": {},
+      "path": "~/models/deepseek-llm-7b-chat",
+      "target_modules": "all-linear",
+      "tokenizer_path": "/mnt/workspace/users/wangyifan/model/Qwen3.5-4B",
+      "trust_remote_code": false,
+      "use_remove_padding": false,
+      "use_shm": false
+    },
+    "optim": {
+      "lr": 1e-05,
+      "lr_warmup_steps_ratio": 0.0,
+      "min_lr_ratio": null,
+      "total_training_steps": -1,
+      "warmup_style": "constant",
+      "weight_decay": 0.01
+    },
+    "ppo_epochs": 1,
+    "ppo_max_token_len_per_gpu": 32768,
+    "ppo_micro_batch_size": null,
+    "ppo_micro_batch_size_per_gpu": null,
+    "ppo_mini_batch_size": 128,
+    "rollout_n": 1,
+    "shuffle": false,
+    "strategy": "fsdp",
+    "ulysses_sequence_parallel_size": 1,
+    "use_dynamic_bsz": false
+  },
+  "custom_reward_function": {
+    "name": "compute_score",
+    "path": null
+  },
+  "data": {
+    "apply_chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "custom_cls": {
+      "name": null,
+      "path": null
+    },
+    "filter_overlong_prompts": false,
+    "filter_overlong_prompts_workers": 1,
+    "image_key": "images",
+    "max_prompt_length": 4096,
+    "max_response_length": 512,
+    "prompt_key": "prompt",
+    "return_full_prompt": false,
+    "return_raw_chat": true,
+    "return_raw_input_ids": false,
+    "reward_fn_key": "data_source",
+    "seed": 505,
+    "shuffle": true,
+    "tokenizer": null,
+    "train_batch_size": 16,
+    "train_files": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-independent-v4/prepared-v2/preparation-s505-8gpu/datasets/train.parquet",
+    "truncation": "error",
+    "trust_remote_code": false,
+    "use_shm": false,
+    "val_batch_size": 64,
+    "val_files": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-independent-v4/prepared-v2/preparation-s505-8gpu/datasets/seen-monitor.parquet",
+    "video_key": "videos"
+  },
+  "env": {
+    "alfworld": {
+      "action_only_prompt": true,
+      "eval_dataset": "eval_in_distribution",
+      "task_types": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    "env_name": "alfworld/AlfredTWEnv",
+    "history_length": 2,
+    "max_steps": 50,
+    "phase1_archive": {
+      "enabled": true,
+      "output_dir": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-505/trajectories",
+      "run_id": "skillnet37-s505"
+    },
+    "resources_per_worker": {
+      "num_cpus": 0.1,
+      "num_gpus": 0
+    },
+    "rollout": {
+      "n": 8
+    },
+    "search": {
+      "log_requests": false,
+      "search_url": "http://127.0.0.1:8000/retrieve",
+      "timeout": 60,
+      "topk": 3
+    },
+    "seed": 505,
+    "skills_only_memory": {
+      "enable_dynamic_update": false,
+      "max_new_skills": 3,
+      "retrieval_mode": "frozen_bank_all",
+      "step_routing": {
+        "backend": "skillrl_embedding_state_batch",
+        "cache_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-505/router.sqlite3",
+        "device": "cpu",
+        "enabled": true,
+        "max_local_calls": 202100,
+        "model_path": "/mnt/workspace/users/wangyifan/model/Qwen3-Embedding-0.6B",
+        "profile_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/configs/skillnet37_router_qwen3_embedding_batch_v1.json"
+      },
+      "update_skills_from_train": false,
+      "update_threshold": 0.4
+    },
+    "sokoban": {
+      "dim_room": [
+        6,
+        6
+      ],
+      "mode": "tiny_rgb_array",
+      "num_boxes": 1,
+      "search_depth": 30
+    },
+    "use_retrieval_memory": false,
+    "use_skills_only_memory": true,
+    "webshop": {
+      "human_goals": false,
+      "use_small": true
+    }
+  },
+  "phase1_control": {
+    "type": "real_rl"
+  },
+  "phase2": {
+    "capture_scope": "window_start_old_only_v1",
+    "capture_updates": [
+      1
+    ],
+    "enabled": true,
+    "progress_journal": true,
+    "root": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-505"
+  },
+  "ray_init": {
+    "_temp_dir": "/tmp/sn-3c911d1dc3ff",
+    "address": "local",
+    "num_cpus": null
+  },
+  "reward_model": {
+    "enable": false,
+    "forward_max_token_len_per_gpu": 32768,
+    "launch_reward_fn_async": false,
+    "max_length": null,
+    "micro_batch_size": null,
+    "micro_batch_size_per_gpu": null,
+    "model": {
+      "external_lib": null,
+      "fsdp_config": {
+        "fsdp_size": -1,
+        "param_offload": false,
+        "reshard_after_forward": true,
+        "wrap_policy": {
+          "min_num_params": 0
+        }
+      },
+      "input_tokenizer": "/mnt/workspace/users/wangyifan/model/Qwen3.5-4B",
+      "path": "~/models/FsfairX-LLaMA3-RM-v0.1",
+      "trust_remote_code": false,
+      "use_fused_kernels": false,
+      "use_remove_padding": false,
+      "use_shm": false
+    },
+    "reward_manager": "episode",
+    "sandbox_fusion": {
+      "max_concurrent": 64,
+      "url": null
+    },
+    "strategy": "fsdp",
+    "ulysses_sequence_parallel_size": 1,
+    "use_dynamic_bsz": false
+  },
+  "skillnet_cohort": {
+    "data_root": "/mnt/workspace/users/wangyifan/skill-RL/data/alfworld",
+    "enabled": true,
+    "preparation": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-independent-v4/prepared-v2/preparation-s505-8gpu/manifest.json",
+    "preparation_sha256": "5f4b5a285afd7b82997066dc84cf9840a4e5092b6ed568ca4e38da54f2b9c869",
+    "seed": 505
+  },
+  "trainer": {
+    "balance_batch": true,
+    "critic_warmup": 0,
+    "default_hdfs_dir": null,
+    "default_local_dir": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-505/checkpoints",
+    "del_local_ckpt_after_load": false,
+    "device": "cuda",
+    "experiment_name": "skillnet37-s505",
+    "log_val_generations": 0,
+    "logger": [
+      "console"
+    ],
+    "max_actor_ckpt_to_keep": null,
+    "max_critic_ckpt_to_keep": null,
+    "n_gpus_per_node": 8,
+    "nnodes": 1,
+    "project_name": "skillnet37_skillrl_aligned_v1",
+    "ray_wait_register_center_timeout": 300,
+    "resume_from_path": null,
+    "resume_mode": "disable",
+    "rollout_data_dir": null,
+    "save_freq": 5,
+    "test_freq": 5,
+    "total_epochs": 5,
+    "total_training_steps": 5,
+    "val_before_train": false,
+    "val_only": false,
+    "validation_data_dir": null
+  }
+}

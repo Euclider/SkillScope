@@ -1,0 +1,20 @@
+{
+  "automatic_retry": false,
+  "capacity": {
+    "free_bytes": 342771105792,
+    "reserved_next_bytes": 94489280512,
+    "used_bytes": 256011909187
+  },
+  "checks": 0,
+  "utc": "2026-09-22T11:04:23.886481+00:00",
+  "wave": "analysis",
+  "workers": [
+    {
+      "exit_code": null,
+      "log_bytes": 0,
+      "name": "analysis",
+      "pid": 1415447,
+      "stall_suspected_advisory": false
+    }
+  ]
+}

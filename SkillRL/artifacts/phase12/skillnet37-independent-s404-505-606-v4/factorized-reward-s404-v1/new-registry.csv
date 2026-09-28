@@ -1,0 +1,13 @@
+score,name,aggregation,mode,signed,family,formula,geometry
+D_factor::token::reward,D_factor,token,reward,True,factorized_centered_reward,-B * R,False
+D_orientation::token::reward,D_orientation,token,reward,True,factorized_centered_reward,-R,False
+D_factor_A1::token::reward_free,D_factor_A1,token,reward_free,False,factorized_centered_reward,-B * R(A=1 on ALL rows),False
+D_orientation_A1::token::reward_free,D_orientation_A1,token,reward_free,False,factorized_centered_reward,-R(A=1 on ALL rows),False
+D_factor::decision::reward,D_factor,decision,reward,True,factorized_centered_reward,-B * R,False
+D_orientation::decision::reward,D_orientation,decision,reward,True,factorized_centered_reward,-R,False
+D_factor_A1::decision::reward_free,D_factor_A1,decision,reward_free,False,factorized_centered_reward,-B * R(A=1 on ALL rows),False
+D_orientation_A1::decision::reward_free,D_orientation_A1,decision,reward_free,False,factorized_centered_reward,-R(A=1 on ALL rows),False
+D_factor::game::reward,D_factor,game,reward,True,factorized_centered_reward,-B * R,False
+D_orientation::game::reward,D_orientation,game,reward,True,factorized_centered_reward,-R,False
+D_factor_A1::game::reward_free,D_factor_A1,game,reward_free,False,factorized_centered_reward,-B * R(A=1 on ALL rows),False
+D_orientation_A1::game::reward_free,D_orientation_A1,game,reward_free,False,factorized_centered_reward,-R(A=1 on ALL rows),False

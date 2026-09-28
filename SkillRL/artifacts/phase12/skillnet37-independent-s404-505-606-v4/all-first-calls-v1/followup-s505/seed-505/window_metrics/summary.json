@@ -1,0 +1,31 @@
+{
+  "anchors": 404,
+  "continuations": 7272,
+  "coverage_amendment": {
+    "all_invocations": false,
+    "approved": true,
+    "effect": "target payload intervention at this anchor and later target invocations; unchanged prefix",
+    "first_invocation_per_trajectory_skill": true,
+    "interval": "paired game/continuation bootstrap, unchanged paired arm and endpoint contrasts",
+    "legacy_window": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-505/windows/u0000-u0005-valid_unseen",
+    "maximum_anchors_per_skill": null,
+    "maximum_skills": null,
+    "minimum_source_calls": null,
+    "minimum_source_games": null,
+    "missing_scores_are_not_zero": true,
+    "point_weighting": "equal games, equal first-call source trajectories within game, equal continuation repeats",
+    "prior_target_labels_available": true,
+    "ranking_formula_and_orientations_unchanged": true,
+    "readout_count_thresholds_removed": true,
+    "scientific_status": "retrospective_coverage_amendment",
+    "selection_uses_target_outcomes": false,
+    "single_game_interval": "undefined, point estimate retained",
+    "training_readout_uses_unchanged_actual_batch_decisions": true,
+    "user_authority": "取消评估数量筛选；每条轨迹每个skill只取第一次调用；等seed505跑完RL后先重算seed404并替换分析报告，后续seed同协议",
+    "version": "all_u0_first_calls_v1"
+  },
+  "protocol_sha256": "f44516cf8978839626b096739c7cea577f749cef661640c9327b684ae1a1931d",
+  "scientific_verification": "UNVERIFIED",
+  "skills_with_utility": 25,
+  "status": "complete"
+}

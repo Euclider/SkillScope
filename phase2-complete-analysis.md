@@ -319,3 +319,71 @@ P 在 5/6 个窗口呈正秩相关，提示应区分跨 update 的分数尺度�
 - 完整排序审计：[跨 update/新窗口统计，42 行](/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/reports/2026-09-14-ranking-interpretation-v1/overall_ranking_audit.csv)、[逐窗口统计，84 行](/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/reports/2026-09-14-ranking-interpretation-v1/within_window_ranking_audit.csv)、[同源总体对照](/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/reports/2026-09-14-reward-directed-family-v3/same_basis_overall.csv)、[同源窗口内对照](/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/reports/2026-09-14-reward-directed-family-v3/same_basis_within_window.csv)。
 - 科学协议 SHA-256：0ca78a05b4d58584be39ecfaa9335458b41dfd50ea6e34f80e43be797acbe47a；[端点完成与轨迹校验](/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/evaluation_completion.json)。
 - 历史修订记录：[排序审计 v1](/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/reports/2026-09-14-ranking-interpretation-v1/revision.json)、[综合补全 v2](/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/reports/2026-09-14-phase2-synthesis-v2/revision.json)、[信号族分析 v3](/home/wangyifan/skill-RL/SkillRL/artifacts/phase2/qwen35-clean-s303-u35-to40-ranking-v1/reports/2026-09-14-reward-directed-family-v3/revision.json)。其中报告哈希对应各自历史版本，不代表本次压缩后的文件；历史记录不覆盖。
+
+## 10. 2026-09-22 追加：SkillNet-37 / seed404 的 reward-directed 变式探索
+
+本节是新 cohort 的追加分析，不改写第 1–9 节的旧 seed303 / U35→U40 证据，也不把两个实验池合并。
+范围为已完成的 seed404 U0→U5、冻结 SkillNet-37、所有自然首调用效用；在已见历史结果后，
+用户授权广泛比较 reward 相关读出，不要求它们依赖 P。**科学状态：ANALYZED，事后探索。**
+
+共登记并计算 39 个 reward 公式 × token/decision/game 三种聚合（117 个分数），
+以及 117 个去奖励版本、21 个幅度分数和 6 个原有参考，共 261 列。
+涵盖去截断、advantage 强度、未归一化内积、中心化交互余弦、软/分位数门控、稳健累加、
+采样动作 logprob/概率比、reward-only 与 C 参考。原始/中心化 C 本身属于 reward 信号族，不是无奖励基线。
+本轮只复用已存标量与标签，未重跑 RL、模型前向或 ALFWorld；没有在 505/606 上试这些变式。
+
+### 10.1 同池结果与关键反例
+
+PLACEBO、all phase、0pp：18 技能，5 个下降、7 个上升、6 个不变点估计。
+
+| 读出 | 聚合 | AP | 下降/其余 AUROC | Spearman |
+|---|---|---:|---:|---:|
+| 原 D | token | 0.509650 | 0.630769 | -0.147161 |
+| 去截断 signed D，保留门控 | token | 0.415995 | 0.415385 | -0.066222 |
+| 不带门控的 -P | token | 0.423810 | 0.461538 | -0.064120 |
+| 中心化 C | token | 0.688095 | 0.723077 | 0.023125 |
+| 中心化 C（本次 reward 最高 AP） | decision | 0.693590 | 0.738462 | 0.042046 |
+| 负投影比例 | game | 0.647222 | 0.738462 | 0.120882 |
+| 中心化交互幅度，无 reward | decision | 0.642222 | 0.800000 | 0.406795 |
+| 中心化交互幅度，无 reward | game | 0.724762 | 0.800000 | 0.362647 |
+| 原 activation-l8 范数参考 | 原口径 | 0.743333 | 0.876923 | 0.310089 |
+
+直接移除截断未改善 token 等权排序；最好的 reward AP 仍来自中心化 C，且仅比其原 token 版本高约 0.0055。
+game 等权也明显改善无奖励幅度，因此不能把聚合变化的收益都归因于 reward。
+中心化 C/decision 在 Top-2 命中 2/2、覆盖约 71.16% 下降量，但幅度/game 也同样做到；
+Top-5 则 activation-l8 命中 4/5，高于该 C 的 3/5。5pp 时仅两例下降，C/decision 与幅度/game 的 AP 均为 1。
+
+### 10.2 奖励增量、方向与不确定性
+
+中心化 C/decision 相对同聚合中心化交互幅度的 AP 差为 +0.051368，
+固定读出下配对 game/continuation bootstrap 的 95% 区间为 [-0.187348, 0.166667]。
+它与固定原非零方向支持上的单位 advantage 版本相比 AP 增加 +0.482861，区间仍包含 0。
+前一个对照的基础向量不完全相同（C 用 u_O，交互幅度用 delta）；后一个对照不能恢复 A=0 行的无奖励几何，
+这两个边界均明确保留。512 次轨迹块符号随机化约 8.59% 达到该 C 的实际 AP；允许每次从全部 reward 候选选最高值时，
+约 77.73% 达到该水平。这些是负对照比例，不是确认性 p 值。
+
+方向判断不能用 AP 替代：最佳若干带符号变式在 12 个非零变化技能上正确 9 个（75%，平衡准确率 72.86%），
+恒预测上升则为 7/12（58.33%）。它们是同 seed 多候选探索后的点估计，并非独立复现。
+中心化 C 的高 AP 也不等于连续方向整体更准：其 Spearman 仅 0.042；object-placer 排第 3，但实际 ΔM 点估计为 +15.22pp。
+5 个下降标签的原区间均触及或跨 0，不是无噪声真值。
+
+**当前结论：保留了若干 reward 候选及局部优势，但尚不能确认稳健的 reward 增量；不能据本次择优结果写成 idea 已证明。**
+后续应先冻结有限候选再做独立窗口/seed 检查，不逐 seed 换赢家。本轮未改 Phase3 主指标。
+
+### 10.3 完整材料与验收
+
+[解释性分析、公式类别和失败案例](2026-09-22-seed404-reward-readout-variants-analysis.md)；
+[保留旧数值报告正文的完整扩展版 v2](SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/reward-variants-s404-v2/reports/phase2-results-expanded-v2.md)；
+[候选全集](SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/reward-variants-s404-v2/registry.csv)；
+[所有分层指标](SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/reward-variants-s404-v2/ranking_diagnostics.csv)；
+[逐技能分数与效用](SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/reward-variants-s404-v2/skill_scores_and_gold.csv)。
+
+287 项 CPU 测试通过，实际 CPU 分析初版约 42 秒、数值修正版约 43 秒，各成功完成一次；5,220 行统计以 sklearn/scipy 独立复核，9 个原有指标与旧报告一致，
+最大误差约 3.33e-16。2,000 次 bootstrap 各有 1,674 次完整池 draw；缺稀有技能时整池记缺失，未临时缩池。
+最终采用 v2：v1 中严格恒为 −1 的无奖励负对照因末位浮点差异产生伪排序，现以精确常数聚合修正并保留逐单元对照。
+主分析的 117 个 reward 分数 AP 未改变，常数负对照恢复 AP=5/18、AUROC=0.5；候选与非恒定列计算均未改。
+v1 原输出及初版解释稿保留，详见[修正与发布验收](SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/reward-variants-s404-v2/publication-verification.json)。
+统计误用检查覆盖 11/11，特别标记了多公式择优、事件基率和单 seed 泛化边界。
+旧数值报告、原 19 个输入和 125 个冻结源码逐哈希未改。
+本文第 1–9 节逐字节保留，追加前的[全文备份](SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/reward-variants-s404-v1/publication-original-phase2-complete-analysis.md)
+SHA-256 为 `b13d3960b808af3c96b20bc5618c4e764da283146f75350e04704dc711ca88a4`。

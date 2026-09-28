@@ -1,0 +1,32 @@
+{
+  "inputs": [
+    {
+      "path": "evaluations/u0000-valid_seen-performance/completion.json",
+      "sha256": "54a2b0a64eeb5448e0fef5d7a2c453dcfc7bf672b41c95d8dedabf6eba885f01"
+    },
+    {
+      "path": "evaluations/u0000-valid_unseen-performance/completion.json",
+      "sha256": "593c0a7e5a37918f7fe766d66c1a37dec6f8f2ca347e43b2702ab92b85810faa"
+    },
+    {
+      "path": "evaluations/u0005-valid_seen-performance/completion.json",
+      "sha256": "94f71b15ee497095057621c3765efcc83314bc4a749a63d8985efe71e8297aed"
+    },
+    {
+      "path": "evaluations/u0005-valid_unseen-performance/completion.json",
+      "sha256": "7c754eb4c64594a54edce96d5f0a19365d9f1de9958876412aa8939f41bd8222"
+    },
+    {
+      "path": "windows/u0000-u0005-valid_unseen/sealed.json",
+      "sha256": "bee767439bac6dcb963d43b586e4ed0f38be8b16c25a14ad1a2c00dfc9e91070"
+    },
+    {
+      "kind": "explicit_readout_continuation_and_wallclock_limit_removal",
+      "path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/recovery-v4/cohort-recovery.json",
+      "sha256": "1f15f784f6b2df7ca25e64e59f91395e3da86a9a5c0662301dcbc4217e525970"
+    }
+  ],
+  "readout_uses_post_update_rollout_labels": false,
+  "seed": 505,
+  "verification_status": "UNVERIFIED"
+}

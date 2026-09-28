@@ -1,0 +1,14 @@
+{
+  "exception_type": "AssertionError",
+  "external_api_calls": 0,
+  "stats": {
+    "cache_hits": 2,
+    "external_api_calls": 0,
+    "failed_attempts": 0,
+    "local_attempts": 2,
+    "max_local_calls": 2,
+    "successful_decisions": 2
+  },
+  "status": "failed",
+  "training_started": false
+}

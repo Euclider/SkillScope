@@ -1,0 +1,256 @@
+name,family,formula,signed,geometry,aggregation,mode,score,reward_removed_scope
+D_original,rectification,g_raw * [-P]+,False,True,token,reward,D_original::token::reward,
+D_original,rectification,g_raw * [-P]+,False,True,token,unsigned,D_original::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_centered_gate,rectification,g_centered * [-P]+,False,True,token,reward,D_centered_gate::token::reward,
+D_centered_gate,rectification,g_centered * [-P]+,False,True,token,unsigned,D_centered_gate::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_ungated,rectification,valid * [-P]+,False,True,token,reward,D_ungated::token::reward,
+D_ungated,rectification,valid * [-P]+,False,True,token,unsigned,D_ungated::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_signed,rectification,-P,True,True,token,reward,D_signed::token::reward,
+D_signed,rectification,-P,True,True,token,unsigned,D_signed::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_signed_gate,rectification,-g_raw * P,True,True,token,reward,D_signed_gate::token::reward,
+D_signed_gate,rectification,-g_raw * P,True,True,token,unsigned,D_signed_gate::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_sign_balance,rectification,-valid * sign(P),True,True,token,reward,D_sign_balance::token::reward,
+D_sign_balance,rectification,-valid * sign(P),True,True,token,unsigned,D_sign_balance::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_negative_fraction,rectification,valid * I(P < -epsilon),False,True,token,reward,D_negative_fraction::token::reward,
+D_negative_fraction,rectification,valid * I(P < -epsilon),False,True,token,unsigned,D_negative_fraction::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_adv,reward_strength,-abs(A) * P,True,True,token,reward,D_adv::token::reward,
+D_adv,reward_strength,-abs(A) * P,True,True,token,unsigned,D_adv::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_adv_gate,reward_strength,-g_raw * abs(A) * P,True,True,token,reward,D_adv_gate::token::reward,
+D_adv_gate,reward_strength,-g_raw * abs(A) * P,True,True,token,unsigned,D_adv_gate::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_sqrtadv,reward_strength,-sqrt(abs(A)) * P,True,True,token,reward,D_sqrtadv::token::reward,
+D_sqrtadv,reward_strength,-sqrt(abs(A)) * P,True,True,token,unsigned,D_sqrtadv::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_work,reward_strength,"-valid * dot(d, delta)",True,True,token,reward,D_work::token::reward,
+D_work,reward_strength,"-valid * dot(d, delta)",True,True,token,unsigned,D_work::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_work_gate,reward_strength,"-g_raw * dot(d, delta)",True,True,token,reward,D_work_gate::token::reward,
+D_work_gate,reward_strength,"-g_raw * dot(d, delta)",True,True,token,unsigned,D_work_gate::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_raw,interaction_cosine,"-valid_delta * dot(d,delta)/(norm(d)*norm(delta)+epsilon)",True,True,token,reward,D_cos_raw::token::reward,
+D_cos_raw,interaction_cosine,"-valid_delta * dot(d,delta)/(norm(d)*norm(delta)+epsilon)",True,True,token,unsigned,D_cos_raw::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_centered,interaction_cosine,"-valid_delta_centered * dot(d,delta)/(norm(d)*norm(delta_centered)+epsilon)",True,True,token,reward,D_cos_centered::token::reward,
+D_cos_centered,interaction_cosine,"-valid_delta_centered * dot(d,delta)/(norm(d)*norm(delta_centered)+epsilon)",True,True,token,unsigned,D_cos_centered::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_centered_gate,interaction_cosine,-g_centered * Q_centered,True,True,token,reward,D_cos_centered_gate::token::reward,
+D_cos_centered_gate,interaction_cosine,-g_centered * Q_centered,True,True,token,unsigned,D_cos_centered_gate::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_adv,interaction_cosine,-abs(A) * Q_centered,True,True,token,reward,D_cos_adv::token::reward,
+D_cos_adv,interaction_cosine,-abs(A) * Q_centered,True,True,token,unsigned,D_cos_adv::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_negative,interaction_cosine,[-Q_centered]+,False,True,token,reward,D_cos_negative::token::reward,
+D_cos_negative,interaction_cosine,[-Q_centered]+,False,True,token,unsigned,D_cos_negative::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_soft,soft_gate,-[C_centered]+ * P,True,True,token,reward,D_soft::token::reward,
+D_soft,soft_gate,-[C_centered]+ * P,True,True,token,unsigned,D_soft::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_soft_negative,soft_gate,[C_centered]+ * [-P]+,False,True,token,reward,D_soft_negative::token::reward,
+D_soft_negative,soft_gate,[C_centered]+ * [-P]+,False,True,token,unsigned,D_soft_negative::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_soft_cos,soft_gate,-[C_centered]+ * Q_centered,True,True,token,reward,D_soft_cos::token::reward,
+D_soft_cos,soft_gate,-[C_centered]+ * Q_centered,True,True,token,unsigned,D_soft_cos::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_sigmoid,soft_gate,-sigmoid(C_centered/median_abs_C) * valid * P,True,True,token,reward,D_sigmoid::token::reward,
+D_sigmoid,soft_gate,-sigmoid(C_centered/median_abs_C) * valid * P,True,True,token,unsigned,D_sigmoid::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_tauC_q25,threshold,-P * I(C_centered >= Q25(abs(C_centered))) * valid_delta_centered,True,True,token,reward,D_tauC_q25::token::reward,
+D_tauC_q25,threshold,-P * I(C_centered >= Q25(abs(C_centered))) * valid_delta_centered,True,True,token,unsigned,D_tauC_q25::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_tauC_q50,threshold,-P * I(C_centered >= Q50(abs(C_centered))) * valid_delta_centered,True,True,token,reward,D_tauC_q50::token::reward,
+D_tauC_q50,threshold,-P * I(C_centered >= Q50(abs(C_centered))) * valid_delta_centered,True,True,token,unsigned,D_tauC_q50::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_tauC_q75,threshold,-P * I(C_centered >= Q75(abs(C_centered))) * valid_delta_centered,True,True,token,reward,D_tauC_q75::token::reward,
+D_tauC_q75,threshold,-P * I(C_centered >= Q75(abs(C_centered))) * valid_delta_centered,True,True,token,unsigned,D_tauC_q75::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_delta_q25,threshold,-P * I(norm(delta_centered) >= Q25(norm(delta_centered))) * valid,True,True,token,reward,D_delta_q25::token::reward,
+D_delta_q25,threshold,-P * I(norm(delta_centered) >= Q25(norm(delta_centered))) * valid,True,True,token,unsigned,D_delta_q25::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_delta_q50,threshold,-P * I(norm(delta_centered) >= Q50(norm(delta_centered))) * valid,True,True,token,reward,D_delta_q50::token::reward,
+D_delta_q50,threshold,-P * I(norm(delta_centered) >= Q50(norm(delta_centered))) * valid,True,True,token,unsigned,D_delta_q50::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_delta_q75,threshold,-P * I(norm(delta_centered) >= Q75(norm(delta_centered))) * valid,True,True,token,reward,D_delta_q75::token::reward,
+D_delta_q75,threshold,-P * I(norm(delta_centered) >= Q75(norm(delta_centered))) * valid,True,True,token,unsigned,D_delta_q75::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_winsor,robust,"-clip(P, -Q95(abs(P)), Q95(abs(P)))",True,True,token,reward,D_winsor::token::reward,
+D_winsor,robust,"-clip(P, -Q95(abs(P)), Q95(abs(P)))",True,True,token,unsigned,D_winsor::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_tanh,robust,-tanh(P/median_abs_P),True,True,token,reward,D_tanh::token::reward,
+D_tanh,robust,-tanh(P/median_abs_P),True,True,token,unsigned,D_tanh::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_action_sign,sampled_action,-sign(A) * chosen_delta,True,False,token,reward,D_action_sign::token::reward,
+D_action_sign,sampled_action,-sign(A) * chosen_delta,True,False,token,unsigned,D_action_sign::token::unsigned,A=+1 on ALL recorded loss tokens
+D_action_adv,sampled_action,-A * chosen_delta,True,False,token,reward,D_action_adv::token::reward,
+D_action_adv,sampled_action,-A * chosen_delta,True,False,token,unsigned,D_action_adv::token::unsigned,A=+1 on ALL recorded loss tokens
+D_action_adv_clip,sampled_action,"-clip(A,-2,2) * chosen_delta",True,False,token,reward,D_action_adv_clip::token::reward,
+D_action_adv_clip,sampled_action,"-clip(A,-2,2) * chosen_delta",True,False,token,unsigned,D_action_adv_clip::token::unsigned,A=+1 on ALL recorded loss tokens
+D_ratio_adv,sampled_action,"-A * (clip(exp(chosen_u_O),.8,1.2)-clip(exp(chosen_u_control),.8,1.2))",True,False,token,reward,D_ratio_adv::token::reward,
+D_ratio_adv,sampled_action,"-A * (clip(exp(chosen_u_O),.8,1.2)-clip(exp(chosen_u_control),.8,1.2))",True,False,token,unsigned,D_ratio_adv::token::unsigned,A=+1 on ALL recorded loss tokens
+D_policy_action_adv,policy_only,-A * chosen_u_O,True,False,token,reward,D_policy_action_adv::token::reward,
+D_policy_action_adv,policy_only,-A * chosen_u_O,True,False,token,unsigned,D_policy_action_adv::token::unsigned,A=+1 on ALL recorded loss tokens
+D_reward_only,reward_only,-A,True,False,token,reward,D_reward_only::token::reward,
+D_reward_only,reward_only,-A,True,False,token,unsigned,D_reward_only::token::unsigned,A=+1 on ALL recorded loss tokens
+D_adv_negative_fraction,reward_only,I(A < -epsilon),False,False,token,reward,D_adv_negative_fraction::token::reward,
+D_adv_negative_fraction,reward_only,I(A < -epsilon),False,False,token,unsigned,D_adv_negative_fraction::token::unsigned,A=+1 on ALL recorded loss tokens
+C_raw,reward_alignment_reference,+C_raw,False,True,token,reward,C_raw::token::reward,
+C_raw,reward_alignment_reference,+C_raw,False,True,token,unsigned,C_raw::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+C_centered,reward_alignment_reference,+C_centered,False,True,token,reward,C_centered::token::reward,
+C_centered,reward_alignment_reference,+C_centered,False,True,token,unsigned,C_centered::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+C_adv_centered,reward_alignment_reference,+abs(A) * C_centered,False,True,token,reward,C_adv_centered::token::reward,
+C_adv_centered,reward_alignment_reference,+abs(A) * C_centered,False,True,token,unsigned,C_adv_centered::token::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+M_delta_raw,magnitude_only,delta_norm,False,False,token,magnitude,M_delta_raw::token::magnitude,
+M_delta_centered,magnitude_only,delta_centered_norm,False,False,token,magnitude,M_delta_centered::token::magnitude,
+M_original_norm,magnitude_only,u_original_norm,False,False,token,magnitude,M_original_norm::token::magnitude,
+M_control_norm,magnitude_only,u_control_norm,False,False,token,magnitude,M_control_norm::token::magnitude,
+M_kl,magnitude_only,forward_kl_original,False,False,token,magnitude,M_kl::token::magnitude,
+M_js,magnitude_only,js_original,False,False,token,magnitude,M_js::token::magnitude,
+M_action_abs,magnitude_only,abs(chosen_delta),False,False,token,magnitude,M_action_abs::token::magnitude,
+D_original,rectification,g_raw * [-P]+,False,True,decision,reward,D_original::decision::reward,
+D_original,rectification,g_raw * [-P]+,False,True,decision,unsigned,D_original::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_centered_gate,rectification,g_centered * [-P]+,False,True,decision,reward,D_centered_gate::decision::reward,
+D_centered_gate,rectification,g_centered * [-P]+,False,True,decision,unsigned,D_centered_gate::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_ungated,rectification,valid * [-P]+,False,True,decision,reward,D_ungated::decision::reward,
+D_ungated,rectification,valid * [-P]+,False,True,decision,unsigned,D_ungated::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_signed,rectification,-P,True,True,decision,reward,D_signed::decision::reward,
+D_signed,rectification,-P,True,True,decision,unsigned,D_signed::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_signed_gate,rectification,-g_raw * P,True,True,decision,reward,D_signed_gate::decision::reward,
+D_signed_gate,rectification,-g_raw * P,True,True,decision,unsigned,D_signed_gate::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_sign_balance,rectification,-valid * sign(P),True,True,decision,reward,D_sign_balance::decision::reward,
+D_sign_balance,rectification,-valid * sign(P),True,True,decision,unsigned,D_sign_balance::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_negative_fraction,rectification,valid * I(P < -epsilon),False,True,decision,reward,D_negative_fraction::decision::reward,
+D_negative_fraction,rectification,valid * I(P < -epsilon),False,True,decision,unsigned,D_negative_fraction::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_adv,reward_strength,-abs(A) * P,True,True,decision,reward,D_adv::decision::reward,
+D_adv,reward_strength,-abs(A) * P,True,True,decision,unsigned,D_adv::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_adv_gate,reward_strength,-g_raw * abs(A) * P,True,True,decision,reward,D_adv_gate::decision::reward,
+D_adv_gate,reward_strength,-g_raw * abs(A) * P,True,True,decision,unsigned,D_adv_gate::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_sqrtadv,reward_strength,-sqrt(abs(A)) * P,True,True,decision,reward,D_sqrtadv::decision::reward,
+D_sqrtadv,reward_strength,-sqrt(abs(A)) * P,True,True,decision,unsigned,D_sqrtadv::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_work,reward_strength,"-valid * dot(d, delta)",True,True,decision,reward,D_work::decision::reward,
+D_work,reward_strength,"-valid * dot(d, delta)",True,True,decision,unsigned,D_work::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_work_gate,reward_strength,"-g_raw * dot(d, delta)",True,True,decision,reward,D_work_gate::decision::reward,
+D_work_gate,reward_strength,"-g_raw * dot(d, delta)",True,True,decision,unsigned,D_work_gate::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_raw,interaction_cosine,"-valid_delta * dot(d,delta)/(norm(d)*norm(delta)+epsilon)",True,True,decision,reward,D_cos_raw::decision::reward,
+D_cos_raw,interaction_cosine,"-valid_delta * dot(d,delta)/(norm(d)*norm(delta)+epsilon)",True,True,decision,unsigned,D_cos_raw::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_centered,interaction_cosine,"-valid_delta_centered * dot(d,delta)/(norm(d)*norm(delta_centered)+epsilon)",True,True,decision,reward,D_cos_centered::decision::reward,
+D_cos_centered,interaction_cosine,"-valid_delta_centered * dot(d,delta)/(norm(d)*norm(delta_centered)+epsilon)",True,True,decision,unsigned,D_cos_centered::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_centered_gate,interaction_cosine,-g_centered * Q_centered,True,True,decision,reward,D_cos_centered_gate::decision::reward,
+D_cos_centered_gate,interaction_cosine,-g_centered * Q_centered,True,True,decision,unsigned,D_cos_centered_gate::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_adv,interaction_cosine,-abs(A) * Q_centered,True,True,decision,reward,D_cos_adv::decision::reward,
+D_cos_adv,interaction_cosine,-abs(A) * Q_centered,True,True,decision,unsigned,D_cos_adv::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_negative,interaction_cosine,[-Q_centered]+,False,True,decision,reward,D_cos_negative::decision::reward,
+D_cos_negative,interaction_cosine,[-Q_centered]+,False,True,decision,unsigned,D_cos_negative::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_soft,soft_gate,-[C_centered]+ * P,True,True,decision,reward,D_soft::decision::reward,
+D_soft,soft_gate,-[C_centered]+ * P,True,True,decision,unsigned,D_soft::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_soft_negative,soft_gate,[C_centered]+ * [-P]+,False,True,decision,reward,D_soft_negative::decision::reward,
+D_soft_negative,soft_gate,[C_centered]+ * [-P]+,False,True,decision,unsigned,D_soft_negative::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_soft_cos,soft_gate,-[C_centered]+ * Q_centered,True,True,decision,reward,D_soft_cos::decision::reward,
+D_soft_cos,soft_gate,-[C_centered]+ * Q_centered,True,True,decision,unsigned,D_soft_cos::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_sigmoid,soft_gate,-sigmoid(C_centered/median_abs_C) * valid * P,True,True,decision,reward,D_sigmoid::decision::reward,
+D_sigmoid,soft_gate,-sigmoid(C_centered/median_abs_C) * valid * P,True,True,decision,unsigned,D_sigmoid::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_tauC_q25,threshold,-P * I(C_centered >= Q25(abs(C_centered))) * valid_delta_centered,True,True,decision,reward,D_tauC_q25::decision::reward,
+D_tauC_q25,threshold,-P * I(C_centered >= Q25(abs(C_centered))) * valid_delta_centered,True,True,decision,unsigned,D_tauC_q25::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_tauC_q50,threshold,-P * I(C_centered >= Q50(abs(C_centered))) * valid_delta_centered,True,True,decision,reward,D_tauC_q50::decision::reward,
+D_tauC_q50,threshold,-P * I(C_centered >= Q50(abs(C_centered))) * valid_delta_centered,True,True,decision,unsigned,D_tauC_q50::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_tauC_q75,threshold,-P * I(C_centered >= Q75(abs(C_centered))) * valid_delta_centered,True,True,decision,reward,D_tauC_q75::decision::reward,
+D_tauC_q75,threshold,-P * I(C_centered >= Q75(abs(C_centered))) * valid_delta_centered,True,True,decision,unsigned,D_tauC_q75::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_delta_q25,threshold,-P * I(norm(delta_centered) >= Q25(norm(delta_centered))) * valid,True,True,decision,reward,D_delta_q25::decision::reward,
+D_delta_q25,threshold,-P * I(norm(delta_centered) >= Q25(norm(delta_centered))) * valid,True,True,decision,unsigned,D_delta_q25::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_delta_q50,threshold,-P * I(norm(delta_centered) >= Q50(norm(delta_centered))) * valid,True,True,decision,reward,D_delta_q50::decision::reward,
+D_delta_q50,threshold,-P * I(norm(delta_centered) >= Q50(norm(delta_centered))) * valid,True,True,decision,unsigned,D_delta_q50::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_delta_q75,threshold,-P * I(norm(delta_centered) >= Q75(norm(delta_centered))) * valid,True,True,decision,reward,D_delta_q75::decision::reward,
+D_delta_q75,threshold,-P * I(norm(delta_centered) >= Q75(norm(delta_centered))) * valid,True,True,decision,unsigned,D_delta_q75::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_winsor,robust,"-clip(P, -Q95(abs(P)), Q95(abs(P)))",True,True,decision,reward,D_winsor::decision::reward,
+D_winsor,robust,"-clip(P, -Q95(abs(P)), Q95(abs(P)))",True,True,decision,unsigned,D_winsor::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_tanh,robust,-tanh(P/median_abs_P),True,True,decision,reward,D_tanh::decision::reward,
+D_tanh,robust,-tanh(P/median_abs_P),True,True,decision,unsigned,D_tanh::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_action_sign,sampled_action,-sign(A) * chosen_delta,True,False,decision,reward,D_action_sign::decision::reward,
+D_action_sign,sampled_action,-sign(A) * chosen_delta,True,False,decision,unsigned,D_action_sign::decision::unsigned,A=+1 on ALL recorded loss tokens
+D_action_adv,sampled_action,-A * chosen_delta,True,False,decision,reward,D_action_adv::decision::reward,
+D_action_adv,sampled_action,-A * chosen_delta,True,False,decision,unsigned,D_action_adv::decision::unsigned,A=+1 on ALL recorded loss tokens
+D_action_adv_clip,sampled_action,"-clip(A,-2,2) * chosen_delta",True,False,decision,reward,D_action_adv_clip::decision::reward,
+D_action_adv_clip,sampled_action,"-clip(A,-2,2) * chosen_delta",True,False,decision,unsigned,D_action_adv_clip::decision::unsigned,A=+1 on ALL recorded loss tokens
+D_ratio_adv,sampled_action,"-A * (clip(exp(chosen_u_O),.8,1.2)-clip(exp(chosen_u_control),.8,1.2))",True,False,decision,reward,D_ratio_adv::decision::reward,
+D_ratio_adv,sampled_action,"-A * (clip(exp(chosen_u_O),.8,1.2)-clip(exp(chosen_u_control),.8,1.2))",True,False,decision,unsigned,D_ratio_adv::decision::unsigned,A=+1 on ALL recorded loss tokens
+D_policy_action_adv,policy_only,-A * chosen_u_O,True,False,decision,reward,D_policy_action_adv::decision::reward,
+D_policy_action_adv,policy_only,-A * chosen_u_O,True,False,decision,unsigned,D_policy_action_adv::decision::unsigned,A=+1 on ALL recorded loss tokens
+D_reward_only,reward_only,-A,True,False,decision,reward,D_reward_only::decision::reward,
+D_reward_only,reward_only,-A,True,False,decision,unsigned,D_reward_only::decision::unsigned,A=+1 on ALL recorded loss tokens
+D_adv_negative_fraction,reward_only,I(A < -epsilon),False,False,decision,reward,D_adv_negative_fraction::decision::reward,
+D_adv_negative_fraction,reward_only,I(A < -epsilon),False,False,decision,unsigned,D_adv_negative_fraction::decision::unsigned,A=+1 on ALL recorded loss tokens
+C_raw,reward_alignment_reference,+C_raw,False,True,decision,reward,C_raw::decision::reward,
+C_raw,reward_alignment_reference,+C_raw,False,True,decision,unsigned,C_raw::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+C_centered,reward_alignment_reference,+C_centered,False,True,decision,reward,C_centered::decision::reward,
+C_centered,reward_alignment_reference,+C_centered,False,True,decision,unsigned,C_centered::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+C_adv_centered,reward_alignment_reference,+abs(A) * C_centered,False,True,decision,reward,C_adv_centered::decision::reward,
+C_adv_centered,reward_alignment_reference,+abs(A) * C_centered,False,True,decision,unsigned,C_adv_centered::decision::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+M_delta_raw,magnitude_only,delta_norm,False,False,decision,magnitude,M_delta_raw::decision::magnitude,
+M_delta_centered,magnitude_only,delta_centered_norm,False,False,decision,magnitude,M_delta_centered::decision::magnitude,
+M_original_norm,magnitude_only,u_original_norm,False,False,decision,magnitude,M_original_norm::decision::magnitude,
+M_control_norm,magnitude_only,u_control_norm,False,False,decision,magnitude,M_control_norm::decision::magnitude,
+M_kl,magnitude_only,forward_kl_original,False,False,decision,magnitude,M_kl::decision::magnitude,
+M_js,magnitude_only,js_original,False,False,decision,magnitude,M_js::decision::magnitude,
+M_action_abs,magnitude_only,abs(chosen_delta),False,False,decision,magnitude,M_action_abs::decision::magnitude,
+D_original,rectification,g_raw * [-P]+,False,True,game,reward,D_original::game::reward,
+D_original,rectification,g_raw * [-P]+,False,True,game,unsigned,D_original::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_centered_gate,rectification,g_centered * [-P]+,False,True,game,reward,D_centered_gate::game::reward,
+D_centered_gate,rectification,g_centered * [-P]+,False,True,game,unsigned,D_centered_gate::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_ungated,rectification,valid * [-P]+,False,True,game,reward,D_ungated::game::reward,
+D_ungated,rectification,valid * [-P]+,False,True,game,unsigned,D_ungated::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_signed,rectification,-P,True,True,game,reward,D_signed::game::reward,
+D_signed,rectification,-P,True,True,game,unsigned,D_signed::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_signed_gate,rectification,-g_raw * P,True,True,game,reward,D_signed_gate::game::reward,
+D_signed_gate,rectification,-g_raw * P,True,True,game,unsigned,D_signed_gate::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_sign_balance,rectification,-valid * sign(P),True,True,game,reward,D_sign_balance::game::reward,
+D_sign_balance,rectification,-valid * sign(P),True,True,game,unsigned,D_sign_balance::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_negative_fraction,rectification,valid * I(P < -epsilon),False,True,game,reward,D_negative_fraction::game::reward,
+D_negative_fraction,rectification,valid * I(P < -epsilon),False,True,game,unsigned,D_negative_fraction::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_adv,reward_strength,-abs(A) * P,True,True,game,reward,D_adv::game::reward,
+D_adv,reward_strength,-abs(A) * P,True,True,game,unsigned,D_adv::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_adv_gate,reward_strength,-g_raw * abs(A) * P,True,True,game,reward,D_adv_gate::game::reward,
+D_adv_gate,reward_strength,-g_raw * abs(A) * P,True,True,game,unsigned,D_adv_gate::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_sqrtadv,reward_strength,-sqrt(abs(A)) * P,True,True,game,reward,D_sqrtadv::game::reward,
+D_sqrtadv,reward_strength,-sqrt(abs(A)) * P,True,True,game,unsigned,D_sqrtadv::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_work,reward_strength,"-valid * dot(d, delta)",True,True,game,reward,D_work::game::reward,
+D_work,reward_strength,"-valid * dot(d, delta)",True,True,game,unsigned,D_work::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_work_gate,reward_strength,"-g_raw * dot(d, delta)",True,True,game,reward,D_work_gate::game::reward,
+D_work_gate,reward_strength,"-g_raw * dot(d, delta)",True,True,game,unsigned,D_work_gate::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_raw,interaction_cosine,"-valid_delta * dot(d,delta)/(norm(d)*norm(delta)+epsilon)",True,True,game,reward,D_cos_raw::game::reward,
+D_cos_raw,interaction_cosine,"-valid_delta * dot(d,delta)/(norm(d)*norm(delta)+epsilon)",True,True,game,unsigned,D_cos_raw::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_centered,interaction_cosine,"-valid_delta_centered * dot(d,delta)/(norm(d)*norm(delta_centered)+epsilon)",True,True,game,reward,D_cos_centered::game::reward,
+D_cos_centered,interaction_cosine,"-valid_delta_centered * dot(d,delta)/(norm(d)*norm(delta_centered)+epsilon)",True,True,game,unsigned,D_cos_centered::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_centered_gate,interaction_cosine,-g_centered * Q_centered,True,True,game,reward,D_cos_centered_gate::game::reward,
+D_cos_centered_gate,interaction_cosine,-g_centered * Q_centered,True,True,game,unsigned,D_cos_centered_gate::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_adv,interaction_cosine,-abs(A) * Q_centered,True,True,game,reward,D_cos_adv::game::reward,
+D_cos_adv,interaction_cosine,-abs(A) * Q_centered,True,True,game,unsigned,D_cos_adv::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_cos_negative,interaction_cosine,[-Q_centered]+,False,True,game,reward,D_cos_negative::game::reward,
+D_cos_negative,interaction_cosine,[-Q_centered]+,False,True,game,unsigned,D_cos_negative::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_soft,soft_gate,-[C_centered]+ * P,True,True,game,reward,D_soft::game::reward,
+D_soft,soft_gate,-[C_centered]+ * P,True,True,game,unsigned,D_soft::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_soft_negative,soft_gate,[C_centered]+ * [-P]+,False,True,game,reward,D_soft_negative::game::reward,
+D_soft_negative,soft_gate,[C_centered]+ * [-P]+,False,True,game,unsigned,D_soft_negative::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_soft_cos,soft_gate,-[C_centered]+ * Q_centered,True,True,game,reward,D_soft_cos::game::reward,
+D_soft_cos,soft_gate,-[C_centered]+ * Q_centered,True,True,game,unsigned,D_soft_cos::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_sigmoid,soft_gate,-sigmoid(C_centered/median_abs_C) * valid * P,True,True,game,reward,D_sigmoid::game::reward,
+D_sigmoid,soft_gate,-sigmoid(C_centered/median_abs_C) * valid * P,True,True,game,unsigned,D_sigmoid::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_tauC_q25,threshold,-P * I(C_centered >= Q25(abs(C_centered))) * valid_delta_centered,True,True,game,reward,D_tauC_q25::game::reward,
+D_tauC_q25,threshold,-P * I(C_centered >= Q25(abs(C_centered))) * valid_delta_centered,True,True,game,unsigned,D_tauC_q25::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_tauC_q50,threshold,-P * I(C_centered >= Q50(abs(C_centered))) * valid_delta_centered,True,True,game,reward,D_tauC_q50::game::reward,
+D_tauC_q50,threshold,-P * I(C_centered >= Q50(abs(C_centered))) * valid_delta_centered,True,True,game,unsigned,D_tauC_q50::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_tauC_q75,threshold,-P * I(C_centered >= Q75(abs(C_centered))) * valid_delta_centered,True,True,game,reward,D_tauC_q75::game::reward,
+D_tauC_q75,threshold,-P * I(C_centered >= Q75(abs(C_centered))) * valid_delta_centered,True,True,game,unsigned,D_tauC_q75::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_delta_q25,threshold,-P * I(norm(delta_centered) >= Q25(norm(delta_centered))) * valid,True,True,game,reward,D_delta_q25::game::reward,
+D_delta_q25,threshold,-P * I(norm(delta_centered) >= Q25(norm(delta_centered))) * valid,True,True,game,unsigned,D_delta_q25::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_delta_q50,threshold,-P * I(norm(delta_centered) >= Q50(norm(delta_centered))) * valid,True,True,game,reward,D_delta_q50::game::reward,
+D_delta_q50,threshold,-P * I(norm(delta_centered) >= Q50(norm(delta_centered))) * valid,True,True,game,unsigned,D_delta_q50::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_delta_q75,threshold,-P * I(norm(delta_centered) >= Q75(norm(delta_centered))) * valid,True,True,game,reward,D_delta_q75::game::reward,
+D_delta_q75,threshold,-P * I(norm(delta_centered) >= Q75(norm(delta_centered))) * valid,True,True,game,unsigned,D_delta_q75::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_winsor,robust,"-clip(P, -Q95(abs(P)), Q95(abs(P)))",True,True,game,reward,D_winsor::game::reward,
+D_winsor,robust,"-clip(P, -Q95(abs(P)), Q95(abs(P)))",True,True,game,unsigned,D_winsor::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_tanh,robust,-tanh(P/median_abs_P),True,True,game,reward,D_tanh::game::reward,
+D_tanh,robust,-tanh(P/median_abs_P),True,True,game,unsigned,D_tanh::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+D_action_sign,sampled_action,-sign(A) * chosen_delta,True,False,game,reward,D_action_sign::game::reward,
+D_action_sign,sampled_action,-sign(A) * chosen_delta,True,False,game,unsigned,D_action_sign::game::unsigned,A=+1 on ALL recorded loss tokens
+D_action_adv,sampled_action,-A * chosen_delta,True,False,game,reward,D_action_adv::game::reward,
+D_action_adv,sampled_action,-A * chosen_delta,True,False,game,unsigned,D_action_adv::game::unsigned,A=+1 on ALL recorded loss tokens
+D_action_adv_clip,sampled_action,"-clip(A,-2,2) * chosen_delta",True,False,game,reward,D_action_adv_clip::game::reward,
+D_action_adv_clip,sampled_action,"-clip(A,-2,2) * chosen_delta",True,False,game,unsigned,D_action_adv_clip::game::unsigned,A=+1 on ALL recorded loss tokens
+D_ratio_adv,sampled_action,"-A * (clip(exp(chosen_u_O),.8,1.2)-clip(exp(chosen_u_control),.8,1.2))",True,False,game,reward,D_ratio_adv::game::reward,
+D_ratio_adv,sampled_action,"-A * (clip(exp(chosen_u_O),.8,1.2)-clip(exp(chosen_u_control),.8,1.2))",True,False,game,unsigned,D_ratio_adv::game::unsigned,A=+1 on ALL recorded loss tokens
+D_policy_action_adv,policy_only,-A * chosen_u_O,True,False,game,reward,D_policy_action_adv::game::reward,
+D_policy_action_adv,policy_only,-A * chosen_u_O,True,False,game,unsigned,D_policy_action_adv::game::unsigned,A=+1 on ALL recorded loss tokens
+D_reward_only,reward_only,-A,True,False,game,reward,D_reward_only::game::reward,
+D_reward_only,reward_only,-A,True,False,game,unsigned,D_reward_only::game::unsigned,A=+1 on ALL recorded loss tokens
+D_adv_negative_fraction,reward_only,I(A < -epsilon),False,False,game,reward,D_adv_negative_fraction::game::reward,
+D_adv_negative_fraction,reward_only,I(A < -epsilon),False,False,game,unsigned,D_adv_negative_fraction::game::unsigned,A=+1 on ALL recorded loss tokens
+C_raw,reward_alignment_reference,+C_raw,False,True,game,reward,C_raw::game::reward,
+C_raw,reward_alignment_reference,+C_raw,False,True,game,unsigned,C_raw::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+C_centered,reward_alignment_reference,+C_centered,False,True,game,reward,C_centered::game::reward,
+C_centered,reward_alignment_reference,+C_centered,False,True,game,unsigned,C_centered::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+C_adv_centered,reward_alignment_reference,+abs(A) * C_centered,False,True,game,reward,C_adv_centered::game::reward,
+C_adv_centered,reward_alignment_reference,+abs(A) * C_centered,False,True,game,unsigned,C_adv_centered::game::unsigned,A=+1 on ORIGINAL nonzero-direction support; zero-A geometry unavailable
+M_delta_raw,magnitude_only,delta_norm,False,False,game,magnitude,M_delta_raw::game::magnitude,
+M_delta_centered,magnitude_only,delta_centered_norm,False,False,game,magnitude,M_delta_centered::game::magnitude,
+M_original_norm,magnitude_only,u_original_norm,False,False,game,magnitude,M_original_norm::game::magnitude,
+M_control_norm,magnitude_only,u_control_norm,False,False,game,magnitude,M_control_norm::game::magnitude,
+M_kl,magnitude_only,forward_kl_original,False,False,game,magnitude,M_kl::game::magnitude,
+M_js,magnitude_only,js_original,False,False,game,magnitude,M_js::game::magnitude,
+M_action_abs,magnitude_only,abs(chosen_delta),False,False,game,magnitude,M_action_abs::game::magnitude,

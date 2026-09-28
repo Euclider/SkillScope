@@ -1,0 +1,380 @@
+{
+  "all_candidate_count": 37,
+  "anchor_count": 60,
+  "anchor_sets": [
+    {
+      "anchors_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-404/support/u0000-valid_unseen/skillnet--alfworld-appliance-navigator.jsonl",
+      "anchors_sha256": "9dc10557c47c92d0451a7f01573e719938a3a2df0c31b82b64a5910ce74da907",
+      "context_id": "all_alfworld",
+      "placebo_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-404/support/u0000-valid_unseen/skillnet--alfworld-appliance-navigator.placebo.json",
+      "placebo_sha256": "fa1058b3105c8f6c8a507bafa65d5fc8bfc7566d61dfcc4da7f565a1ea3559ef",
+      "skill_id": "skillnet:alfworld-appliance-navigator"
+    },
+    {
+      "anchors_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-404/support/u0000-valid_unseen/skillnet--alfworld-clean-object.jsonl",
+      "anchors_sha256": "e36884f59adab1c5435eaff6c50f189d8e8999414e9ddd80bffe8447add26815",
+      "context_id": "all_alfworld",
+      "placebo_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-404/support/u0000-valid_unseen/skillnet--alfworld-clean-object.placebo.json",
+      "placebo_sha256": "454a3f2f0496458ccda6a601ecf9204914f97e2e143d68937b7fbd86cfc938ba",
+      "skill_id": "skillnet:alfworld-clean-object"
+    },
+    {
+      "anchors_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-404/support/u0000-valid_unseen/skillnet--alfworld-device-operator.jsonl",
+      "anchors_sha256": "f4d2b61f24bc6349cb7efca26ffb699b6cf7a310c792b9a47ce3d3971d580f6b",
+      "context_id": "all_alfworld",
+      "placebo_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-404/support/u0000-valid_unseen/skillnet--alfworld-device-operator.placebo.json",
+      "placebo_sha256": "8e5cab56475e2fc8a9950fcdbe2575e910d38353628f11a32f410991de5afcad",
+      "skill_id": "skillnet:alfworld-device-operator"
+    },
+    {
+      "anchors_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-404/support/u0000-valid_unseen/skillnet--alfworld-heat-object-with-appliance.jsonl",
+      "anchors_sha256": "bf46c49a32ff2fd47d44326a95668f01094fcff2918c2e2c8f53ddf14cbb6bbe",
+      "context_id": "all_alfworld",
+      "placebo_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-404/support/u0000-valid_unseen/skillnet--alfworld-heat-object-with-appliance.placebo.json",
+      "placebo_sha256": "e98ef651848a2025195a483e50c55766c90b8ed2b9ae5d1fa1fac41d075cbb28",
+      "skill_id": "skillnet:alfworld-heat-object-with-appliance"
+    },
+    {
+      "anchors_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-404/support/u0000-valid_unseen/skillnet--alfworld-storage-explorer.jsonl",
+      "anchors_sha256": "045f774676dd5f9ceb9d2648292f8d69d60c44d3536930b9163f594c3ad69434",
+      "context_id": "all_alfworld",
+      "placebo_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-404/support/u0000-valid_unseen/skillnet--alfworld-storage-explorer.placebo.json",
+      "placebo_sha256": "54a4581837af392d94b21b672cf7c9c4edc7d0775fc60f727159053141403039",
+      "skill_id": "skillnet:alfworld-storage-explorer"
+    }
+  ],
+  "coverage": [
+    {
+      "games": 62,
+      "occurrences": 62,
+      "selected": 12,
+      "skill_id": "skillnet:alfworld-appliance-navigator",
+      "supported": true,
+      "unsupported_reason": null
+    },
+    {
+      "games": 8,
+      "occurrences": 8,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-appliance-preparer",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 37,
+      "occurrences": 37,
+      "selected": 12,
+      "skill_id": "skillnet:alfworld-clean-object",
+      "supported": true,
+      "unsupported_reason": null
+    },
+    {
+      "games": 59,
+      "occurrences": 59,
+      "selected": 12,
+      "skill_id": "skillnet:alfworld-device-operator",
+      "supported": true,
+      "unsupported_reason": null
+    },
+    {
+      "games": 0,
+      "occurrences": 0,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-environment-scanner",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 0,
+      "occurrences": 0,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-goal-interpreter",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 32,
+      "occurrences": 32,
+      "selected": 12,
+      "skill_id": "skillnet:alfworld-heat-object-with-appliance",
+      "supported": true,
+      "unsupported_reason": null
+    },
+    {
+      "games": 2,
+      "occurrences": 2,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-inventory-management",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 2,
+      "occurrences": 2,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-locate-target-object",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 0,
+      "occurrences": 0,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-location-navigator",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 0,
+      "occurrences": 0,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-navigation-planner",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 21,
+      "occurrences": 21,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-object-cooler",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 2,
+      "occurrences": 2,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-object-disposer",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 9,
+      "occurrences": 9,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-object-heater",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 0,
+      "occurrences": 0,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-object-locator",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 7,
+      "occurrences": 7,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-object-picker",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 23,
+      "occurrences": 23,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-object-placer",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 15,
+      "occurrences": 15,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-object-retriever",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 18,
+      "occurrences": 18,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-object-state-inspector",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 0,
+      "occurrences": 0,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-object-state-modifier",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 18,
+      "occurrences": 18,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-object-storer",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 1,
+      "occurrences": 1,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-object-transporter",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 0,
+      "occurrences": 0,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-open-receptacle",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 5,
+      "occurrences": 5,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-receptacle-closer",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 10,
+      "occurrences": 10,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-receptacle-finder",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 2,
+      "occurrences": 2,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-receptacle-navigator",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 8,
+      "occurrences": 8,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-receptacle-opener",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 7,
+      "occurrences": 7,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-receptacle-operator",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 0,
+      "occurrences": 0,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-receptacle-preparer",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 2,
+      "occurrences": 2,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-receptacle-searcher",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 0,
+      "occurrences": 0,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-search-pattern-executor",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 0,
+      "occurrences": 0,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-search-verifier",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 44,
+      "occurrences": 44,
+      "selected": 12,
+      "skill_id": "skillnet:alfworld-storage-explorer",
+      "supported": true,
+      "unsupported_reason": null
+    },
+    {
+      "games": 0,
+      "occurrences": 0,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-task-verifier",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 6,
+      "occurrences": 6,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-temperature-regulator",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 4,
+      "occurrences": 4,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-tool-locator",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    },
+    {
+      "games": 0,
+      "occurrences": 0,
+      "selected": 0,
+      "skill_id": "skillnet:alfworld-tool-user",
+      "supported": false,
+      "unsupported_reason": "insufficient_natural_support"
+    }
+  ],
+  "preparation": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-independent-v4/prepared-v2/preparation-s404-8gpu/manifest.json",
+  "preparation_sha256": "c76035964865e1dede390e9be5c3b609cb86a6d8c0c17b1aedc7bae0fee49076",
+  "source_checkpoint_identity": {
+    "files": [
+      {
+        "bytes": 1979,
+        "path": "config.json",
+        "sha256": "5b09e3574709afeee0cbb841094149eb36b6f644aa34918646ccef6320aa830c"
+      },
+      {
+        "bytes": 19989325,
+        "path": "tokenizer.json",
+        "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523"
+      },
+      {
+        "bytes": 1123,
+        "path": "tokenizer_config.json",
+        "sha256": "bee8eba30f0eb4af73c0fe2cd06d0f89b657d7819941c438157ec42f7c80ea87"
+      },
+      {
+        "bytes": 7756,
+        "path": "chat_template.jinja",
+        "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715"
+      },
+      {
+        "bytes": 8411558400,
+        "path": "model.safetensors",
+        "sha256": "a6d4236e793dee0377971c8c9e2cb656fd17b28e8539ee4b1a621012c82f3d83"
+      }
+    ],
+    "model_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/seed-404/models/u0000",
+    "weights_loaded": false
+  },
+  "source_plan_sha256": "a027d974e0ecb75bad4d323dfc08e41c80ac4ebbe3c27debc9fcd1aad8f8d713",
+  "source_update": 0,
+  "split": "valid_unseen"
+}

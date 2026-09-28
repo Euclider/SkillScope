@@ -1,0 +1,402 @@
+{
+  "schema_version": "skillnet.phase12.preparation_verification.v1",
+  "status": "STATIC_READY_EXECUTION_LOCKED",
+  "current_preparation": "assets-v2/manifest.json",
+  "current_preparation_sha256": "afc003d9619d12ac71d24d47c4a1dc2dee35d35a63e7199428efe8c8bca1baf5",
+  "superseded_preparation": {
+    "path": "assets/manifest.json",
+    "sha256": "730e04b2f5b17d7d56ef42d85e53f73568e07d11ca30d18f162f3bd6f5ac3a35",
+    "ever_executed": false,
+    "reason": "Isolated PLACEBO tokens matched but full prompt boundary added one token; retained, rejected by current loader."
+  },
+  "user_confirmed": {
+    "rl_seed": 404,
+    "validation_every": 5,
+    "readout_window_updates": 5,
+    "train_sampling": "SkillRL 16 groups x 8, not exhaustive train traversal",
+    "run_rl_this_turn": false
+  },
+  "execution": {
+    "rl_started": false,
+    "real_alfworld_resets": 0,
+    "paid_api_calls": 0,
+    "qwen_weights_loaded": false,
+    "policy_forward": false,
+    "ray_cluster_started": false,
+    "checkpoint_exported": false,
+    "training_root_created": false,
+    "git_commit": false,
+    "git_reset": false,
+    "old_experiments_rerun": false,
+    "old_reports_regenerated": false
+  },
+  "tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 /mnt/workspace/users/wangyifan/.venvs/skillnet-phase12-20260917/bin/python -B -m pytest -q -p no:cacheprovider tests/skillnet_cohort tests/skill_bank tests/skill_router tests/experiment_settings tests/phase1 tests/phase2",
+    "exit_code": 0,
+    "passed": 464,
+    "duration_seconds": 53.69,
+    "failed": 0,
+    "new_cohort_tests": 33,
+    "historical_regression_tests": 431,
+    "scope": "CPU fixtures, synthetic tensors, fake environment/API; no historical experiment reruns",
+    "development_failures_resolved": [
+      "Tokenizer test adapted to installed Transformers return type",
+      "37 controls rebuilt as assets-v2 for full-prompt BPE-boundary parity",
+      "Isolated environment missing import/report dependencies explicitly installed"
+    ]
+  },
+  "dependency_check": {
+    "command": "UV_CACHE_DIR=/mnt/workspace/users/wangyifan/.cache/uv uv pip check --python /mnt/workspace/users/wangyifan/.venvs/skillnet-phase12-20260917/bin/python",
+    "exit_code": 0,
+    "packages": 178,
+    "output": "Using Python 3.12.13 environment at: /mnt/workspace/users/wangyifan/.venvs/skillnet-phase12-20260917\nChecked 178 packages in 3ms\nAll installed packages are compatible",
+    "python": "3.12.13",
+    "system_site_packages": false,
+    "system_and_legacy_env_modified": false
+  },
+  "preflight_command": "PYTHONDONTWRITEBYTECODE=1 /mnt/workspace/users/wangyifan/.venvs/skillnet-phase12-20260917/bin/python -B -m skillnet_cohort.preflight --preparation docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json --run-root artifacts/skillnet37-seed404-phase12-v1",
+  "preflight_summary": {
+    "status": "STATIC_READY_EXECUTION_LOCKED",
+    "errors": [],
+    "versions": {
+      "torch": "2.11.0",
+      "torchvision": "0.26.0",
+      "fastapi": "0.141.1",
+      "uvicorn": "0.51.0",
+      "transformers": "5.10.4",
+      "ray": "2.43.0",
+      "hydra-core": "1.3.2",
+      "tensordict": "0.10.0",
+      "torchdata": "0.11.0",
+      "pandas": "2.3.3",
+      "pyarrow": "19.0.1",
+      "textworld": "1.7.0",
+      "gymnasium": "0.29.1",
+      "alfworld": "0.4.2",
+      "openai": "3.14.1"
+    },
+    "entrypoint_imports": {
+      "verl.trainer.main_ppo": "imported",
+      "verl.workers.fsdp_workers": "imported",
+      "phase2.measure": "imported",
+      "phase2.evaluate": "imported",
+      "phase2.aggregate": "imported",
+      "phase2.window_forecast": "imported"
+    },
+    "seed": 404,
+    "bank_count": 37,
+    "placebo_count": 37,
+    "game_counts": {
+      "train": 3553,
+      "valid_seen": 140,
+      "valid_unseen": 134
+    },
+    "training": "150 iterations, 16 groups x 8; complete train pool sampling, not exhaustive epochs",
+    "full_eval_job_count": 274,
+    "readout_windows": 30,
+    "capture_enabled": true,
+    "phase3_required": false,
+    "training_started": false,
+    "api_calls": 0,
+    "writes": 0,
+    "remaining_execution_gates": [
+      "Explicit router/storage budgets and scoped execution authorization",
+      "Actual four-GPU forward/backward/restore feasibility, not inferred from imports/CPU tests",
+      "Runtime full-prompt coverage; strict overflow guard is installed, but no real states were run"
+    ],
+    "artifacts_generated_during_future_execution": [
+      "FP32 B0/endpoint snapshots, natural-anchor support, committed predictions, and O/P/N outcomes"
+    ]
+  },
+  "preservation": {
+    "before": {
+      "files": 20268,
+      "bytes": 2189927373,
+      "tree_sha256": "57b65943ccadc8db6bb2cd2548c940c7be7dcd4d96feb3de129ddfeed3816424",
+      "allowed_existing": [
+        [
+          "SkillRL/agent_system/multi_turn_rollout/rollout_loop.py",
+          26090,
+          "57a35489dc2991bdb28a8156a3730ddc71c288e4776fa4ce3e2eb9c2c7df4149"
+        ],
+        [
+          "SkillRL/phase1/eval_skill_margin.py",
+          21580,
+          "4918d200758d2433b98edd84f1105a56d9f8c360abc95680558ae58a9789ca72"
+        ],
+        [
+          "SkillRL/phase2/capture.py",
+          6560,
+          "847270a7d750b447f56dfc1a4555460203e715fe4c9c9fce47d8f19e737af135"
+        ],
+        [
+          "SkillRL/phase2/evaluate.py",
+          4837,
+          "11d07648e0fb905d73089ca467c211f71be4c6e0905265b64b0f956dedc787c0"
+        ],
+        [
+          "SkillRL/phase2/measure.py",
+          12357,
+          "2ef42ae3060ae253a0fff745dd000698b2d41af45efc2451d899221239d307ed"
+        ],
+        [
+          "SkillRL/phase2/protocol.py",
+          8395,
+          "480951dbd4bdcfa9419afef0ddb85893e5220f768c6031b65bb6f783cb6e649d"
+        ],
+        [
+          "SkillRL/verl/trainer/main_ppo.py",
+          10187,
+          "cb5547674b8af03da4555af63887ce13a93054e5d1026a0138b79c46f77e012b"
+        ],
+        [
+          "SkillRL/verl/workers/fsdp_workers.py",
+          74077,
+          "a4d56bc2c945182945fbea07e2e3fcc191042dd01e4fa3962730123edb302554"
+        ]
+      ],
+      "excluded_new_prefixes": [
+        "SkillRL/skillnet_cohort/",
+        "SkillRL/tests/skillnet_cohort/",
+        "SkillRL/docs/experiments/skillnet-phase12-preparation-v1/"
+      ],
+      "excluded_new_files": [
+        "2026-09-17-skillnet-phase12-preparation.md",
+        "SkillRL/requirements-skillnet-phase12.txt"
+      ]
+    },
+    "after": {
+      "files": 20268,
+      "bytes": 2189927373,
+      "tree_sha256": "57b65943ccadc8db6bb2cd2548c940c7be7dcd4d96feb3de129ddfeed3816424",
+      "allowed_existing": [
+        [
+          "SkillRL/agent_system/multi_turn_rollout/rollout_loop.py",
+          26090,
+          "57a35489dc2991bdb28a8156a3730ddc71c288e4776fa4ce3e2eb9c2c7df4149"
+        ],
+        [
+          "SkillRL/phase1/eval_skill_margin.py",
+          21712,
+          "30593975bd73a96094b2f12ae222acb9149a5aaa9c1d1c86bdd97421398dac99"
+        ],
+        [
+          "SkillRL/phase2/capture.py",
+          6833,
+          "15bb5b395085783f7aa455c9037b7535572132c23c855aea8127f76d7259b576"
+        ],
+        [
+          "SkillRL/phase2/evaluate.py",
+          5944,
+          "9f4c8af5afaf2639a711cfe4b7ef9f6b38ac4a75b9e7dd1720dc01d84b10415b"
+        ],
+        [
+          "SkillRL/phase2/measure.py",
+          12936,
+          "6371db370ba5c086d2295f982eadb42c68006ba7f6c15776b108ab21f81ae7b5"
+        ],
+        [
+          "SkillRL/phase2/protocol.py",
+          8696,
+          "5cc5052181909c8a999781c6eab48eb4de4dd340841c733d80828d2814371b26"
+        ],
+        [
+          "SkillRL/verl/trainer/main_ppo.py",
+          10445,
+          "9a137b835ee789102165739e64a26e5bed691f13073694e3b78387ed25a443cd"
+        ],
+        [
+          "SkillRL/verl/workers/fsdp_workers.py",
+          74273,
+          "78d3c3c30017b2955a556ea0929dd0f9b6673772e8089d4983f3cd04ff8b0830"
+        ]
+      ],
+      "excluded_new_prefixes": [
+        "SkillRL/skillnet_cohort/",
+        "SkillRL/tests/skillnet_cohort/",
+        "SkillRL/docs/experiments/skillnet-phase12-preparation-v1/"
+      ],
+      "excluded_new_files": [
+        "2026-09-17-skillnet-phase12-preparation.md",
+        "SkillRL/requirements-skillnet-phase12.txt"
+      ]
+    },
+    "protected_tree_matches": true,
+    "changed_existing": [
+      {
+        "path": "SkillRL/phase1/eval_skill_margin.py",
+        "before": {
+          "bytes": 21580,
+          "sha256": "4918d200758d2433b98edd84f1105a56d9f8c360abc95680558ae58a9789ca72"
+        },
+        "after": {
+          "bytes": 21712,
+          "sha256": "30593975bd73a96094b2f12ae222acb9149a5aaa9c1d1c86bdd97421398dac99"
+        }
+      },
+      {
+        "path": "SkillRL/phase2/capture.py",
+        "before": {
+          "bytes": 6560,
+          "sha256": "847270a7d750b447f56dfc1a4555460203e715fe4c9c9fce47d8f19e737af135"
+        },
+        "after": {
+          "bytes": 6833,
+          "sha256": "15bb5b395085783f7aa455c9037b7535572132c23c855aea8127f76d7259b576"
+        }
+      },
+      {
+        "path": "SkillRL/phase2/evaluate.py",
+        "before": {
+          "bytes": 4837,
+          "sha256": "11d07648e0fb905d73089ca467c211f71be4c6e0905265b64b0f956dedc787c0"
+        },
+        "after": {
+          "bytes": 5944,
+          "sha256": "9f4c8af5afaf2639a711cfe4b7ef9f6b38ac4a75b9e7dd1720dc01d84b10415b"
+        }
+      },
+      {
+        "path": "SkillRL/phase2/measure.py",
+        "before": {
+          "bytes": 12357,
+          "sha256": "2ef42ae3060ae253a0fff745dd000698b2d41af45efc2451d899221239d307ed"
+        },
+        "after": {
+          "bytes": 12936,
+          "sha256": "6371db370ba5c086d2295f982eadb42c68006ba7f6c15776b108ab21f81ae7b5"
+        }
+      },
+      {
+        "path": "SkillRL/phase2/protocol.py",
+        "before": {
+          "bytes": 8395,
+          "sha256": "480951dbd4bdcfa9419afef0ddb85893e5220f768c6031b65bb6f783cb6e649d"
+        },
+        "after": {
+          "bytes": 8696,
+          "sha256": "5cc5052181909c8a999781c6eab48eb4de4dd340841c733d80828d2814371b26"
+        }
+      },
+      {
+        "path": "SkillRL/verl/trainer/main_ppo.py",
+        "before": {
+          "bytes": 10187,
+          "sha256": "cb5547674b8af03da4555af63887ce13a93054e5d1026a0138b79c46f77e012b"
+        },
+        "after": {
+          "bytes": 10445,
+          "sha256": "9a137b835ee789102165739e64a26e5bed691f13073694e3b78387ed25a443cd"
+        }
+      },
+      {
+        "path": "SkillRL/verl/workers/fsdp_workers.py",
+        "before": {
+          "bytes": 74077,
+          "sha256": "a4d56bc2c945182945fbea07e2e3fcc191042dd01e4fa3962730123edb302554"
+        },
+        "after": {
+          "bytes": 74273,
+          "sha256": "78d3c3c30017b2955a556ea0929dd0f9b6673772e8089d4983f3cd04ff8b0830"
+        }
+      }
+    ],
+    "git_available": false,
+    "method": "Content SHA256 of predeclared protected tree; not a claimed git diff."
+  },
+  "new_files": {
+    "source_code": [
+      {
+        "path": "requirements-skillnet-phase12.txt",
+        "sha256": "c26c33aa40fd63e3a3357821ad5558821c5881c8d3768d85f12dfac3f86408b2"
+      },
+      {
+        "path": "skillnet_cohort/__init__.py",
+        "sha256": "675b62a00a7751ca490a0c1b3366084d1b455a20c351ae7dc2554b96b34792d8"
+      },
+      {
+        "path": "skillnet_cohort/assets.py",
+        "sha256": "000becdaae892d8072016803651cd71da5b613e997db4d1930dcff045e171560"
+      },
+      {
+        "path": "skillnet_cohort/checkpoints.py",
+        "sha256": "0e2aeb8274c05210ebda8e7c36a66a7bebe13251d509bc56267b2b70d6064474"
+      },
+      {
+        "path": "skillnet_cohort/common.py",
+        "sha256": "427bba5c723134ccccd044bcd50e6d6c2b67e4ef5722a2d45ae27d77cab7f752"
+      },
+      {
+        "path": "skillnet_cohort/evaluate.py",
+        "sha256": "8ea69c1a74b837cef83c0d8a9d94d6eb39545a644e243610fefabee7ed6f48dc"
+      },
+      {
+        "path": "skillnet_cohort/preflight.py",
+        "sha256": "c02139d98cd46e2d699ea708e9cc81db68bd3cbba4db61e0d900960eefd18c94"
+      },
+      {
+        "path": "skillnet_cohort/prepare.py",
+        "sha256": "866fdc309c31778f6c77a5f8224814df6188dbe5bd5de53f5b4e2c1b07087c33"
+      },
+      {
+        "path": "skillnet_cohort/runtime.py",
+        "sha256": "60b42f2f1a4d40eb0376f45ef3c8ee032bea30b81fca1624e33f886a84de6874"
+      },
+      {
+        "path": "skillnet_cohort/support.py",
+        "sha256": "9873c747838415027211a65c0e0a93e2e6259bbe9413c06eec3853d043482d06"
+      },
+      {
+        "path": "skillnet_cohort/training.py",
+        "sha256": "6492fef1c9b29a428bf324c70b0e0b7b7d4a8628c523456a4a4fc19ba133e14c"
+      },
+      {
+        "path": "tests/skillnet_cohort/test_preparation.py",
+        "sha256": "f91e420e6d86214e521a13245170e164e0cf98993c9f72566a2518a69977c8ad"
+      }
+    ],
+    "archives": [
+      {
+        "path": "assets-v2/manifest.json",
+        "sha256": "afc003d9619d12ac71d24d47c4a1dc2dee35d35a63e7199428efe8c8bca1baf5"
+      },
+      {
+        "path": "assets/manifest.json",
+        "sha256": "730e04b2f5b17d7d56ef42d85e53f73568e07d11ca30d18f162f3bd6f5ac3a35"
+      },
+      {
+        "path": "environment.freeze.txt",
+        "sha256": "0adf1d2b7486eb6549af9225ef666f6c5756dac16a0af39f5a0d6277cb2fdb98"
+      },
+      {
+        "path": "resolved-training-plan.json",
+        "sha256": "47856c9290f410d8f87e37e67dd7f33e3e3d0563529f04d9475db8ed0201cb02"
+      },
+      {
+        "path": "preflight.json",
+        "sha256": "9e7a1829b04fdd61202efa3478dc732f588ad63ec3ef4f56d7c5cfef82d1c749"
+      },
+      {
+        "path": "authorization.example.json",
+        "sha256": "998673b6e1b2bec6660e9292db97cebc5a9acc11eefe164f321ddc4dc884a53e"
+      }
+    ],
+    "narrative_sha256": "873dda5286080c6db9b67babf63469b268e4f6773b26b87c1b2eabe3c43e50fa",
+    "training_root_created": false
+  },
+  "evidence_limits": [
+    "Static inventory does not prove real game traversal.",
+    "Four-GPU capacity, actual full-prompt states and native save/restore have not been exercised.",
+    "The current launcher refuses training resume into an existing root; explicit recovery design/validation is still required after a failure.",
+    "Storage guard does not make 150 rounds fit; API and storage budgets remain unapproved.",
+    "PLACEBO preserves first header, trailing whitespace and token counts, not exact internal Markdown structure.",
+    "Natural support for all 37 skills is not guaranteed; missing support must abstain.",
+    "Fixed request alias/profile/cache is not verification of third-party router backend weights.",
+    "One seed and adjacent five-update windows are not independent training replicas."
+  ],
+  "skill_used": {
+    "name": "academic-research-suite",
+    "workflow": "experiment-agent/plan inline",
+    "influence": "Separated experimental registration, software verification, evidence limits and execution authorization."
+  }
+}

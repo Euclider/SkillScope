@@ -1,0 +1,31 @@
+{
+  "assets": [
+    {
+      "path": "games.json",
+      "sha256": "9e4c37b9ce917dcd626de4eade17e9ab5a112a4299a1b1d6817d1c7e8103f532"
+    },
+    {
+      "path": "model.json",
+      "sha256": "b13551d4dc202ac1a5902ea291f75da7b3827a0b7fe9b10574c397252678ead2"
+    },
+    {
+      "path": "placebos.json",
+      "sha256": "f99bdb3eaccf56822170a9f4d2fb1b3380b1648f1efda1fdcd93041b33320197"
+    },
+    {
+      "path": "spec.json",
+      "sha256": "740bc0814d06e0b4f5b61efc1a77810c6891200c36bd13d5562e171b30982796"
+    },
+    {
+      "path": "datasets/train.parquet",
+      "sha256": "cab8cc1ec70086027b1515a50ac9052e1dfe568c761b98911e66c53e6a211101"
+    },
+    {
+      "path": "datasets/seen-monitor.parquet",
+      "sha256": "cd16f952e81b81e106da1955e91e87659f079fab503b28dacdb404e092dd5681"
+    }
+  ],
+  "experiments_started": false,
+  "kind": "preparation",
+  "schema_version": "skillnet.phase12.v1"
+}

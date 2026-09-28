@@ -1,0 +1,172 @@
+{
+  "schema_version": "skillrl.resource_build_verification.v1",
+  "created_at_utc": "2026-09-17T12:14:49Z",
+  "status": "passed_offline_bank_checks_with_documented_coverage_limits",
+  "material_passport": {
+    "origin": "User-authorized SkillNet-37 bank construction",
+    "workflow": "academic-research-suite / experiment-agent reproducibility discipline",
+    "mode": "Frozen resource construction and CPU unit verification",
+    "empirical_experiment": false,
+    "verification_scope": [
+      "source byte identity",
+      "pinned manifest and package validation",
+      "adapter contracts",
+      "selected historical CPU regression tests",
+      "pre-existing file-content preservation"
+    ]
+  },
+  "environment": {
+    "research_root": "/mnt/workspace/users/wangyifan/skill-RL",
+    "code_root": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL",
+    "python_executable": "/usr/bin/python3",
+    "python_version": "3.12.13",
+    "pytest_version": "9.1.1",
+    "pyyaml_version": "6.0.3",
+    "git_executable_available": false,
+    "dependency_installation_performed": false,
+    "historical_conda_environment_revalidated": false
+  },
+  "bank": {
+    "bank_id": "skillnet-alfworld-37-5c472b36d2a4",
+    "manifest_path_relative_to_code_root": "memory_data/alfworld/skillnet37/manifest.json",
+    "manifest_sha256": "0767ff7578b1e997119a36b5f636fec6ebc1d0ac600ffb40b1e599065b7fe514",
+    "content_sha256": "a3fdd5f265f4a9926533686aef315163a6fb6b6f6ba5fc3f2153a9240dc662ab",
+    "source_commit": "5c472b36d2a435001fdae3bc8439886d8050645a",
+    "counts": {
+      "skills": 37,
+      "main_files": 37,
+      "support_files": 45,
+      "upstream_files": 83,
+      "upstream_utf8_bytes": 152902
+    },
+    "all_task_types_share_candidates": true,
+    "payload_renderer": "skillrl.raw_skill_package.v1",
+    "payload_utf8_bytes": {
+      "minimum": 1619,
+      "maximum": 7653
+    },
+    "token_lengths_verified": false,
+    "upstream_license_preserved": true
+  },
+  "upstream_byte_verification": {
+    "verified_at_utc": "2026-09-17T12:07:14.301860+00:00",
+    "archive_sha256": "851f28606c4964acf18edd82a8d0ec70b7238242fd35d4310274d230a9657c91",
+    "archive_bytes": 749151,
+    "commit_pax_header": "5c472b36d2a435001fdae3bc8439886d8050645a",
+    "upstream_inventory_exact_match": true,
+    "byte_identical_files": 83,
+    "network_used_only_for_public_source_verification": true,
+    "archive_extracted_to_disk": false
+  },
+  "cli_verification": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m agent_system.memory.frozen_skill_bank",
+    "exit_code": 0,
+    "status": "verified_local_snapshot",
+    "runtime_network_required": false
+  },
+  "tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m pytest -q -p no:cacheprovider tests/skill_bank/test_frozen_skill_bank.py tests/phase1/test_step_skill_router.py tests/phase1/test_skill_mask.py tests/phase1/test_step_routing_summary.py",
+    "cwd": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL",
+    "exit_code": 0,
+    "passed": 114,
+    "new_bank_test_cases": 104,
+    "legacy_regression_test_cases": 10,
+    "pytest_summary": "114 passed in 0.64s",
+    "earlier_collection_failure": {
+      "excluded_file": "tests/phase1/test_first_invocation.py",
+      "exit_code": 2,
+      "reason": "ModuleNotFoundError: No module named 'pandas'",
+      "dependency_install_attempted": false,
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m pytest -q -p no:cacheprovider tests/skill_bank/test_frozen_skill_bank.py tests/phase1/test_step_skill_router.py tests/phase1/test_skill_mask.py tests/phase1/test_first_invocation.py tests/phase1/test_step_routing_summary.py"
+    },
+    "cpu_only": true,
+    "models_loaded": false,
+    "environments_executed": false,
+    "live_model_api_calls": 0
+  },
+  "preservation": {
+    "baseline": {
+      "existing_file_count": 20164,
+      "existing_content_bytes": 2189614759,
+      "existing_tree_sha256": "bd345838f2be8e2795afda512d6a1cb88eceb05e4c5a218e085f3d215b6e4145",
+      "excluded": [
+        ".git"
+      ]
+    },
+    "after": {
+      "verified_at_utc": "2026-09-17T12:09:29.759091+00:00",
+      "existing_file_count": 20164,
+      "existing_content_bytes": 2189614759,
+      "existing_tree_sha256": "bd345838f2be8e2795afda512d6a1cb88eceb05e4c5a218e085f3d215b6e4145",
+      "excluded": [
+        ".git"
+      ],
+      "new_paths_excluded": [
+        "SkillRL/memory_data/alfworld/skillnet37",
+        "SkillRL/agent_system/memory/frozen_skill_bank.py",
+        "SkillRL/tests/skill_bank",
+        "SkillRL/docs/experiments/skillnet37",
+        "2026-09-17-skillnet37-frozen-bank-setting.md"
+      ],
+      "unchanged": true
+    },
+    "algorithm": "Sort research-root relative paths; skip .git and approved newly created paths for the after check. For existing regular files hash all bytes using SHA-256; for file symlinks record 'symlink:' plus link target. Aggregate UTF-8 relative path + NUL + lowercase file digest or symlink record + LF using SHA-256.",
+    "claim_scope": "Pre-existing file paths and content only; not permissions, mtimes, Git metadata, or historical assets absent from this mount.",
+    "existing_file_contents_unchanged": true,
+    "commits_resets_or_reverts_performed": false,
+    "historical_reports_overwritten": false
+  },
+  "artifact_hashes": [
+    {
+      "path_relative_to_research_root": "SkillRL/agent_system/memory/frozen_skill_bank.py",
+      "bytes": 18333,
+      "sha256": "2dee3b706894a93f226d47dcbd5ce5aaf81493f522dee0aa4c477a7c23075fc0"
+    },
+    {
+      "path_relative_to_research_root": "SkillRL/tests/skill_bank/test_frozen_skill_bank.py",
+      "bytes": 15557,
+      "sha256": "af3e2d25b50ea654592077ea3a1e9ebe4a3df6530b81d6c4f0c991db935e17e6"
+    },
+    {
+      "path_relative_to_research_root": "SkillRL/memory_data/alfworld/skillnet37/manifest.json",
+      "bytes": 57170,
+      "sha256": "0767ff7578b1e997119a36b5f636fec6ebc1d0ac600ffb40b1e599065b7fe514"
+    },
+    {
+      "path_relative_to_research_root": "SkillRL/memory_data/alfworld/skillnet37/setting.json",
+      "bytes": 2408,
+      "sha256": "501f2855a767e10f82c305a10e067766967178884690b878999eab72e23dbee6"
+    },
+    {
+      "path_relative_to_research_root": "SkillRL/memory_data/alfworld/skillnet37/README.md",
+      "bytes": 5456,
+      "sha256": "ed4b62fd3d1288b6a0e6c14a90d068accbce5f2f854db12ed80bc59e058eb767"
+    },
+    {
+      "path_relative_to_research_root": "2026-09-17-skillnet37-frozen-bank-setting.md",
+      "bytes": 20722,
+      "sha256": "0d93f3e70983fff77dea96205f3a4659d306091cbfacc9446fa814ae4393909a"
+    }
+  ],
+  "artifact_hash_scope": "Implementation, tests, bank metadata and narrative archive at build verification. Upstream file hashes are listed in the pinned bank manifest. This verification file does not hash itself.",
+  "current_implementation_boundary": {
+    "standalone_loader": true,
+    "stateless_single_skill_payload_adapter": true,
+    "external_llm_router": false,
+    "existing_environment_or_launch_defaults_changed": false,
+    "full_bank_policy_injection_allowed": false,
+    "skillrl_bank_merged": false
+  },
+  "not_performed": [
+    "training or parameter updates",
+    "benchmark evaluation, environment rollouts or old experiment reruns",
+    "model loading or forward passes",
+    "live or paid model API requests",
+    "full historical Phase1/Phase2 regression suite",
+    "Qwen tokenizer and full-prompt length audit",
+    "length-matched PLACEBO validation across all 37 skills",
+    "item-level upstream trajectory / split contamination audit",
+    "choice of new seed, split/game manifest, update window or runtime budget"
+  ],
+  "network_activity": "Only public upstream source retrieval and research-source reading; verification CLI and unit tests did not call an LLM API."
+}

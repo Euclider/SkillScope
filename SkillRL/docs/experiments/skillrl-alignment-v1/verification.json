@@ -1,0 +1,224 @@
+{
+  "schema_version": "skillrl.configuration-verification.v1",
+  "setting_id": "qwen35-skillnet37-skillrl-public-code-v1",
+  "verified_at_utc": "2026-09-17 14:27:54 UTC",
+  "status": "CONFIGURATION_VALIDATED_NOT_RUN",
+  "scope": "Configuration/source audit and offline regression only. No experiment-effect verification.",
+  "user_confirmed_phase3": {
+    "comparison_variable": "attribution/evidence selection",
+    "shared_external_editor": true,
+    "allowed_edit_operations": [
+      "add",
+      "delete",
+      "modify"
+    ],
+    "frozen_initial_bank_only": true,
+    "original_skillnet_files_unchanged": true,
+    "editor_model_confirmed": false,
+    "mutable_branch_runtime_implemented": false,
+    "approved_for_execution": false
+  },
+  "source_audit": {
+    "repository": "https://github.com/aiming-lab/SkillRL",
+    "commit": "8e66726ed866a4e0a7f053586a41022798192e6c",
+    "entrypoint": "examples/grpo_trainer/run_alfworld_skills.sh",
+    "receipt": "upstream_sources.json",
+    "files_hashed_from_pinned_upstream": 9,
+    "paper": "https://arxiv.org/html/2602.08234v1",
+    "paper_code_differences_documented": true,
+    "claim": "Public-code hyperparameter alignment with explicit Qwen/project adaptations; not exact paper/native SkillRL reproduction."
+  },
+  "validation": {
+    "interpreter": "/mnt/workspace/users/wangyifan/.venvs/skillnet-router-20260917-sdk3141/bin/python",
+    "working_directory": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL",
+    "independent_configuration_test": {
+      "passed": 39,
+      "seconds": 2.99,
+      "exit_code": 0
+    },
+    "final_regression": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /mnt/workspace/users/wangyifan/.venvs/skillnet-router-20260917-sdk3141/bin/python -B -m pytest -q -p no:cacheprovider tests/experiment_settings/test_skillrl_alignment.py tests/skill_router tests/skill_bank tests/phase1/test_step_skill_router.py tests/phase1/test_skill_mask.py tests/phase1/test_step_routing_summary.py tests/phase1/test_trajectory_archive.py tests/phase1/test_training_step_archive.py",
+      "passed": 210,
+      "new_configuration_tests": 39,
+      "existing_regression_tests": 171,
+      "failed": 0,
+      "seconds": 9.06,
+      "exit_code": 0,
+      "api_clients": "mock only",
+      "environment": "fake/CPU fixtures only"
+    },
+    "readonly_inspector": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /mnt/workspace/users/wangyifan/.venvs/skillnet-router-20260917-sdk3141/bin/python -B -m scripts.inspect_skillrl_alignment --require-ready",
+      "exit_code": 2,
+      "expected_exit_code": 2,
+      "interpretation": "Configuration contract passes, but execution inputs and prelaunch gates are intentionally unresolved.",
+      "result": {
+        "setting_id": "qwen35-skillnet37-skillrl-public-code-v1",
+        "status": "CONFIGURATION_VALIDATED_NOT_RUN",
+        "errors": [],
+        "derived": {
+          "trajectories_per_iteration": 128,
+          "nominal_training_trajectories": 19200,
+          "local_minibatch_rows_full": 32,
+          "gradient_accumulation_full_minibatch": 32,
+          "opportunity_steps": [
+            5,
+            10,
+            15,
+            20,
+            25,
+            30,
+            35,
+            40,
+            45,
+            50,
+            55,
+            60,
+            65,
+            70,
+            75,
+            80,
+            85,
+            90,
+            95,
+            100,
+            105,
+            110,
+            115,
+            120,
+            125,
+            130,
+            135,
+            140,
+            145,
+            150
+          ]
+        },
+        "required_runtime_values_unset": [
+          "actor_rollout_ref.model.path",
+          "data.train_files",
+          "data.val_files",
+          "env.phase1_archive.output_dir",
+          "env.seed",
+          "env.skills_only_memory.step_routing.cache_path",
+          "ray_init._temp_dir",
+          "trainer.default_local_dir",
+          "trainer.experiment_name"
+        ],
+        "pending_before_launch": [
+          "New RL seed, actor/distributed RNG seeding audit, B0 checkpoint identity and fresh output/cache paths.",
+          "Explicit GPU/storage/walltime/router-call budget and execution approval.",
+          "Real environment manifests and exhaustive seen/unseen game-ID traversal.",
+          "Full prompt token budget and all 37 token-matched PLACEBOs, without dropping overlong games.",
+          "Full training environment including SDK/router credentials in Ray workers; no credentials in files.",
+          "GPU/model forward and optimizer accumulation validation for this batch/context.",
+          "New-cohort readout capture integration; old Phase2 drivers remain historical.",
+          "Phase3 mutable-bank/editor design and paired schedule are not implemented here."
+        ],
+        "phase3_status": "design_only_not_implemented_or_launched",
+        "phase3_edit_operation": "external_llm_decides_add_delete_modify",
+        "full_game_coverage_verified": false,
+        "gpu_forward_validated": false,
+        "training_started": false,
+        "external_api_calls": 0,
+        "writes": 0
+      }
+    },
+    "hydra_training_composition_executed": false,
+    "omegaconf_documented_defaults_composition_checked": true
+  },
+  "preservation": {
+    "before": {
+      "files": 20269,
+      "bytes": 2190019438,
+      "tree_sha256": "7306e57bf68a49aa17b89423fb627e7e741811e66c8b462586e0320296df3753",
+      "excluded_new_paths": [
+        "2026-09-17-skillrl-rl-alignment-and-phase3-setting.md",
+        "SkillRL/configs/skillrl_public_alignment_v1.json",
+        "SkillRL/docs/experiments/skillrl-alignment-v1/upstream_sources.json",
+        "SkillRL/docs/experiments/skillrl-alignment-v1/verification.json",
+        "SkillRL/scripts/inspect_skillrl_alignment.py",
+        "SkillRL/tests/experiment_settings/test_skillrl_alignment.py",
+        "SkillRL/verl/trainer/config/alfworld_skillnet37_skillrl_v1.yaml"
+      ],
+      "excludes_git": true
+    },
+    "after": {
+      "files": 20269,
+      "bytes": 2190019438,
+      "tree_sha256": "7306e57bf68a49aa17b89423fb627e7e741811e66c8b462586e0320296df3753",
+      "excluded_new_paths": [
+        "2026-09-17-skillrl-rl-alignment-and-phase3-setting.md",
+        "SkillRL/configs/skillrl_public_alignment_v1.json",
+        "SkillRL/docs/experiments/skillrl-alignment-v1/upstream_sources.json",
+        "SkillRL/docs/experiments/skillrl-alignment-v1/verification.json",
+        "SkillRL/scripts/inspect_skillrl_alignment.py",
+        "SkillRL/tests/experiment_settings/test_skillrl_alignment.py",
+        "SkillRL/verl/trainer/config/alfworld_skillnet37_skillrl_v1.yaml"
+      ],
+      "excludes_git": true
+    },
+    "exact_match": true,
+    "note": "Hashes cover files present under the mounted research root, excluding .git and exactly the seven declared new paths. This is not a revalidation of unmounted historical model weights.",
+    "existing_files_modified": 0,
+    "old_reports_regenerated": false,
+    "historical_experiments_rerun": false,
+    "git_available": false,
+    "git_index_or_branch_revalidated": false,
+    "commit_or_rollback_or_deletion": false
+  },
+  "new_artifact_hashes_relative_to_research_root": [
+    {
+      "path": "2026-09-17-skillrl-rl-alignment-and-phase3-setting.md",
+      "sha256": "96fe28e9ea7dfd1ea18f316ef8cb42dd5aab5f9a7e1d50788d5562495064ca8a",
+      "bytes": 20045
+    },
+    {
+      "path": "SkillRL/configs/skillrl_public_alignment_v1.json",
+      "sha256": "71a5e499b9dc32ea910b8d9bfbd0c5d000871880739fb4fc9c82cef569227e86",
+      "bytes": 14939
+    },
+    {
+      "path": "SkillRL/docs/experiments/skillrl-alignment-v1/upstream_sources.json",
+      "sha256": "7bf2c340c4bd3aa183f1e204ebc7371f1046a60d51398efa7139a8292f0bebf6",
+      "bytes": 7581
+    },
+    {
+      "path": "SkillRL/scripts/inspect_skillrl_alignment.py",
+      "sha256": "6fe1793e47a5818f97fa4d854f4177e17733bebdff98cdc855318d3bcb543da7",
+      "bytes": 6789
+    },
+    {
+      "path": "SkillRL/tests/experiment_settings/test_skillrl_alignment.py",
+      "sha256": "0c72ae67e677653d9691c8250f42b3e32b20b507beecf9d4946d0e2c034830db",
+      "bytes": 8237
+    },
+    {
+      "path": "SkillRL/verl/trainer/config/alfworld_skillnet37_skillrl_v1.yaml",
+      "sha256": "ee091fe06ea9462e61696353731b9322e1bdc0b412452fc8eb43ad026c5ae21f",
+      "bytes": 4903
+    }
+  ],
+  "self_hash_excluded": true,
+  "execution": {
+    "training_started": false,
+    "alfworld_rollouts": 0,
+    "policy_gpu_forward_or_backward": false,
+    "real_llm_api_calls": 0,
+    "new_seed_assigned": false,
+    "editor_invoked": false,
+    "model_or_checkpoint_loaded": false,
+    "dependencies_installed_this_turn": false,
+    "skill_bank_or_router_cache_modified": false
+  },
+  "remaining_gates": [
+    "New RL seed, actor/distributed RNG seeding audit, B0 checkpoint identity and fresh output/cache paths.",
+    "Explicit GPU/storage/walltime/router-call budget and execution approval.",
+    "Real environment manifests and exhaustive seen/unseen game-ID traversal.",
+    "Full prompt token budget and all 37 token-matched PLACEBOs, without dropping overlong games.",
+    "Full training environment including SDK/router credentials in Ray workers; no credentials in files.",
+    "GPU/model forward and optimizer accumulation validation for this batch/context.",
+    "New-cohort readout capture integration; old Phase2 drivers remain historical.",
+    "Phase3 mutable-bank/editor design and paired schedule are not implemented here."
+  ]
+}

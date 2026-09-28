@@ -1,0 +1,33 @@
+{
+  "schema_version": "skillnet.phase12.budget_admission_audit.v1",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-09-18",
+    "verification_status": "UNVERIFIED",
+    "version_label": "phase12_daybudget_v2_not_admitted"
+  },
+  "status": "NOT_ADMITTED",
+  "preparation_sha256": "174839baeeab0b5270e699daaf4072107a682c94447d9dce895ba4aa5d7b767b",
+  "router_profile_sha256": "091b514862df2358b06cae7e5db71ce5233d134d8ca2dfda2f220490ba28fb4b",
+  "batch_router_validated": true,
+  "batch_router_validation_scope": "32 stopped-run visible states replayed, top1 agreement 32/32; not universal numerical identity or accuracy",
+  "native_eight_gpu_microbatch_validated": false,
+  "native_eight_gpu_generation_only_validated": true,
+  "native_eight_gpu_two_consecutive_updates_validated": false,
+  "exact_capture_validated": false,
+  "sharded_evaluation_validated": false,
+  "sharded_evaluation_fake_job_union_tests_passed": true,
+  "projected_total_upper_seconds": null,
+  "projected_peak_run_bytes": null,
+  "whole_pipeline_within_30h_claimed": false,
+  "formal_run_started": false,
+  "execution_permit_issued": false,
+  "blockers": [
+    "Second synthetic backward OOM after optimizer state GPU reload, despite successful 4096+512 generation",
+    "No measured real rollout/optimizer/exact full-vocabulary recording/storage admission",
+    "No measured real eight-shard ALFWorld performance and utility timing"
+  ],
+  "failure_audit": "/mnt/workspace/users/wangyifan/skill-RL/daybudget-gpu-preflight-20260918-v2/failure-audit.json",
+  "further_gpu_attempt_requires_user_review": true
+}

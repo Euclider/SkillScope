@@ -1,0 +1,63 @@
+{
+  "batch_router_validated": true,
+  "capacity_token_allowance": 109800,
+  "component_seconds": {
+    "cold_initialization_export_checkpoint_report_allowance": 2400,
+    "evaluation_and_monitoring": 29974.740695842076,
+    "old_and_reference_native_full_length": 7307.382964296266,
+    "optimizer_native_full_length": 22271.641143830493,
+    "readout_six_forwards_scoring_and_decode_allowance": 5917.453124385793,
+    "start_capture_compression": 1162.4373353552073,
+    "training_generation": 5552.448551970534,
+    "training_router_no_cache": 19663.237
+  },
+  "evidence_limits": [
+    "16 real episodes, not a full formal seed; no formal RL completed",
+    "native 128-row test had 16 valid tokens with 4096+512 padded shape",
+    "readout time includes a 1s/forward + 1s/scoring allowance, not an end-to-end readout timing",
+    "short natural responses may change after RL; exact runtime capacity gate can stop the run",
+    "no guarantee of three seeds in 12h or 30h; queue re-estimates after each entire completed seed",
+    "real Ray orchestration and natural live/replay parity are checked during formal execution"
+  ],
+  "exact_capture_validated": true,
+  "native_eight_gpu_microbatch_validated": true,
+  "natural_compression_ratio_max": 0.44850997416116895,
+  "preparation_sha256": "c76035964865e1dede390e9be5c3b609cb86a6d8c0c17b1aedc7bae0fee49076",
+  "projected_peak_run_bytes": 189901031040,
+  "projected_total_upper_seconds": 94250,
+  "projection_is_conditional_not_completion_guarantee": true,
+  "router_profile_sha256": "091b514862df2358b06cae7e5db71ce5233d134d8ca2dfda2f220490ba28fb4b",
+  "sharded_evaluation_validated": true,
+  "sources": [
+    {
+      "path": "/mnt/workspace/users/wangyifan/skill-RL/vllm-gpu-preflight-20260918-v4/verification-audit.json",
+      "sha256": "b80657f9d1b7cb140b3a869f5aa6f9be2833c6de52d9fa23b049955d5c530e86"
+    },
+    {
+      "path": "/mnt/workspace/users/wangyifan/skill-RL/vllm-gpu-preflight-20260918-v4/complete.json",
+      "sha256": "a3cd8a60758b913990e78ff7499ad59752b2533b2744113c58fe8322cf5e2fee"
+    },
+    {
+      "path": "/mnt/workspace/users/wangyifan/skill-RL/vllm-capture-preflight-20260918-v1/verification-audit.json",
+      "sha256": "fbf6f9963214aca3aaf05ba06088f3e8c4564e29094600370e60c3314fa13616"
+    },
+    {
+      "path": "/mnt/workspace/users/wangyifan/skill-RL/vllm-capture-preflight-20260918-v1/complete.json",
+      "sha256": "1d45429483eb9e814a768e371b322b62cadc9375c4486df598192e1888e54d4b"
+    },
+    {
+      "path": "/mnt/workspace/users/wangyifan/skill-RL/vllm-throughput-preflight-20260918-v2/timing-report.json",
+      "sha256": "619f10874e7dcfc218c125344c79d2f11e230b1ef75a3fccfb5dea59527bc2ef"
+    },
+    {
+      "path": "/mnt/workspace/users/wangyifan/skill-RL/vllm-router-calibration-20260918-v1/result.json",
+      "sha256": "13baa1ce40a1179358142a257734a1a3395fc5a23c1bf7dcc03edd78a091bef5"
+    },
+    {
+      "path": "/mnt/workspace/users/wangyifan/skill-RL/lossless-capture-calibration-20260918-v1/complete.json",
+      "sha256": "7d0ca534d81633f093c2f70d16fcdce543e841c8924ad2ed809ce92c193cf7b2"
+    }
+  ],
+  "start_old_token_projection": 73200,
+  "status": "PASS"
+}

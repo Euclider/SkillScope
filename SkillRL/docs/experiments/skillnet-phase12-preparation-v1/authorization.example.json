@@ -1,0 +1,14 @@
+{
+  "approved": false,
+  "preparation_sha256": "REPLACE_WITH_ASSETS_V2_MANIFEST_SHA256_AFTER_REVIEW",
+  "operations": ["training", "exports", "evaluation", "readout"],
+  "router_max_api_calls": 0,
+  "router_cache_path": "/mnt/workspace/users/wangyifan/skill-RL/SkillRL/artifacts/skillnet37-seed404-phase12-v1/router.sqlite3",
+  "gpu_ids": [],
+  "storage": {
+    "checkpoint_reserve_bytes": null,
+    "minimum_free_bytes": null,
+    "maximum_run_bytes": null
+  },
+  "note": "An example, NOT an execution authorization; never put credentials here."
+}

@@ -1,0 +1,242 @@
+{
+  "bank_manifest_sha256": "0767ff7578b1e997119a36b5f636fec6ebc1d0ac600ffb40b1e599065b7fe514",
+  "data_root": "/mnt/workspace/users/wangyifan/skill-RL/data/alfworld",
+  "evaluation": {
+    "anchor_source_seeds": [
+      61011,
+      61021
+    ],
+    "evidence_seeds": [
+      62011,
+      62021
+    ],
+    "full_game_traversal": true,
+    "gold_seeds": [
+      63011,
+      63021,
+      63031,
+      63041
+    ],
+    "history_length": 2,
+    "max_new_tokens": 512,
+    "max_prompt_tokens": 4096,
+    "max_steps": 50,
+    "maximum_anchors_per_skill": 50,
+    "minimum_anchor_games": 10,
+    "minimum_anchor_occurrences": 30,
+    "performance_seeds": [
+      61001
+    ],
+    "splits": [
+      "valid_seen",
+      "valid_unseen"
+    ],
+    "temperature": 0.4,
+    "top_p": 1.0
+  },
+  "execution": {
+    "approved": false,
+    "gpu_forward_validated": false,
+    "router_max_api_calls": 0,
+    "router_max_local_calls": 0,
+    "storage_budget_bytes": null
+  },
+  "model_path": "/mnt/workspace/users/wangyifan/model/Qwen3.5-4B",
+  "phase3": {
+    "enabled": false,
+    "required_for_phase12": false
+  },
+  "prompt_audit": {
+    "complete_runtime_prompt_verified": false,
+    "overflow_policy": "raise before generation; no silent truncation/drop",
+    "payload_max_tokens": 1967,
+    "payload_min_tokens": 402,
+    "placebos": 37
+  },
+  "readout": {
+    "anchor_strategy": "natural calls at each window start, fixed across paired endpoints",
+    "capture": "actual batch/advantage/old-new FP32 vocabulary distributions at every update",
+    "fit_new_models": false,
+    "horizon": 5,
+    "primary_score": "gated_D",
+    "score_frozen_before_gold": true,
+    "support": {
+      "minimum_games": 4,
+      "minimum_nonzero_decisions": 20,
+      "minimum_trajectories": 8
+    },
+    "unsupported": "abstain; never assign zero risk",
+    "windows": [
+      {
+        "end": 5,
+        "role": "test",
+        "start": 0
+      },
+      {
+        "end": 10,
+        "role": "test",
+        "start": 5
+      },
+      {
+        "end": 15,
+        "role": "test",
+        "start": 10
+      },
+      {
+        "end": 20,
+        "role": "test",
+        "start": 15
+      },
+      {
+        "end": 25,
+        "role": "test",
+        "start": 20
+      },
+      {
+        "end": 30,
+        "role": "test",
+        "start": 25
+      },
+      {
+        "end": 35,
+        "role": "test",
+        "start": 30
+      },
+      {
+        "end": 40,
+        "role": "test",
+        "start": 35
+      },
+      {
+        "end": 45,
+        "role": "test",
+        "start": 40
+      },
+      {
+        "end": 50,
+        "role": "test",
+        "start": 45
+      },
+      {
+        "end": 55,
+        "role": "test",
+        "start": 50
+      },
+      {
+        "end": 60,
+        "role": "test",
+        "start": 55
+      },
+      {
+        "end": 65,
+        "role": "test",
+        "start": 60
+      },
+      {
+        "end": 70,
+        "role": "test",
+        "start": 65
+      },
+      {
+        "end": 75,
+        "role": "test",
+        "start": 70
+      },
+      {
+        "end": 80,
+        "role": "test",
+        "start": 75
+      },
+      {
+        "end": 85,
+        "role": "test",
+        "start": 80
+      },
+      {
+        "end": 90,
+        "role": "test",
+        "start": 85
+      },
+      {
+        "end": 95,
+        "role": "test",
+        "start": 90
+      },
+      {
+        "end": 100,
+        "role": "test",
+        "start": 95
+      },
+      {
+        "end": 105,
+        "role": "test",
+        "start": 100
+      },
+      {
+        "end": 110,
+        "role": "test",
+        "start": 105
+      },
+      {
+        "end": 115,
+        "role": "test",
+        "start": 110
+      },
+      {
+        "end": 120,
+        "role": "test",
+        "start": 115
+      },
+      {
+        "end": 125,
+        "role": "test",
+        "start": 120
+      },
+      {
+        "end": 130,
+        "role": "test",
+        "start": 125
+      },
+      {
+        "end": 135,
+        "role": "test",
+        "start": 130
+      },
+      {
+        "end": 140,
+        "role": "test",
+        "start": 135
+      },
+      {
+        "end": 145,
+        "role": "test",
+        "start": 140
+      },
+      {
+        "end": 150,
+        "role": "test",
+        "start": 145
+      }
+    ]
+  },
+  "router_backend": "skillrl_embedding_state",
+  "router_device": "cpu",
+  "router_model_path": "/mnt/workspace/users/wangyifan/model/Qwen3-Embedding-0.6B",
+  "router_profile_sha256": "d1fc18a18537e65d4503d65d46187b8b63d21d9a884f6332262dbbb2dda778c8",
+  "schema_version": "skillnet.phase12.v1",
+  "seed": 404,
+  "seed_confirmed": true,
+  "status": "prepared_not_authorized",
+  "training": {
+    "games_per_iteration": 16,
+    "gpus": 8,
+    "group_size": 8,
+    "iterations": 150,
+    "microbatch_per_gpu": 1,
+    "monitor_episodes": 64,
+    "monitor_every": 5,
+    "ppo_minibatch_rows": 128,
+    "sampling": "SkillRL 16 groups x 8 trajectories; complete six-task train pool, not exhaustive traversal",
+    "save_every": 5
+  }
+}
