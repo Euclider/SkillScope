@@ -1,0 +1,19 @@
+{
+  "schema_version": "skillrl.external_router_profile.v1",
+  "bank_manifest_sha256": "0767ff7578b1e997119a36b5f636fec6ebc1d0ac600ffb40b1e599065b7fe514",
+  "router_version": "skillnet37-external-llm-step-v1",
+  "system_prompt_sha256": "51147edab1b4fb741b11e03be2db6ea5fdc25878b2fd2407af8ac2fa84323d11",
+  "api_key_env": "SKILLNET_ROUTER_API_KEY",
+  "router": {
+    "base_url": "https://api.zhizengzeng.com/v1",
+    "model": "gpt-5.4-mini",
+    "sdk_version": "3.14.1",
+    "reasoning_effort": "none",
+    "temperature": 0.0,
+    "max_completion_tokens": 128,
+    "history_length": 2,
+    "timeout_seconds": 30.0,
+    "max_input_utf8_bytes": 65536,
+    "expected_response_model": null
+  }
+}

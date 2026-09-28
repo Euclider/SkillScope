@@ -1,0 +1,5 @@
+# Phase3 v3 uses the separately resolved vLLM environment, including the
+# installed OpenAI SDK 3.15.0 and tiktoken 0.14.0. Do not combine this lock
+# with the older HF-only Phase1-2 requirements (OpenAI SDK 3.14.1).
+-r requirements-vllm-phase12.lock
+-r requirements-skillrl-embedding-router.txt

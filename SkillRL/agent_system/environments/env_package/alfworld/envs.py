@@ -99,6 +99,10 @@ class AlfworldEnvs(gym.Env):
             config['env']['task_types'] = list(task_types)
         env_type = config['env']['type']
         base_env = get_environment(env_type)(config, train_eval='train' if is_train else eval_dataset)
+        allowed = env_kwargs.get('allowed_eval_game_ids')
+        if not is_train and allowed is not None:
+            from phase3.training import restrict_eval_games
+            restrict_eval_games(base_env, allowed, os.environ['ALFWORLD_DATA'])
         self.multi_modal = (env_type == 'AlfredThorEnv')
         self.num_processes = env_num * group_n
         self.group_n = group_n

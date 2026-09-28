@@ -54,6 +54,10 @@ def run_ppo(config) -> None:
 @ray.remote(num_cpus=1)  # please make sure main_task is not scheduled on head
 class TaskRunner:
     def run(self, config):
+        if config.get("skillnet_cohort", {}).get("enabled", False):
+            from skillnet_cohort.runtime import seed_process
+            seed_process(config.skillnet_cohort.seed)
+            os.environ["ALFWORLD_DATA"] = config.skillnet_cohort.data_root
         # print initial config
         from pprint import pprint
 

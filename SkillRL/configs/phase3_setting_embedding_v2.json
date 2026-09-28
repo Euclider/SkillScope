@@ -1,0 +1,75 @@
+{
+  "schema_version": "skillrl.phase3.setting.embedding.v2",
+  "status": "proposed_pending_user_confirmation_and_phase3_specific_preflight",
+  "selection_evidence": {
+    "source_seeds": [404, 505],
+    "score": "D_sign_balance::game::reward",
+    "scientific_status": "exploratory_score_choice_not_independent_confirmation",
+    "validation_seed": 707
+  },
+  "arms": {
+    "skillrl_failure": {"selector": "failure_driven", "role": "SkillRL-style failure evidence baseline"},
+    "readout_d": {"selector": "reward_sign_balance", "role": "reward-directed main method"},
+    "readout_p": {"selector": "negative_p", "role": "independent negative projection ablation"},
+    "readout_c": {"selector": "positive_c", "role": "independent centered alignment ablation"}
+  },
+  "initialization": {
+    "policy": "Qwen3.5-4B", "bank": "SkillNet-37",
+    "bank_manifest_sha256": "0767ff7578b1e997119a36b5f636fec6ebc1d0ac600ffb40b1e599065b7fe514",
+    "rl_seed": 707, "shared_initial_checkpoint": true,
+    "independent_policy_optimizer_and_bank_per_arm": true
+  },
+  "training": {
+    "algorithm": "GRPO", "learning_rate": 0.000001,
+    "groups_per_update": 16, "trajectories_per_group": 8,
+    "ppo_minibatch_decision_rows": 128, "microbatch_per_gpu": 1,
+    "proposed_update_cap": 50, "edit_and_validation_interval": 5,
+    "sliding_readout_windows": true,
+    "actor_generation": "vllm_v1_bf16_8x5090_phase3_profile",
+    "optimization": "native_verl_FSDP_GRPO"
+  },
+  "readout": {
+    "control": "token_matched_placebo", "fixed_states": "first_actual_update_batch_in_each_window",
+    "endpoint_pair": "previous_checkpoint_to_current_checkpoint",
+    "numerical_version": "fp64_zero_sum_readout_v1",
+    "forward": "BF16_HF_SDPA_full_vocabulary_scoring_only_no_generation",
+    "primary_score": "D_sign_balance::game::reward",
+    "formula": "-direction_valid*sign(P_int), where P_int uses advantage-weighted stable projection",
+    "aggregation": "token_to_decision_to_trajectory_to_game_equal",
+    "comparators": ["negative_game_equal_P_int", "positive_game_equal_C_upd_centered"],
+    "passive_audit": ["legacy_rectified_D", "raw_C_upd", "centered_delta_norm"],
+    "support": "every_current_version_skill_with_at_least_one_natural_loss_token; report counts; no_20_4_8_gate",
+    "candidate_k": 3, "tau_C": 0, "tau_delta_minimum": 1e-8,
+    "epsilon": 1e-12, "no_post_update_utility_gold_input": true
+  },
+  "router": {
+    "backend": "skillrl_embedding_state", "model": "Qwen3-Embedding-0.6B",
+    "frozen_state_aware_top1": true, "full_active_bank": true,
+    "shared_protocol_independent_branch_caches": true
+  },
+  "editor": {
+    "model": "o3", "base_url": "https://api.zhizengzeng.com/v1",
+    "key_env": "SKILLRL_PHASE3_EDITOR_API_KEY", "reasoning_effort": "medium",
+    "operations": ["ADD", "MODIFY", "DELETE", "MERGE", "NOOP"],
+    "mutation_units_per_opportunity": 3, "automatic_retry": false,
+    "gateway_live_compatibility_validated": false
+  },
+  "evaluation": {
+    "development_gate": "fixed_seen_games_disjoint_from_evidence",
+    "gate_pairing": "same_policy_game_seed_before_after_candidate_bank",
+    "final_seen_games": 140, "final_unseen_games": 134,
+    "selection_on_unseen": false, "decode_backend": "same_registered_vllm_profile_all_arms",
+    "single_RL_seed_limitation": true
+  },
+  "recording": {
+    "per_update_training_metrics": true, "per_window_immutable_running_summary": true,
+    "episode_actions_skills_and_actor_tokens": true, "editor_api_usage_and_router_compute_separate": true,
+    "bank_lineage_operations_candidate_rejection_and_rollback": true,
+    "phase2_full_vocab_and_gold": false
+  },
+  "execution": {
+    "approved": false, "phase3_vllm_eight_card_preflight_passed": false,
+    "o3_gateway_editor_preflight_passed": false,
+    "end_to_end_new_server_passed": false, "formal_phase3_results_exist": false
+  }
+}

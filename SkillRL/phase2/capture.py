@@ -18,7 +18,8 @@ def save_tensor_file(path: Path, value) -> None:
     os.replace(temporary, path)
 
 
-def attach_decisions(batch, infos, *, run_id: str, update: int, step: int) -> None:
+def attach_decisions(batch, infos, *, run_id: str, update: int, step: int, journal_root=None,
+                     full_journal=True) -> None:
     ids, metadata = [], []
     for i, info in enumerate(infos):
         trajectory = str(batch.non_tensor_batch["traj_uid"][i])
@@ -31,11 +32,33 @@ def attach_decisions(batch, infos, *, run_id: str, update: int, step: int) -> No
         metadata.append(json.dumps(item, ensure_ascii=False, sort_keys=True))
     batch.non_tensor_batch["phase2_decision_id"] = np.asarray(ids, dtype=object)
     batch.non_tensor_batch["phase2_metadata"] = np.asarray(metadata, dtype=object)
+    if journal_root is not None:
+        from skillnet_cohort.common import write_new_json
+        rows = []
+        width = batch.batch['responses'].shape[-1]
+        for i, item in enumerate(metadata):
+            if not bool(batch.non_tensor_batch['active_masks'][i]):
+                continue
+            mask = batch.batch['attention_mask'][i, -width:].bool()
+            identity = json.loads(item)
+            if not full_journal:
+                identity.pop('info')
+            rows.append({**identity, 'reward': jsonable(batch.non_tensor_batch['rewards'][i]),
+                **({'response_token_ids': batch.batch['responses'][i, mask].detach().cpu().tolist()} if full_journal else {}),
+                'response_tokens': int(mask.sum()), 'advantage_status': 'pending_complete_group_rollout'})
+        write_new_json(Path(journal_root) / 'rollout_progress' / f'u{update:04d}' / f'step-{step:04d}.json',
+            {'schema_version': 'skillnet.phase12.rollout_progress.v1', 'update': update, 'step': step,
+             'complete_rollout': False, 'records': rows, 'response_tokens': sum(r['response_tokens'] for r in rows)})
 
 
-def mark_batch(batch, *, root: str, update: int) -> None:
+def mark_batch(batch, *, root: str, update: int, full_vocab=True, copies=2) -> None:
     if "phase2_decision_id" not in batch.non_tensor_batch:
         raise ValueError("Phase2 decision IDs were lost before actor update")
+    if full_vocab and (Path(root) / "resource_limits.json").exists():
+        from skillnet_cohort.runtime import admit_capture
+        response_length = batch.batch["responses"].shape[-1]
+        admit_capture(root, int(batch.batch["attention_mask"][:, -response_length:].bool().sum()),
+                      rows=len(batch), copies=copies)
     from phase2.staged_storage import AMENDMENT, admit
     if (Path(root)/AMENDMENT).exists():
         config = json.loads((Path(root)/"protocol.json").read_text())
@@ -43,7 +66,7 @@ def mark_batch(batch, *, root: str, update: int) -> None:
         tokens = int(batch.batch["attention_mask"][:, -length:].bool().sum())
         admit(root, config, update, tokens=tokens)
     batch.batch["phase2_row_index"] = torch.arange(len(batch), dtype=torch.int64)
-    batch.meta_info["phase2_capture"] = {"root": root, "update": int(update)}
+    batch.meta_info["phase2_capture"] = {"root": root, "update": int(update), "full_vocab": full_vocab}
 
 
 def archive_batch(batch, *, root: str, update: int, config) -> None:
@@ -79,6 +102,8 @@ def archive_batch(batch, *, root: str, update: int, config) -> None:
 
 def capture_old_logits(logits, returned_log_probs, micro_batch, capture) -> None:
     """Capture the exact live OLD actor full-vocabulary distribution."""
+    if not capture.get('full_vocab', True):
+        return
     stage = capture.get("stage", "old")
     if stage not in {"old", "new"}:
         raise ValueError(f"Unknown live-logit capture stage: {stage}")
@@ -98,12 +123,21 @@ def capture_old_logits(logits, returned_log_probs, micro_batch, capture) -> None
                    "trainer_chosen_log_probs": trainer.cpu(),
                    "chosen_log_probs": chosen.cpu()}
         path = root / f"row-{row:06d}.pt"
-        save_tensor_file(path, payload)
+        if path.exists() and capture.get('reuse_verified_old'):
+            from skillnet_cohort.rollout_recovery import verify_old_reuse
+            verify_old_reuse(path, payload, capture)
+            continue
+        from skillnet_cohort.capture_storage import settings, save_row
+        limits = settings(capture['root'])
+        compression_audit = save_row(capture['root'], path, payload, limits) if limits else None
+        if limits is None:
+            save_tensor_file(path, payload)
         append_jsonl_idempotent(root / f"rank-{rank}.jsonl", [{
             "row_index": row, "rank": rank, "tokens": len(token_ids),
             "vocab_size": lp.shape[-1], "path": str(path),
             "chosen_max_abs_error": float((chosen-trainer).abs().max()) if len(chosen) else 0.,
             "created_at": utc_now(),
+            **({'compression': compression_audit} if compression_audit is not None else {}),
         }], unique_fields=("row_index",))
 
 
@@ -113,7 +147,7 @@ def optimizer_counter(optimizer) -> int:
 
 def log_forward_progress(capture, *, role, index, total):
     rank = torch.distributed.get_rank() if torch.distributed.is_initialized() else 0
-    atomic_write_json(Path(capture["root"])/"forward_progress"/f"rank-{rank}.json", {
+    atomic_write_json(Path(capture.get('progress_root', capture["root"]))/"forward_progress"/f"rank-{rank}.json", {
         "updated_at": utc_now(), "global_update": capture["update"],
         "role": role, "completed_microbatches": index, "total_microbatches": total,
     })

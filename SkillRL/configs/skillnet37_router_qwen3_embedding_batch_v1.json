@@ -1,0 +1,11 @@
+{
+  "schema_version": "skillrl.embedding_batch_profile.v1",
+  "router_version": "skillrl-embedding-state-batch-top1-v1",
+  "base_profile_sha256": "d1fc18a18537e65d4503d65d46187b8b63d21d9a884f6332262dbbb2dda778c8",
+  "execution": {
+    "device": "cpu",
+    "intra_op_threads": 8,
+    "request_order": "first_occurrence_deduplicated",
+    "batch_accounting": "equal_share_latency_exact_per_query_tokens"
+  }
+}

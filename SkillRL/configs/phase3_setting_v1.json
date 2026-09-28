@@ -1,0 +1,121 @@
+{
+  "schema_version": "skillrl.phase3.setting.v1",
+  "setting_confirmed_on": "2026-09-18",
+  "status": "four_arm_design_confirmed_implementation_and_upload_authorized_remote_runs_not_started",
+  "arms": {
+    "skillrl_failure": {"selector": "failure_driven", "role": "primary_baseline"},
+    "readout_d": {"selector": "gated_d", "role": "primary_method"},
+    "readout_p": {"selector": "negative_p", "role": "independent_closed_loop_ablation"},
+    "readout_c": {"selector": "positive_c", "role": "independent_closed_loop_ablation"}
+  },
+  "initialization": {
+    "policy": "Qwen3.5-4B",
+    "bank": "SkillNet-37",
+    "bank_manifest_sha256": "0767ff7578b1e997119a36b5f636fec6ebc1d0ac600ffb40b1e599065b7fe514",
+    "seed": 404,
+    "shared_initial_checkpoint": true,
+    "independent_optimizers": true,
+    "new_sft": false
+  },
+  "training": {
+    "recipe": "SkillRL_public_code_with_archived_Qwen_adaptations",
+    "algorithm": "GRPO",
+    "learning_rate": 0.000001,
+    "groups_per_iteration": 16,
+    "trajectories_per_group": 8,
+    "ppo_minibatch_decision_rows": 128,
+    "microbatch_per_gpu": 1,
+    "iteration_cap": 150,
+    "validation_every": 5,
+    "edit_opportunity_every": 5,
+    "cumulative_branch_local_banks": true,
+    "edits_feed_future_training": true,
+    "legacy_dynamic_updater": false
+  },
+  "editor": {
+    "base_url": "https://api.zhizengzeng.com/v1",
+    "model": "o3",
+    "api_key_env": "SKILLRL_PHASE3_EDITOR_API_KEY",
+    "credential_in_files": false,
+    "shared_model_prompt_and_budgets": true,
+    "model_fallback": false,
+    "reasoning_effort": "medium",
+    "max_input_tokens": null,
+    "max_completion_tokens": null,
+    "max_evidence_trajectories": null,
+    "max_api_calls_per_arm": null,
+    "retry_policy": "fail_closed_no_automatic_retry",
+    "gateway_validated": false
+  },
+  "router": {
+    "base_url": "https://api.zhizengzeng.com/v1",
+    "model": "gpt-5.4-mini",
+    "api_key_env": "SKILLNET_ROUTER_API_KEY",
+    "candidate_catalog": "complete_active_branch_bank",
+    "task_filtering": false,
+    "selection_count": 1,
+    "cache_bound_to_bank_version": true
+  },
+  "readout": {
+    "primary_selector": "gated_d",
+    "fixed_risk_signs": {"D_contribution": 1, "P_int": -1, "C_upd": 1},
+    "c_variant": "raw_C_upd_not_centered",
+    "record_all_three_scores": true,
+    "horizon": 5,
+    "direction": "start_batch_endpoint_projection",
+    "control": "token_matched_placebo",
+    "tau_C": 0.0,
+    "tau_delta_minimum": 0.00000001,
+    "tau_delta_calibration": "freeze_before_target_outcomes",
+    "epsilon": 0.000000000001,
+    "denominator": "all_valid_response_tokens_including_zero_advantage_and_gate_failures",
+    "minimum_nonzero_decisions": 20,
+    "minimum_nonzero_games": 4,
+    "minimum_nonzero_trajectories": 8,
+    "candidate_k": 3,
+    "unsupported": "abstain_never_zero_fill",
+    "new_content_version_inherits_scores": false,
+    "tie_rule": "score_desc_then_skill_id_asc",
+    "fit_predictor": false,
+    "switch_selector_after_results": false
+  },
+  "editing": {
+    "operations": ["ADD", "MODIFY", "DELETE", "MERGE", "NOOP"],
+    "max_mutation_units": 3,
+    "merge_units": "number_of_retired_ids_plus_one_new_id",
+    "delete_is_tombstone": true,
+    "initial_bank_is_immutable": true,
+    "rollback_scope": "bank_only_not_policy_or_optimizer"
+  },
+  "evaluation": {
+    "primary_endpoint": 150,
+    "seen_games": 140,
+    "unseen_games": 134,
+    "six_task_breakdown": true,
+    "report_all_four_arms": true,
+    "select_best_arm_on_unseen": false,
+    "unseen_used_for_editing_or_gating": false,
+    "gate_and_evidence_game_sets_disjoint": true,
+    "gate_manifest": null,
+    "gate_noninferiority_tolerance_pp": null,
+    "evaluation_seed_manifest": null,
+    "single_rl_seed_limitation": true
+  },
+  "recording": {
+    "profile": "phase3_compact",
+    "full_vocab_distributions": false,
+    "hidden_activations": false,
+    "phase2_utility_gold": false,
+    "prediction_edit_provenance": true,
+    "episode_action_skill_records": true,
+    "separate_actor_router_editor_readout_costs": true,
+    "proposal_rejection_distinct_from_rollback": true
+  },
+  "execution": {
+    "approved": false,
+    "gpu_ids": null,
+    "storage_budget_bytes": null,
+    "runtime_integration_validated": false,
+    "upload_approved": true
+  }
+}

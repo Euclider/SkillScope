@@ -1,0 +1,15 @@
+# New cohort only: official SkillRL encoder/cosine retrieval, state/top-1 adaptation.
+# Does not change historical defaults or authorize launching RL.
+env:
+  use_skills_only_memory: true
+  use_retrieval_memory: false
+  skills_only_memory:
+    retrieval_mode: frozen_bank_all
+    enable_dynamic_update: false
+    step_routing:
+      enabled: true
+      backend: skillrl_embedding_state
+      model_path: ???
+      device: ???  # Explicit cpu or cuda:N; no implicit topology change.
+      cache_path: ???  # Never use the mini-router cache.
+      max_local_calls: 0  # Cache replay only until explicitly set for a new run.

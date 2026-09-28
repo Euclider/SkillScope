@@ -1,0 +1,197 @@
+{
+  "schema_version": "skillnet.phase12.day_budget_proposal.v1",
+  "status": "proposal_not_executable",
+  "created_at_utc": "2026-09-18 06:10:34 UTC",
+  "scientific_scope_confirmation": "pending",
+  "implementation_status": "not_wired_into_launcher",
+  "launch_authorized": false,
+  "supersedes_run": "artifacts/phase12/skillnet37-qwen35-embed06-s404-8gpu-v1",
+  "new_run_root": "artifacts/phase12/skillnet37-qwen35-embed06-s404-daybudget-v1",
+  "deadline": {
+    "total_seconds": 86400,
+    "includes": [
+      "calibration",
+      "training",
+      "performance",
+      "anchors",
+      "readout",
+      "utility",
+      "report"
+    ],
+    "reserved_finish_seconds": 7200,
+    "admission_requires_measured_upper_estimate_seconds_at_most": 79200,
+    "on_timeout": "stop_incomplete_and_preserve_evidence; never declare complete"
+  },
+  "policy": {
+    "model": "Qwen3.5-4B",
+    "seed": 404
+  },
+  "bank": {
+    "name": "SkillNet-37",
+    "frozen": true,
+    "router_candidate_count": 37,
+    "filter_by_game": false
+  },
+  "router": {
+    "model": "Qwen/Qwen3-Embedding-0.6B",
+    "revision": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
+    "query": "same visible-state format and last-two-step history",
+    "selection": "global cosine top-1",
+    "training": "frozen",
+    "execution_target": "batched deduplicated requests; stage-specific CPU thread pool",
+    "numeric_mode": "to_be_frozen_after_outcome_blind_throughput_and_selection_parity_check",
+    "candidate_numeric_modes": [
+      "cpu_fp32",
+      "cpu_bfloat16_amx"
+    ],
+    "new_protocol_and_cache_required": true,
+    "api_calls": 0
+  },
+  "training": {
+    "algorithm": "GRPO",
+    "learning_rate": 0.000001,
+    "games_per_iteration": 16,
+    "group_size": 8,
+    "iterations": 5,
+    "window_horizon": 5,
+    "windows": [
+      {
+        "start": 0,
+        "end": 5,
+        "role": "test"
+      }
+    ],
+    "ppo_minibatch_rows": 128,
+    "optimizer_microbatch_per_gpu": 1,
+    "policy_gpu_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "rollout_microbatch_per_gpu_target": 2,
+    "rollout_microbatch_requires_memory_and_RNG_audit": true,
+    "monitor_every": 5,
+    "monitor_episodes": 64,
+    "save_every": 5,
+    "max_environment_steps": 50
+  },
+  "inference": {
+    "max_prompt_tokens": 4096,
+    "max_new_tokens_proposed": 128,
+    "previous_max_new_tokens": 512,
+    "response_cap_confirmation": "pending; apply equally to training, performance, anchors, and O/P/N; record truncation/invalid actions",
+    "enable_thinking": false,
+    "temperature": 0.4,
+    "top_p": 1,
+    "history_length": 2,
+    "proposed_backend": "existing HF/SDPA first; do not claim uninstalled vLLM available"
+  },
+  "performance": {
+    "splits": [
+      "valid_seen",
+      "valid_unseen"
+    ],
+    "game_counts": {
+      "valid_seen": 140,
+      "valid_unseen": 134
+    },
+    "endpoints": [
+      0,
+      5
+    ],
+    "seeds": [
+      61001
+    ],
+    "full_game_traversal": true,
+    "parallel_workers": 8,
+    "one_policy_replica_per_gpu": true,
+    "expected_episodes": 548
+  },
+  "phase2": {
+    "splits": [
+      "valid_unseen"
+    ],
+    "anchor_source_seeds": [
+      61011
+    ],
+    "anchor_source_full_game_traversal": true,
+    "anchor_source_episodes": 134,
+    "minimum_source_occurrences_per_skill": 30,
+    "minimum_source_games_per_skill": 10,
+    "maximum_gold_skills": 12,
+    "gold_skill_selection": "sort naturally eligible skill IDs by SHA256('daybudget-s404:'+skill_id), take first 12; freeze before seeing utility labels or D/-P/+C ranking",
+    "maximum_anchors_per_skill": 12,
+    "anchor_selection": "deterministic round-robin across games, with manifest and hashes",
+    "evidence_seeds": [
+      62011
+    ],
+    "gold_seeds": [
+      63011,
+      63021
+    ],
+    "arms": [
+      "original",
+      "placebo",
+      "null"
+    ],
+    "paired_endpoints": [
+      0,
+      5
+    ],
+    "maximum_continuations": 2592,
+    "shortage_policy": "report natural-support abstention; never force skill calls or fill missing labels with zero",
+    "prediction_before_target_gold": true,
+    "primary_score": "gated_D",
+    "secondary_scores": [
+      "minus_P",
+      "plus_C"
+    ],
+    "training_support": {
+      "minimum_nonzero_decisions": 20,
+      "minimum_games": 4,
+      "minimum_trajectories": 8
+    },
+    "scope_claim": "single-window budget-limited utility validation; not complete-37-skill labels, seen utility validation, or cross-seed evidence"
+  },
+  "records": {
+    "trajectory_and_step_metadata": true,
+    "all_skill_calls": true,
+    "reward_and_advantage": true,
+    "exact_optimizer_batch": true,
+    "optimizer_steps": true,
+    "old_new_probability_capture": "retain exact live full-vocabulary FP32 protocol; no top-k or low-precision substitute authorized",
+    "retain_missing_or_failed_records": true
+  },
+  "storage": {
+    "maximum_run_bytes": 816043786240,
+    "minimum_free_bytes": 107374182400,
+    "checkpoint_reserve_bytes": 85899345920,
+    "full_vocab_bytes_per_old_new_token": 1986560,
+    "cleanup": "existing authorization only: proven regenerable tensors after sealed five-update window; no earlier deletion without new approval",
+    "expected_loss_tokens_per_update": null,
+    "capacity_admission": "must measure token volume and reserve all five updates; do not silently drop records to fit"
+  },
+  "stage_time_allocations_hours": {
+    "calibration": 1,
+    "training": 6,
+    "performance_and_anchors": 3,
+    "readout": 4,
+    "utility": 7,
+    "report": 1,
+    "headroom": 2
+  },
+  "admission_gates": [
+    "scientific-scope and response-cap approval",
+    "router batching/numeric/seed correctness checks",
+    "memory-safe eight-GPU native update and exact-record checks",
+    "eight-way performance/anchor shard equality",
+    "measured combined walltime upper estimate <=22h",
+    "measured exact full-vocabulary volume fits fixed storage limits"
+  ],
+  "performance_guaranteed": false
+}

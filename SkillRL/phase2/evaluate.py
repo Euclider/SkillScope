@@ -41,7 +41,17 @@ def main():
             directory=signal_directory(a.root,a.update,window["start"])
             if not (directory/"committed.json").exists() or not (directory/"prediction.json").exists():
                 raise RuntimeError("Window signals AND prediction must be locked before endpoint gold")
-    if a.update>parent_update(config) and not (a.root/"signals"/f"u{a.update:04d}"/"committed.json").exists():
+    skillnet = config.get("runtime", {}).get("kind") == "skillnet37"
+    if skillnet:
+        from skillnet_cohort.common import require_authorization
+        require_authorization(config["runtime"].get("authorization_path"),
+                              config["runtime"]["preparation"], "evaluation")
+        if a.update > parent_update(config):
+            from skillnet_cohort.evaluate import verify_prediction
+            verify_prediction(signal_directory(a.root,a.update,parent_update(config))/"prediction.json",
+                              config["runtime"]["preparation"], a.update,
+                              a.root/"models"/f"u{a.update:04d}")
+    if not skillnet and a.update>parent_update(config) and not (a.root/"signals"/f"u{a.update:04d}"/"committed.json").exists():
         raise RuntimeError("Post-update gold is locked until signals are committed")
     ev=config["evaluation"]
     if a.shards != ev.get("shards",8) or not 0 <= a.shard < a.shards:
@@ -54,9 +64,18 @@ def main():
     out.mkdir(parents=True,exist_ok=True)
     index=out/f"shard-{a.shard}.jsonl"
     completed={x["trajectory_id"] for x in [json.loads(l) for l in index.read_text().splitlines()]} if index.exists() else set()
-    policy=TransformersPolicy(str(a.root/"models"/f"u{a.update:04d}"))
-    memory=SkillsOnlyMemory(str(repo/"memory_data/alfworld/claude_style_skills.json"),retrieval_mode="template",task_specific_top_k=None)
-    router=FrozenStepSkillRouter(include_common_mistakes=False)
+    if skillnet:
+        from skillnet_cohort.runtime import make_runtime
+        from skillnet_cohort.inference import make_policy
+        memory, router = make_runtime(config["runtime"])
+        policy=make_policy(a.root/"models"/f"u{a.update:04d}", config['runtime'],
+                           ev.get("max_prompt_tokens", 4096))
+        import os
+        os.environ["ALFWORLD_DATA"] = config["runtime"]["data_root"]
+    else:
+        policy=TransformersPolicy(str(a.root/"models"/f"u{a.update:04d}"))
+        memory=SkillsOnlyMemory(str(repo/"memory_data/alfworld/claude_style_skills.json"),retrieval_mode="template",task_specific_top_k=None)
+        router=FrozenStepSkillRouter(include_common_mistakes=False)
     for i,(skill,anchor,purpose,seed,arm,placebo) in enumerate(jobs):
         identity=evaluation_identity(config,a.update,(skill,anchor,purpose,seed,arm,placebo))
         tid=stable_hash(identity)[:24]
@@ -66,7 +85,7 @@ def main():
         result=run_branch(policy=policy,anchor=replay_anchor,memory=memory,router=router,
                           arm=PayloadArm(arm),target_skill_id=skill,placebo_text=placebo["text"],
                           temperature=ev["temperature"],top_p=ev["top_p"],max_new_tokens=ev["max_new_tokens"],
-                          history_length=ev["history_length"],router_general_top_k=12)
+                          history_length=ev["history_length"],router_general_top_k=37 if skillnet else 12)
         path=out/"trajectories"/skill/f"{tid}.json"
         row={**identity,"trajectory_id":tid,"game_id":anchor["game_id"],"state_id":anchor["state_id"],
              "trigger_step":anchor["trigger_step"],"phase":phase(anchor["trigger_step"]),

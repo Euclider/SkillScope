@@ -1,0 +1,81 @@
+{
+  "schema_version": "skillrl.phase3.setting.embedding.v3",
+  "status": "launch_approved_o3_and_eight_card_preflight_passed_real_alfworld_staged",
+  "selection_evidence": {
+    "source_seeds": [404, 505],
+    "scientific_status": "exploratory_score_choice_not_independent_confirmation",
+    "validation_seed": 707
+  },
+  "arms": {
+    "readout_d": {"selector": "reward_sign_balance", "role": "reward-directed main method"},
+    "skillrl_failure": {"selector": "failure_driven", "role": "SkillRL-style failure evidence baseline"},
+    "readout_magnitude": {"selector": "centered_magnitude", "role": "centered interaction magnitude baseline"},
+    "readout_gated_d": {"selector": "legacy_gated_d", "role": "historical rectified gated D reference"},
+    "readout_p": {"selector": "negative_p", "role": "negative interaction projection ablation"},
+    "readout_c": {"selector": "positive_c", "role": "centered update alignment ablation"}
+  },
+  "initialization": {
+    "policy": "Qwen3.5-4B", "bank": "SkillNet-37",
+    "bank_manifest_sha256": "0767ff7578b1e997119a36b5f636fec6ebc1d0ac600ffb40b1e599065b7fe514",
+    "rl_seed": 707, "shared_initial_checkpoint": true,
+    "independent_policy_optimizer_and_bank_per_arm": true,
+    "execution_order": ["readout_d", "skillrl_failure", "readout_magnitude", "readout_gated_d", "readout_p", "readout_c"]
+  },
+  "training": {
+    "algorithm": "GRPO", "learning_rate": 0.000001,
+    "groups_per_update": 16, "trajectories_per_group": 8,
+    "ppo_minibatch_decision_rows": 128, "microbatch_per_gpu": 1,
+    "optimizer_horizon_updates": 150, "first_execution_stop_update": 20,
+    "edit_and_validation_interval": 5, "sliding_readout_windows": true,
+    "interim_decision_after_all_six_arms": true,
+    "actor_generation": "vllm_v1_bf16_8x5090_phase3_profile",
+    "optimization": "native_verl_FSDP_GRPO",
+    "checkpoint_retention": "latest_native_and_latest_HF_export_only_after_sealed_window"
+  },
+  "readout": {
+    "control": "token_matched_placebo", "fixed_states": "first_actual_update_batch_in_each_window",
+    "endpoint_pair": "previous_checkpoint_to_current_checkpoint",
+    "numerical_version": "fp64_zero_sum_readout_v1",
+    "forward": "BF16_HF_SDPA_full_vocabulary_scoring_only_no_generation",
+    "primary_score": "D_sign_balance::game::reward",
+    "selectors_in_execution_order": ["reward_sign_balance", "failure_driven", "centered_magnitude", "legacy_gated_d", "negative_p", "positive_c"],
+    "aggregation": "token_to_decision_to_trajectory_to_game_equal",
+    "support": "every_current_version_skill_with_at_least_one_natural_loss_token; report_counts; no_20_4_8_gate",
+    "candidate_k": 3, "tau_C": 0, "tau_delta_minimum": 1e-8,
+    "epsilon": 1e-12, "no_post_update_utility_gold_input": true,
+    "shadow_action_bias": "M_delta_centered_per_skill_and_window; ranking_only_in_magnitude_arm; never_an_edit_gate",
+    "skill_level_edit_threshold": null
+  },
+  "router": {
+    "backend": "skillrl_embedding_state", "model": "Qwen3-Embedding-0.6B",
+    "frozen_state_aware_top1": true, "full_active_bank": true,
+    "shared_protocol_independent_branch_caches": true
+  },
+  "editor": {
+    "model": "o3", "base_url": "https://api.zhizengzeng.com/v1",
+    "key_env": "SKILLRL_PHASE3_EDITOR_API_KEY", "reasoning_effort": "medium",
+    "operations": ["ADD", "MODIFY", "DELETE", "MERGE", "NOOP"],
+    "mutation_units_per_opportunity": 3, "automatic_retry": false,
+    "gateway_live_compatibility_validated": true
+  },
+  "evaluation": {
+    "development_gate": "fixed_seen_games_disjoint_from_evidence",
+    "gate_pairing": "same_policy_game_seed_before_after_candidate_bank",
+    "milestone_seen_games": 140, "milestone_unseen_games": 134,
+    "selection_on_unseen": false, "decode_backend": "same_registered_vllm_profile_all_arms",
+    "single_RL_seed_limitation": true
+  },
+  "recording": {
+    "per_update_training_metrics": true, "per_window_immutable_running_summary": true,
+    "episode_actions_skills_and_actor_tokens": true,
+    "editor_api_usage_and_router_compute_separate": true,
+    "bank_lineage_operations_candidate_rejection_and_rollback": true,
+    "phase2_full_vocab_and_gold": false,
+    "shadow_gate_is_not_applied": true
+  },
+  "execution": {
+    "approved": true, "phase3_vllm_eight_card_preflight_passed": true,
+    "o3_gateway_editor_preflight_passed": true,
+    "end_to_end_new_server_passed": false, "formal_phase3_results_exist": false
+  }
+}

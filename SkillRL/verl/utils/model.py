@@ -59,11 +59,39 @@ def update_model_config(module_config, override_config_kwargs):
             setattr(module_config, key, val)
 
 
+def normalize_transformers_config(config):
+    """Isolate native model construction from vLLM's global AutoConfig entries.
+
+    vLLM registers its own dense Qwen3.5 config classes when parsing an engine
+    config. Transformers' text-model auto factory compares exact config classes
+    before extracting a composite model's text_config. A vLLM class with the same
+    name fails that check, so a later reference-model load receives the outer
+    multimodal config (which has no vocab_size). Reconstruct the native config
+    without editing the global registry or the config held by the live engine.
+    Native, unrelated and remote-code configurations retain their old behavior.
+    """
+    if not type(config).__module__.startswith("vllm."):
+        return config
+    model_type = getattr(config, "model_type", None)
+    if model_type not in ("qwen3_5", "qwen3_5_text"):
+        return config
+    from transformers.models.qwen3_5.configuration_qwen3_5 import Qwen3_5Config, Qwen3_5TextConfig
+
+    config_class = Qwen3_5Config if model_type == "qwen3_5" else Qwen3_5TextConfig
+    native = config_class.from_dict(config.to_dict())
+    # HF deliberately excludes this runtime setting from config serialization.
+    attention = getattr(config, "_attn_implementation", None)
+    if attention is not None:
+        native._attn_implementation = attention
+    return native
+
+
 def get_huggingface_actor_config(model_name: str, override_config_kwargs=None, trust_remote_code=False) -> Dict:
     if override_config_kwargs is None:
         override_config_kwargs = {}
     assert isinstance(override_config_kwargs, Dict), f"override_config_kwargs must be a dict, got {type(override_config_kwargs)}"
     module_config = AutoConfig.from_pretrained(model_name, trust_remote_code=trust_remote_code)
+    module_config = normalize_transformers_config(module_config)
     update_model_config(module_config, override_config_kwargs)
 
     return module_config

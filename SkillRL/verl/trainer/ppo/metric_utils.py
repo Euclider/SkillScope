@@ -167,24 +167,24 @@ def compute_data_metrics(batch: DataProto, use_critic: bool = True) -> Dict[str,
         "prompt_length/clip_ratio": torch.mean(torch.eq(prompt_length, max_prompt_length).float()).detach().item(),
         # episode
         "episode/reward/mean": 
-            batch.non_tensor_batch["episode_rewards"][unique_idx].mean().item(),
+            float(np.asarray(batch.non_tensor_batch["episode_rewards"][unique_idx], dtype=np.float32).mean()),
         "episode/reward/max": 
-            batch.non_tensor_batch["episode_rewards"][unique_idx].max().item(),
+            float(np.asarray(batch.non_tensor_batch["episode_rewards"][unique_idx], dtype=np.float32).max()),
         "episode/reward/min": 
-            batch.non_tensor_batch["episode_rewards"][unique_idx].min().item(),
+            float(np.asarray(batch.non_tensor_batch["episode_rewards"][unique_idx], dtype=np.float32).min()),
         "episode/length/mean": 
-            batch.non_tensor_batch["episode_lengths"][unique_idx].mean().item(),
+            float(np.asarray(batch.non_tensor_batch["episode_lengths"][unique_idx], dtype=np.float32).mean()),
         "episode/length/max":
-            batch.non_tensor_batch["episode_lengths"][unique_idx].max().item(),
+            float(np.asarray(batch.non_tensor_batch["episode_lengths"][unique_idx], dtype=np.float32).max()),
         "episode/length/min": 
-            batch.non_tensor_batch["episode_lengths"][unique_idx].min().item(),
+            float(np.asarray(batch.non_tensor_batch["episode_lengths"][unique_idx], dtype=np.float32).min()),
         "episode/tool_call_count/mean": 
-            batch.non_tensor_batch["tool_callings"][unique_idx].mean().item(),
+            float(np.asarray(batch.non_tensor_batch["tool_callings"][unique_idx], dtype=np.float32).mean()),
         # "episode/tool_call_count/max":
         #     batch.non_tensor_batch["tool_callings"][unique_idx].max().item(),
         # "episode/tool_call_count/min":
         #     batch.non_tensor_batch["tool_callings"][unique_idx].min().item(),
-        **({f"episode/{k}": v[0].item() for k, v in batch.non_tensor_batch.items() if "success_rate" in k}),
+        **({f"episode/{k}": float(v[0]) for k, v in batch.non_tensor_batch.items() if "success_rate" in k}),
     }
     return metrics
 

@@ -389,7 +389,14 @@ class TrajectoryCollector:
 
             if self.config.get("phase2", {}).get("enabled", False) and self._archive_is_train:
                 from phase2.capture import attach_decisions
+                from skillnet_cohort.capture_scope import full_capture
                 attach_decisions(batch, infos, run_id=self.config.env.phase1_archive.run_id,
+                                 update=self._archive_global_step, step=_step,
+                                 full_journal=full_capture(self.config.phase2, self._archive_global_step),
+                                 journal_root=self.config.phase2.root if self.config.phase2.get('progress_journal', False) else None)
+            if self.config.get("phase3", {}).get("enabled", False) and self._archive_is_train:
+                from phase3.capture import attach_decisions
+                attach_decisions(batch, infos, config=self.config.phase3,
                                  update=self._archive_global_step, step=_step)
             
             # Update episode lengths for active environments
@@ -417,7 +424,19 @@ class TrajectoryCollector:
                     )
 
         archive_config = self.config.env.get("phase1_archive", {})
-        if archive_config.get("enabled", False):
+        if self.config.get("phase3", {}).get("enabled", False):
+            from phase3.capture import archive_episodes
+            archive_episodes(config=self.config.phase3, is_train=self._archive_is_train,
+                update=self._archive_global_step, batches=total_batch_list, infos=total_infos,
+                trajectory_ids=traj_uid, episode_rewards=episode_rewards)
+        archive_full = True
+        if self.config.get('phase2', {}).get('capture_scope') == 'window_start_old_only_v1':
+            from skillnet_cohort.capture_scope import full_capture, archive_rollout_summary
+            archive_full = self._archive_is_train and full_capture(self.config.phase2, self._archive_global_step)
+            archive_rollout_summary(self.config.phase2.root, self._archive_global_step,
+                                    self._archive_is_train, total_infos, episode_rewards,
+                                    episode_lengths, traj_uid)
+        if archive_config.get("enabled", False) and archive_full:
             from phase1.archive import archive_rollout_batch
 
             archive_rollout_batch(

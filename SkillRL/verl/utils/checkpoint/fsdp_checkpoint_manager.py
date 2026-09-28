@@ -55,8 +55,10 @@ class FSDPCheckpointManager(BaseCheckpointManager):
         lr_scheduler: torch.optim.lr_scheduler.LRScheduler,
         processing_class: Union[PreTrainedTokenizer, ProcessorMixin] = None,
         checkpoint_contents: Optional[list] = None,
+        low_memory_native_restore: bool = False,
         **kwargs,
     ):
+        self.low_memory_native_restore = low_memory_native_restore
         if checkpoint_contents is None:
             checkpoint_contents = ["model", "optimizer", "extra"]
         if processing_class is None:
@@ -102,9 +104,10 @@ class FSDPCheckpointManager(BaseCheckpointManager):
         local_optim_path = copy_to_local(remote_optim_path)
         local_extra_state_path = copy_to_local(remote_extra_state_path)
 
-        model_state_dict = torch.load(local_model_path, weights_only=False)
-        optimizer_state_dict = torch.load(local_optim_path, weights_only=False)
-        extra_state_dict = torch.load(local_extra_state_path, weights_only=False)
+        restore_kwargs = {"map_location": "cpu"} if self.low_memory_native_restore else {}
+        model_state_dict = torch.load(local_model_path, weights_only=False, **restore_kwargs)
+        optimizer_state_dict = torch.load(local_optim_path, weights_only=False, **restore_kwargs)
+        extra_state_dict = torch.load(local_extra_state_path, weights_only=False, **restore_kwargs)
 
         if del_local_after_load:
             try:
@@ -118,10 +121,16 @@ class FSDPCheckpointManager(BaseCheckpointManager):
 
         state_dict_cfg = ShardedStateDictConfig(offload_to_cpu=True if is_cuda_available else False)
         optim_cfg = ShardedOptimStateDictConfig(offload_to_cpu=True if is_cuda_available else False)
-        with get_fsdp_state_ctx(self.model, StateDictType.SHARDED_STATE_DICT, state_dict_cfg, optim_cfg):
-            self.model.load_state_dict(model_state_dict)
+        if self.low_memory_native_restore:
+            from skillnet_cohort.native_restore import restore_parameters
+            restore_parameters(self.model, model_state_dict, self.rank, self.world_size)
             if self.optimizer is not None:
                 self.optimizer.load_state_dict(optimizer_state_dict)
+        else:
+            with get_fsdp_state_ctx(self.model, StateDictType.SHARDED_STATE_DICT, state_dict_cfg, optim_cfg):
+                self.model.load_state_dict(model_state_dict)
+                if self.optimizer is not None:
+                    self.optimizer.load_state_dict(optimizer_state_dict)
         # recover random state
         if "rng" in extra_state_dict:
             # 'rng' may not exist for backward compatibility

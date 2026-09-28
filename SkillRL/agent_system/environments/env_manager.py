@@ -196,25 +196,79 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
         self.prompt_skill_metadata = None
         self.current_prompt_texts = None
         self.step_skill_router = None
+        self.external_skill_routing = False
 
         # Add retrieval memory or skills-only memory if configured
         if config.env.get('use_skills_only_memory', False):
             from agent_system.memory import FrozenStepSkillRouter, SkillsOnlyMemory
             som_cfg = config.env.skills_only_memory
-            self.retrieval_memory = SkillsOnlyMemory(
-                skills_json_path=som_cfg.skills_json_path,
-                retrieval_mode=som_cfg.get('retrieval_mode', 'template'),
-                embedding_model_path=som_cfg.get('embedding_model_path', None),
-                task_specific_top_k=som_cfg.get('task_specific_top_k', None),
-            )
             self.retrieved_memories = None
             router_cfg = som_cfg.get('step_routing', {})
-            if router_cfg.get('enabled', False):
-                self.step_skill_router = FrozenStepSkillRouter(
-                    include_common_mistakes=router_cfg.get(
-                        'include_common_mistakes', False
-                    )
+            backend = router_cfg.get('backend', 'phase')
+            if backend == 'external_llm':
+                from agent_system.memory.skillnet_runtime import DEFAULT_ROUTER_PROFILE, create_skillnet37_runtime
+                if not router_cfg.get('enabled', False):
+                    raise ValueError('external_llm requires enabled step routing')
+                if not router_cfg.get('cache_path') or 'max_api_calls' not in router_cfg:
+                    raise ValueError('external_llm requires an explicit shared cache_path and max_api_calls budget')
+                self.retrieval_memory, self.step_skill_router = create_skillnet37_runtime(
+                    profile_path=router_cfg.get('profile_path', DEFAULT_ROUTER_PROFILE),
+                    cache_path=router_cfg['cache_path'],
+                    max_api_calls=router_cfg['max_api_calls'],
                 )
+                self.external_skill_routing = True
+            elif backend in ('skillrl_embedding_state', 'skillrl_embedding_state_batch'):
+                from agent_system.memory.skillnet_runtime import DEFAULT_EMBEDDING_ROUTER_PROFILE, create_embedding_skillnet37_runtime
+                factory = create_embedding_skillnet37_runtime
+                if backend == 'skillrl_embedding_state_batch':
+                    from agent_system.memory.skillnet_runtime import DEFAULT_BATCH_EMBEDDING_ROUTER_PROFILE, create_batched_embedding_skillnet37_runtime
+                    DEFAULT_EMBEDDING_ROUTER_PROFILE = DEFAULT_BATCH_EMBEDDING_ROUTER_PROFILE
+                    factory = create_batched_embedding_skillnet37_runtime
+                if not router_cfg.get('enabled', False):
+                    raise ValueError('skillrl_embedding_state requires enabled step routing')
+                if (not router_cfg.get('cache_path') or not router_cfg.get('model_path')
+                        or not router_cfg.get('device') or 'max_local_calls' not in router_cfg):
+                    raise ValueError('Embedding routing requires explicit model, device, new cache and local-call limit')
+                self.retrieval_memory, self.step_skill_router = factory(
+                    profile_path=router_cfg.get('profile_path', DEFAULT_EMBEDDING_ROUTER_PROFILE),
+                    model_path=router_cfg['model_path'], device=router_cfg['device'],
+                    cache_path=router_cfg['cache_path'], max_local_calls=router_cfg['max_local_calls'],
+                )
+                self.external_skill_routing = True  # Independent routing, not an external API.
+            elif backend == 'local_frozen_hf':
+                from agent_system.memory.skillnet_runtime import DEFAULT_LOCAL_ROUTER_PROFILE, create_local_skillnet37_runtime
+                if not router_cfg.get('enabled', False):
+                    raise ValueError('local_frozen_hf requires enabled step routing')
+                if (not router_cfg.get('cache_path') or not router_cfg.get('model_path')
+                        or not router_cfg.get('device') or 'max_local_calls' not in router_cfg):
+                    raise ValueError('local_frozen_hf requires explicit model, device, new cache and local-call limit')
+                self.retrieval_memory, self.step_skill_router = create_local_skillnet37_runtime(
+                    profile_path=router_cfg.get('profile_path', DEFAULT_LOCAL_ROUTER_PROFILE),
+                    model_path=router_cfg['model_path'], device=router_cfg['device'],
+                    cache_path=router_cfg['cache_path'], max_local_calls=router_cfg['max_local_calls'],
+                )
+                # This legacy flag means independent live-state routing, not a
+                # network request; it also skips terminal observations.
+                self.external_skill_routing = True
+            elif backend in ('phase3_external_llm', 'phase3_skillrl_embedding_state'):
+                from phase3.routing import create_runtime
+                if not config.get('phase3', {}).get('enabled', False):
+                    raise ValueError('Evolving-bank routing requires the explicit Phase3 runner')
+                self.retrieval_memory, self.step_skill_router = create_runtime(router_cfg)
+                self.external_skill_routing = True
+            elif backend == 'phase':
+                self.retrieval_memory = SkillsOnlyMemory(
+                    skills_json_path=som_cfg.skills_json_path,
+                    retrieval_mode=som_cfg.get('retrieval_mode', 'template'),
+                    embedding_model_path=som_cfg.get('embedding_model_path', None),
+                    task_specific_top_k=som_cfg.get('task_specific_top_k', None),
+                )
+                if router_cfg.get('enabled', False):
+                    self.step_skill_router = FrozenStepSkillRouter(
+                        include_common_mistakes=router_cfg.get('include_common_mistakes', False)
+                    )
+            else:
+                raise ValueError('Unknown step router backend; no automatic fallback')
             print(f"[AlfWorldEnvironmentManager] Skills-only memory enabled "
                   f"(mode={som_cfg.get('retrieval_mode', 'template')})")
             if self.step_skill_router is not None:
@@ -255,6 +309,9 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
                 mem_config = self.config.env.retrieval_memory
 
             for task in self.tasks:
+                if self.external_skill_routing:
+                    self.retrieved_memories.append(self.retrieval_memory.retrieve(task))
+                    continue
                 top_k = mem_config.get('top_k', 10)
                 if self.step_skill_router is not None:
                     top_k = mem_config.get('step_routing', {}).get(
@@ -284,7 +341,10 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
         self.memory.store({'text_obs': self.pre_text_obs, 'action': actions})
         self.pre_text_obs = text_obs
 
-        full_text_obs = self.build_text_obs(text_obs, self.envs.get_admissible_commands)
+        full_text_obs = self.build_text_obs(
+            text_obs, self.envs.get_admissible_commands,
+            routing_active=[not bool(done) for done in dones] if self.external_skill_routing else None,
+        )
         if infos[0].get("extra.gamefile") is None:
             infos = set_gamefile(infos, self.gamefile)
 
@@ -316,7 +376,7 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
                 raise ValueError("Task description not found in text observation.")
         
 
-    def build_text_obs(self, text_obs: List[str], admissible_actions: List[List[str]], init: bool = False) -> List[str]:
+    def build_text_obs(self, text_obs: List[str], admissible_actions: List[List[str]], init: bool = False, routing_active=None) -> List[str]:
         """
         This function builds the text observation for the agent.
         """
@@ -328,6 +388,18 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
                     obs_key="text_obs",
                     action_key="action")
 
+        routed = {}
+        if (self.retrieval_memory is not None and self.retrieved_memories is not None
+                and callable(getattr(self.step_skill_router, 'route_many', None))):
+            active = [i for i in range(len(text_obs)) if routing_active is None or routing_active[i]]
+            bundles = self.step_skill_router.route_many([
+                {'candidate_bundle': self.retrieved_memories[i], 'task_description': self.tasks[i],
+                 'current_observation': text_obs[i], 'admissible_actions': admissible_actions[i],
+                 'history': self.memory[i], 'step_index': len(self.memory[i])} for i in active])
+            if len(bundles) != len(active):
+                raise ValueError('Batched router returned a different number of live-state decisions')
+            routed = dict(zip(active, bundles))
+
         for i in range(len(text_obs)):
             # exclude 'help' in admissible_actions[i]
             reformatted_admissible_actions = "\n ".join(f"'{s}'" for s in admissible_actions[i] if s != 'help')
@@ -337,6 +409,7 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
                 self.retrieval_memory is not None
                 and self.retrieved_memories is not None
                 and (not init or self.step_skill_router is not None)
+                and (routing_active is None or routing_active[i])
             )
 
             retrieval = (
@@ -345,7 +418,7 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
                 else {}
             )
             if use_retrieval and self.step_skill_router is not None:
-                retrieval = self.step_skill_router.route(
+                retrieval = routed[i] if i in routed else self.step_skill_router.route(
                     retrieval,
                     task_description=self.tasks[i],
                     current_observation=text_obs[i],
@@ -379,13 +452,22 @@ class AlfWorldEnvironmentManager(EnvironmentManagerBase):
                     'skill_router_selection_reason'
                 ),
             })
+            if 'skill_router_api' in retrieval and use_retrieval:
+                prompt_skill_metadata[-1]['skill_router_api'] = dict(retrieval['skill_router_api'])
 
             if self.config.get("phase2", {}).get("enabled", False):
                 prompt_skill_metadata[-1]["phase2_payload_text"] = (
                     self.retrieval_memory.format_for_prompt(retrieval) if use_retrieval else ""
                 )
 
-            if init and use_retrieval:
+            if self.config.get("phase3", {}).get("enabled", False):
+                prompt_skill_metadata[-1].update(
+                    phase3_payload_text=self.retrieval_memory.format_for_prompt(retrieval) if use_retrieval else "",
+                    bank_sha256=retrieval.get('bank_manifest_sha256'),
+                    skill_version_sha256=retrieval.get('skill_version_sha256') if use_retrieval else None,
+                )
+
+            if use_retrieval and (init or (self.external_skill_routing and self.config.env.history_length <= 0)):
                 memory_context = self.retrieval_memory.format_for_prompt(retrieval)
                 obs = ALFWORLD_TEMPLATE_NO_HIS_WITH_MEMORY.format(
                     task_description=self.tasks[i],
@@ -934,6 +1016,7 @@ def make_envs(config):
         env_kwargs = {
             'eval_dataset': config.env.alfworld.eval_dataset, # 'eval_in_distribution' or 'eval_out_of_distribution'
             'task_types': config.env.alfworld.get('task_types', None),
+            'allowed_eval_game_ids': config.env.alfworld.get('allowed_eval_game_ids', None),
         }
         _envs = build_alfworld_envs(alf_config_path, config.env.seed, config.data.train_batch_size, group_n, is_train=True, env_kwargs=env_kwargs, resources_per_worker=resources_per_worker)
         _val_envs = build_alfworld_envs(alf_config_path, config.env.seed + 1000, config.data.val_batch_size, 1, is_train=False, env_kwargs=env_kwargs, resources_per_worker=resources_per_worker)

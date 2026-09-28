@@ -274,6 +274,8 @@ def run_episode(
                 "prompt_tokens": n_prompt,
                 "completion_tokens": n_completion,
             })
+            if "skill_router_api" in retrieval:
+                steps[-1]["skill_router_api"] = dict(retrieval["skill_router_api"])
             history.append({"observation": observation, "action": action})
             observation, info = next_observation, next_info
             if done:

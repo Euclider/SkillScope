@@ -1,0 +1,13 @@
+# Opt-in overlay, not a complete training/evaluation protocol or launch command.
+# Merge with the existing ALFWorld config. Set a NEW cohort's absolute cache
+# path and an explicitly authorized budget. Zero permits cached decisions only.
+env:
+  use_skills_only_memory: true
+  use_retrieval_memory: false
+  skills_only_memory:
+    retrieval_mode: frozen_bank_all
+    step_routing:
+      enabled: true
+      backend: external_llm
+      cache_path: ???
+      max_api_calls: 0

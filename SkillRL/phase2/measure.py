@@ -83,6 +83,13 @@ def main():
     a=p.parse_args()
     torch.set_num_threads(1)
     config=json.loads((a.root/"protocol.json").read_text())
+    if config.get("runtime", {}).get("kind") == "skillnet37":
+        from skillnet_cohort.common import load_preparation, require_authorization
+        from phase2.protocol import validate_extended
+        load_preparation(config["runtime"]["preparation"])
+        validate_extended(config, Path(__file__).resolve().parents[1])
+        require_authorization(config["runtime"].get("authorization_path"),
+                              config["runtime"]["preparation"], "readout")
     start=a.update-1 if a.start_update is None else a.start_update
     batch_update=start+1
     if a.start_update is not None:
@@ -122,8 +129,9 @@ def main():
     token_rows,decision_rows,noise=[],[],[]
     for i,(row,meta) in enumerate(rows):
         skill=meta["info"]["selected_skill_id"]
-        old=torch.load(a.root/"old_logprobs"/f"u{batch_update:04d}"/f"row-{row:06d}.pt",map_location="cpu",weights_only=False)
-        new=torch.load(a.root/"new_logprobs"/f"u{a.update:04d}"/f"row-{row:06d}.pt",map_location="cpu",weights_only=False) if a.start_update is None else None
+        from skillnet_cohort.lossless_tensor import load as load_vocab_row
+        old=load_vocab_row(a.root/"old_logprobs"/f"u{batch_update:04d}"/f"row-{row:06d}.pt")
+        new=load_vocab_row(a.root/"new_logprobs"/f"u{a.update:04d}"/f"row-{row:06d}.pt") if a.start_update is None else None
         if new is not None and (not torch.equal(old["token_ids"],new["token_ids"]) or not torch.equal(old["token_positions"],new["token_positions"])):
             raise ValueError("Live old/new token alignment failed")
         use=b["phase2_actual_loss_mask"][row,old["token_positions"]].bool()
@@ -148,7 +156,8 @@ def main():
               "game_id":meta["info"]["extra.gamefile"],"skill_id":skill,
               "environment_step":meta["environment_step"],"phase":phase(meta["environment_step"])}
         if config.get("evaluation",{}).get("anchor_sets"):
-            context=meta["info"].get("skill_task_type")
+            context=("all_alfworld" if config.get("runtime", {}).get("kind") == "skillnet37"
+                     else meta["info"].get("skill_task_type"))
             if not context:raise ValueError("Missing state context on actual training decision")
             base["context_id"]=context
         if a.start_update is not None:

@@ -1,0 +1,23 @@
+{
+  "model_path": "/absolute/path/to/Qwen3.5-4B",
+  "data_root": "/absolute/path/to/alfworld",
+  "gpu_ids": [0, 1, 2, 3, 4, 5, 6, 7],
+  "rl_seed": 707,
+  "optimizer_horizon_updates": 150,
+  "initial_stop_update": 20,
+  "inference_profile": "/absolute/path/to/SkillRL/configs/phase3_vllm_v1.json",
+  "router": {
+    "backend": "skillrl_embedding_state",
+    "model_path": "/absolute/path/to/Qwen3-Embedding-0.6B",
+    "device": "cpu",
+    "profile_sha256": "d1fc18a18537e65d4503d65d46187b8b63d21d9a884f6332262dbbb2dda778c8",
+    "max_local_calls": 600000
+  },
+  "editor": {"max_input_tokens": 64000, "max_completion_tokens": 8192, "max_api_calls": 30},
+  "gate_games_per_task": 2,
+  "gate_tolerance_pp": 5,
+  "eval_seeds": [1707, 2707],
+  "max_evidence_trajectories": 8,
+  "readout_parity_atol": 0.03,
+  "storage": {"maximum_run_bytes": null, "minimum_free_bytes": null, "checkpoint_reserve_bytes": null}
+}

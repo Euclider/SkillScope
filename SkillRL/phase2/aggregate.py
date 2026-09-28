@@ -133,36 +133,57 @@ def main():
     if any(x.get("start_update",a.update-1)!=start or x.get("direction_batch_update",a.update)!=batch_update for x in manifests):
         raise ValueError("Mixed endpoint/direction-batch window shards")
     bm=json.loads((a.root/"batches"/f"u{batch_update:04d}"/"manifest.json").read_text())
-    for stage in ("old","new"):
+    if a.start_update is not None and config.get('window_direction') != 'start_batch_endpoint_projection':
+        raise ValueError('Endpoint replay requires the registered window direction')
+    for stage in (("old", "new") if a.start_update is None else ("old",)):
         paths=list((a.root/f"{stage}_logprobs"/f"u{batch_update:04d}").glob("row-*.pt"))
         if len(paths)!=bm["row_count"]:
             raise ValueError(f"Missing {stage} live logit rows: {len(paths)}/{bm['row_count']}")
+    window_evidence = None
+    if config.get('capture_scope') == 'window_start_old_only_v1':
+        if a.start_update is None:
+            raise ValueError('OLD-only capture cannot supply single-update live NEW signals')
+        from phase2.window_evidence import validate_shards
+        window_evidence = validate_shards(a.root, start, a.update, a.shards)
     calibration=a.root/"signals"/"calibration.json"
     if not calibration.exists():
         if batch_update!=parent_update(config)+1:raise ValueError("First-update calibration is required")
         noise=[z for x in manifests for z in x["repeat_forward_noise"]]
         if not noise:raise ValueError("No same-checkpoint noise calibration")
         threshold=max(1e-8,10*float(np.quantile(noise,.95)))
-        atomic_write_json(calibration,{"created_at":utc_now(),"source_update":batch_update,
+        calibration_record={"created_at":utc_now(),"source_update":batch_update,
                                      "noise_p95":float(np.quantile(noise,.95)),
                                      "noise_max":max(noise),"samples":len(noise),"tau_delta":threshold,
-                                     "gold_read":False})
-    tau=json.loads(calibration.read_text())["tau_delta"]
+                                     "gold_read":False}
+    else:
+        calibration_record=json.loads(calibration.read_text())
+    tau=calibration_record['tau_delta']
     features,tokens=aggregate_features(tokens,decisions,config,a.update,tau)
     if a.start_update is not None:
         features["start_update"]=start
         features["window_horizon"]=a.update-start
         features["direction_batch_update"]=batch_update
-    features.to_parquet(out/"skill_context_features.parquet",index=False)
-    tokens.to_parquet(out/"token_signals.parquet",index=False)
-    raw=parameters(a.root/"models"/f"u{start:04d}",a.root/"models"/f"u{a.update:04d}")
-    atomic_write_json(out/"parameter_delta.json",raw)
+    if window_evidence is not None and start == 0:
+        from skillnet_cohort.parameter_delta import registered_initial_delta
+        raw=registered_initial_delta(config, a.root/'models'/f'u{a.update:04d}')
+    else:
+        raw=parameters(a.root/"models"/f"u{start:04d}",a.root/"models"/f"u{a.update:04d}")
     opt=[]
     for u in range(batch_update,a.update+1):
         f=a.root/"optimizer_steps"/f"u{u:04d}-rank0.jsonl"
         if not f.exists():raise ValueError(f"Missing intermediate optimizer record: {u}")
         opt.extend(json.loads(x) for x in f.read_text().splitlines() if x.strip())
     if not opt:raise ValueError("Optimizer-step provenance is missing")
+    # Finish validation before publishing outputs, and never replace a partial
+    # or historical aggregate on an implicitly retried invocation.
+    from skillnet_cohort.common import write_new_bytes, write_new_json
+    if not calibration.exists():
+        write_new_json(calibration, calibration_record)
+    write_new_bytes(out/'skill_context_features.parquet', features.to_parquet(index=False))
+    write_new_bytes(out/'token_signals.parquet', tokens.to_parquet(index=False))
+    write_new_json(out/'parameter_delta.json', raw)
+    if window_evidence is not None:
+        write_new_json(out/'endpoint_replay_audit.json', window_evidence)
     commitment={
         "created_at":utc_now(),"global_update":a.update,"gold_read":False,
         "features_sha256":sha256_file(out/"skill_context_features.parquet"),
@@ -176,7 +197,7 @@ def main():
     if a.start_update is not None:
         commitment["live_start_batch_rows"]=commitment.pop("live_old_and_new_rows")
         commitment["end_original_source"]="FP32-exported endpoint replay on the start batch; not end-update live batch"
-    atomic_write_json(out/"committed.json",commitment)
+    write_new_json(out/"committed.json",commitment)
     print(features.query("phase=='all'")[["control","skill_id","supported","P_int","D_contribution","gate_coverage"]].to_string(index=False),flush=True)
 
 

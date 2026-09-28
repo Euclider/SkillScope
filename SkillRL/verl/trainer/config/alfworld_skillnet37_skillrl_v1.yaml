@@ -1,0 +1,175 @@
+# NEW opt-in cohort. Historical Phase1/Phase2 launchers are unchanged.
+# Reference: SkillRL 8e66726, README -> run_alfworld_skills.sh.
+# This aligns the PUBLIC-CODE recipe, not a claimed exact paper reproduction.
+# Inspect without importing the training stack:
+#   python -B -m scripts.inspect_skillrl_alignment
+# A future approved runner may select --config-name alfworld_skillnet37_skillrl_v1.
+# Missing paths/seed and a zero router budget intentionally prevent an implicit run.
+defaults:
+  - ppo_trainer
+  - _self_
+
+# Dedicated mandatory inputs prevent OmegaConf's merge from retaining inherited
+# model/data/output defaults: an overlay ??? alone does NOT erase a base value.
+alignment_run:
+  seed: ???
+  model_path: ???  # Freshly identified Qwen3.5-4B B0, not an old RL checkpoint.
+  train_files: ???
+  val_files: ???
+  run_id: ???
+  output_dir: ???
+  archive_dir: ???
+  router_cache: ???
+  ray_temp_dir: ???
+
+data:
+  train_files: ${alignment_run.train_files}
+  val_files: ${alignment_run.val_files}
+  seed: ${env.seed}
+  train_batch_size: 16
+  # Training-time sampled seen monitor, NOT a 140-game exhaustive evaluation.
+  val_batch_size: 64
+  max_prompt_length: 4096
+  max_response_length: 512
+  filter_overlong_prompts: true
+  truncation: error
+  return_raw_chat: true
+  shuffle: true
+  apply_chat_template_kwargs:
+    enable_thinking: false
+
+algorithm:
+  adv_estimator: grpo
+  norm_adv_by_std_in_grpo: true
+  use_kl_in_reward: false
+  gamma: 1.0
+  lam: 1.0
+
+actor_rollout_ref:
+  model:
+    path: ${alignment_run.model_path}
+    load_text_only: true
+    attn_implementation: sdpa
+    use_remove_padding: false
+    enable_gradient_checkpointing: true
+    lora_rank: 0
+  actor:
+    strategy: fsdp
+    ppo_mini_batch_size: 128
+    # Deliberate Qwen3.5 memory/compatibility adaptation: upstream uses 4.
+    # Global mini-batch remains 128; do NOT claim four accumulation steps.
+    ppo_micro_batch_size_per_gpu: 1
+    use_dynamic_bsz: false
+    ppo_epochs: 1
+    shuffle: false
+    grad_clip: 1.0
+    clip_ratio: 0.2
+    clip_ratio_low: 0.2
+    clip_ratio_high: 0.2
+    clip_ratio_c: 3.0
+    loss_agg_mode: token-mean
+    entropy_coeff: 0.001
+    use_torch_compile: false
+    use_kl_loss: true
+    kl_loss_coef: 0.01
+    kl_loss_type: low_var_kl
+    use_invalid_action_penalty: true
+    invalid_action_penalty_coef: 0.1
+    ulysses_sequence_parallel_size: 1
+    optim:
+      lr: 1.0e-6
+      lr_warmup_steps: -1
+      lr_warmup_steps_ratio: 0.0
+      warmup_style: constant
+      weight_decay: 0.01
+    fsdp_config:
+      param_offload: false
+      optimizer_offload: false
+  rollout:
+    name: hf
+    temperature: 1.0
+    top_p: 1.0
+    top_k: 0
+    do_sample: true
+    # The eight trajectories are created by env.rollout.n, not this field.
+    n: 1
+    dtype: bfloat16
+    tensor_model_parallel_size: 1
+    log_prob_micro_batch_size_per_gpu: 1
+    val_kwargs:
+      temperature: 0.4
+      top_p: 1.0
+      top_k: 0
+      do_sample: true
+      n: 1
+  ref:
+    log_prob_micro_batch_size_per_gpu: 1
+    fsdp_config:
+      param_offload: true
+
+reward_model:
+  enable: false
+  reward_manager: episode
+
+env:
+  env_name: alfworld/AlfredTWEnv
+  seed: ${alignment_run.seed}
+  max_steps: 50
+  history_length: 2
+  rollout:
+    n: 8
+  resources_per_worker:
+    num_cpus: 0.1
+    num_gpus: 0
+  alfworld:
+    eval_dataset: eval_in_distribution
+    task_types: [1, 2, 3, 4, 5, 6]
+    action_only_prompt: true
+  use_skills_only_memory: true
+  use_retrieval_memory: false
+  skills_only_memory:
+    retrieval_mode: frozen_bank_all
+    # Phase1/2 and the shared RL reference path remain frozen.
+    # Phase3 requires a separate versioned editor; never flip this to true
+    # for FrozenSkillBankMemory or invoke the legacy updater on this bank.
+    enable_dynamic_update: false
+    update_skills_from_train: false
+    update_threshold: 0.4
+    max_new_skills: 3
+    step_routing:
+      enabled: true
+      backend: external_llm
+      cache_path: ${alignment_run.router_cache}
+      max_api_calls: 0
+  phase1_archive:
+    enabled: true
+    run_id: ${trainer.experiment_name}
+    output_dir: ${alignment_run.archive_dir}
+
+phase1_control:
+  type: real_rl
+phase2:
+  enabled: false  # New-cohort readout instrumentation is a separate preflight.
+
+trainer:
+  critic_warmup: 0
+  logger: [console]
+  project_name: skillnet37_skillrl_aligned_v1
+  experiment_name: ${alignment_run.run_id}
+  n_gpus_per_node: 4
+  nnodes: 1
+  total_epochs: 150
+  # Explicit global-iteration cap. These are NOT 150 passes over 3,553 games
+  # and NOT necessarily 150 optimizer.step() calls on flattened step rows.
+  total_training_steps: 150
+  test_freq: 5
+  save_freq: 5
+  max_actor_ckpt_to_keep: null  # Do not automatically delete checkpoints.
+  max_critic_ckpt_to_keep: null
+  val_before_train: false
+  resume_mode: disable
+  default_local_dir: ${alignment_run.output_dir}
+
+ray_init:
+  address: local
+  _temp_dir: ${alignment_run.ray_temp_dir}

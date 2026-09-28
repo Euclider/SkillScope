@@ -198,30 +198,35 @@ def apply_kl_penalty(data: DataProto, kl_ctrl: core_algos.AdaptiveKLController, 
     return data, metrics
 
 def apply_invalid_action_penalty(data: DataProto, invalid_action_penalty_coef=float):
+    """Accept Python/NumPy boolean scalars with identical per-action semantics."""
     reward_tensor = data.batch['token_level_scores']
-    if 'step_rewards' in data.batch.keys():
-        step_rewards = data.batch['step_rewards']
-    for i in range(len(data)):
-        data_item = data[i]  # DataProtoItem
-
-        prompt_ids = data_item.batch['prompts']
-
-        prompt_length = prompt_ids.shape[-1]
-
-        valid_response_length = data_item.batch['attention_mask'][prompt_length:].sum()
-
-        action_valids = data_item.non_tensor_batch['is_action_valid'].astype(np.float32)
-        action_invalids = torch.tensor(1 - action_valids, dtype=torch.float32, device=prompt_ids.device).squeeze(0)
-        # invalid action penalty
-        # assert reward_tensor[i, valid_response_length - 1] != 0.0, f'i={i}'
-        reward_tensor[i, valid_response_length - 1] -= invalid_action_penalty_coef * action_invalids
-
-        if 'step_rewards' in data.batch.keys():
-            step_rewards[i] -= invalid_action_penalty_coef * action_invalids
-    
-    valid_action_ratio = np.mean(data.non_tensor_batch['is_action_valid'].astype(np.float32)).item()
+    valids = action_validity_array(data.non_tensor_batch['is_action_valid'], len(data))
+    prompt_length = data.batch['prompts'].shape[-1]
+    lengths = data.batch['attention_mask'][:, prompt_length:].sum(-1).long()
+    if lengths.shape != (len(data),) or bool((lengths <= 0).any()):
+        raise ValueError('Invalid-action penalty requires a nonempty response in every row')
+    penalty = torch.as_tensor(1 - valids, dtype=torch.float32, device=reward_tensor.device) * invalid_action_penalty_coef
+    reward_tensor[torch.arange(len(data), device=reward_tensor.device), lengths - 1] -= penalty
+    if 'step_rewards' in data.batch:
+        steps = data.batch['step_rewards']
+        if steps.numel() != len(data):
+            raise ValueError('Expected one step reward per action')
+        steps.sub_(penalty.reshape(steps.shape))
+    valid_action_ratio = float(np.mean(valids))
     metrics = {'episode/valid_action_ratio': valid_action_ratio}
     return data, metrics
+
+
+def action_validity_array(values, rows):
+    """Fail early on malformed metadata, not after expensive model forwards."""
+    original = np.asarray(values)
+    if original.size != rows or any(not isinstance(x, (bool, np.bool_, int, np.integer, float, np.floating))
+                                    for x in original.reshape(-1)):
+        raise ValueError('Action validity must contain one boolean/0-or-1 scalar per row')
+    valid = np.asarray(values, dtype=np.float32).reshape(-1)
+    if not np.isfinite(valid).all() or not np.isin(valid, [0., 1.]).all():
+        raise ValueError('Action validity must be finite boolean/0-or-1 values')
+    return valid
 
 def compute_response_mask(data: DataProto):
     """Compute the attention mask for the response part of the sequence.
@@ -1333,6 +1338,14 @@ class RayPPOTrainer:
 
         # load checkpoint before doing anything
         self._load_checkpoint()
+        if self.config.get("phase3", {}).get("enabled", False):
+            from phase3.common import require
+            require(self.global_steps == self.config.phase3.segment_start,
+                    "Phase3 policy/optimizer resumed at the wrong global step")
+        cohort_block = self.config.get("skillnet_cohort", {}).get("segment_end")
+        if cohort_block is not None:
+            if self.global_steps != self.config.skillnet_cohort.segment_start:
+                raise ValueError("Phase1/2 native resume is at the wrong registered block")
 
         # perform validation before training
         # currently, we only support validation using the reward_function.
@@ -1374,6 +1387,11 @@ class RayPPOTrainer:
                 )
 
                 is_last_step = self.global_steps >= self.total_training_steps
+                if self.config.get("phase3", {}).get("enabled", False):
+                    # Stop a block without shortening the 150-update LR schedule.
+                    is_last_step = is_last_step or self.global_steps >= self.config.phase3.segment_end
+                if cohort_block is not None:
+                    is_last_step = is_last_step or self.global_steps >= cohort_block
 
                 with _timer("step", timing_raw):
                     # generate a batch
@@ -1386,7 +1404,13 @@ class RayPPOTrainer:
                         #     self.async_rollout_manager.sleep()
 
                         ################ agent-environment loop ###############
-                        gen_batch_output = self.traj_collector.multi_turn_loop(
+                        recovery = self.config.get('skillnet_cohort', {}).get('pre_optimizer_recovery')
+                        recovering_u1 = bool(recovery and self.global_steps == 1)
+                        if recovering_u1:
+                            from skillnet_cohort.rollout_recovery import load_for_training
+                            gen_batch_output = load_for_training(recovery, self.envs)
+                        else:
+                            gen_batch_output = self.traj_collector.multi_turn_loop(
                                                                 gen_batch=gen_batch,
                                                                 actor_rollout_wg=self.actor_rollout_wg,
                                                                 envs=self.envs,
@@ -1423,13 +1447,16 @@ class RayPPOTrainer:
                         )
                         batch.batch['step_rewards'] = step_rewards_tensor
                     
-                    batch = adjust_batch(self.config, batch)
+                    if not recovering_u1:
+                        batch = adjust_batch(self.config, batch)
 
                     batch.batch["response_mask"] = compute_response_mask(batch)
+                    if self.config.actor_rollout_ref.actor.get('use_invalid_action_penalty', True):
+                        action_validity_array(batch.non_tensor_batch['is_action_valid'], len(batch))
                     # balance the number of valid tokens on each dp rank.
                     # Note that this breaks the order of data inside the batch.
                     # Please take care when you implement group based adv computation such as GRPO and rloo
-                    if self.config.trainer.balance_batch:
+                    if self.config.trainer.balance_batch and not recovering_u1:
                         self._balance_batch(batch, metrics=metrics)
 
                     # compute global_valid tokens
@@ -1437,7 +1464,17 @@ class RayPPOTrainer:
 
                     if self.config.get("phase2", {}).get("enabled", False):
                         from phase2.capture import mark_batch
-                        mark_batch(batch, root=self.config.phase2.root, update=self.global_steps)
+                        from skillnet_cohort.capture_scope import full_capture, capture_post
+                        mark_batch(batch, root=self.config.phase2.root, update=self.global_steps,
+                                   full_vocab=full_capture(self.config.phase2, self.global_steps),
+                                   copies=2 if capture_post(self.config.phase2) else 1)
+                        if recovery:
+                            batch.meta_info['phase2_capture']['progress_root'] = self.config.phase2.recovery_progress_root
+                        if recovering_u1:
+                            batch.meta_info['phase2_capture']['reuse_verified_old'] = dict(recovery)
+                        if self.config.phase2.get('save_pre_forward_batch', False) and full_capture(self.config.phase2, self.global_steps):
+                            from skillnet_cohort.rollout_recovery import save_pre_forward
+                            save_pre_forward(batch, self.config.phase2.get('recovery_progress_root', self.config.phase2.root), self.global_steps)
 
                     with _timer("reward", timing_raw):
                         # compute reward model score
@@ -1452,15 +1489,23 @@ class RayPPOTrainer:
 
                     # recompute old_log_probs
                     with _timer("old_log_prob", timing_raw):
-                        old_log_prob = self.actor_rollout_wg.compute_log_prob(batch)
-                        entropys = old_log_prob.batch["entropys"]
-                        response_masks = batch.batch["response_mask"]
-                        loss_agg_mode = self.config.actor_rollout_ref.actor.loss_agg_mode
-                        entropy_loss = agg_loss(loss_mat=entropys, loss_mask=response_masks, loss_agg_mode=loss_agg_mode)
-                        old_log_prob_metrics = {"actor/entropy_loss": entropy_loss.detach().item()}
-                        metrics.update(old_log_prob_metrics)
-                        old_log_prob.batch.pop("entropys")
+                        if recovering_u1 and recovery.get('reuse_complete_old', False):
+                            from skillnet_cohort.recovery_forward import load_old_with_witness
+                            old_log_prob = load_old_with_witness(batch, recovery, self.actor_rollout_wg)
+                            metrics['recovery/old_entropy_diagnostic_available'] = 0
+                            metrics['recovery/old_rows_reused'] = len(batch)
+                        else:
+                            old_log_prob = self.actor_rollout_wg.compute_log_prob(batch)
+                            entropys = old_log_prob.batch["entropys"]
+                            response_masks = batch.batch["response_mask"]
+                            loss_agg_mode = self.config.actor_rollout_ref.actor.loss_agg_mode
+                            entropy_loss = agg_loss(loss_mat=entropys, loss_mask=response_masks, loss_agg_mode=loss_agg_mode)
+                            metrics["actor/entropy_loss"] = entropy_loss.detach().item()
+                            old_log_prob.batch.pop("entropys")
                         batch = batch.union(old_log_prob)
+                        if self.config.get('phase2', {}).get('save_forward_outputs', False):
+                            from skillnet_cohort.recovery_forward import save_stage_outputs
+                            save_stage_outputs(batch, self.config.phase2.get('recovery_progress_root', self.config.phase2.root), self.global_steps, 'old')
 
                         if "rollout_log_probs" in batch.batch.keys():
                             # TODO: we may want to add diff of probs too.
@@ -1494,6 +1539,9 @@ class RayPPOTrainer:
                             else:
                                 ref_log_prob = self.actor_rollout_wg.compute_ref_log_prob(batch)
                             batch = batch.union(ref_log_prob)
+                            if self.config.get('phase2', {}).get('save_forward_outputs', False):
+                                from skillnet_cohort.recovery_forward import save_stage_outputs
+                                save_stage_outputs(batch, self.config.phase2.get('recovery_progress_root', self.config.phase2.root), self.global_steps, 'reference')
 
                     # compute values
                     if self.use_critic:
@@ -1565,8 +1613,14 @@ class RayPPOTrainer:
 
                     if self.config.get("phase2", {}).get("enabled", False):
                         from phase2.capture import archive_batch
-                        archive_batch(batch, root=self.config.phase2.root,
-                                      update=self.global_steps, config=self.config)
+                        from skillnet_cohort.capture_scope import full_capture
+                        if full_capture(self.config.phase2, self.global_steps):
+                            archive_batch(batch, root=self.config.phase2.root,
+                                          update=self.global_steps, config=self.config)
+
+                    if self.config.get("phase3", {}).get("enabled", False):
+                        from phase3.capture import archive_batch as archive_phase3_batch
+                        archive_phase3_batch(batch, update=self.global_steps, config=self.config)
 
                     # Update skill bank from training batch (avoids val-data leakage).
                     if (self.config.env.get('skills_only_memory', {}).get('enable_dynamic_update', False)
@@ -1591,7 +1645,8 @@ class RayPPOTrainer:
                         actor_output_metrics = reduce_metrics(actor_output.meta_info["metrics"])
                         metrics.update(actor_output_metrics)
 
-                    if self.config.get("phase2", {}).get("enabled", False):
+                    if (self.config.get("phase2", {}).get("enabled", False)
+                            and capture_post(self.config.phase2)):
                         # Same live actor path and fixed old tokens at both endpoints.
                         # Do not overwrite the old probabilities used by the optimizer.
                         batch.meta_info["phase2_capture"] = {
@@ -1626,7 +1681,10 @@ class RayPPOTrainer:
                                 last_val_metrics = val_metrics
                         metrics.update(val_metrics)
 
-                    if self.config.trainer.save_freq > 0 and (is_last_step or self.global_steps % self.config.trainer.save_freq == 0):
+                    phase3_recovery = (self.config.get('phase3', {}).get('penultimate_recovery_checkpoint', False)
+                                       and self.global_steps % 5 == 4)
+                    if self.config.trainer.save_freq > 0 and (is_last_step or self.global_steps % self.config.trainer.save_freq == 0
+                                                              or phase3_recovery):
                         with _timer("save_checkpoint", timing_raw):
                             self._save_checkpoint()
 
@@ -1660,6 +1718,15 @@ class RayPPOTrainer:
 
                 # TODO: make a canonical logger that supports various backend
                 logger.log(data=metrics, step=self.global_steps)
+                if self.config.get("phase3", {}).get("enabled", False):
+                    from phase3.capture import archive_metrics
+                    archive_metrics(self.config.phase3, self.global_steps, metrics)
+                if cohort_block is not None:
+                    from pathlib import Path
+                    from skillnet_cohort.common import write_new_json
+                    from phase1.archive import jsonable
+                    write_new_json(Path(self.config.phase2.root) / "metrics" / f"u{self.global_steps:04d}.json",
+                                   {"global_update": self.global_steps, "metrics": jsonable(metrics)})
 
                 progress_bar.update(1)
                 self.global_steps += 1

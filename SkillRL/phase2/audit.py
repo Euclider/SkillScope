@@ -16,13 +16,17 @@ def audit(root, update):
     root = Path(root).resolve()
     directory = root/"batches"/f"u{update:04d}"
     manifest = json.loads((directory/"manifest.json").read_text())
+    config = json.loads((root/"protocol.json").read_text())
     output = directory/"alignment_audit.json"
+    if config.get("runtime", {}).get("kind") == "skillnet37":
+        # Seen/Unseen windows may audit different naturally supported skills.
+        # Never let a shared training-directory cache skip the second audit.
+        output = root/"audits"/f"u{update:04d}.json"
     if output.exists():
         record = json.loads(output.read_text())
         if record["batch_sha256"] != manifest["batch_sha256"]:
             raise ValueError("Training batch changed after alignment audit")
         return record
-    config = json.loads((root/"protocol.json").read_text())
     batch = torch.load(directory/"training_batch.pt", map_location="cpu", weights_only=False)
     tensors = batch["tensors"]
     tokenizer = AutoTokenizer.from_pretrained(root/"models"/f"u{update-1:04d}")

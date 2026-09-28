@@ -241,6 +241,8 @@ def archive_rollout_batch(
                 "prompt_tokens": _token_count(batch_step, "attention_mask"),
                 "completion_tokens": _token_count(batch_step, "responses"),
             })
+            if "skill_router_api" in info:
+                steps[-1]["skill_router_api"] = jsonable(info["skill_router_api"])
         trajectory_path = root / "trajectories" / run_id / f"{trajectory_id}.json"
         payload = {
             "schema_version": (

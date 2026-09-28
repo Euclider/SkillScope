@@ -1,0 +1,123 @@
+{
+  "commit": "8e66726ed866a4e0a7f053586a41022798192e6c",
+  "files": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/aiming-lab/SkillRL/8e66726ed866a4e0a7f053586a41022798192e6c/README.md",
+      "sha256": "09d32518ad3e07d7cf8fe0bdcb353f92c0b083c8d5837f4bbb5479ee387f637d",
+      "bytes": 9845
+    },
+    {
+      "path": "examples/grpo_trainer/run_alfworld_skills.sh",
+      "url": "https://raw.githubusercontent.com/aiming-lab/SkillRL/8e66726ed866a4e0a7f053586a41022798192e6c/examples/grpo_trainer/run_alfworld_skills.sh",
+      "sha256": "480a9189d776a2ac68996d29730f79fdb421e00903ff8ae3afc170a6b827a106",
+      "bytes": 3669
+    },
+    {
+      "path": "examples/grpo_trainer/run_alfworld_skills_train_update.sh",
+      "url": "https://raw.githubusercontent.com/aiming-lab/SkillRL/8e66726ed866a4e0a7f053586a41022798192e6c/examples/grpo_trainer/run_alfworld_skills_train_update.sh",
+      "sha256": "be741715c022ae4a89955bbfcf77e7939d3bfac74e48e8e47f5826c13c47ec5d",
+      "bytes": 3729
+    },
+    {
+      "path": "verl/trainer/config/ppo_trainer.yaml",
+      "url": "https://raw.githubusercontent.com/aiming-lab/SkillRL/8e66726ed866a4e0a7f053586a41022798192e6c/verl/trainer/config/ppo_trainer.yaml",
+      "sha256": "0f69218f169aed29a827818ca76fb26f7c1c5632bd9cbe318884617d5aa228cc",
+      "bytes": 13082
+    },
+    {
+      "path": "verl/trainer/ppo/ray_trainer.py",
+      "url": "https://raw.githubusercontent.com/aiming-lab/SkillRL/8e66726ed866a4e0a7f053586a41022798192e6c/verl/trainer/ppo/ray_trainer.py",
+      "sha256": "15a8c3d31a75c392d90ec3ba43a8dda3cd767a63da627c7d6a2ab4069d3b2e8a",
+      "bytes": 80513,
+      "evidence": [
+        "623:         total_training_steps = len(self.train_dataloader) * self.config.trainer.total_epochs",
+        "626:             total_training_steps = self.config.trainer.total_training_steps",
+        "628:         self.total_training_steps = total_training_steps",
+        "635:                     self.config.actor_rollout_ref.actor.optim.total_training_steps = total_training_steps",
+        "637:                     self.config.critic.optim.total_training_steps = total_training_steps",
+        "694:         success_rate_dict = {}",
+        "784:                 if 'success_rate' in k:",
+        "785:                     if k not in success_rate_dict:",
+        "786:                         success_rate_dict[k] = []",
+        "787:                     success_rate_dict[k].append(test_batch.non_tensor_batch[k][0])",
+        "788:                     # all success_rate should be the same",
+        "790:                         assert test_batch.non_tensor_batch[k][0] == test_batch.non_tensor_batch[k][i], f'not all success_rate are the same, 0: {test_batch.non_tensor_batch[k][0]}, {i}: {test_batch.non_tensor_batch[k][i]}'",
+        "798:         success_rate = {k: np.mean(v) for k, v in success_rate_dict.items()}",
+        "830:         for k, v in success_rate.items():",
+        "835:                 and not self.config.env.get('skills_only_memory', {}).get('update_skills_from_train', False)):",
+        "852:                 success_rate=success_rate,",
+        "862:         success_rate: dict,",
+        "874:         if not success_rate:",
+        "875:             print(\"[SkillUpdate] No success_rate metrics found in validation results, skipping update\")",
+        "880:         for task_key, rate in success_rate.items():",
+        "883:                 # Strip suffix to get task type, e.g. \"pick_and_place_success_rate\" -> \"pick_and_place\"",
+        "884:                 task_type = task_key.replace('_success_rate', '')",
+        "931:             self.envs.retrieval_memory.add_skills(new_skills, category='general')",
+        "941:     def _update_skills_from_training(self, batch):",
+        "952:         success_rate = {}",
+        "954:             if 'success_rate' in k:",
+        "955:                 success_rate[k] = np.mean(batch.non_tensor_batch[k])",
+        "957:         if not success_rate:",
+        "958:             print(\"[SkillUpdate-Train] No success_rate metrics found in training batch, skipping update\")",
+        "963:         for task_key, rate in success_rate.items():",
+        "966:                 task_type = task_key.replace('_success_rate', '')",
+        "1007:             retrieval_memory.add_skills(new_skills, category='general')",
+        "1038:         return failed[:10]",
+        "1542:                             and self.config.env.get('skills_only_memory', {}).get('update_skills_from_train', False)):",
+        "1543:                         skill_update_freq = self.config.env.get('skills_only_memory', {}).get('skill_update_freq', self.config.trainer.get('test_freq', 5))",
+        "1545:                             self._update_skills_from_training(batch)",
+        "1580:                     if self.val_reward_fn is not None and self.config.trainer.test_freq > 0 and (is_last_step or self.global_steps % self.config.trainer.test_freq == 0):"
+      ]
+    },
+    {
+      "path": "verl/workers/fsdp_workers.py",
+      "url": "https://raw.githubusercontent.com/aiming-lab/SkillRL/8e66726ed866a4e0a7f053586a41022798192e6c/verl/workers/fsdp_workers.py",
+      "sha256": "f3ab11f38ac0886f4c8964601d1fd469adb93b35a2482b431dff078e9a1d1312",
+      "bytes": 72652
+    },
+    {
+      "path": "verl/workers/actor/dp_actor.py",
+      "url": "https://raw.githubusercontent.com/aiming-lab/SkillRL/8e66726ed866a4e0a7f053586a41022798192e6c/verl/workers/actor/dp_actor.py",
+      "sha256": "38cdd5545a62aeb8e17364ec24b245f4cc449aedce99d9b78f1e4be497504918",
+      "bytes": 21908
+    },
+    {
+      "path": "agent_system/memory/skill_updater.py",
+      "url": "https://raw.githubusercontent.com/aiming-lab/SkillRL/8e66726ed866a4e0a7f053586a41022798192e6c/agent_system/memory/skill_updater.py",
+      "sha256": "d2c8df9b9bfad2b01d31c9515e97133010ba17c6e37435968d4ba741a71125a9",
+      "bytes": 8407,
+      "evidence": [
+        "20:         max_new_skills_per_update: int = 3,",
+        "41:         self.max_new_skills_per_update = max_new_skills_per_update",
+        "44:     def analyze_failures(",
+        "77:                 model=self.model,",
+        "93:             return reassigned[:self.max_new_skills_per_update]",
+        "136:     def _build_analysis_prompt(",
+        "163:             for j in range(self.max_new_skills_per_update)",
+        "174: Generate 1-{self.max_new_skills_per_update} NEW actionable skills that would help avoid these failures."
+      ]
+    },
+    {
+      "path": "agent_system/environments/env_package/alfworld/envs.py",
+      "url": "https://raw.githubusercontent.com/aiming-lab/SkillRL/8e66726ed866a4e0a7f053586a41022798192e6c/agent_system/environments/env_package/alfworld/envs.py",
+      "sha256": "24ae5d08b04eef4a7625bd8fdaa10f4edabfb655b8a069c456d277a5a036dfef",
+      "bytes": 7116
+    }
+  ],
+  "schema_version": "skillrl.upstream-source-audit.v1",
+  "retrieved_date_utc": "2026-09-17",
+  "repository": "https://github.com/aiming-lab/SkillRL",
+  "commit_resolution": "GitHub repository page embedded currentOid; GitHub REST commit endpoint returned HTTP 403 rate limit.",
+  "paper": {
+    "title": "SkillRL: Evolving Agents via Recursive Skill-Augmented Reinforcement Learning",
+    "arxiv": "2602.08234v1",
+    "url": "https://arxiv.org/html/2602.08234v1",
+    "locators": [
+      "3.3 Recursive Skill Evolution",
+      "4.1 Experimental Setup",
+      "B.1 Hyperparameters / Table 4"
+    ],
+    "evidence_kind": "paper HTML sections inspected; no result reproduction"
+  }
+}

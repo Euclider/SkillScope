@@ -1,0 +1,3 @@
+# Add to the existing phase12 environment without upgrading its training stack.
+sentence-transformers==6.0.1
+tokenizers==0.22.2

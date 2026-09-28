@@ -1,0 +1,59 @@
+{
+  "schema_version": "skillrl.bank_setting.v1",
+  "setting_id": "alfworld-skillnet37-bank-only-v1",
+  "status": "bank_frozen_router_pending",
+  "runnable_experiment": false,
+  "bank": {
+    "bank_id": "skillnet-alfworld-37-5c472b36d2a4",
+    "manifest_path_relative_to_code_root": "memory_data/alfworld/skillnet37/manifest.json",
+    "manifest_sha256": "0767ff7578b1e997119a36b5f636fec6ebc1d0ac600ffb40b1e599065b7fe514",
+    "content_sha256": "a3fdd5f265f4a9926533686aef315163a6fb6b6f6ba5fc3f2153a9240dc662ab",
+    "upstream_commit": "5c472b36d2a435001fdae3bc8439886d8050645a",
+    "skill_count": 37,
+    "support_file_count": 45,
+    "candidate_scope": "all_tasks",
+    "candidate_order": "lexicographic upstream skill name",
+    "task_type_filtering": false,
+    "semantic_deduplication": false,
+    "instruction_rewriting": false,
+    "merged_with_skillrl_bank": false,
+    "update_during_rollouts": false
+  },
+  "adapter": {
+    "loader": "agent_system.memory.frozen_skill_bank.load_skillnet37",
+    "memory_class": "agent_system.memory.frozen_skill_bank.FrozenSkillBankMemory",
+    "renderer": "skillrl.raw_skill_package.v1",
+    "catalog_fields": ["skill_id", "name", "description"],
+    "max_selected_skills_per_step": 1,
+    "full_bank_policy_injection": false,
+    "payload_scope": "SKILL.md followed by all support files sorted by relative path",
+    "execute_bundled_files": false,
+    "historical_runtime_defaults_changed": false
+  },
+  "router": {
+    "implementation_status": "not_implemented",
+    "design_intent": "independent frozen external LLM selects an ID from all 37 candidates before payload intervention",
+    "provider": null,
+    "model_snapshot": null,
+    "decoder_settings": null,
+    "prompt_sha256": null,
+    "visible_history_rule": null,
+    "abstention_rule": null,
+    "cache_protocol": null,
+    "failure_policy": null,
+    "api_budget": null,
+    "previously_suggested_model_not_approved": "gpt-5.4-mini-2026-03-17"
+  },
+  "experiment": {
+    "policy_model_intent": "Qwen3.5-4B",
+    "benchmark_intent": "ALFWorld, all six task types",
+    "new_seed": null,
+    "split_and_game_manifest": null,
+    "checkpoint_and_update_window": null,
+    "prompt_token_budget": null,
+    "tokenizer_payload_audit": "pending",
+    "length_matched_placebo_audit": "pending",
+    "launch_authorized_by_this_setting": false,
+    "previous_cohorts_reused_as_independent_test": false
+  }
+}

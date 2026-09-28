@@ -1,0 +1,18 @@
+# SHELVED DRAFT: user replaced this choice with SkillRL retrieval before testing.
+# Public factory is blocked; this overlay must not be used to start a run.
+# Do NOT apply to an existing mini-router cohort/cache.
+# This is an integration overlay, not an authorized 8-GPU launch configuration.
+# Placement must first pass the new cohort's co-resident GPU memory preflight.
+env:
+  use_skills_only_memory: true
+  use_retrieval_memory: false
+  skills_only_memory:
+    retrieval_mode: frozen_bank_all
+    enable_dynamic_update: false
+    step_routing:
+      enabled: false
+      backend: local_frozen_hf
+      model_path: ???  # Original, hash-pinned Qwen3.5-4B, NEVER a policy checkpoint.
+      device: ???  # Explicit CUDA device in this process; no implicit 8 -> 7 change.
+      cache_path: ???  # New local-router protocol, never the mini cache.
+      max_local_calls: 0  # Cache replay only until explicitly set for a new run.

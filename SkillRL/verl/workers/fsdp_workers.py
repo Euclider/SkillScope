@@ -115,6 +115,9 @@ class ActorRolloutRefWorker(Worker):
 
         # build device mesh for FSDP
         world_size = torch.distributed.get_world_size()
+        if self.config.get("cohort_seed") is not None:
+            from skillnet_cohort.runtime import seed_process
+            seed_process(self.config.cohort_seed, torch.distributed.get_rank())
         # TODO(sgm): support FSDP hybrid shard for larger model
         self.device_mesh = create_device_mesh(world_size=world_size, fsdp_size=self.config.actor.fsdp_config.fsdp_size)
 
@@ -195,7 +198,7 @@ class ActorRolloutRefWorker(Worker):
             # more precise image-text auto class.
             from transformers import AutoModelForImageTextToText as AutoModelForVision2Seq
 
-        from verl.utils.model import get_generation_config, print_model_size, update_model_config
+        from verl.utils.model import get_generation_config, normalize_transformers_config, print_model_size, update_model_config
         from verl.utils.torch_dtypes import PrecisionType
 
         assert role in ["actor", "ref"]
@@ -221,6 +224,7 @@ class ActorRolloutRefWorker(Worker):
             trust_remote_code=trust_remote_code,
             attn_implementation=attn_implementation,
         )
+        actor_model_config = normalize_transformers_config(actor_model_config)
                 
         # patch for kimi-vl
         if getattr(actor_model_config, "model_type", None) == "kimi_vl":
@@ -333,19 +337,29 @@ class ActorRolloutRefWorker(Worker):
         cpu_offload = None if role == "actor" else CPUOffload(offload_params=True)
         fsdp_strategy = self.config.actor.strategy
         if fsdp_strategy == "fsdp":
+            cpu_shard_init = bool(fsdp_config.get("cpu_shard_init", False))
+            if cpu_shard_init:
+                # Full FP32 Qwen weights plus a second flattened copy exceed
+                # 32GB before sharding. Flatten/shard on CPU, then move only
+                # local shards. Verify identical rank inputs before foregoing
+                # FSDP's GPU-only sync_module_states broadcast.
+                from skillnet_cohort.cpu_shard_init import verify_identical_cpu_model
+                verify_identical_cpu_model(actor_module)
             actor_module_fsdp = FSDP(
                 actor_module,
                 cpu_offload=cpu_offload,
                 param_init_fn=init_fn,
                 use_orig_params=False,
                 auto_wrap_policy=auto_wrap_policy,
-                device_id=get_torch_device().current_device(),
+                device_id=None if cpu_shard_init else get_torch_device().current_device(),
                 sharding_strategy=sharding_strategy,  # zero3
                 mixed_precision=mixed_precision,
-                sync_module_states=True,
+                sync_module_states=not cpu_shard_init,
                 device_mesh=self.device_mesh,
                 forward_prefetch=False,
             )
+            if cpu_shard_init and not (cpu_offload and cpu_offload.offload_params):
+                actor_module_fsdp.to(get_torch_device().current_device())
         elif fsdp_strategy == "fsdp2":
             assert CPUOffloadPolicy is not None, "PyTorch version >= 2.4 is required for using fully_shard API (FSDP2)"
             mp_policy = MixedPrecisionPolicy(param_dtype=param_dtype, reduce_dtype=reduce_dtype, cast_forward_inputs=True)
@@ -426,6 +440,17 @@ class ActorRolloutRefWorker(Worker):
             rollout = HFRollout(module=self.actor_module_fsdp, config=self.config.rollout)
             rollout_sharding_manager = BaseShardingManager()
             # TODO: a sharding manager that do nothing?
+
+        elif rollout_name == "vllm_v1":
+            from verl.workers.rollout.vllm_v1 import VLLMV1Rollout
+            from verl.workers.sharding_manager.fsdp_vllm_v1 import FSDPVLLMV1ShardingManager
+            if self._is_lora or self.config.rollout.mode != 'sync':
+                raise ValueError('Registered V1 rollout is full-weight, synchronous, TP=1 only')
+            local_path = copy_to_local(self.config.model.path, use_shm=self.config.model.get('use_shm', False))
+            with torch.random.fork_rng(devices=[get_torch_device().current_device()]):
+                rollout = VLLMV1Rollout(local_path, self.config.rollout, self.tokenizer)
+            rollout_sharding_manager = FSDPVLLMV1ShardingManager(
+                self.actor_module_fsdp, rollout.inference_engine, offload_param=self._is_offload_param)
 
         elif rollout_name == "vllm":
             from verl.workers.rollout.vllm_rollout import vllm_mode, vLLMRollout
@@ -622,10 +647,13 @@ class ActorRolloutRefWorker(Worker):
                 lr_scheduler=self.actor_lr_scheduler,
                 processing_class=self.processor if self.processor is not None else self.tokenizer,
                 checkpoint_contents=self.config.actor.checkpoint.contents,
+                low_memory_native_restore=bool(self.config.actor.fsdp_config.get("cpu_shard_init", False)),
             )
 
     @register(dispatch_mode=Dispatch.DP_COMPUTE_PROTO)
     def update_actor(self, data: DataProto):
+        from verl.workers.sharding_manager.fsdp_vllm_v1 import suspend_vllm_rollouts
+        suspend_vllm_rollouts()
         # Support all hardwares
         data = data.to(get_torch_device().current_device())
 
@@ -665,6 +693,8 @@ class ActorRolloutRefWorker(Worker):
             offload_fsdp_optimizer(optimizer=self.actor_optimizer)
             log_gpu_memory_usage("After offload actor optimizer during update_actor", logger=logger)
 
+        if self.config.rollout.name == 'vllm_v1':
+            self.rollout_sharding_manager.mark_dirty()
         return output
 
     @register(dispatch_mode=Dispatch.DP_COMPUTE_PROTO)
@@ -684,6 +714,9 @@ class ActorRolloutRefWorker(Worker):
 
             prompts = self.rollout_sharding_manager.preprocess_data(prompts)
             output = self.rollout.generate_sequences(prompts=prompts)
+            if self.config.rollout.name == 'vllm_v1':
+                output.meta_info['rollout_weight_version'] = self.rollout_sharding_manager.weight_version
+                output.meta_info['rollout_weight_sync_count'] = self.rollout_sharding_manager.sync_count
             
             log_gpu_memory_usage("After rollout generation", logger=logger)
 
@@ -698,6 +731,8 @@ class ActorRolloutRefWorker(Worker):
 
     @register(dispatch_mode=Dispatch.DP_COMPUTE_PROTO)
     def compute_log_prob(self, data: DataProto):
+        from verl.workers.sharding_manager.fsdp_vllm_v1 import suspend_vllm_rollouts
+        suspend_vllm_rollouts()
         # when is_lora is True, we use the actor without lora applied to calculate the log_prob
         # which is mostly used for ref log_prob calculation
         assert self._is_actor
@@ -740,6 +775,8 @@ class ActorRolloutRefWorker(Worker):
 
     @register(dispatch_mode=Dispatch.DP_COMPUTE_PROTO)
     def compute_ref_log_prob(self, data: DataProto):
+        from verl.workers.sharding_manager.fsdp_vllm_v1 import suspend_vllm_rollouts
+        suspend_vllm_rollouts()
         if self._is_lora:
             # if _is_lora, actor without lora applied is the ref
             data.meta_info['is_lora'] = True
@@ -775,6 +812,8 @@ class ActorRolloutRefWorker(Worker):
 
     @register(dispatch_mode=Dispatch.ONE_TO_ALL)
     def save_checkpoint(self, local_path, hdfs_path=None, global_step=0, max_ckpt_to_keep=None):
+        from verl.workers.sharding_manager.fsdp_vllm_v1 import suspend_vllm_rollouts
+        suspend_vllm_rollouts()
         # only support save and load ckpt for actor
         assert self._is_actor
 
@@ -814,10 +853,15 @@ class ActorRolloutRefWorker(Worker):
 
     @register(dispatch_mode=Dispatch.ONE_TO_ALL)
     def load_checkpoint(self, local_path, hdfs_path=None, del_local_after_load=False):
+        from verl.workers.sharding_manager.fsdp_vllm_v1 import suspend_vllm_rollouts
+        suspend_vllm_rollouts()
         if self._is_offload_param:
             load_fsdp_model_to_gpu(self.actor_module_fsdp)
 
         self.checkpoint_manager.load_checkpoint(local_path=local_path, hdfs_path=hdfs_path, del_local_after_load=del_local_after_load)
+
+        if self._is_rollout and self.config.rollout.name == 'vllm_v1':
+            self.rollout_sharding_manager.mark_dirty()
 
         if self._is_offload_param:
             offload_fsdp_model_to_cpu(self.actor_module_fsdp)

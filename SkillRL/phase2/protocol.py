@@ -137,6 +137,10 @@ def validate_extended(config, repo, require_frozen=True):
         raise ValueError("Expected an explicit new extended protocol, not the historical fast cohort")
     if require_frozen and config.get("status") != "frozen":
         raise ValueError("Draft protocol cannot launch; freeze after coverage/calibration and branch selection")
+    skillnet = config.get("runtime", {}).get("kind") == "skillnet37"
+    if skillnet:
+        from skillnet_cohort.runtime import verify_runtime_identity
+        verify_runtime_identity(config["runtime"])
     if require_frozen and config.get("root"):
         root=Path(config["root"])
         manifest=root/"manifest.json"
@@ -144,7 +148,8 @@ def validate_extended(config, repo, require_frozen=True):
             saved=json.loads(manifest.read_text())
             if saved.get("registered_protocol_sha256") and sha256_file(root/"protocol.json")!=saved["registered_protocol_sha256"]:
                 raise ValueError("Registered protocol changed after preparation")
-            bank=Path(repo)/"memory_data/alfworld/claude_style_skills.json"
+            bank=Path(repo)/("memory_data/alfworld/skillnet37/manifest.json" if skillnet
+                             else "memory_data/alfworld/claude_style_skills.json")
             if saved.get("skill_bank_sha256") and sha256_file(bank)!=saved["skill_bank_sha256"]:
                 raise ValueError("Skill Bank changed after protocol preparation")
     seed_streams(config)

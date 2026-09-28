@@ -1,0 +1,5 @@
+# Latest stable OpenAI SDK observed on PyPI on 2026-09-17; isolated from old runs.
+openai==3.14.1
+# Bank parsing and environment-manager configuration used by the CPU checks.
+PyYAML==6.0.3
+omegaconf==2.3.0

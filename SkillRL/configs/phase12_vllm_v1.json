@@ -1,0 +1,20 @@
+{
+  "schema_version": "skillnet.inference.v1",
+  "backend": "vllm_v1",
+  "vllm_version": "0.22.0",
+  "torch_version": "2.11.0",
+  "transformers_version": "5.10.4",
+  "tensor_parallel_size": 1,
+  "dtype": "bfloat16",
+  "max_model_len": 4608,
+  "max_num_batched_tokens": 8192,
+  "max_num_seqs": 16,
+  "gpu_memory_utilization": 0.45,
+  "enforce_eager": true,
+  "enable_prefix_caching": false,
+  "enable_chunked_prefill": true,
+  "seed": 404,
+  "weight_sync": "inprocess_public_apply_model_fsdp_sharded_v1",
+  "evaluation_parallelism": "eight_gpu_shards_sequential_episodes_per_shard",
+  "execution_authorized": false
+}

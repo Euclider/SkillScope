@@ -200,6 +200,8 @@ def run_branch(
                 "prompt_tokens": n_prompt,
                 "completion_tokens": n_completion,
             })
+            if "skill_router_api" in routed:
+                steps[-1]["skill_router_api"] = dict(routed["skill_router_api"])
             history.append({"observation": observation, "action": action})
             observation, info = next_observation, next_info
             if done:

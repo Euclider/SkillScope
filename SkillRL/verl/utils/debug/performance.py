@@ -32,12 +32,18 @@ def _get_current_mem_info(unit: str = "GB", precision: int = 2) -> Tuple[str]:
     """Get current memory usage."""
     assert unit in ["GB", "MB", "KB"]
     divisor = 1024**3 if unit == "GB" else 1024**2 if unit == "MB" else 1024
-    mem_allocated = get_torch_device().memory_allocated()
-    mem_reserved = get_torch_device().memory_reserved()
+    device = get_torch_device()
+    # CPU-only optimizer tests use the same decorated actor path, but torch.cpu
+    # has no CUDA-style allocator counters. Keep GPU reporting unchanged.
+    if not all(hasattr(device, name) for name in ("memory_allocated", "memory_reserved", "mem_get_info")):
+        zero = f"{0 / divisor:.{precision}f}"
+        return zero, zero, zero, zero
+    mem_allocated = device.memory_allocated()
+    mem_reserved = device.memory_reserved()
     # use get_torch_device().mem_get_info to profile device memory
     # since vllm's sleep mode works below pytorch
     # see https://github.com/vllm-project/vllm/pull/11743#issuecomment-2754338119
-    mem_free, mem_total = get_torch_device().mem_get_info()
+    mem_free, mem_total = device.mem_get_info()
     mem_used = mem_total - mem_free
     mem_allocated = f"{mem_allocated / divisor:.{precision}f}"
     mem_reserved = f"{mem_reserved / divisor:.{precision}f}"
