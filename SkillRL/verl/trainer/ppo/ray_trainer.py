@@ -1297,6 +1297,13 @@ class RayPPOTrainer:
         # load dataloader,
         # TODO: from remote not implemented yet
         dataloader_local_path = os.path.join(global_step_folder, "data.pt")
+        if self.config.get("phase3", {}).get("domain") == "logicbench":
+            from phase3.logicbench_loop_data import resume_data_action
+            if resume_data_action(self.config.phase3, self.global_steps) == "new_window":
+                print("LogicBench boundary: retain restored policy/optimizer/RNG; start current-bank window data")
+                return
+            if not os.path.exists(dataloader_local_path):
+                raise RuntimeError("LogicBench intra-window recovery requires native dataloader state")
         if os.path.exists(dataloader_local_path):
             dataloader_state_dict = torch.load(dataloader_local_path, weights_only=False)
             self.train_dataloader.load_state_dict(dataloader_state_dict)
@@ -1340,7 +1347,9 @@ class RayPPOTrainer:
         self._load_checkpoint()
         if self.config.get("phase3", {}).get("enabled", False):
             from phase3.common import require
-            require(self.global_steps == self.config.phase3.segment_start,
+            expected = (self.config.phase3.resume_update if self.config.phase3.get("domain") == "logicbench"
+                        else self.config.phase3.segment_start)
+            require(self.global_steps == expected,
                     "Phase3 policy/optimizer resumed at the wrong global step")
         cohort_block = self.config.get("skillnet_cohort", {}).get("segment_end")
         if cohort_block is not None:
@@ -1381,6 +1390,11 @@ class RayPPOTrainer:
                     non_tensor_batch_keys_to_pop.append("tools_kwargs")
                 if "env_kwargs" in batch.non_tensor_batch:
                     non_tensor_batch_keys_to_pop.append("env_kwargs")
+                if self.config.get("logicbench_phase12", {}).get("enabled", False):
+                    non_tensor_batch_keys_to_pop.extend([
+                        "question_id", "context_id", "task_type", "answer",
+                        "selected_skill_id", "router_cache_key",
+                    ])
                 gen_batch = batch.pop(
                     batch_keys=batch_keys_to_pop,
                     non_tensor_batch_keys=non_tensor_batch_keys_to_pop,
@@ -1406,7 +1420,15 @@ class RayPPOTrainer:
                         ################ agent-environment loop ###############
                         recovery = self.config.get('skillnet_cohort', {}).get('pre_optimizer_recovery')
                         recovering_u1 = bool(recovery and self.global_steps == 1)
-                        if recovering_u1:
+                        if self.config.get("logicbench_phase12", {}).get("enabled", False):
+                            from logicbench_phase12.rollout import single_step_rollout
+                            gen_batch_output = single_step_rollout(
+                                gen_batch, self.actor_rollout_wg, self.tokenizer,
+                                repeats=int(self.config.logicbench_phase12.repeats),
+                                run_id=str(self.config.trainer.experiment_name),
+                                update=self.global_steps,
+                            )
+                        elif recovering_u1:
                             from skillnet_cohort.rollout_recovery import load_for_training
                             gen_batch_output = load_for_training(recovery, self.envs)
                         else:
@@ -1620,7 +1642,7 @@ class RayPPOTrainer:
 
                     if self.config.get("phase3", {}).get("enabled", False):
                         from phase3.capture import archive_batch as archive_phase3_batch
-                        archive_phase3_batch(batch, update=self.global_steps, config=self.config)
+                        archive_phase3_batch(batch, update=self.global_steps, config=self.config, tokenizer=self.tokenizer)
 
                     # Update skill bank from training batch (avoids val-data leakage).
                     if (self.config.env.get('skills_only_memory', {}).get('enable_dynamic_update', False)

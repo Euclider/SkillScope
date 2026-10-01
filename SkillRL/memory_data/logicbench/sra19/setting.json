@@ -1,0 +1,40 @@
+{
+  "schema_version": "skillscope.bank_setting.v1",
+  "setting_id": "sra-logicbench19-bank-only-v1",
+  "status": "bank_frozen_phase12_smoke_adapter_verified",
+  "runnable_experiment": false,
+  "bank": {
+    "bank_id": "sra-logicbench-19-277fd8d2bbd7",
+    "manifest_path_relative_to_code_root": "memory_data/logicbench/sra19/manifest.json",
+    "manifest_sha256": "d361ac5cf5048d0a1627806be850a3f854cd2a8319b2c884ce44d6a6961875bf",
+    "skills_json_sha256": "8d061a9e1a0e70e4d02af46546633a5d7f6e9c59cc4d304c5f499ab7749b718a",
+    "upstream_commit": "277fd8d2bbd7d3b81a5cf4ffa6e87e18c7906e4f",
+    "skill_count": 19,
+    "candidate_scope": "all_19_logicbench_skills",
+    "source_content_rewritten": false,
+    "merged_with_alfworld_skillnet_bank": false,
+    "update_during_phase12_window": false
+  },
+  "adapter": {
+    "loader": "agent_system.memory.sra_logicbench_bank.load_sra_logicbench19",
+    "memory_class": "agent_system.memory.frozen_skill_bank.FrozenSkillBankMemory",
+    "renderer": "skillscope.sra_logicbench_markdown.v1",
+    "max_selected_skills_per_question": 1,
+    "full_bank_policy_injection": false,
+    "benchmark_answers_in_bank": false
+  },
+  "evaluation_data": {
+    "manifest_path_relative_to_code_root": "data/logicbench/sra19/eval_manifest.json",
+    "eval_sha256": "af5055caac041ea08cee47622f5d922b47b2ba0a8e3a60b87349599eeff1bdfe",
+    "role": "utility_gold_only"
+  },
+  "phase12": {
+    "policy_training_source": "LogicBench(Aug), mapping and overlap audit pending",
+    "router": "question_only_qwen3_embedding_cpu_smoke_verified; formal_profile_pending",
+    "question_format_and_token_budget_audit": "direct_label_v2; all_15200_skill_control_inputs_under_4096_tokens",
+    "reward_and_advantage_adapter": "single_question_exact_answer_reward_verified; training_advantage_and_loss_mask_pending",
+    "paired_evaluation_protocol": "same_checkpoint_four_condition_smoke_verified; distinct_endpoint_evaluation_pending",
+    "checkpoint_window_and_seeds": "pending",
+    "launch_authorized_by_this_setting": false
+  }
+}

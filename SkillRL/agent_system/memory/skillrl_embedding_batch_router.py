@@ -3,19 +3,22 @@
 FP32, model revision, query and catalog mapping are unchanged. Batch shape and
 CPU execution are a NEW numerical protocol, with a new cache and no API fallback.
 """
-from contextlib import ExitStack
-from dataclasses import asdict
 import json
 import time
+from contextlib import ExitStack
+from dataclasses import asdict
 
 import numpy as np
 
 from .router_cache import RouterCache, canonical_json, digest, utc_now
 from .skillrl_embedding_router import (
-    EmbeddingRouterError, FrozenSentenceEncoder, SkillRLEmbeddingStepRouter,
-    _RNG_LOCK, load_profile, skill_texts,
+    _RNG_LOCK,
+    EmbeddingRouterError,
+    FrozenSentenceEncoder,
+    SkillRLEmbeddingStepRouter,
+    load_profile,
+    skill_texts,
 )
-
 
 VERSION = "skillrl-embedding-state-batch-top1-v1"
 
@@ -51,6 +54,7 @@ class BatchedSentenceEncoder(FrozenSentenceEncoder):
 
 def load_batch_profile(path):
     from pathlib import Path
+
     from .skillnet_runtime import DEFAULT_EMBEDDING_ROUTER_PROFILE
     data = json.loads(Path(path).read_bytes())
     base_bytes = DEFAULT_EMBEDDING_ROUTER_PROFILE.read_bytes()
@@ -75,6 +79,7 @@ def load_batch_profile(path):
 class BatchedEmbeddingStepRouter(SkillRLEmbeddingStepRouter):
     version = VERSION
     backend = "skillrl_embedding_state_batch"
+    query_formatter = "canonical-visible-state-json-v1-no-extra-prompt"
 
     def __init__(self, memory, config, *, model_files, model_path, device,
                  cache_path, max_local_calls, execution, _encoder=None):
@@ -92,7 +97,7 @@ class BatchedEmbeddingStepRouter(SkillRLEmbeddingStepRouter):
             "execution": self.execution, "upstream_commit": UPSTREAM_COMMIT,
             "bank_manifest_sha256": memory.bank.manifest_sha256, "model_files": dict(model_files),
             "catalog": memory.bank.router_catalog(), "skill_texts": skill_texts(memory),
-            "query_formatter": "canonical-visible-state-json-v1-no-extra-prompt",
+            "query_formatter": self.query_formatter,
             "similarity": "l2-normalized-fp32-dot-product", "tie_break": "first-in-canonical-bank-order",
             "selection_count": 1, "external_api_calls": 0, "automatic_retries": 0}
         self.cache = RouterCache(cache_path, self.protocol, max_local_calls)

@@ -1,0 +1,96 @@
+# Frozen SRA LogicBench-19: one question/answer per trajectory, five GRPO
+# updates per seed, with U1 full-vocabulary evidence and a U5 checkpoint.
+defaults:
+  - alfworld_skillnet37_skillrl_v1
+  - _self_
+
+logicbench_run:
+  seed: ???
+  train_files: ???
+  val_files: ???
+  run_root: ???
+
+alignment_run:
+  seed: ${logicbench_run.seed}
+  model_path: /home/wangyifan/model/Qwen3.5-4B
+  train_files: ${logicbench_run.train_files}
+  val_files: ${logicbench_run.val_files}
+  run_id: sra-logicbench19-s${logicbench_run.seed}-u0-u5
+  output_dir: ${logicbench_run.run_root}/seed${logicbench_run.seed}/checkpoints
+  archive_dir: ${logicbench_run.run_root}/seed${logicbench_run.seed}/phase1
+  router_cache: /home/wangyifan/skill-RL/SkillRL/artifacts/logicbench/router-formal.sqlite3
+  # Keep Ray's UNIX-domain socket path below Linux's 107-byte limit.
+  ray_temp_dir: /tmp/logicbench-ray-s${logicbench_run.seed}
+
+logicbench_phase12:
+  enabled: true
+  repeats: 8
+  prompt_version: logicbench-direct-label-v2
+  bank_manifest_sha256: d361ac5cf5048d0a1627806be850a3f854cd2a8319b2c884ce44d6a6961875bf
+
+data:
+  train_batch_size: 128
+  val_batch_size: 32
+  max_prompt_length: 4096
+  max_response_length: 64
+  filter_overlong_prompts: false
+  truncation: error
+  shuffle: false
+  return_raw_chat: false
+  apply_chat_template_kwargs:
+    enable_thinking: false
+
+actor_rollout_ref:
+  actor:
+    ppo_mini_batch_size: 128
+    ppo_micro_batch_size_per_gpu: 1
+  rollout:
+    name: hf
+    micro_batch_size: 2
+    n: 1
+    response_length: 64
+    log_prob_micro_batch_size_per_gpu: 1
+    multi_turn:
+      enable: false
+
+env:
+  # The trainer bypasses make_envs and TrajectoryCollector when
+  # logicbench_phase12.enabled=true. Keep this metadata for the archive.
+  max_steps: 1
+  rollout:
+    n: 8
+  use_skills_only_memory: false
+  skills_only_memory:
+    step_routing:
+      enabled: false
+  phase1_archive:
+    enabled: true
+    run_id: ${trainer.experiment_name}
+    output_dir: ${alignment_run.archive_dir}
+
+phase2:
+  enabled: true
+  root: ${logicbench_run.run_root}/seed${logicbench_run.seed}/phase2
+  capture_scope: window_start_old_only_v1
+  capture_updates: [1]
+  progress_journal: false
+  save_pre_forward_batch: false
+
+trainer:
+  project_name: sra_logicbench19_phase12_v1
+  experiment_name: ${alignment_run.run_id}
+  n_gpus_per_node: 2
+  nnodes: 1
+  total_epochs: 1
+  total_training_steps: 5
+  balance_batch: true
+  test_freq: 0
+  save_freq: 5
+  val_before_train: false
+  resume_mode: disable
+  default_local_dir: ${alignment_run.output_dir}
+  logger: [console]
+
+ray_init:
+  address: local
+  _temp_dir: ${alignment_run.ray_temp_dir}

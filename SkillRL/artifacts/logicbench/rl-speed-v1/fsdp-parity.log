@@ -1,0 +1,75 @@
+WARNING:2026-09-30 10:38:09,245:Current Python version 3.10 is below the recommended 3.11 version. It is recommended to upgrade to Python 3.11 or higher for the best experience.
+WARNING:2026-09-30 10:38:10,004:Current Python version 3.10 is below the recommended 3.11 version. It is recommended to upgrade to Python 3.11 or higher for the best experience.
+WARNING:2026-09-30 10:38:10,004:Current Python version 3.10 is below the recommended 3.11 version. It is recommended to upgrade to Python 3.11 or higher for the best experience.
+WARNING:2026-09-30 10:38:10,046:Current Python version 3.10 is below the recommended 3.11 version. It is recommended to upgrade to Python 3.11 or higher for the best experience.
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:  60%|█████▉    | 254/426 [00:00<00:00, 2538.89it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 2527.18it/s]
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:  66%|██████▌   | 281/426 [00:00<00:00, 2797.07it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 2737.00it/s]
+Loading weights:  63%|██████▎   | 268/426 [00:00<00:00, 2672.93it/s]Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 2484.23it/s]
+Loading weights:  62%|██████▏   | 262/426 [00:00<00:00, 2618.84it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 2538.29it/s]
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+reference_cpu [{"seconds": 28.167062803870067, "max_logprob_error": 0.0, "peak_gib": 3.235319137573242}, {"seconds": 28.167328076902777, "max_logprob_error": 0.0, "peak_gib": 3.235319137573242}, {"seconds": 28.16722648893483, "max_logprob_error": 0.0, "peak_gib": 3.235319137573242}, {"seconds": 28.1670350311324, "max_logprob_error": 0.0, "peak_gib": 3.235319137573242}]
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:  45%|████▍     | 191/426 [00:00<00:00, 1909.68it/s]Loading weights:  53%|█████▎    | 226/426 [00:00<00:00, 2249.63it/s]Loading weights:  48%|████▊     | 206/426 [00:00<00:00, 2042.60it/s]Loading weights:  42%|████▏     | 180/426 [00:00<00:00, 1799.84it/s]Loading weights:  96%|█████████▌| 409/426 [00:00<00:00, 2056.44it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 2011.99it/s]
+Loading weights: 100%|██████████| 426/426 [00:00<00:00, 2037.33it/s]
+Loading weights:  96%|█████████▋| 411/426 [00:00<00:00, 1803.32it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 1849.13it/s]
+Loading weights:  90%|█████████ | 384/426 [00:00<00:00, 1926.42it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 1919.09it/s]
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+reference_gpu [{"seconds": 22.055816790787503, "max_logprob_error": 0.0, "peak_gib": 5.096107006072998}, {"seconds": 22.055834426078945, "max_logprob_error": 0.0, "peak_gib": 5.096107006072998}, {"seconds": 22.055883808992803, "max_logprob_error": 0.0, "peak_gib": 5.096107006072998}, {"seconds": 22.05567149305716, "max_logprob_error": 0.0, "peak_gib": 5.096107006072998}]
+Loading weights:   0%|          | 0/427 [00:00<?, ?it/s]Loading weights:   0%|          | 0/427 [00:00<?, ?it/s]Loading weights:   0%|          | 0/427 [00:00<?, ?it/s]Loading weights:   0%|          | 0/427 [00:00<?, ?it/s]Loading weights:  51%|█████     | 218/427 [00:00<00:00, 2174.70it/s]Loading weights:  56%|█████▌    | 239/427 [00:00<00:00, 2385.35it/s]Loading weights:  59%|█████▉    | 253/427 [00:00<00:00, 2516.13it/s]Loading weights:  61%|██████    | 259/427 [00:00<00:00, 2577.60it/s]Loading weights: 100%|██████████| 427/427 [00:00<00:00, 2518.62it/s]
+Loading weights: 100%|██████████| 427/427 [00:00<00:00, 2441.21it/s]
+Loading weights: 100%|██████████| 427/427 [00:00<00:00, 2260.55it/s]
+Loading weights: 100%|██████████| 427/427 [00:00<00:00, 2220.32it/s]
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+W0930 10:43:18.839000 3519388 site-packages/torch/distributed/elastic/agent/server/api.py:739] Received Signals.SIGTERM death signal, shutting down workers
+W0930 10:43:18.842000 3519388 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 3519461 closing signal SIGTERM
+W0930 10:43:18.843000 3519388 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 3519462 closing signal SIGTERM
+W0930 10:43:18.844000 3519388 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 3519463 closing signal SIGTERM
+W0930 10:43:18.844000 3519388 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 3519464 closing signal SIGTERM
+Traceback (most recent call last):
+  File "/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/distributed/run.py", line 995, in <module>
+    main()
+  File "/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+    return f(*args, **kwargs)
+  File "/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/distributed/run.py", line 991, in main
+    run(args)
+  File "/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/distributed/run.py", line 982, in run
+    elastic_launch(
+  File "/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 170, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 308, in launch_agent
+    result = agent.run()
+  File "/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 134, in wrapper
+    result = f(*args, **kwargs)
+  File "/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 731, in run
+    result = self._invoke_run(role)
+  File "/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 908, in _invoke_run
+    time.sleep(monitor_interval)
+  File "/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 86, in _terminate_process_handler
+    raise SignalException(f"Process {os.getpid()} got signal: {sigval}", sigval=sigval)
+torch.distributed.elastic.multiprocessing.api.SignalException: Process 3519388 got signal: 15

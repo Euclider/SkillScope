@@ -9,7 +9,7 @@ import numpy as np
 
 from phase1.archive import jsonable
 from skillnet_cohort.common import file_hash, write_new_bytes
-from .common import digest, require, write_new
+from .common import require, write_new
 
 
 def attach_decisions(batch, infos, *, config, update, step):
@@ -22,7 +22,11 @@ def attach_decisions(batch, infos, *, config, update, step):
     batch.non_tensor_batch['phase3_metadata'] = np.asarray(metadata, dtype=object)
 
 
-def archive_batch(batch, *, update, config):
+def archive_batch(batch, *, update, config, tokenizer=None):
+    if config.phase3.get('domain') == 'logicbench':
+        from .logicbench_loop_capture import archive_batch as archive_logicbench
+        require(tokenizer is not None, 'LogicBench capture requires the actual tokenizer')
+        return archive_logicbench(batch, update=update, config=config, tokenizer=tokenizer)
     # No full-vocabulary probabilities, activations, gradients or utility gold.
     # The failure-driven arm also captures the batch for a passive, non-decision
     # action-bias audit. Its edit selector never consumes the resulting readout.

@@ -1,0 +1,15 @@
+Current Python version 3.10 is below the recommended 3.11 version. It is recommended to upgrade to Python 3.11 or higher for the best experience.
+Current Python version 3.10 is below the recommended 3.11 version. It is recommended to upgrade to Python 3.11 or higher for the best experience.
+Current Python version 3.10 is below the recommended 3.11 version. It is recommended to upgrade to Python 3.11 or higher for the best experience.
+Current Python version 3.10 is below the recommended 3.11 version. It is recommended to upgrade to Python 3.11 or higher for the best experience.
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:  57%|█████▋    | 241/426 [00:00<00:00, 2408.21it/s]Loading weights:  56%|█████▌    | 238/426 [00:00<00:00, 2354.72it/s]Loading weights:  63%|██████▎   | 268/426 [00:00<00:00, 2640.41it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 2677.11it/s]
+Loading weights: 100%|██████████| 426/426 [00:00<00:00, 2341.11it/s]
+Loading weights: 100%|██████████| 426/426 [00:00<00:00, 2345.42it/s]
+Loading weights:   0%|          | 0/426 [00:00<?, ?it/s]Loading weights:  58%|█████▊    | 247/426 [00:00<00:00, 2467.70it/s]Loading weights: 100%|██████████| 426/426 [00:00<00:00, 2401.11it/s]
+Loading weights:   0%|          | 0/427 [00:00<?, ?it/s]Loading weights:   0%|          | 0/427 [00:00<?, ?it/s]Loading weights:   0%|          | 0/427 [00:00<?, ?it/s]Loading weights:   0%|          | 0/427 [00:00<?, ?it/s]Loading weights:  59%|█████▉    | 254/427 [00:00<00:00, 2536.37it/s]Loading weights:  63%|██████▎   | 268/427 [00:00<00:00, 2668.55it/s]Loading weights:  52%|█████▏    | 223/427 [00:00<00:00, 2222.75it/s]Loading weights:  67%|██████▋   | 284/427 [00:00<00:00, 2792.17it/s]Loading weights: 100%|██████████| 427/427 [00:00<00:00, 2492.94it/s]
+Loading weights: 100%|██████████| 427/427 [00:00<00:00, 2356.04it/s]
+Loading weights: 100%|██████████| 427/427 [00:00<00:00, 2202.16it/s]
+Loading weights: 100%|██████████| 427/427 [00:00<00:00, 2575.71it/s]
+/home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+[{"seconds": 9.532282796921209, "peak_gib": 38.24214220046997, "response_shape": [2, 4], "reference_parameters": 1051437824}, {"seconds": 9.532633827999234, "peak_gib": 38.24214220046997, "response_shape": [2, 4], "reference_parameters": 1051437824}, {"seconds": 9.53504645684734, "peak_gib": 38.24214220046997, "response_shape": [2, 4], "reference_parameters": 1051437824}, {"seconds": 9.53177398093976, "peak_gib": 38.24214220046997, "response_shape": [2, 4], "reference_parameters": 1051437824}]

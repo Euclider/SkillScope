@@ -1,0 +1,58 @@
+{
+  "model": "artifacts/logicbench/phase3-dsign-s707-u50-cpu-v2/models/u0005",
+  "row_indices": [
+    0,
+    146,
+    292,
+    438,
+    584,
+    730,
+    876,
+    1023
+  ],
+  "torch": "2.10.0+cu128",
+  "parameter_dtypes": [
+    "torch.float32"
+  ],
+  "valid_lengths": [
+    1560,
+    1064,
+    1072,
+    1431,
+    1071,
+    1063,
+    1361,
+    1301
+  ],
+  "variants": {
+    "baseline": {
+      "seconds": 2.287062394898385,
+      "peak_allocated_gib": 25.620874881744385,
+      "max_logprob_error": 0.0,
+      "mean_logprob_error": 0.0,
+      "max_entropy_error": 0.0
+    },
+    "suffix": {
+      "seconds": 2.087732776068151,
+      "peak_allocated_gib": 23.726810455322266,
+      "max_logprob_error": 0.0,
+      "mean_logprob_error": 0.0,
+      "max_entropy_error": 0.0
+    }
+  },
+  "gradients": {
+    "baseline": {
+      "seconds": 6.2873871750198305,
+      "loss": -0.0001510502042947337,
+      "peak_allocated_gib": 33.81686019897461
+    },
+    "suffix": {
+      "seconds": 1.1688993170391768,
+      "loss": -0.0001510502042947337,
+      "peak_allocated_gib": 33.81820297241211,
+      "grad_relative_l2": 0.01255114343439428,
+      "grad_cosine": 0.9999421015871403,
+      "grad_max_abs": 0.0017585456371307373
+    }
+  }
+}

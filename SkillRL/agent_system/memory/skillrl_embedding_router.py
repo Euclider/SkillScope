@@ -25,7 +25,6 @@ from .frozen_skill_bank import SKILLNET37_MANIFEST_SHA256
 from .router_cache import RouterBudgetExceeded, RouterCache, canonical_json, digest, utc_now
 from .skills_only_memory import SkillsOnlyMemory
 
-
 VERSION = "skillrl-embedding-state-top1-v1"
 MODEL_ID = "Qwen/Qwen3-Embedding-0.6B"
 MODEL_REVISION = "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3"
@@ -129,7 +128,10 @@ def verify_snapshot(model_path, files):
         path = root / name
         before = _signature(path)
         with path.open("rb") as stream:
-            actual_hash = hashlib.file_digest(stream, "sha256").hexdigest()
+            hasher = hashlib.sha256()
+            for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+                hasher.update(chunk)
+            actual_hash = hasher.hexdigest()
         after = _signature(path)
         if before != after or actual_hash != expected:
             raise EmbeddingRouterError(f"Encoder file hash mismatch: {name}")

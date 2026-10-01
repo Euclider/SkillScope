@@ -332,9 +332,12 @@ class ActorRolloutRefWorker(Worker):
         sharding_strategy = get_sharding_strategy(fsdp_mesh)
 
         # TODO: add transformer policy
-        # We force reference policy to use CPUOffload to save memory.
+        # Keep historical reference offload unless explicitly disabled after
+        # memory/parity validation. This controls FSDP's own offload, independently
+        # of the worker-level param_offload flag.
         # We force turn off CPUOffload for actor because it causes incorrect results when using grad accumulation
-        cpu_offload = None if role == "actor" else CPUOffload(offload_params=True)
+        ref_cpu_offload = role != "actor" and fsdp_config.get("cpu_offload", True)
+        cpu_offload = CPUOffload(offload_params=True) if ref_cpu_offload else None
         fsdp_strategy = self.config.actor.strategy
         if fsdp_strategy == "fsdp":
             cpu_shard_init = bool(fsdp_config.get("cpu_shard_init", False))
@@ -368,7 +371,7 @@ class ActorRolloutRefWorker(Worker):
                 self._is_offload_param = False
                 self._is_offload_optimizer = False
             else:
-                cpu_offload = None if role == "actor" else CPUOffloadPolicy(pin_memory=True)
+                cpu_offload = CPUOffloadPolicy(pin_memory=True) if ref_cpu_offload else None
 
             fsdp_kwargs = {
                 "mesh": fsdp_mesh,

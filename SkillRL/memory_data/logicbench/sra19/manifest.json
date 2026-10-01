@@ -1,0 +1,186 @@
+{
+  "schema_version": "skillscope.sra_logicbench_bank.v1",
+  "bank_id": "sra-logicbench-19-277fd8d2bbd7",
+  "source": {
+    "repository": "https://github.com/oneal2000/SR-Agents",
+    "commit": "277fd8d2bbd7d3b81a5cf4ffa6e87e18c7906e4f",
+    "archive_path": "data/bench/corpus/corpus.json.zip",
+    "archive_sha256": "2e8abf91ad992bebe2c1bf87cb7b77996edf1828bf55ddeba44c456956673849",
+    "corpus_json_sha256": "16ee509ae5bea8c2e17167dffecd89100a7d8dfa31256c3742426758c7169b5e",
+    "license_sha256": "47bef547eb656e100323e67b6808dc59bf14846e0c1b4cef0bb9020e9c237b2a",
+    "license": "MIT"
+  },
+  "content_policy": {
+    "source_skill_text_unchanged": true,
+    "router_catalog_fields": [
+      "skill_id",
+      "name",
+      "description"
+    ],
+    "payload_renderer": "skillscope.sra_logicbench_markdown.v1",
+    "payload_prefix": "### Frozen Skill: {skill_id}\\n\\n",
+    "candidate_scope": "19 LogicBench gold skills",
+    "candidate_order": "upstream skill_id ascending",
+    "read_only": true,
+    "task_answers_excluded": true
+  },
+  "counts": {
+    "skills": 19,
+    "source_records": 19
+  },
+  "skills_json_sha256": "8d061a9e1a0e70e4d02af46546633a5d7f6e9c59cc4d304c5f499ab7749b718a",
+  "skills": [
+    {
+      "skill_id": "logicbench_000",
+      "name": "Modus Ponens",
+      "description": "Affirming the antecedent: if P implies Q and P holds, then Q follows. Covers both propositional and first-order logic forms, and addresses the common failure of hedged conditionals.",
+      "content_sha256": "b79f932dd45ce77106999e760136c474b7c451ca94d7980f97d322d834bcfa5b",
+      "payload_sha256": "67de2851ab1a03a85d3630ddf87b09ea2c738dd6dc0b0acea9191601134a0b48",
+      "payload_utf8_bytes": 3721
+    },
+    {
+      "skill_id": "logicbench_001",
+      "name": "Modus Tollens",
+      "description": "Denying the consequent: if P implies Q and Q is false, then P is false. Covers propositional and first-order logic. Addresses the hardest failure modes: narrative-context confusion and treating the conclusion as uncertain.",
+      "content_sha256": "7eed77b684d177006c6a6dd2b995b429227b9b7cb1371bbdc59ae32f9391ac54",
+      "payload_sha256": "f580d557211a6c16aee12498381a16b8ea9d2b53f495a68dcf58cd6420af373d",
+      "payload_utf8_bytes": 3930
+    },
+    {
+      "skill_id": "logicbench_002",
+      "name": "Disjunctive Syllogism",
+      "description": "Eliminating a disjunct: if P or Q (inclusive), and not P, then Q. Covers propositional and first-order logic. Addresses inclusive vs. exclusive OR confusion and scope issues.",
+      "content_sha256": "7ae84c4dc3e7fa04eb747bf2ed008ae03bd068e4d98e089316845367dd44a73c",
+      "payload_sha256": "5e8283d17160c6298a05b2926e036aa8dbf91ec3ea1c50a58271b507be78c726",
+      "payload_utf8_bytes": 3863
+    },
+    {
+      "skill_id": "logicbench_003",
+      "name": "Hypothetical Syllogism",
+      "description": "Chaining conditionals: if P implies Q and Q implies R, then P implies R. Covers propositional and first-order logic. Addresses premature chain-breaking and denying-the-antecedent errors.",
+      "content_sha256": "7f9f76347b122f03b3ef3c5520435436484cbd3cd352da1d8b3cdb7a1774b2d3",
+      "payload_sha256": "af8bce0f8b474f2183b3613cda84150ab5c55996a3e05e6257e47c83eafa7443",
+      "payload_utf8_bytes": 4634
+    },
+    {
+      "skill_id": "logicbench_004",
+      "name": "Constructive Dilemma",
+      "description": "Derives a disjunction of consequents (Q∨S) from two conditionals (P→Q, R→S) and a disjunction of antecedents (P∨R).",
+      "content_sha256": "0174f0860ab3f4a135cd2704c7c48414552113a2ee054cf905e19e14442ffdb0",
+      "payload_sha256": "1758235572b13b99df6c6f54f364615638ffbc0c0023d653b30472b001bccc97",
+      "payload_utf8_bytes": 4710
+    },
+    {
+      "skill_id": "logicbench_005",
+      "name": "Destructive Dilemma",
+      "description": "Derives a disjunction of negated antecedents (¬P∨¬R) from two conditionals (P→Q, R→S) and a disjunction of negated consequents (¬Q∨¬S).",
+      "content_sha256": "e210927ae28a85cc916acc60369a69cb70f7c84bfe8a293a6af406024d201eea",
+      "payload_sha256": "2f2f7aa95a4c96db4a8a79377c675cf4f741282a76fcaec01daf433ed957b077",
+      "payload_utf8_bytes": 5316
+    },
+    {
+      "skill_id": "logicbench_006",
+      "name": "Bidirectional Dilemma",
+      "description": "Derives Q∨¬R from two conditionals (P→Q, R→S) and a mixed disjunctive premise (P∨¬S) combining one antecedent with one negated consequent.",
+      "content_sha256": "903641c1390048d1bda661a94e66c16d3829692b3269dd05347bda5fd0d6200b",
+      "payload_sha256": "c9619c28aa68931a2b2a49ea345d896d27d3832f3860041030459304d8189b73",
+      "payload_utf8_bytes": 6377
+    },
+    {
+      "skill_id": "logicbench_007",
+      "name": "Commutativity of Disjunction",
+      "description": "Reasoning about the logical equivalence P∨Q ≡ Q∨P, distinguishing genuine commuted forms from disjunctions that involve negated propositions.",
+      "content_sha256": "429ac907d1be16b3c7ed10971230385c57a4ceb1df3e45f2517208c3cbcaecc7",
+      "payload_sha256": "14ea8ff7996fc62da6c4f4b470da68b93805e0190d4752c2c6cc9fa14bd8376c",
+      "payload_utf8_bytes": 3885
+    },
+    {
+      "skill_id": "logicbench_008",
+      "name": "Material Implication",
+      "description": "Reasoning with the equivalence P→Q ≡ ¬P∨Q, identifying which disjunctive forms are and are not logical consequences of a given conditional.",
+      "content_sha256": "305db4e677f4f9d1f9d40661604630e29e37f60d361a714cb5dccaca4ebca3d8",
+      "payload_sha256": "57ad9cde19934257c5ceba0b5e61384cdd35acbfa63e3b498ab5129d8f4b8ad8",
+      "payload_utf8_bytes": 5351
+    },
+    {
+      "skill_id": "logicbench_009",
+      "name": "Existential Generalization",
+      "description": "Reasoning from a named individual with a property to the existence of at least one such individual, without over-generalizing to universal claims.",
+      "content_sha256": "25bd620ba312ed30e0ceeec3dd3a4ef585808c4b9ccdcb0337359f0f746c4fe4",
+      "payload_sha256": "7de29e508f0c8bbe999cc41ccc07b9049bae836d293ea90b0e7806cc94d3c8ca",
+      "payload_utf8_bytes": 4882
+    },
+    {
+      "skill_id": "logicbench_010",
+      "name": "Universal Instantiation",
+      "description": "Applying a universally quantified statement to a named individual, reasoning strictly from premises without overriding them with real-world knowledge.",
+      "content_sha256": "ce0cdb0bd8b0ed9944ded8eadd66795deb84ab65fa87ef6ebeb71fe1ced84c68",
+      "payload_sha256": "79e6e93a6e83d2968d69d7a10f99a4d1e2096e9eff986add32f9b20424c57cb1",
+      "payload_utf8_bytes": 5817
+    },
+    {
+      "skill_id": "logicbench_011",
+      "name": "Reasoning About Explicit Exceptions",
+      "description": "Reasoning about disjunctive exceptions to default rules: when 'either A or B' fails to have property P, tracking what follows for the exception members and for non-named entities in the group.",
+      "content_sha256": "d7dcbea4668c59f0cb4f4777b5ad98dba312a4b70862abdc226c963116945f3d",
+      "payload_sha256": "d231856abd46bb6b7a06bce57e83c8152a516abec441db2a5c9a0c63b88a100e",
+      "payload_utf8_bytes": 5064
+    },
+    {
+      "skill_id": "logicbench_012",
+      "name": "Reasoning About Named Individual Exceptions",
+      "description": "Reasoning about named single-entity exceptions to population-level defaults: determining what can be concluded about the wider group and the precise count of exceptions when a specific individual violates the norm.",
+      "content_sha256": "a226c7e50e439913de4f964fb6272b3e8c47fe8e0751d9d91bf54604e204163e",
+      "payload_sha256": "51a50910e89860e8c3de062bfb5ae3c70e90e4b849b5ad71e432afb9ec7c030c",
+      "payload_utf8_bytes": 5823
+    },
+    {
+      "skill_id": "logicbench_013",
+      "name": "Reasoning About Chained Default-Exception Structures",
+      "description": "Reasoning about exceptions in multi-level default chains: tracking which level an exception applies to, determining whether it propagates to specific subcategory members, and preserving intact defaults for non-implicated entities.",
+      "content_sha256": "8966cdade734cf1d4085a22a0f582526de3eaed27738588b64d28d78ba7958bb",
+      "payload_sha256": "3801fea2f3dad96ea6984b91fe60ea1b9061587362751fc64951440897107e19",
+      "payload_utf8_bytes": 5569
+    },
+    {
+      "skill_id": "logicbench_014",
+      "name": "Reasoning Under Conflicting Evidence: Priority and Reliability",
+      "description": "Non-monotonic reasoning under priority: when two sources make contradictory claims, the more reliable source's assertion is adopted as the conclusion — a defeasible rule, not merely a probabilistic weight.",
+      "content_sha256": "949b2b4fd7b5579b0f176afce22695fbdd0206d297418ce0b310ec90e4795c1a",
+      "payload_sha256": "997bf3d4f71b708c2c280cecec0a545843a9d58a3e3547f0ebdf568f698ecbe5",
+      "payload_utf8_bytes": 5672
+    },
+    {
+      "skill_id": "logicbench_015",
+      "name": "Default Reasoning with a Single Exception",
+      "description": "Applying a default rule to a non-exceptional member when one member of the class is explicitly designated as the exception.",
+      "content_sha256": "1d0587b3cdf0a0749f72f175eb7da78550b82ccda992ec1d5ec404350a1c9768",
+      "payload_sha256": "617312f22f3e2b97ab73ce9c8ab71d109a2b94326bf94ec7dbc3fc5e041cca72",
+      "payload_utf8_bytes": 3402
+    },
+    {
+      "skill_id": "logicbench_016",
+      "name": "Default Reasoning with Irrelevant Information",
+      "description": "Applying a default rule correctly by filtering out logically irrelevant premises that do not affect who the exception is or the scope of the default.",
+      "content_sha256": "1533e5e110eeba35ee13f9bfc932bcf96bf04b227171762ac492e37118c50ed9",
+      "payload_sha256": "f110d429208ef234fb39537559de698a530475199588c03e04c2a0619e17133a",
+      "payload_utf8_bytes": 3860
+    },
+    {
+      "skill_id": "logicbench_017",
+      "name": "Default Reasoning under an Open-World Assumption",
+      "description": "Reasoning that a default holds for all members of a category except the explicitly named exception, without appealing to real-world knowledge that goes beyond the given context.",
+      "content_sha256": "52a7f8833f1e7c1764166d3a65b4c29f869a59b940d164e72afaf447080dbfb2",
+      "payload_sha256": "d7ed69f04134f5ab3a8f3a5aca8e4d3b6fb718609b171b62830f5638c9d31331",
+      "payload_utf8_bytes": 4666
+    },
+    {
+      "skill_id": "logicbench_018",
+      "name": "Default Reasoning with Multiple Concurrent Defaults",
+      "description": "Applying two concurrent default rules when each of two individuals is the exception to a different default, yielding cross-default conclusions about which individual satisfies which property.",
+      "content_sha256": "132bd7397c69c974e92d52b40ace009db1fb39d27a511faa9f56575a3f8eca5d",
+      "payload_sha256": "d116d076e6fa837adf49ba1d1f0442d035d71c8aca83bda3de6559e1b6291e79",
+      "payload_utf8_bytes": 4654
+    }
+  ]
+}

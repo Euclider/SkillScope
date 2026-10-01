@@ -68,6 +68,13 @@ class DataParallelPPOActor(BasePPOActor):
         self.actor_optimizer = actor_optimizer
 
         self.use_remove_padding = self.config.get("use_remove_padding", False)
+        self.response_logits_only = self.config.get("response_logits_only", False)
+        self.trim_common_padding = self.config.get("trim_common_padding", False)
+        if (self.response_logits_only or self.trim_common_padding) and (
+            self.use_remove_padding or self.config.get("use_fused_kernels", False)
+            or self.config.ulysses_sequence_parallel_size != 1
+        ):
+            raise ValueError("Response-logits/padding optimization requires the unfused padded text path")
         if self.use_remove_padding and _flash_attn_padding_import_error is not None:
             raise ImportError(
                 "actor.use_remove_padding requires flash_attn on CUDA; either "
@@ -75,6 +82,9 @@ class DataParallelPPOActor(BasePPOActor):
                 "actor_rollout_ref.model.use_remove_padding=false"
             ) from _flash_attn_padding_import_error
         print(f"Actor use_remove_padding={self.use_remove_padding}")
+        print(f"Actor response_logits_only={self.response_logits_only}, "
+              f"trim_common_padding={self.trim_common_padding}, "
+              f"accumulate_no_sync={self.config.get('accumulate_no_sync', False)}")
         self.use_fused_kernels = self.config.get("use_fused_kernels", False)
         print(f"Actor use_fused_kernels={self.use_fused_kernels}")
 
@@ -220,6 +230,17 @@ class DataParallelPPOActor(BasePPOActor):
 
             else:  # not using rmpad and no ulysses sp
                 extra_args = {}
+                if (self.response_logits_only or self.trim_common_padding) and multi_modal_inputs:
+                    raise ValueError("Response-logits/padding optimization is text-only")
+                if self.trim_common_padding:
+                    # Preserve every response position and its predecessor, and
+                    # retain the original position IDs. Never mutate the batch
+                    # archived for readouts. Enable only after model parity tests.
+                    from verl.workers.actor.padded_forward import trim_common_left_padding
+                    input_ids, attention_mask, position_ids = trim_common_left_padding(
+                        input_ids, attention_mask, position_ids, response_length)
+                if self.response_logits_only:
+                    extra_args["logits_to_keep"] = response_length + 1
                 if self.use_fused_kernels:
                     extra_args["temperature"] = temperature
                 output = self.actor_module(
@@ -406,91 +427,96 @@ class DataParallelPPOActor(BasePPOActor):
 
                 self.actor_optimizer.zero_grad()
 
-                for data in micro_batches:
-                    # Support all hardwares
-                    if isinstance(data, DataProto):
-                        data = {**data.batch.to(get_torch_device().current_device()), **data.non_tensor_batch}
-                    else:
-                        data = data.to(get_torch_device().current_device())  # actor device is cpu when using offload
-                    responses = data["responses"]
-                    response_length = responses.size(1)
-                    attention_mask = data["attention_mask"]
-                    if multi_turn:
-                        response_mask = data["loss_mask"][:, -response_length:]
-                    else:
-                        response_mask = attention_mask[:, -response_length:]
+                for micro_index, data in enumerate(micro_batches):
+                    from verl.workers.actor.padded_forward import gradient_sync_context
+                    with gradient_sync_context(
+                        self.actor_module, enabled=self.config.get("accumulate_no_sync", False),
+                        last=micro_index == len(micro_batches) - 1,
+                    ):
+                        # Support all hardwares
+                        if isinstance(data, DataProto):
+                            data = {**data.batch.to(get_torch_device().current_device()), **data.non_tensor_batch}
+                        else:
+                            data = data.to(get_torch_device().current_device())  # actor device is cpu when using offload
+                        responses = data["responses"]
+                        response_length = responses.size(1)
+                        attention_mask = data["attention_mask"]
+                        if multi_turn:
+                            response_mask = data["loss_mask"][:, -response_length:]
+                        else:
+                            response_mask = attention_mask[:, -response_length:]
 
-                    old_log_prob = data["old_log_probs"]
-                    advantages = data["advantages"]
+                        old_log_prob = data["old_log_probs"]
+                        advantages = data["advantages"]
 
-                    clip_ratio = self.config.clip_ratio
-                    clip_ratio_low = self.config.clip_ratio_low if self.config.clip_ratio_low is not None else clip_ratio
-                    clip_ratio_high = self.config.clip_ratio_high if self.config.clip_ratio_high is not None else clip_ratio
-                    clip_ratio_c = self.config.get("clip_ratio_c", 3.0)
-                    entropy_coeff = self.config.entropy_coeff
-                    loss_agg_mode = self.config.loss_agg_mode
+                        clip_ratio = self.config.clip_ratio
+                        clip_ratio_low = self.config.clip_ratio_low if self.config.clip_ratio_low is not None else clip_ratio
+                        clip_ratio_high = self.config.clip_ratio_high if self.config.clip_ratio_high is not None else clip_ratio
+                        clip_ratio_c = self.config.get("clip_ratio_c", 3.0)
+                        entropy_coeff = self.config.entropy_coeff
+                        loss_agg_mode = self.config.loss_agg_mode
 
-                    # all return: (bsz, response_length)
-                    calculate_entropy = False
-                    if entropy_coeff != 0:
-                        calculate_entropy = True
-                    entropy, log_prob = self._forward_micro_batch(micro_batch=data, temperature=temperature, calculate_entropy=calculate_entropy)
+                        # all return: (bsz, response_length)
+                        calculate_entropy = False
+                        if entropy_coeff != 0:
+                            calculate_entropy = True
+                        entropy, log_prob = self._forward_micro_batch(micro_batch=data, temperature=temperature, calculate_entropy=calculate_entropy)
                     
-                    loss_mode = self.config.policy_loss.get("loss_mode", "vanilla")
-                    if loss_mode == "vanilla":
-                        policy_loss_fn = compute_policy_loss
-                    elif loss_mode == "gspo":
-                        policy_loss_fn = compute_policy_loss_gspo
-                    else:
-                        raise ValueError(f"Unsupported loss_mode: {loss_mode}")
+                        loss_mode = self.config.policy_loss.get("loss_mode", "vanilla")
+                        if loss_mode == "vanilla":
+                            policy_loss_fn = compute_policy_loss
+                        elif loss_mode == "gspo":
+                            policy_loss_fn = compute_policy_loss_gspo
+                        else:
+                            raise ValueError(f"Unsupported loss_mode: {loss_mode}")
 
-                    pg_loss, pg_clipfrac, ppo_kl, pg_clipfrac_lower = policy_loss_fn(
-                        old_log_prob=old_log_prob,
-                        log_prob=log_prob,
-                        advantages=advantages,
-                        response_mask=response_mask,
-                        cliprange=clip_ratio,
-                        cliprange_low=clip_ratio_low,
-                        cliprange_high=clip_ratio_high,
-                        clip_ratio_c=clip_ratio_c,
-                        loss_agg_mode=loss_agg_mode,
-                    )
+                        pg_loss, pg_clipfrac, ppo_kl, pg_clipfrac_lower = policy_loss_fn(
+                            old_log_prob=old_log_prob,
+                            log_prob=log_prob,
+                            advantages=advantages,
+                            response_mask=response_mask,
+                            cliprange=clip_ratio,
+                            cliprange_low=clip_ratio_low,
+                            cliprange_high=clip_ratio_high,
+                            clip_ratio_c=clip_ratio_c,
+                            loss_agg_mode=loss_agg_mode,
+                        )
 
-                    if entropy_coeff != 0:
-                        entropy_loss = agg_loss(loss_mat=entropy, loss_mask=response_mask, loss_agg_mode=loss_agg_mode)
+                        if entropy_coeff != 0:
+                            entropy_loss = agg_loss(loss_mat=entropy, loss_mask=response_mask, loss_agg_mode=loss_agg_mode)
 
-                        # compute policy loss
-                        policy_loss = pg_loss - entropy_loss * entropy_coeff
-                    else:
-                        policy_loss = pg_loss
+                            # compute policy loss
+                            policy_loss = pg_loss - entropy_loss * entropy_coeff
+                        else:
+                            policy_loss = pg_loss
 
-                    if self.config.use_kl_loss:
-                        ref_log_prob = data["ref_log_prob"]
-                        # compute kl loss
-                        kld = kl_penalty(logprob=log_prob, ref_logprob=ref_log_prob, kl_penalty=self.config.kl_loss_type)
-                        kl_loss = agg_loss(loss_mat=kld, loss_mask=response_mask, loss_agg_mode=loss_agg_mode)
+                        if self.config.use_kl_loss:
+                            ref_log_prob = data["ref_log_prob"]
+                            # compute kl loss
+                            kld = kl_penalty(logprob=log_prob, ref_logprob=ref_log_prob, kl_penalty=self.config.kl_loss_type)
+                            kl_loss = agg_loss(loss_mat=kld, loss_mask=response_mask, loss_agg_mode=loss_agg_mode)
 
-                        policy_loss = policy_loss + kl_loss * self.config.kl_loss_coef
-                        metrics["actor/kl_loss"] = kl_loss.detach().item()
-                        metrics["actor/kl_coef"] = self.config.kl_loss_coef
+                            policy_loss = policy_loss + kl_loss * self.config.kl_loss_coef
+                            metrics["actor/kl_loss"] = kl_loss.detach().item()
+                            metrics["actor/kl_coef"] = self.config.kl_loss_coef
 
-                    if self.config.use_dynamic_bsz:
-                        # relative to the dynamic bsz
-                        loss = policy_loss * (len(data) / self.config.ppo_mini_batch_size)
-                    else:
-                        loss = policy_loss / self.gradient_accumulation
-                    if elastic_odd_world:
-                        loss = loss * data["phase2_optimizer_weight"].item() * (
-                            torch.distributed.get_world_size()*self.gradient_accumulation/32)
-                    loss.backward()
+                        if self.config.use_dynamic_bsz:
+                            # relative to the dynamic bsz
+                            loss = policy_loss * (len(data) / self.config.ppo_mini_batch_size)
+                        else:
+                            loss = policy_loss / self.gradient_accumulation
+                        if elastic_odd_world:
+                            loss = loss * data["phase2_optimizer_weight"].item() * (
+                                torch.distributed.get_world_size()*self.gradient_accumulation/32)
+                        loss.backward()
 
-                    data = {
-                        "actor/pg_loss": pg_loss.detach().item(),
-                        "actor/pg_clipfrac": pg_clipfrac.detach().item(),
-                        "actor/ppo_kl": ppo_kl.detach().item(),
-                        "actor/pg_clipfrac_lower": pg_clipfrac_lower.detach().item(),
-                    }
-                    append_to_dict(metrics, data)
+                        data = {
+                            "actor/pg_loss": pg_loss.detach().item(),
+                            "actor/pg_clipfrac": pg_clipfrac.detach().item(),
+                            "actor/ppo_kl": ppo_kl.detach().item(),
+                            "actor/pg_clipfrac_lower": pg_clipfrac_lower.detach().item(),
+                        }
+                        append_to_dict(metrics, data)
 
                 grad_norm = self._optimizer_step()
                 if phase2_capture:
@@ -503,4 +529,5 @@ class DataParallelPPOActor(BasePPOActor):
                 data = {"actor/grad_norm": grad_norm.detach().item()}
                 append_to_dict(metrics, data)
         self.actor_optimizer.zero_grad()
+        metrics["actor/optimizer_steps"] = len(metrics.get("actor/grad_norm", []))
         return metrics

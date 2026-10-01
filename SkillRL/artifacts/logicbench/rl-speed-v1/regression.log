@@ -1,0 +1,1813 @@
+........................................................................ [  7%]
+........................................................................ [ 14%]
+........................................................................ [ 21%]
+...............FFF........E.EEEE..EEEEEEEEEEEE.........................F [ 28%]
+.......................................................sssssss.s.s...... [ 35%]
+..........F............................................................. [ 42%]
+........FF.............................................................. [ 49%]
+..................FFF..EEFF....FFFF.FFFFFFFEEE...FF..................... [ 56%]
+........................................................................ [ 63%]
+....F...................................................F............... [ 71%]
+........................................................................ [ 78%]
+........................................................................ [ 85%]
+........................................................................ [ 92%]
+........................................................................ [ 99%]
+......                                                                   [100%]
+==================================== ERRORS ====================================
+_ ERROR at setup of test_confirmed_scope_has_exact_workload_and_keeps_recording _
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_confirmed_scope_has_exact0')
+
+    @pytest.fixture
+    def preparation(tmp_path):
+>       spec = read_json(BASE.parent / 'spec.json')
+
+tests/skillnet_cohort/test_day_budget.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillrl-embedding-router-v1/preparation-s404-8gpu/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillrl-embedding-router-v1/preparation-s404-8gpu/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+____ ERROR at setup of test_full_evaluation_is_exact_union_of_eight_shards _____
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_full_evaluation_is_exact_0')
+
+    @pytest.fixture
+    def preparation(tmp_path):
+>       spec = read_json(BASE.parent / 'spec.json')
+
+tests/skillnet_cohort/test_day_budget.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillrl-embedding-router-v1/preparation-s404-8gpu/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillrl-embedding-router-v1/preparation-s404-8gpu/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+___ ERROR at setup of test_incomplete_partition_never_claims_full_traversal ____
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_incomplete_partition_neve0')
+
+    @pytest.fixture
+    def preparation(tmp_path):
+>       spec = read_json(BASE.parent / 'spec.json')
+
+tests/skillnet_cohort/test_day_budget.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillrl-embedding-router-v1/preparation-s404-8gpu/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillrl-embedding-router-v1/preparation-s404-8gpu/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_______ ERROR at setup of test_deadline_alone_does_not_authorize_30h_run _______
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_deadline_alone_does_not_a0')
+
+    @pytest.fixture
+    def preparation(tmp_path):
+>       spec = read_json(BASE.parent / 'spec.json')
+
+tests/skillnet_cohort/test_day_budget.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillrl-embedding-router-v1/preparation-s404-8gpu/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillrl-embedding-router-v1/preparation-s404-8gpu/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_ ERROR at setup of test_optimizer_offload_is_versioned_without_changing_scientific_scope _
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_optimizer_offload_is_vers0')
+
+    @pytest.fixture
+    def preparation(tmp_path):
+>       spec = read_json(BASE.parent / 'spec.json')
+
+tests/skillnet_cohort/test_day_budget.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillrl-embedding-router-v1/preparation-s404-8gpu/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillrl-embedding-router-v1/preparation-s404-8gpu/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_ ERROR at setup of test_every_budget_execution_operation_requires_measured_admission _
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_every_budget_execution_op0')
+
+    @pytest.fixture
+    def preparation(tmp_path):
+>       spec = read_json(BASE.parent / 'spec.json')
+
+tests/skillnet_cohort/test_day_budget.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillrl-embedding-router-v1/preparation-s404-8gpu/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillrl-embedding-router-v1/preparation-s404-8gpu/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_______ ERROR at setup of test_backend_opt_in_and_old_runtime_still_mini _______
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_backend_opt_in_and_old_ru0')
+
+    @pytest.fixture
+    def prepared(tmp_path):
+        root = tmp_path / "new-preparation"
+>       spec = read_json(LEGACY.parent / "spec.json")
+
+tests/skillnet_cohort/test_embedding_runtime.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_ ERROR at setup of test_training_and_readout_share_exact_protocol_and_keep_rl_recipe _
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_training_and_readout_shar0')
+
+    @pytest.fixture
+    def prepared(tmp_path):
+        root = tmp_path / "new-preparation"
+>       spec = read_json(LEGACY.parent / "spec.json")
+
+tests/skillnet_cohort/test_embedding_runtime.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_ ERROR at setup of test_segment_uses_local_budget_and_does_not_change_five_update_schedule _
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_segment_uses_local_budget0')
+
+    @pytest.fixture
+    def prepared(tmp_path):
+        root = tmp_path / "new-preparation"
+>       spec = read_json(LEGACY.parent / "spec.json")
+
+tests/skillnet_cohort/test_embedding_runtime.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_ ERROR at setup of test_authorization_is_local_only_and_never_translates_to_paid_calls _
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_authorization_is_local_on0')
+
+    @pytest.fixture
+    def prepared(tmp_path):
+        root = tmp_path / "new-preparation"
+>       spec = read_json(LEGACY.parent / "spec.json")
+
+tests/skillnet_cohort/test_embedding_runtime.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_ ERROR at setup of test_invalid_local_permission_rejected_before_inference[changes0] _
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_invalid_local_permission_0')
+
+    @pytest.fixture
+    def prepared(tmp_path):
+        root = tmp_path / "new-preparation"
+>       spec = read_json(LEGACY.parent / "spec.json")
+
+tests/skillnet_cohort/test_embedding_runtime.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_ ERROR at setup of test_invalid_local_permission_rejected_before_inference[changes1] _
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_invalid_local_permission_1')
+
+    @pytest.fixture
+    def prepared(tmp_path):
+        root = tmp_path / "new-preparation"
+>       spec = read_json(LEGACY.parent / "spec.json")
+
+tests/skillnet_cohort/test_embedding_runtime.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_ ERROR at setup of test_invalid_local_permission_rejected_before_inference[changes2] _
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_invalid_local_permission_2')
+
+    @pytest.fixture
+    def prepared(tmp_path):
+        root = tmp_path / "new-preparation"
+>       spec = read_json(LEGACY.parent / "spec.json")
+
+tests/skillnet_cohort/test_embedding_runtime.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+___ ERROR at setup of test_fail_closed_on_changed_runtime_identity[backend] ____
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_fail_closed_on_changed_ru0')
+
+    @pytest.fixture
+    def prepared(tmp_path):
+        root = tmp_path / "new-preparation"
+>       spec = read_json(LEGACY.parent / "spec.json")
+
+tests/skillnet_cohort/test_embedding_runtime.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+___ ERROR at setup of test_fail_closed_on_changed_runtime_identity[profile] ____
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_fail_closed_on_changed_ru1')
+
+    @pytest.fixture
+    def prepared(tmp_path):
+        root = tmp_path / "new-preparation"
+>       spec = read_json(LEGACY.parent / "spec.json")
+
+tests/skillnet_cohort/test_embedding_runtime.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+__ ERROR at setup of test_fail_closed_on_changed_runtime_identity[placement] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_fail_closed_on_changed_ru2')
+
+    @pytest.fixture
+    def prepared(tmp_path):
+        root = tmp_path / "new-preparation"
+>       spec = read_json(LEGACY.parent / "spec.json")
+
+tests/skillnet_cohort/test_embedding_runtime.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+__ ERROR at setup of test_phase2_window_registration_carries_the_same_backend __
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_phase2_window_registratio0')
+
+    @pytest.fixture
+    def prepared(tmp_path):
+        root = tmp_path / "new-preparation"
+>       spec = read_json(LEGACY.parent / "spec.json")
+
+tests/skillnet_cohort/test_embedding_runtime.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_ ERROR at setup of test_new_readout_entrypoints_require_authorization_before_work[phase2.measure] _
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_new_readout_entrypoints_r0')
+
+    @pytest.fixture
+    def supported_window(tmp_path):
+        training = tmp_path / "training"
+        checkpoint = training / "models/u0000"
+        identity = fake_model(checkpoint)
+        for name in ("batches", "old_logprobs", "new_logprobs", "optimizer_steps"):
+            (training / name).mkdir(parents=True)
+>       jobs = job_plan(PREPARATION, checkpoint, 0, "valid_seen", "anchors")
+
+tests/skillnet_cohort/test_preparation.py:243: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/evaluate.py:16: in job_plan
+    load_preparation(preparation)
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_ ERROR at setup of test_new_readout_entrypoints_require_authorization_before_work[phase2.evaluate] _
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_new_readout_entrypoints_r1')
+
+    @pytest.fixture
+    def supported_window(tmp_path):
+        training = tmp_path / "training"
+        checkpoint = training / "models/u0000"
+        identity = fake_model(checkpoint)
+        for name in ("batches", "old_logprobs", "new_logprobs", "optimizer_steps"):
+            (training / name).mkdir(parents=True)
+>       jobs = job_plan(PREPARATION, checkpoint, 0, "valid_seen", "anchors")
+
+tests/skillnet_cohort/test_preparation.py:243: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/evaluate.py:16: in job_plan
+    load_preparation(preparation)
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+__ ERROR at setup of test_natural_support_accounts_for_all_37_without_forcing __
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_natural_support_accounts_0')
+
+    @pytest.fixture
+    def supported_window(tmp_path):
+        training = tmp_path / "training"
+        checkpoint = training / "models/u0000"
+        identity = fake_model(checkpoint)
+        for name in ("batches", "old_logprobs", "new_logprobs", "optimizer_steps"):
+            (training / name).mkdir(parents=True)
+>       jobs = job_plan(PREPARATION, checkpoint, 0, "valid_seen", "anchors")
+
+tests/skillnet_cohort/test_preparation.py:243: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/evaluate.py:16: in job_plan
+    load_preparation(preparation)
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+__ ERROR at setup of test_window_adapter_freezes_assets_and_keeps_shared_math __
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_window_adapter_freezes_as0')
+
+    @pytest.fixture
+    def supported_window(tmp_path):
+        training = tmp_path / "training"
+        checkpoint = training / "models/u0000"
+        identity = fake_model(checkpoint)
+        for name in ("batches", "old_logprobs", "new_logprobs", "optimizer_steps"):
+            (training / name).mkdir(parents=True)
+>       jobs = job_plan(PREPARATION, checkpoint, 0, "valid_seen", "anchors")
+
+tests/skillnet_cohort/test_preparation.py:243: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/evaluate.py:16: in job_plan
+    load_preparation(preparation)
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_ ERROR at setup of test_prediction_lock_binds_cohort_protocol_window_features_and_endpoint _
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_prediction_lock_binds_coh0')
+
+    @pytest.fixture
+    def supported_window(tmp_path):
+        training = tmp_path / "training"
+        checkpoint = training / "models/u0000"
+        identity = fake_model(checkpoint)
+        for name in ("batches", "old_logprobs", "new_logprobs", "optimizer_steps"):
+            (training / name).mkdir(parents=True)
+>       jobs = job_plan(PREPARATION, checkpoint, 0, "valid_seen", "anchors")
+
+tests/skillnet_cohort/test_preparation.py:243: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/evaluate.py:16: in job_plan
+    load_preparation(preparation)
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+=================================== FAILURES ===================================
+___________ test_seed_preparation_keeps_training_and_eval_scope[404] ___________
+
+seed = 404
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_seed_preparation_keeps_tr0')
+
+    @pytest.mark.parametrize('seed', [404, 505, 606])
+    def test_seed_preparation_keeps_training_and_eval_scope(seed, tmp_path):
+        source = REPO / 'docs/experiments/phase12-vllm-v1/preparation-s404-8gpu'
+>       spec = read_json(source / 'spec.json')
+
+tests/skillnet_cohort/test_capture_scope.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-vllm-v1/preparation-s404-8gpu/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-vllm-v1/preparation-s404-8gpu/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+___________ test_seed_preparation_keeps_training_and_eval_scope[505] ___________
+
+seed = 505
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_seed_preparation_keeps_tr1')
+
+    @pytest.mark.parametrize('seed', [404, 505, 606])
+    def test_seed_preparation_keeps_training_and_eval_scope(seed, tmp_path):
+        source = REPO / 'docs/experiments/phase12-vllm-v1/preparation-s404-8gpu'
+>       spec = read_json(source / 'spec.json')
+
+tests/skillnet_cohort/test_capture_scope.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-vllm-v1/preparation-s404-8gpu/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-vllm-v1/preparation-s404-8gpu/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+___________ test_seed_preparation_keeps_training_and_eval_scope[606] ___________
+
+seed = 606
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_seed_preparation_keeps_tr2')
+
+    @pytest.mark.parametrize('seed', [404, 505, 606])
+    def test_seed_preparation_keeps_training_and_eval_scope(seed, tmp_path):
+        source = REPO / 'docs/experiments/phase12-vllm-v1/preparation-s404-8gpu'
+>       spec = read_json(source / 'spec.json')
+
+tests/skillnet_cohort/test_capture_scope.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-vllm-v1/preparation-s404-8gpu/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-vllm-v1/preparation-s404-8gpu/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+___________ test_actual_five_query_snapshot_unchanged_before_launch ____________
+
+    def test_actual_five_query_snapshot_unchanged_before_launch():
+        f = REPO/'artifacts/phase12/skillnet37-independent-s404-505-606-v4/all-first-calls-v1'
+>       receipt = read_json(f/'recovery-v1/active-monitor-handoff.json')
+
+tests/skillnet_cohort/test_explicit_router_resume.py:237: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/all-first-calls-v1/recovery-v1/active-monitor-handoff.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/all-first-calls-v1/recovery-v1/active-monitor-handoff.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+___ test_builder_changes_only_executor_not_model_sampling_or_engine_settings ___
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7751c4e60b20>
+
+    def test_builder_changes_only_executor_not_model_sampling_or_engine_settings(monkeypatch):
+        from skillnet_cohort.inference import PROFILE, registration
+        from skillnet_cohort.vllm_backend import build_engine
+        calls = []; registrations = []
+        fake = NS(LLM=lambda **kw: calls.append(kw) or NS(),
+                  ModelRegistry=NS(register_model=lambda *a: registrations.append(a)))
+        monkeypatch.setitem(sys.modules, 'vllm', fake)
+        profile = registration(PROFILE)
+>       build_engine('/same-retained-model', profile)
+
+tests/skillnet_cohort/test_first_calls_port_recovery.py:124: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/vllm_backend.py:33: in build_engine
+    require_versions(settings)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+settings = {'schema_version': 'skillnet.inference.v1', 'backend': 'vllm_v1', 'vllm_version': '0.22.0', 'torch_version': '2.11.0', ...}
+
+    def require_versions(settings):
+        for package in ('vllm', 'torch', 'transformers'):
+            if version(package).split('+')[0] != settings[package + '_version']:
+>               raise RuntimeError(f'{package} differs from the frozen vLLM environment')
+E               RuntimeError: vllm differs from the frozen vLLM environment
+
+skillnet_cohort/inference.py:50: RuntimeError
+___________ test_legacy105_and_amendment112_source_hashes_unchanged ____________
+
+    def test_legacy105_and_amendment112_source_hashes_unchanged():
+        from skillnet_cohort.seed_queue import verify_sources
+        q = REPO/'artifacts/phase12/skillnet37-independent-s404-505-606-v4'
+        for relative, count in [('recovery-v4/cohort-recovery.json', 105), ('all-first-calls-v1/plan.json', 112)]:
+>           plan = read_json(q/relative)
+
+tests/skillnet_cohort/test_first_calls_recovery.py:363: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/recovery-v4/cohort-recovery.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/recovery-v4/cohort-recovery.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+________ test_actual_1871_partial_episodes_validate_without_reexecution ________
+
+    def test_actual_1871_partial_episodes_validate_without_reexecution():
+        root = REPO/'artifacts/phase12/skillnet37-independent-s404-505-606-v4/all-first-calls-v1/seed-404'
+>       report = recovery.audit_endpoint(root, 0)
+
+tests/skillnet_cohort/test_first_calls_recovery.py:370: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/first_calls_recovery.py:33: in audit_endpoint
+    root = Path(root).resolve(); config = read_json(root/'protocol.json')
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/all-first-calls-v1/seed-404/protocol.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/all-first-calls-v1/seed-404/protocol.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+______________________ test_assets_and_confirmed_schedule ______________________
+
+    def test_assets_and_confirmed_schedule():
+>       assert load_preparation(PREPARATION)["experiments_started"] is False
+
+tests/skillnet_cohort/test_preparation.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_____________ test_superseded_payload_only_controls_cannot_launch ______________
+
+    def test_superseded_payload_only_controls_cannot_launch():
+        rejected = PREPARATION.parent.parent / "assets/manifest.json"
+        with pytest.raises(ValueError, match="prompt-boundary"):
+>           load_preparation(rejected)
+
+tests/skillnet_cohort/test_preparation.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+______ test_runtime_configuration_keeps_public_recipe_and_enables_capture ______
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_runtime_configuration_kee0')
+
+    def test_runtime_configuration_keeps_public_recipe_and_enables_capture(tmp_path):
+>       cfg = configuration(PREPARATION, tmp_path / "new")
+
+tests/skillnet_cohort/test_preparation.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/training.py:18: in configuration
+    load_preparation(preparation)
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_________ test_placeholder_rows_have_correct_modality_and_cardinality __________
+
+    def test_placeholder_rows_have_correct_modality_and_cardinality():
+        import pyarrow.parquet as pq
+        for name, count in (("train",16), ("seen-monitor",64)):
+>           rows = pq.read_table(PREPARATION.parent / f"datasets/{name}.parquet").to_pylist()
+
+tests/skillnet_cohort/test_preparation.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../miniconda3/envs/skill-RL/lib/python3.10/site-packages/pyarrow/parquet/core.py:1896: in read_table
+    dataset = ParquetDataset(
+../../miniconda3/envs/skill-RL/lib/python3.10/site-packages/pyarrow/parquet/core.py:1476: in __init__
+    self._dataset = ds.dataset(path_or_paths, filesystem=filesystem,
+../../miniconda3/envs/skill-RL/lib/python3.10/site-packages/pyarrow/dataset.py:790: in dataset
+    return _filesystem_dataset(source, **kwargs)
+../../miniconda3/envs/skill-RL/lib/python3.10/site-packages/pyarrow/dataset.py:472: in _filesystem_dataset
+    fs, paths_or_selector = _ensure_single_source(source, filesystem)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/datasets/train.parquet'
+filesystem = <pyarrow._fs.LocalFileSystem object at 0x7751bc1a9b30>
+
+    def _ensure_single_source(path, filesystem=None):
+        """
+        Treat path as either a recursively traversable directory or a single file.
+    
+        Parameters
+        ----------
+        path : path-like
+        filesystem : FileSystem or str, optional
+            If an URI is passed, then its path component will act as a prefix for
+            the file paths.
+    
+        Returns
+        -------
+        (FileSystem, list of str or fs.Selector)
+            File system object and either a single item list pointing to a file or
+            an fs.Selector object pointing to a directory.
+    
+        Raises
+        ------
+        TypeError
+            If the passed filesystem has wrong type.
+        FileNotFoundError
+            If the referenced file or directory doesn't exist.
+        """
+        from pyarrow.fs import FileType, FileSelector, _resolve_filesystem_and_path
+    
+        # at this point we already checked that `path` is a path-like
+        filesystem, path = _resolve_filesystem_and_path(path, filesystem)
+    
+        # ensure that the path is normalized before passing to dataset discovery
+        path = filesystem.normalize_path(path)
+    
+        # retrieve the file descriptor
+        file_info = filesystem.get_file_info(path)
+    
+        # depending on the path type either return with a recursive
+        # directory selector or as a list containing a single file
+        if file_info.type == FileType.Directory:
+            paths_or_selector = FileSelector(path, recursive=True)
+        elif file_info.type == FileType.File:
+            paths_or_selector = [path]
+        else:
+>           raise FileNotFoundError(path)
+E           FileNotFoundError: /home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/datasets/train.parquet
+
+../../miniconda3/envs/skill-RL/lib/python3.10/site-packages/pyarrow/dataset.py:437: FileNotFoundError
+_____________________ test_all_controls_exact_local_tokens _____________________
+
+    def test_all_controls_exact_local_tokens():
+>       spec = read_json(PREPARATION.parent / "spec.json")
+
+tests/skillnet_cohort/test_preparation.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_____________ test_authorization_missing_or_wrong_scope[training] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_authorization_missing_or_0')
+operation = 'training'
+
+    @pytest.mark.parametrize("operation", ["training", "evaluation", "exports"])
+    def test_authorization_missing_or_wrong_scope(tmp_path, operation):
+        with pytest.raises(PermissionError):
+            require_authorization(None, PREPARATION, operation)
+        permit = tmp_path / "permit.json"
+        write_new_json(permit, {"approved": True, "preparation_sha256": "another", "operations": [operation]})
+        with pytest.raises(PermissionError):
+>           require_authorization(permit, PREPARATION, operation)
+
+tests/skillnet_cohort/test_preparation.py:158: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:103: in require_authorization
+    if value.get("preparation_sha256") != file_hash(preparation_path):
+skillnet_cohort/common.py:21: in file_hash
+    with Path(path).open("rb") as stream:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+____________ test_authorization_missing_or_wrong_scope[evaluation] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_authorization_missing_or_1')
+operation = 'evaluation'
+
+    @pytest.mark.parametrize("operation", ["training", "evaluation", "exports"])
+    def test_authorization_missing_or_wrong_scope(tmp_path, operation):
+        with pytest.raises(PermissionError):
+            require_authorization(None, PREPARATION, operation)
+        permit = tmp_path / "permit.json"
+        write_new_json(permit, {"approved": True, "preparation_sha256": "another", "operations": [operation]})
+        with pytest.raises(PermissionError):
+>           require_authorization(permit, PREPARATION, operation)
+
+tests/skillnet_cohort/test_preparation.py:158: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:103: in require_authorization
+    if value.get("preparation_sha256") != file_hash(preparation_path):
+skillnet_cohort/common.py:21: in file_hash
+    with Path(path).open("rb") as stream:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+______________ test_authorization_missing_or_wrong_scope[exports] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_authorization_missing_or_2')
+operation = 'exports'
+
+    @pytest.mark.parametrize("operation", ["training", "evaluation", "exports"])
+    def test_authorization_missing_or_wrong_scope(tmp_path, operation):
+        with pytest.raises(PermissionError):
+            require_authorization(None, PREPARATION, operation)
+        permit = tmp_path / "permit.json"
+        write_new_json(permit, {"approved": True, "preparation_sha256": "another", "operations": [operation]})
+        with pytest.raises(PermissionError):
+>           require_authorization(permit, PREPARATION, operation)
+
+tests/skillnet_cohort/test_preparation.py:158: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:103: in require_authorization
+    if value.get("preparation_sha256") != file_hash(preparation_path):
+skillnet_cohort/common.py:21: in file_hash
+    with Path(path).open("rb") as stream:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+___________ test_export_authorization_does_not_require_a_paid_budget ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_export_authorization_does0')
+
+    def test_export_authorization_does_not_require_a_paid_budget(tmp_path):
+        permit = tmp_path / "permit.json"
+>       write_new_json(permit, {"approved": True, "preparation_sha256": file_hash(PREPARATION), "operations": ["exports", "evaluation"]})
+
+tests/skillnet_cohort/test_preparation.py:163: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:21: in file_hash
+    with Path(path).open("rb") as stream:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_______ test_exhaustive_fake_eval_and_idempotent_resume[valid_seen-140] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_exhaustive_fake_eval_and_0')
+split = 'valid_seen', expected = 140
+
+    @pytest.mark.parametrize("split,expected", [("valid_seen",140), ("valid_unseen",134)])
+    def test_exhaustive_fake_eval_and_idempotent_resume(tmp_path, split, expected):
+>       jobs = job_plan(PREPARATION, tmp_path / "model", 0, split)
+
+tests/skillnet_cohort/test_preparation.py:183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/evaluate.py:16: in job_plan
+    load_preparation(preparation)
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+______ test_exhaustive_fake_eval_and_idempotent_resume[valid_unseen-134] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_exhaustive_fake_eval_and_1')
+split = 'valid_unseen', expected = 134
+
+    @pytest.mark.parametrize("split,expected", [("valid_seen",140), ("valid_unseen",134)])
+    def test_exhaustive_fake_eval_and_idempotent_resume(tmp_path, split, expected):
+>       jobs = job_plan(PREPARATION, tmp_path / "model", 0, split)
+
+tests/skillnet_cohort/test_preparation.py:183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/evaluate.py:16: in job_plan
+    load_preparation(preparation)
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_________________ test_partial_eval_resumes_only_missing_games _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_partial_eval_resumes_only0')
+
+    def test_partial_eval_resumes_only_missing_games(tmp_path):
+>       jobs = job_plan(PREPARATION, tmp_path / "model", 0, "valid_seen")
+
+tests/skillnet_cohort/test_preparation.py:198: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/evaluate.py:16: in job_plan
+    load_preparation(preparation)
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_________________ test_eval_rejects_invalid_evidence[foreign] __________________
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_eval_rejects_invalid_evid0')
+problem = 'foreign'
+
+    @pytest.mark.parametrize("problem", ["foreign", "corrupt", "identity", "duplicate_plan"])
+    def test_eval_rejects_invalid_evidence(tmp_path, problem):
+>       jobs = job_plan(PREPARATION, tmp_path / "model", 0, "valid_seen")
+
+tests/skillnet_cohort/test_preparation.py:219: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/evaluate.py:16: in job_plan
+    load_preparation(preparation)
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_________________ test_eval_rejects_invalid_evidence[corrupt] __________________
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_eval_rejects_invalid_evid1')
+problem = 'corrupt'
+
+    @pytest.mark.parametrize("problem", ["foreign", "corrupt", "identity", "duplicate_plan"])
+    def test_eval_rejects_invalid_evidence(tmp_path, problem):
+>       jobs = job_plan(PREPARATION, tmp_path / "model", 0, "valid_seen")
+
+tests/skillnet_cohort/test_preparation.py:219: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/evaluate.py:16: in job_plan
+    load_preparation(preparation)
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_________________ test_eval_rejects_invalid_evidence[identity] _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_eval_rejects_invalid_evid2')
+problem = 'identity'
+
+    @pytest.mark.parametrize("problem", ["foreign", "corrupt", "identity", "duplicate_plan"])
+    def test_eval_rejects_invalid_evidence(tmp_path, problem):
+>       jobs = job_plan(PREPARATION, tmp_path / "model", 0, "valid_seen")
+
+tests/skillnet_cohort/test_preparation.py:219: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/evaluate.py:16: in job_plan
+    load_preparation(preparation)
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+______________ test_eval_rejects_invalid_evidence[duplicate_plan] ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_eval_rejects_invalid_evid3')
+problem = 'duplicate_plan'
+
+    @pytest.mark.parametrize("problem", ["foreign", "corrupt", "identity", "duplicate_plan"])
+    def test_eval_rejects_invalid_evidence(tmp_path, problem):
+>       jobs = job_plan(PREPARATION, tmp_path / "model", 0, "valid_seen")
+
+tests/skillnet_cohort/test_preparation.py:219: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/evaluate.py:16: in job_plan
+    load_preparation(preparation)
+skillnet_cohort/common.py:71: in load_preparation
+    manifest = read_json(path)
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+_ test_all_original_placebo_full_prompts_and_counterinputs_are_aligned[False] __
+
+with_history = False
+
+    @pytest.mark.parametrize("with_history", [False, True])
+    def test_all_original_placebo_full_prompts_and_counterinputs_are_aligned(with_history):
+        import torch
+        from transformers import AutoTokenizer
+        from agent_system.environments.prompts.alfworld import ALFWORLD_TEMPLATE_NO_HIS_WITH_MEMORY, ALFWORLD_TEMPLATE_WITH_MEMORY, use_action_only_instruction
+        from phase2.measure import counter_input
+>       tokenizer = AutoTokenizer.from_pretrained(read_json(PREPARATION.parent / "spec.json")["model_path"], local_files_only=True)
+
+tests/skillnet_cohort/test_preparation.py:346: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+__ test_all_original_placebo_full_prompts_and_counterinputs_are_aligned[True] __
+
+with_history = True
+
+    @pytest.mark.parametrize("with_history", [False, True])
+    def test_all_original_placebo_full_prompts_and_counterinputs_are_aligned(with_history):
+        import torch
+        from transformers import AutoTokenizer
+        from agent_system.environments.prompts.alfworld import ALFWORLD_TEMPLATE_NO_HIS_WITH_MEMORY, ALFWORLD_TEMPLATE_WITH_MEMORY, use_action_only_instruction
+        from phase2.measure import counter_input
+>       tokenizer = AutoTokenizer.from_pretrained(read_json(PREPARATION.parent / "spec.json")["model_path"], local_files_only=True)
+
+tests/skillnet_cohort/test_preparation.py:346: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/skillnet-phase12-preparation-v1/assets-v2/spec.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+____________ test_seed505_config_changes_only_gold_and_owned_paths _____________
+
+    def test_seed505_config_changes_only_gold_and_owned_paths():
+>       old = read_json(SOURCE/'protocol.json')
+
+tests/skillnet_cohort/test_seed505_precision.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/all-first-calls-v1/followup-s505/seed-505/protocol.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/artifacts/phase12/skillnet37-independent-s404-505-606-v4/all-first-calls-v1/followup-s505/seed-505/protocol.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+____ test_new_preparation_binds_all_generation_paths_without_changing_grpo _____
+
+tmp_path = PosixPath('/tmp/pytest-of-wangyifan/pytest-139/test_new_preparation_binds_all0')
+
+    def test_new_preparation_binds_all_generation_paths_without_changing_grpo(tmp_path):
+        base = REPO / 'docs/experiments/phase12-daybudget-v2/preparation-s404-8gpu'
+>       manifest = read_json(base / 'manifest.json')
+
+tests/skillnet_cohort/test_vllm_backend.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+skillnet_cohort/common.py:28: in read_json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1134: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/home/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-daybudget-v2/preparation-s404-8gpu/manifest.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return self._accessor.open(self, mode, buffering, encoding, errors,
+                                   newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/wangyifan/skill-RL/SkillRL/docs/experiments/phase12-daybudget-v2/preparation-s404-8gpu/manifest.json'
+
+../../miniconda3/envs/skill-RL/lib/python3.10/pathlib.py:1119: FileNotFoundError
+=============================== warnings summary ===============================
+../../miniconda3/envs/skill-RL/lib/python3.10/site-packages/ray/util/state/util.py:54
+  /home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/ray/util/state/util.py:54: DeprecationWarning: Ray state API is no longer experimental. Please import from `ray.util.state`. instead. Importing from `ray.experimental` will be deprecated in future releases. 
+    warnings.warn(
+
+../../miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/jit/_script.py:362: 14 warnings
+  /home/wangyifan/miniconda3/envs/skill-RL/lib/python3.10/site-packages/torch/jit/_script.py:362: DeprecationWarning: `torch.jit.script_method` is deprecated. Please switch to `torch.compile` or `torch.export`.
+    warnings.warn(
+
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+  /home/wangyifan/skill-RL/SkillRL/logicbench_phase12/metrics.py:45: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+    _finite_or_none(spearmanr(scores, severity).statistic) if len(scores) >= 3 else None)
+
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+  /home/wangyifan/skill-RL/SkillRL/logicbench_phase12/metrics.py:47: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+    _finite_or_none(pearsonr(scores, severity).statistic) if len(scores) >= 3 else None)
+
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+  /home/wangyifan/skill-RL/SkillRL/logicbench_phase12/metrics.py:54: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+    _finite_or_none(spearmanr(scores, magnitude).statistic) if len(scores) >= 3 else None)
+
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+  /home/wangyifan/skill-RL/SkillRL/logicbench_phase12/metrics.py:56: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+    _finite_or_none(pearsonr(scores, magnitude).statistic) if len(scores) >= 3 else None)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/skillnet_cohort/test_capture_scope.py::test_seed_preparation_keeps_training_and_eval_scope[404]
+FAILED tests/skillnet_cohort/test_capture_scope.py::test_seed_preparation_keeps_training_and_eval_scope[505]
+FAILED tests/skillnet_cohort/test_capture_scope.py::test_seed_preparation_keeps_training_and_eval_scope[606]
+FAILED tests/skillnet_cohort/test_explicit_router_resume.py::test_actual_five_query_snapshot_unchanged_before_launch
+FAILED tests/skillnet_cohort/test_first_calls_port_recovery.py::test_builder_changes_only_executor_not_model_sampling_or_engine_settings
+FAILED tests/skillnet_cohort/test_first_calls_recovery.py::test_legacy105_and_amendment112_source_hashes_unchanged
+FAILED tests/skillnet_cohort/test_first_calls_recovery.py::test_actual_1871_partial_episodes_validate_without_reexecution
+FAILED tests/skillnet_cohort/test_preparation.py::test_assets_and_confirmed_schedule
+FAILED tests/skillnet_cohort/test_preparation.py::test_superseded_payload_only_controls_cannot_launch
+FAILED tests/skillnet_cohort/test_preparation.py::test_runtime_configuration_keeps_public_recipe_and_enables_capture
+FAILED tests/skillnet_cohort/test_preparation.py::test_placeholder_rows_have_correct_modality_and_cardinality
+FAILED tests/skillnet_cohort/test_preparation.py::test_all_controls_exact_local_tokens
+FAILED tests/skillnet_cohort/test_preparation.py::test_authorization_missing_or_wrong_scope[training]
+FAILED tests/skillnet_cohort/test_preparation.py::test_authorization_missing_or_wrong_scope[evaluation]
+FAILED tests/skillnet_cohort/test_preparation.py::test_authorization_missing_or_wrong_scope[exports]
+FAILED tests/skillnet_cohort/test_preparation.py::test_export_authorization_does_not_require_a_paid_budget
+FAILED tests/skillnet_cohort/test_preparation.py::test_exhaustive_fake_eval_and_idempotent_resume[valid_seen-140]
+FAILED tests/skillnet_cohort/test_preparation.py::test_exhaustive_fake_eval_and_idempotent_resume[valid_unseen-134]
+FAILED tests/skillnet_cohort/test_preparation.py::test_partial_eval_resumes_only_missing_games
+FAILED tests/skillnet_cohort/test_preparation.py::test_eval_rejects_invalid_evidence[foreign]
+FAILED tests/skillnet_cohort/test_preparation.py::test_eval_rejects_invalid_evidence[corrupt]
+FAILED tests/skillnet_cohort/test_preparation.py::test_eval_rejects_invalid_evidence[identity]
+FAILED tests/skillnet_cohort/test_preparation.py::test_eval_rejects_invalid_evidence[duplicate_plan]
+FAILED tests/skillnet_cohort/test_preparation.py::test_all_original_placebo_full_prompts_and_counterinputs_are_aligned[False]
+FAILED tests/skillnet_cohort/test_preparation.py::test_all_original_placebo_full_prompts_and_counterinputs_are_aligned[True]
+FAILED tests/skillnet_cohort/test_seed505_precision.py::test_seed505_config_changes_only_gold_and_owned_paths
+FAILED tests/skillnet_cohort/test_vllm_backend.py::test_new_preparation_binds_all_generation_paths_without_changing_grpo
+ERROR tests/skillnet_cohort/test_day_budget.py::test_confirmed_scope_has_exact_workload_and_keeps_recording
+ERROR tests/skillnet_cohort/test_day_budget.py::test_full_evaluation_is_exact_union_of_eight_shards
+ERROR tests/skillnet_cohort/test_day_budget.py::test_incomplete_partition_never_claims_full_traversal
+ERROR tests/skillnet_cohort/test_day_budget.py::test_deadline_alone_does_not_authorize_30h_run
+ERROR tests/skillnet_cohort/test_day_budget.py::test_optimizer_offload_is_versioned_without_changing_scientific_scope
+ERROR tests/skillnet_cohort/test_day_budget.py::test_every_budget_execution_operation_requires_measured_admission
+ERROR tests/skillnet_cohort/test_embedding_runtime.py::test_backend_opt_in_and_old_runtime_still_mini
+ERROR tests/skillnet_cohort/test_embedding_runtime.py::test_training_and_readout_share_exact_protocol_and_keep_rl_recipe
+ERROR tests/skillnet_cohort/test_embedding_runtime.py::test_segment_uses_local_budget_and_does_not_change_five_update_schedule
+ERROR tests/skillnet_cohort/test_embedding_runtime.py::test_authorization_is_local_only_and_never_translates_to_paid_calls
+ERROR tests/skillnet_cohort/test_embedding_runtime.py::test_invalid_local_permission_rejected_before_inference[changes0]
+ERROR tests/skillnet_cohort/test_embedding_runtime.py::test_invalid_local_permission_rejected_before_inference[changes1]
+ERROR tests/skillnet_cohort/test_embedding_runtime.py::test_invalid_local_permission_rejected_before_inference[changes2]
+ERROR tests/skillnet_cohort/test_embedding_runtime.py::test_fail_closed_on_changed_runtime_identity[backend]
+ERROR tests/skillnet_cohort/test_embedding_runtime.py::test_fail_closed_on_changed_runtime_identity[profile]
+ERROR tests/skillnet_cohort/test_embedding_runtime.py::test_fail_closed_on_changed_runtime_identity[placement]
+ERROR tests/skillnet_cohort/test_embedding_runtime.py::test_phase2_window_registration_carries_the_same_backend
+ERROR tests/skillnet_cohort/test_preparation.py::test_new_readout_entrypoints_require_authorization_before_work[phase2.measure]
+ERROR tests/skillnet_cohort/test_preparation.py::test_new_readout_entrypoints_require_authorization_before_work[phase2.evaluate]
+ERROR tests/skillnet_cohort/test_preparation.py::test_natural_support_accounts_for_all_37_without_forcing
+ERROR tests/skillnet_cohort/test_preparation.py::test_window_adapter_freezes_assets_and_keeps_shared_math
+ERROR tests/skillnet_cohort/test_preparation.py::test_prediction_lock_binds_cohort_protocol_window_features_and_endpoint
+27 failed, 956 passed, 9 skipped, 23 warnings, 22 errors in 143.44s (0:02:23)

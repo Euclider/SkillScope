@@ -1,0 +1,132 @@
+{
+  "world_size": 4,
+  "rows_per_rank": 32,
+  "results": {
+    "reference_cpu": [
+      {
+        "seconds": 28.759808803908527,
+        "max_logprob_error": 0.0,
+        "peak_gib": 3.2375736236572266
+      },
+      {
+        "seconds": 28.759447713848203,
+        "max_logprob_error": 0.0,
+        "peak_gib": 3.2375736236572266
+      },
+      {
+        "seconds": 28.760040645953268,
+        "max_logprob_error": 0.0,
+        "peak_gib": 3.2375736236572266
+      },
+      {
+        "seconds": 28.75928153586574,
+        "max_logprob_error": 0.0,
+        "peak_gib": 3.2375736236572266
+      }
+    ],
+    "reference_gpu": [
+      {
+        "seconds": 22.21404503006488,
+        "max_logprob_error": 0.0,
+        "peak_gib": 5.098800182342529
+      },
+      {
+        "seconds": 22.214072664035484,
+        "max_logprob_error": 0.0,
+        "peak_gib": 5.098800182342529
+      },
+      {
+        "seconds": 22.21413853089325,
+        "max_logprob_error": 0.0,
+        "peak_gib": 5.098800182342529
+      },
+      {
+        "seconds": 22.213556959992275,
+        "max_logprob_error": 0.0,
+        "peak_gib": 5.098800182342529
+      }
+    ],
+    "reference_gpu_root": [
+      {
+        "seconds": 1.970499767921865,
+        "max_logprob_error": 0.0,
+        "peak_gib": 14.68083143234253
+      },
+      {
+        "seconds": 1.9527973500080407,
+        "max_logprob_error": 0.0,
+        "peak_gib": 14.68083143234253
+      },
+      {
+        "seconds": 1.984794642077759,
+        "max_logprob_error": 0.0,
+        "peak_gib": 14.68083143234253
+      },
+      {
+        "seconds": 1.9771237059030682,
+        "max_logprob_error": 0.0,
+        "peak_gib": 14.68083143234253
+      }
+    ],
+    "actor_suffix": [
+      {
+        "seconds": 353.4210968010593,
+        "peak_gib": 49.40147304534912,
+        "optimizer_boundaries": 1,
+        "unclipped_grad_norm": 1.5233969688415527
+      },
+      {
+        "seconds": 353.4224534279201,
+        "peak_gib": 49.40147304534912,
+        "optimizer_boundaries": 1,
+        "unclipped_grad_norm": 1.5233969688415527
+      },
+      {
+        "seconds": 353.42131057404913,
+        "peak_gib": 49.40147304534912,
+        "optimizer_boundaries": 1,
+        "unclipped_grad_norm": 1.5233969688415527
+      },
+      {
+        "seconds": 353.4211135399528,
+        "peak_gib": 49.40147304534912,
+        "optimizer_boundaries": 1,
+        "unclipped_grad_norm": 1.5233969688415527
+      }
+    ],
+    "actor_suffix_no_sync": [
+      {
+        "seconds": 153.99002672196366,
+        "peak_gib": 53.318546295166016,
+        "optimizer_boundaries": 1,
+        "unclipped_grad_norm": 1.5462111234664917,
+        "grad_relative_l2": 0.02391912084172832,
+        "grad_cosine": 0.9999117893708936
+      },
+      {
+        "seconds": 153.98713220399804,
+        "peak_gib": 53.318546295166016,
+        "optimizer_boundaries": 1,
+        "unclipped_grad_norm": 1.5462111234664917,
+        "grad_relative_l2": 0.01750845908670881,
+        "grad_cosine": 0.999847607598541
+      },
+      {
+        "seconds": 153.9866563230753,
+        "peak_gib": 53.318546295166016,
+        "optimizer_boundaries": 1,
+        "unclipped_grad_norm": 1.5462111234664917,
+        "grad_relative_l2": 0.011780564930832852,
+        "grad_cosine": 0.9999306087871042
+      },
+      {
+        "seconds": 153.98868321697228,
+        "peak_gib": 53.318546295166016,
+        "optimizer_boundaries": 1,
+        "unclipped_grad_norm": 1.5462111234664917,
+        "grad_relative_l2": 0.006243505801591011,
+        "grad_cosine": 0.999980509538032
+      }
+    ]
+  }
+}

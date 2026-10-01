@@ -73,6 +73,12 @@ class Bank:
     def bank_id(self):
         return f"phase3:{self.branch_id}:{self.manifest_sha256}"
 
+    @property
+    def payload_renderer(self):
+        # Bank.apply stores fully rendered Markdown, including each revision's
+        # wrapper. FrozenSkillBankMemory must inject that exact stored payload.
+        return "skillrl.phase3.stored_markdown.v1"
+
     def __len__(self):
         return len(self.skills)
 

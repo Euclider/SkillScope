@@ -1,0 +1,41 @@
+{
+  "world_size": 4,
+  "ranks": [
+    {
+      "seconds": 9.532282796921209,
+      "peak_gib": 38.24214220046997,
+      "response_shape": [
+        2,
+        4
+      ],
+      "reference_parameters": 1051437824
+    },
+    {
+      "seconds": 9.532633827999234,
+      "peak_gib": 38.24214220046997,
+      "response_shape": [
+        2,
+        4
+      ],
+      "reference_parameters": 1051437824
+    },
+    {
+      "seconds": 9.53504645684734,
+      "peak_gib": 38.24214220046997,
+      "response_shape": [
+        2,
+        4
+      ],
+      "reference_parameters": 1051437824
+    },
+    {
+      "seconds": 9.53177398093976,
+      "peak_gib": 38.24214220046997,
+      "response_shape": [
+        2,
+        4
+      ],
+      "reference_parameters": 1051437824
+    }
+  ]
+}

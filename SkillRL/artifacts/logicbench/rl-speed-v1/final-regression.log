@@ -1,0 +1,31 @@
+........................................................................ [ 13%]
+........................................................................ [ 27%]
+........................................................................ [ 41%]
+........................................................................ [ 54%]
+........................................................................ [ 68%]
+........................................................................ [ 82%]
+........................................................................ [ 96%]
+.....................                                                    [100%]
+=============================== warnings summary ===============================
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+  /home/wangyifan/skill-RL/SkillRL/logicbench_phase12/metrics.py:45: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+    _finite_or_none(spearmanr(scores, severity).statistic) if len(scores) >= 3 else None)
+
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+  /home/wangyifan/skill-RL/SkillRL/logicbench_phase12/metrics.py:47: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+    _finite_or_none(pearsonr(scores, severity).statistic) if len(scores) >= 3 else None)
+
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+  /home/wangyifan/skill-RL/SkillRL/logicbench_phase12/metrics.py:54: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+    _finite_or_none(spearmanr(scores, magnitude).statistic) if len(scores) >= 3 else None)
+
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+tests/phase2/test_logicbench_extension16_finalize.py::test_finalize_merges_sixteen_preserves_eight_and_writes_both_targets
+  /home/wangyifan/skill-RL/SkillRL/logicbench_phase12/metrics.py:56: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+    _finite_or_none(pearsonr(scores, magnitude).statistic) if len(scores) >= 3 else None)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+525 passed, 8 warnings in 28.39s

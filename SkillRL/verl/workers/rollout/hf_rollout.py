@@ -129,10 +129,15 @@ class HFRollout(BaseRollout):
             # recurse need to set to False according to https://github.com/pytorch/pytorch/issues/100069
             param_ctx = FSDP.summon_full_params(self.module, writeback=False, recurse=False)
         with param_ctx, torch.autocast(device_type="cuda", dtype=torch.bfloat16):
+            # Qwen3.5's generation helper builds four-axis positions from the
+            # attention mask. An explicit VERL text position tensor bypasses
+            # that helper and fails at the rotary embedding.
+            from logicbench_phase12.qwen35_positions import is_qwen35
+            position_kwargs = {} if is_qwen35(self.module) else {"position_ids": position_ids}
             output = self.module.generate(
                 input_ids=idx,
                 attention_mask=attention_mask,
-                position_ids=position_ids,
+                **position_kwargs,
                 generation_config=generation_config,
             )
 
@@ -164,7 +169,10 @@ class HFRollout(BaseRollout):
         delta_position_id = torch.arange(1, response_length + 1, device=position_ids.device)
         delta_position_id = delta_position_id.unsqueeze(0).repeat(generated_batch_size, 1)
 
-        response_position_ids = position_ids[:, -1:] + delta_position_id
+        if position_ids.ndim == 3:
+            response_position_ids = position_ids[:, :, -1:] + delta_position_id[:, None, :]
+        else:
+            response_position_ids = position_ids[:, -1:] + delta_position_id
         position_ids = torch.cat([position_ids, response_position_ids], dim=-1)
 
         response_attention_mask = get_response_mask(response_id=response, eos_token=eos_token_id, dtype=attention_mask.dtype)

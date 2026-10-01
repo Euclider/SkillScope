@@ -1,0 +1,50 @@
+{
+  "world_size": 4,
+  "rows_per_rank": 8,
+  "results": {
+    "reference_cpu": [
+      {
+        "seconds": 28.167062803870067,
+        "max_logprob_error": 0.0,
+        "peak_gib": 3.235319137573242
+      },
+      {
+        "seconds": 28.167328076902777,
+        "max_logprob_error": 0.0,
+        "peak_gib": 3.235319137573242
+      },
+      {
+        "seconds": 28.16722648893483,
+        "max_logprob_error": 0.0,
+        "peak_gib": 3.235319137573242
+      },
+      {
+        "seconds": 28.1670350311324,
+        "max_logprob_error": 0.0,
+        "peak_gib": 3.235319137573242
+      }
+    ],
+    "reference_gpu": [
+      {
+        "seconds": 22.055816790787503,
+        "max_logprob_error": 0.0,
+        "peak_gib": 5.096107006072998
+      },
+      {
+        "seconds": 22.055834426078945,
+        "max_logprob_error": 0.0,
+        "peak_gib": 5.096107006072998
+      },
+      {
+        "seconds": 22.055883808992803,
+        "max_logprob_error": 0.0,
+        "peak_gib": 5.096107006072998
+      },
+      {
+        "seconds": 22.05567149305716,
+        "max_logprob_error": 0.0,
+        "peak_gib": 5.096107006072998
+      }
+    ]
+  }
+}

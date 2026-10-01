@@ -64,9 +64,22 @@ def physical_gpu(shared_gpu_physical_id):
     return shared_gpu_physical_id  # Ray CPU-only TaskRunner: explicitly shared GPU.
 
 
+def encoder_environment(device, shared_gpu_physical_id=None):
+    permitted = ('PATH', 'LD_LIBRARY_PATH', 'HOME', 'XDG_CACHE_HOME', 'TRITON_CACHE_DIR',
+                 'HF_HUB_OFFLINE', 'TOKENIZERS_PARALLELISM', 'OMP_NUM_THREADS',
+                 'OPENBLAS_NUM_THREADS', 'MKL_NUM_THREADS')
+    environment = {key: os.environ[key] for key in permitted if key in os.environ}
+    environment.update(CUDA_VISIBLE_DEVICES='' if device == 'cpu' else str(physical_gpu(shared_gpu_physical_id)),
+                       PYTHONPATH=str(Path(__file__).resolve().parents[1]), PYTHONDONTWRITEBYTECODE='1')
+    return environment
+
+
 class GPUEncoderProxy:
     def __init__(self, *, model_path, profile_sha256, intra_op_threads,
-                 shared_gpu_physical_id, ledger_path, forward_microbatch_size=None):
+                 shared_gpu_physical_id, ledger_path, forward_microbatch_size=None, python_executable=None,
+                 device='cuda:0', runtime_variant=None):
+        self.device, self.runtime_variant = device, runtime_variant
+        self.python_executable = python_executable or sys.executable
         self.model_path = str(model_path)
         self.profile_sha256 = profile_sha256
         self.intra_op_threads = intra_op_threads
@@ -85,19 +98,16 @@ class GPUEncoderProxy:
         descriptor, path = tempfile.mkstemp(prefix="router-gpu-sidecar-", suffix=".log",
                                           dir=self.ledger_path.parent)
         self.log_path = path
-        physical = physical_gpu(self.shared_gpu_physical_id)
-        permitted = ("PATH", "LD_LIBRARY_PATH", "HOME", "XDG_CACHE_HOME", "TRITON_CACHE_DIR",
-                     "HF_HUB_OFFLINE", "TOKENIZERS_PARALLELISM", "OMP_NUM_THREADS",
-                     "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS")
-        environment = {key: os.environ[key] for key in permitted if key in os.environ}
-        environment.update(CUDA_VISIBLE_DEVICES=str(physical),
-                           PYTHONPATH=str(Path(__file__).resolve().parents[1]),
-                           PYTHONDONTWRITEBYTECODE="1")
-        args = [sys.executable, "-B", "-m", "phase3.gpu_encoder_service", "--serve",
+        environment = encoder_environment(self.device, self.shared_gpu_physical_id)
+        args = [self.python_executable, "-B", "-m", "phase3.gpu_encoder_service", "--serve",
                 "--model-path", self.model_path, "--profile-sha256", self.profile_sha256,
                 "--intra-op-threads", str(self.intra_op_threads)]
         if self.forward_microbatch_size is not None:
             args += ["--forward-microbatch-size", str(self.forward_microbatch_size)]
+        if self.device == 'cpu':
+            args += ['--device', 'cpu']
+        if self.runtime_variant:
+            args += ['--runtime-variant', self.runtime_variant]
         with os.fdopen(descriptor, "wb") as log:
             self.process = subprocess.Popen(args, cwd=Path(__file__).resolve().parents[1],
                                             env=environment, stdin=subprocess.PIPE,
@@ -138,7 +148,8 @@ class GPUEncoderProxy:
 
 
 def shared_gpu_encoder(*, model_path, profile_sha256, intra_op_threads,
-                       shared_gpu_physical_id, ledger_path, forward_microbatch_size=None):
+                       shared_gpu_physical_id, ledger_path, forward_microbatch_size=None, python_executable=None,
+                       device='cuda:0', runtime_variant=None):
     """Reuse one frozen encoder sidecar across train and native validation.
 
     Both environment managers live in the same Ray coordinator process and
@@ -147,18 +158,19 @@ def shared_gpu_encoder(*, model_path, profile_sha256, intra_op_threads,
     """
     key = (os.getpid(), str(Path(model_path).resolve()), profile_sha256,
            intra_op_threads, shared_gpu_physical_id, str(Path(ledger_path).resolve()),
-           forward_microbatch_size)
+           forward_microbatch_size, python_executable or sys.executable, device, runtime_variant)
     with _SHARED_ENCODERS_LOCK:
         proxy = _SHARED_ENCODERS.get(key)
         if proxy is None:
             proxy = GPUEncoderProxy(model_path=model_path, profile_sha256=profile_sha256,
                 intra_op_threads=intra_op_threads, shared_gpu_physical_id=shared_gpu_physical_id,
-                ledger_path=ledger_path, forward_microbatch_size=forward_microbatch_size)
+                ledger_path=ledger_path, forward_microbatch_size=forward_microbatch_size,
+                python_executable=python_executable, device=device, runtime_variant=runtime_variant)
             _SHARED_ENCODERS[key] = proxy
         return proxy
 
 
-def serve(model_path, profile_sha256, intra_op_threads, forward_microbatch_size=None):
+def serve(model_path, profile_sha256, intra_op_threads, forward_microbatch_size=None, device='cuda:0', runtime_variant=None):
     from agent_system.memory.skillnet_runtime import DEFAULT_EMBEDDING_ROUTER_PROFILE
     from agent_system.memory.skillrl_embedding_batch_router import BatchedSentenceEncoder
     from agent_system.memory.skillrl_embedding_router import load_profile
@@ -166,11 +178,13 @@ def serve(model_path, profile_sha256, intra_op_threads, forward_microbatch_size=
     if file_hash(DEFAULT_EMBEDDING_ROUTER_PROFILE) != profile_sha256:
         raise ValueError("GPU sidecar embedding profile changed")
     config, files = load_profile(DEFAULT_EMBEDDING_ROUTER_PROFILE)
-    encoder = BatchedSentenceEncoder(config, model_path, files, "cuda:0",
+    from .embedding_routing import runtime_profile
+    config = runtime_profile(config, device, runtime_variant)
+    encoder = BatchedSentenceEncoder(config, model_path, files, device,
                                      intra_op_threads=intra_op_threads,
                                      forward_microbatch_size=forward_microbatch_size)
     import torch
-    print(f"GPU encoder sidecar visible={os.environ.get('CUDA_VISIBLE_DEVICES')}",
+    print(f"Encoder sidecar device={device} visible={os.environ.get('CUDA_VISIBLE_DEVICES')}",
           file=sys.stderr, flush=True)
     try:
         while True:
@@ -187,7 +201,8 @@ def serve(model_path, profile_sha256, intra_op_threads, forward_microbatch_size=
                 break
             try:
                 vectors, accounting = encoder.encode(request["texts"])
-                torch.cuda.empty_cache()
+                if device != 'cpu':
+                    torch.cuda.empty_cache()
                 send(sys.stdout.buffer, {"status": "ok", "vectors": vectors, "accounting": accounting})
             except Exception as error:
                 print(f"GPU encoder forward failed: {type(error).__name__}: {error}",
@@ -196,7 +211,8 @@ def serve(model_path, profile_sha256, intra_op_threads, forward_microbatch_size=
                 break
     finally:
         encoder.close()
-        torch.cuda.empty_cache()
+        if device != 'cpu':
+            torch.cuda.empty_cache()
 
 
 def main():
@@ -206,9 +222,11 @@ def main():
     parser.add_argument("--profile-sha256", required=True)
     parser.add_argument("--intra-op-threads", type=int, required=True)
     parser.add_argument("--forward-microbatch-size", type=int)
+    parser.add_argument('--device', choices=('cpu', 'cuda:0'), default='cuda:0')
+    parser.add_argument('--runtime-variant', choices=('cpu_torch_2_11_0_v1',))
     args = parser.parse_args()
     serve(args.model_path, args.profile_sha256, args.intra_op_threads,
-          args.forward_microbatch_size)
+          args.forward_microbatch_size, args.device, args.runtime_variant)
 
 
 if __name__ == "__main__":

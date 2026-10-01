@@ -65,8 +65,11 @@ def batch_execution(settings):
 
 def validate_settings(settings):
     base = {"backend", "model_path", "device", "profile_sha256", "max_local_calls"}
-    require(set(settings) in (base, base | {"execution"}),
+    require(base <= set(settings) <= base | {"execution", "python_executable", "runtime_variant"},
             "Embedding router requires explicit model/device/profile/local-call limit; no API fields")
+    if "python_executable" in settings:
+        require(isinstance(settings["python_executable"], str) and Path(settings["python_executable"]).is_absolute(),
+                "Router interpreter must be an absolute path")
     require(settings["backend"] == BACKEND, "Unknown local router")
     require(isinstance(settings["model_path"], str) and Path(settings["model_path"]).is_absolute(),
             "Absolute local embedding model path required")
@@ -76,7 +79,16 @@ def validate_settings(settings):
     require(file_hash(DEFAULT_EMBEDDING_ROUTER_PROFILE) == settings["profile_sha256"], "Embedding profile changed")
     batch_execution(settings)
     positive_int(settings["max_local_calls"], "branch-wide local router budget")
-    return load_profile(DEFAULT_EMBEDDING_ROUTER_PROFILE)
+    config, files = load_profile(DEFAULT_EMBEDDING_ROUTER_PROFILE)
+    return runtime_profile(config, settings['device'], settings.get('runtime_variant')), files
+
+
+def runtime_profile(config, device, variant=None):
+    if variant is None:
+        return config
+    require(variant == 'cpu_torch_2_11_0_v1' and device == 'cpu', 'Invalid explicit CPU runtime variant')
+    from dataclasses import replace
+    return replace(config, torch_version='2.11.0+cpu')
 
 
 class LocalLedger:
@@ -201,6 +213,9 @@ class BranchBatchedEmbeddingRouter(BatchedEmbeddingStepRouter):
 
     _validate_memory = BranchEmbeddingRouter._validate_memory
 
+    def _execution_version(self, execution):
+        return MICROBATCH_VERSION if execution["mode"] == "state_batch_fp32_micro_v2" else BATCH_VERSION
+
     def _validate_candidates(self, candidates):
         require(self.memory.bank.manifest_sha256 == self.protocol["bank_manifest_sha256"],
                 "Bank mutated after router binding")
@@ -208,7 +223,7 @@ class BranchBatchedEmbeddingRouter(BatchedEmbeddingStepRouter):
 
     def __init__(self, memory, config, *, model_files, model_path, device,
                  cache_path, max_local_calls, execution, _encoder):
-        self.version = MICROBATCH_VERSION if execution["mode"] == "state_batch_fp32_micro_v2" else BATCH_VERSION
+        self.version = self._execution_version(execution)
         self._validate_memory(memory)
         self.memory, self._config, self._encoder = memory, config, _encoder
         self._encoder_args = config, model_path, dict(model_files), device
@@ -220,7 +235,7 @@ class BranchBatchedEmbeddingRouter(BatchedEmbeddingStepRouter):
             "execution": self.execution, "upstream_commit": UPSTREAM_COMMIT,
             "bank_manifest_sha256": memory.bank.manifest_sha256, "model_files": dict(model_files),
             "catalog": memory.bank.router_catalog(), "skill_texts": skill_texts(memory),
-            "query_formatter": "canonical-visible-state-json-v1-no-extra-prompt",
+            "query_formatter": self.query_formatter,
             "similarity": "l2-normalized-fp32-dot-product", "tie_break": "first-in-canonical-bank-order",
             "selection_count": 1, "external_api_calls": 0, "automatic_retries": 0}
         self.cache = RouterCache(cache_path, self.protocol, max_local_calls)
@@ -238,12 +253,14 @@ class EmbeddingRouterPool:
             self.settings["execution"] = execution
         if _encoder is not None:
             self.encoder = _encoder
-        elif execution and settings["device"].startswith("cuda:"):
+        elif execution and (settings["device"].startswith("cuda:") or "python_executable" in settings):
             from .gpu_encoder_service import shared_gpu_encoder
             self.encoder = shared_gpu_encoder(model_path=settings["model_path"],
                 profile_sha256=settings["profile_sha256"], intra_op_threads=execution["intra_op_threads"],
-                shared_gpu_physical_id=execution["shared_gpu_physical_id"], ledger_path=ledger_path,
-                forward_microbatch_size=execution.get("forward_microbatch_size"))
+                shared_gpu_physical_id=execution.get("shared_gpu_physical_id"), ledger_path=ledger_path,
+                forward_microbatch_size=execution.get("forward_microbatch_size"),
+                **({"python_executable": settings["python_executable"]} if "python_executable" in settings else {}),
+                **({"device": "cpu", "runtime_variant": settings.get("runtime_variant")} if settings["device"] == "cpu" else {}))
         elif execution:
             self.encoder = BatchedSentenceEncoder(config, settings["model_path"], files, settings["device"],
                                                   intra_op_threads=execution["intra_op_threads"])
@@ -255,6 +272,8 @@ class EmbeddingRouterPool:
             "device": settings["device"]}
         if execution:
             ledger_profile["execution"] = execution
+        if "python_executable" in settings:
+            ledger_profile["python_executable"] = settings["python_executable"]
         self.ledger = LocalLedger(ledger_path, ledger_profile, settings["max_local_calls"])
 
     def for_bank(self, bank):

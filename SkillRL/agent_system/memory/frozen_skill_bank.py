@@ -20,7 +20,6 @@ import yaml
 
 from .base import BaseMemory
 
-
 SCHEMA_VERSION = "skillrl.frozen_skill_bank.v1"
 RENDERER_VERSION = "skillrl.raw_skill_package.v1"
 SKILLNET37_COMMIT = "5c472b36d2a435001fdae3bc8439886d8050645a"
@@ -231,6 +230,10 @@ class FrozenSkillBank:
         return self._manifest["bank_id"]
 
     @property
+    def payload_renderer(self) -> str:
+        return RENDERER_VERSION
+
+    @property
     def manifest_sha256(self) -> str:
         return self._manifest_sha256
 
@@ -354,7 +357,7 @@ class FrozenSkillBankMemory(BaseMemory):
         bundle["general_skills"] = [item for item in bundle["general_skills"] if item["skill_id"] == skill_id]
         bundle["selected_skill_id"] = skill_id
         bundle["injected_skill_ids"] = [skill_id] if skill_id is not None else []
-        bundle["payload_renderer"] = RENDERER_VERSION
+        bundle["payload_renderer"] = self.bank.payload_renderer
         bundle["payload_sha256"] = self.bank.get(skill_id).payload_sha256 if skill_id is not None else _digest(b"")
         return bundle
 
@@ -380,7 +383,7 @@ class FrozenSkillBankMemory(BaseMemory):
             _require(retrieved_memories["injected_skill_ids"] == ([skill_id] if skill_id is not None else []), "Injected skill IDs disagree with payload item")
         payload = self.bank.get(skill_id).payload if skill_id is not None else ""
         if "payload_renderer" in retrieved_memories:
-            _require(retrieved_memories["payload_renderer"] == RENDERER_VERSION, "Wrong payload renderer in selected bundle")
+            _require(retrieved_memories["payload_renderer"] == self.bank.payload_renderer, "Wrong payload renderer in selected bundle")
         if "payload_sha256" in retrieved_memories:
             _require(retrieved_memories["payload_sha256"] == _digest(payload.encode("utf-8")), "Wrong payload SHA-256 in selected bundle")
         return payload

@@ -33,7 +33,7 @@ class APIConfig:
         for key in ("max_input_tokens", "max_completion_tokens"):
             positive_int(getattr(self, key), key)
         positive_int(self.max_api_calls, "API budget", zero=True)
-        require(0 < self.timeout_seconds <= 60, "Invalid request timeout")
+        require(0 < self.timeout_seconds <= (600 if self.stage == "editor" else 60), "Invalid request timeout")
 
     @property
     def key_env(self):

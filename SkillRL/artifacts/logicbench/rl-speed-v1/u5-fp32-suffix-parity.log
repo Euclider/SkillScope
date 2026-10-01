@@ -1,0 +1,9 @@
+WARNING:2026-09-30 10:35:05,338:Current Python version 3.10 is below the recommended 3.11 version. It is recommended to upgrade to Python 3.11 or higher for the best experience.
+Loading weights:   0%|          | 0/427 [00:00<?, ?it/s]Loading weights:  63%|██████▎   | 270/427 [00:00<00:00, 2676.49it/s]Loading weights: 100%|██████████| 427/427 [00:00<00:00, 2650.79it/s]
+Actor use_remove_padding=False
+Actor use_fused_kernels=False
+dtypes ['torch.float32']
+baseline {"seconds": 2.287062394898385, "peak_allocated_gib": 25.620874881744385, "max_logprob_error": 0.0, "mean_logprob_error": 0.0, "max_entropy_error": 0.0}
+suffix {"seconds": 2.087732776068151, "peak_allocated_gib": 23.726810455322266, "max_logprob_error": 0.0, "mean_logprob_error": 0.0, "max_entropy_error": 0.0}
+grad baseline {"seconds": 6.2873871750198305, "loss": -0.0001510502042947337, "peak_allocated_gib": 33.81686019897461}
+grad suffix {"seconds": 1.1688993170391768, "loss": -0.0001510502042947337, "peak_allocated_gib": 33.81820297241211, "grad_relative_l2": 0.01255114343439428, "grad_cosine": 0.9999421015871403, "grad_max_abs": 0.0017585456371307373}

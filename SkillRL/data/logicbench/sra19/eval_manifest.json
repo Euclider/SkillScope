@@ -1,0 +1,23 @@
+{
+  "schema_version": "skillscope.sra_logicbench_eval.v1",
+  "source": {
+    "repository": "https://github.com/oneal2000/SR-Agents",
+    "commit": "277fd8d2bbd7d3b81a5cf4ffa6e87e18c7906e4f",
+    "path": "data/bench/instances/logicbench.json",
+    "original_dataset": "https://github.com/Mihir3009/LogicBench",
+    "original_partition": "LogicBench(Eval) retained-pattern subset"
+  },
+  "file": "eval.json",
+  "sha256": "af5055caac041ea08cee47622f5d922b47b2ba0a8e3a60b87349599eeff1bdfe",
+  "instances": 760,
+  "skills": 19,
+  "instances_per_skill": 40,
+  "task_type_counts": {
+    "BQA": 542,
+    "MCQA": 218
+  },
+  "role": "held_out_utility_evaluation_only",
+  "may_train_policy_on_this_file": false,
+  "may_supply_router_with_gold_annotation": false,
+  "may_use_answers_as_readout_inputs": false
+}

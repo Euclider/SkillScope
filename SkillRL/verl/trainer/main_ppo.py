@@ -58,6 +58,9 @@ class TaskRunner:
             from skillnet_cohort.runtime import seed_process
             seed_process(config.skillnet_cohort.seed)
             os.environ["ALFWORLD_DATA"] = config.skillnet_cohort.data_root
+        if config.get("logicbench_phase12", {}).get("enabled", False):
+            from skillnet_cohort.runtime import seed_process
+            seed_process(int(config.logicbench_run.seed))
         # print initial config
         from pprint import pprint
 
@@ -71,8 +74,12 @@ class TaskRunner:
         # download the checkpoint from hdfs
         local_path = copy_to_local(config.actor_rollout_ref.model.path, use_shm=config.actor_rollout_ref.model.get("use_shm", False))
 
-        from agent_system.environments import make_envs
-        envs, val_envs = make_envs(config)
+        logicbench_phase12 = config.get("logicbench_phase12", {}).get("enabled", False)
+        if logicbench_phase12:
+            envs, val_envs = None, None
+        else:
+            from agent_system.environments import make_envs
+            envs, val_envs = make_envs(config)
 
         # instantiate tokenizer
         from verl.utils import hf_processor, hf_tokenizer
@@ -160,10 +167,16 @@ class TaskRunner:
 
         resource_pool_manager = ResourcePoolManager(resource_pool_spec=resource_pool_spec, mapping=mapping)
 
-        assert config.actor_rollout_ref.rollout.n == 1, "In verl, actor_rollout_ref.rollout.n>1 is for GRPO. In verl+env, we keep n=1, and achieve GRPO by env.rollout.n"
+        assert config.actor_rollout_ref.rollout.n == 1, "The environment/direct rollout handles GRPO repeats"
 
-        from agent_system.multi_turn_rollout import TrajectoryCollector
-        traj_collector = TrajectoryCollector(config=config, tokenizer=tokenizer, processor=processor)
+        if logicbench_phase12:
+            if config.trainer.get("val_before_train", False) or config.trainer.test_freq > 0:
+                raise ValueError("LogicBench uses a separate paired evaluation; disable in-trainer validation")
+            traj_collector = None
+            val_reward_fn = None
+        else:
+            from agent_system.multi_turn_rollout import TrajectoryCollector
+            traj_collector = TrajectoryCollector(config=config, tokenizer=tokenizer, processor=processor)
 
         from verl.utils.dataset.rl_dataset import collate_fn
 

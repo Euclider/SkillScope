@@ -1,0 +1,90 @@
+{
+  "model": "/home/wangyifan/model/Qwen3.5-4B",
+  "row_indices": [
+    0,
+    146,
+    292,
+    438,
+    584,
+    730,
+    876,
+    1023
+  ],
+  "torch": "2.10.0+cu128",
+  "valid_lengths": [
+    1560,
+    1064,
+    1072,
+    1431,
+    1071,
+    1063,
+    1361,
+    1301
+  ],
+  "variants": {
+    "baseline": {
+      "seconds": 2.146600275998935,
+      "peak_allocated_gib": 10.038037776947021,
+      "max_logprob_error": 0.0,
+      "mean_logprob_error": 0.0,
+      "max_entropy_error": 0.0
+    },
+    "suffix": {
+      "seconds": 1.946388176875189,
+      "peak_allocated_gib": 8.479990005493164,
+      "max_logprob_error": 0.0,
+      "mean_logprob_error": 0.0,
+      "max_entropy_error": 0.0
+    },
+    "trim_mb1": {
+      "seconds": 0.8260834550019354,
+      "peak_allocated_gib": 8.143999099731445,
+      "max_logprob_error": 0.9604370594024658,
+      "mean_logprob_error": 0.044289592653512955,
+      "max_entropy_error": 0.257232666015625
+    },
+    "suffix_mb4": {
+      "seconds": 1.7340263600926846,
+      "peak_allocated_gib": 10.176003456115723,
+      "max_logprob_error": 0.846825361251831,
+      "mean_logprob_error": 0.04057267680764198,
+      "max_entropy_error": 0.23204803466796875
+    },
+    "trim_mb4": {
+      "seconds": 0.6348005728796124,
+      "peak_allocated_gib": 8.794997215270996,
+      "max_logprob_error": 1.0753788948059082,
+      "mean_logprob_error": 0.04826270788908005,
+      "max_entropy_error": 0.2798347473144531
+    },
+    "suffix_mb8": {
+      "seconds": 1.720417686039582,
+      "peak_allocated_gib": 12.411384582519531,
+      "max_logprob_error": 0.9603381156921387,
+      "mean_logprob_error": 0.04419001564383507,
+      "max_entropy_error": 0.25785064697265625
+    },
+    "trim_mb8": {
+      "seconds": 0.6561755230650306,
+      "peak_allocated_gib": 9.654467582702637,
+      "max_logprob_error": 0.8470361232757568,
+      "mean_logprob_error": 0.04169508442282677,
+      "max_entropy_error": 0.23026275634765625
+    }
+  },
+  "gradients": {
+    "baseline": {
+      "seconds": 2.0495197880081832,
+      "loss": -0.0466882586479187,
+      "peak_allocated_gib": 18.161251068115234
+    },
+    "suffix": {
+      "seconds": 1.1144592280033976,
+      "loss": -0.0466882586479187,
+      "peak_allocated_gib": 18.159053802490234,
+      "grad_relative_l2": 0.014394269467316397,
+      "grad_cosine": 0.9999043861145892,
+      "grad_max_abs": 0.25
+    }
+  }
+}
