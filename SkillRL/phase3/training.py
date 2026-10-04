@@ -90,6 +90,8 @@ def configuration(preparation, root, branch, bank_path, bank_sha256, start, resu
 
 def execute(preparation, root, branch, bank_path, bank_sha256, start, approved, resume_update=None):
     require(approved, 'Use --execute only after reviewing the frozen preparation and budgets')
+    from .speed_dispatch import maybe_dispatch
+    maybe_dispatch(preparation, root, branch, bank_path, bank_sha256, start, resume_update)
     _, runtime = load(preparation)
     from skillnet_cohort.runtime import disk_gate
     from skillnet_cohort.training import reject_legacy_overrides

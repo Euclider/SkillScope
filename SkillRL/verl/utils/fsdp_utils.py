@@ -40,6 +40,23 @@ else:
     fully_shard, MixedPrecisionPolicy, FSDPModule, CPUOffloadPolicy = None, None, None, None
 
 
+def release_cuda_cache_after(function):
+    """Release only unused allocator pages after the worker frame returns.
+
+    Native actor/Adam/reference tensors stay on their current devices. The
+    separate router runs before the next vLLM call and cannot reuse our cache.
+    """
+    @functools.wraps(function)
+    def wrapped(*args, **kwargs):
+        output = function(*args, **kwargs)
+        device = get_torch_device()
+        if device.is_available():
+            device.synchronize()
+            device.empty_cache()
+        return output
+    return wrapped
+
+
 def init_fn(x: torch.nn.Module):
     if torch.distributed.get_rank() != 0:
         x = x.to_empty(device=get_torch_device().current_device(), recurse=False)

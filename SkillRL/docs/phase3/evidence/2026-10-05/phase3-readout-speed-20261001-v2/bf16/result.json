@@ -1,0 +1,1 @@
+{"bundle_sha256":"5af306715f2b363ee4eb72a080d4d671384cfb8780c7370250048f6b8af72b8a","chosen_logprob_max_abs_error":0.0,"decisions":24,"exact_bundle_equal":true,"gpu_ids":[2,3,4,5,6,7],"measured_speedup":1.8503858105153563,"mode":"bf16","parallel_seconds":44.48212805390358,"serial_seconds":82.30909857247025}

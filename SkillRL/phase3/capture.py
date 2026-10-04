@@ -93,3 +93,14 @@ def archive_metrics(config, update, metrics):
     write_new(Path(config.root) / 'metrics' / f'u{update:04d}.json',
               {'global_update': update, 'branch_id': config.branch_id, 'bank_sha256': config.bank_sha256,
                'metrics': jsonable(metrics)})
+    if config.get('speed_receipt'):
+        from .common import strict_json
+        audits = [strict_json((Path(config.root) / 'speed-audits' / f'u{update:04d}-rank{rank}.json').read_text())
+                  for rank in range(8)]
+        require(all(row['finite_grad_norms'] and row['optimizer_steps'] == row['expected_optimizer_steps']
+                    and row['receipt_sha256'] == config.speed_receipt_sha256 for row in audits),
+                'Incomplete/nonfinite speed update audit')
+        write_new(Path(config.root) / 'speed-audits' / f'u{update:04d}-complete.json',
+                  {'global_update': update, 'ranks': audits, 'metrics': jsonable(metrics),
+                   'receipt': config.speed_receipt, 'receipt_sha256': config.speed_receipt_sha256,
+                   'status': 'full_rl_update_observed; matched recipe, not trajectory-equivalent'})

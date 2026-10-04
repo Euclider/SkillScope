@@ -7,10 +7,26 @@ import sqlite3
 import time
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from .common import ProtocolError, canonical, digest, positive_int, require, safe_label, strict_json
+from .common import ProtocolError, canonical, digest, positive_int, require, safe_label, sha256, strict_json
+
+
+# Only fixed local validation messages may be logged; never exception bodies
+# from the gateway or arbitrary model text.
+SAFE_CONSTRAINTS = frozenset({
+    'Incomplete API response', 'API refusal or tools', 'Duplicate JSON key',
+    'Non-finite JSON number', 'Invalid operation budget/schema', 'Invalid operation count',
+    'Unexpected operation fields', 'Unknown operation or missing rationale',
+    'Unregistered edit evidence', 'Mutations require evidence references',
+    'Targets must be versioned IDs', 'Invalid edit target', 'Unknown/repeated edit target',
+    'Stale edit target', 'Wrong target cardinality', 'Normalized mutation budget exceeded',
+    'DELETE/NOOP cannot create content', 'Invalid skill content', 'Empty editor content',
+    'New IDs must not be reused', 'NOOP must be the only operation',
+    'Editor targeted an unexposed skill', 'Empty or duplicate active skills',
+})
 
 
 @dataclass(frozen=True)
@@ -56,6 +72,8 @@ class JSONClient:
         with self.connection() as db:
             db.execute("CREATE TABLE IF NOT EXISTS profile (id INTEGER PRIMARY KEY, value TEXT NOT NULL)")
             db.execute("CREATE TABLE IF NOT EXISTS attempts (id INTEGER PRIMARY KEY, key TEXT UNIQUE NOT NULL, request TEXT NOT NULL, result TEXT)")
+            db.execute("CREATE TABLE IF NOT EXISTS retry_authorizations (key TEXT PRIMARY KEY, value TEXT NOT NULL)")
+            db.execute("CREATE TABLE IF NOT EXISTS transport_timeout (id INTEGER PRIMARY KEY, value TEXT NOT NULL)")
             profile = canonical(asdict(config))
             db.execute("INSERT OR IGNORE INTO profile VALUES (1, ?)", (profile,))
             require(db.execute("SELECT value FROM profile WHERE id=1").fetchone() == (profile,), "Changed API profile/budget")
@@ -81,17 +99,122 @@ class JSONClient:
                                        http_client=openai.DefaultHttpxClient(follow_redirects=False))
         return self.client
 
+    @staticmethod
+    def _checked_result(raw):
+        require(raw is not None, "Ambiguous prior API call; manual reconciliation required")
+        record = strict_json(raw)
+        checksum = record.pop("record_sha256", None)
+        require(checksum == digest(record), "Changed API result ledger")
+        return record
+
+    def authorize_timeout_retry(self, request_key, *, timeout_seconds=600):
+        """Persist one explicit retry of an editor timeout; preserve its attempt.
+
+        The retry shares the original call budget. A second failure remains
+        terminal, and ordinary resumes may only reuse this same authorization.
+        """
+        return self._authorize_retry(request_key, timeout_seconds=timeout_seconds, response_retry=False)
+
+    def authorize_response_retry(self, request_key, *, timeout_seconds=600):
+        """One explicitly approved retry of a rejected response; no rule changes."""
+        return self._authorize_retry(request_key, timeout_seconds=timeout_seconds, response_retry=True)
+
+    def _authorize_retry(self, request_key, *, timeout_seconds, response_retry):
+        sha256(request_key)
+        require(self.config.stage == "editor", "Only editor timeout recovery is supported")
+        require(type(timeout_seconds) in (int, float) and 0 < timeout_seconds <= 600,
+                "Invalid retry timeout")
+        with self.connection() as db:
+            db.execute("BEGIN IMMEDIATE")
+            row = db.execute("SELECT request, result FROM attempts WHERE key=?", (request_key,)).fetchone()
+            require(row is not None, "Unknown API request for timeout recovery")
+            request = strict_json(row[0])
+            require(digest(request) == request_key and request["profile"] == asdict(self.config),
+                    "Changed API request/profile")
+            require("explicit_retry" not in request, "A second retry requires separate reconciliation")
+            record = self._checked_result(row[1])
+            failure_type = 'ProtocolError' if response_retry else 'APITimeoutError'
+            require(record["status"] == "failed" and record.get("failure", {}).get("type") == failure_type,
+                    "Explicit recovery requires a recorded API timeout")
+            if response_retry:
+                require(bool(record['accounting'].get('completion_id')), 'No received response to reconcile')
+            receipt = {"schema_version": ("skillrl.phase3.editor_response_retry.v1" if response_retry
+                                           else "skillrl.phase3.editor_timeout_retry.v1"),
+                       "original_request_sha256": request_key, "original_result_sha256": digest(record),
+                       "timeout_seconds": float(timeout_seconds), "additional_attempts": 1,
+                       "reason": ("user_authorized_resume_after_rejected_editor_response" if response_retry
+                                  else "user_authorized_resume_after_editor_timeout"),
+                       "authorized_utc": datetime.now(timezone.utc).isoformat()}
+            existing = db.execute("SELECT value FROM retry_authorizations WHERE key=?", (request_key,)).fetchone()
+            if existing:
+                saved = strict_json(existing[0])
+                require({k: v for k, v in saved.items() if k != "authorized_utc"}
+                        == {k: v for k, v in receipt.items() if k != "authorized_utc"},
+                        "Changed retry authorization")
+                return saved
+            db.execute("INSERT INTO retry_authorizations VALUES (?, ?)", (request_key, canonical(receipt)))
+        return receipt
+
+    def authorize_transport_timeout(self, *, timeout_seconds=600):
+        """Explicit operational override, without changing historical request keys.
+
+        This changes waiting time only. Failed calls still require a separate
+        one-shot retry authorization and every call retains the original cap.
+        """
+        require(self.config.stage == 'editor', 'Only editor transport timeout may be extended')
+        require(type(timeout_seconds) in (int, float)
+                and self.config.timeout_seconds <= timeout_seconds <= 600, 'Invalid transport timeout')
+        receipt = {'schema_version': 'skillrl.phase3.transport_timeout.v1',
+                   'profile_sha256': digest(asdict(self.config)), 'timeout_seconds': float(timeout_seconds),
+                   'authorized_utc': datetime.now(timezone.utc).isoformat(),
+                   'reason': 'user_authorized_editor_timeout_extension'}
+        with self.connection() as db:
+            db.execute('BEGIN IMMEDIATE')
+            existing = db.execute('SELECT value FROM transport_timeout WHERE id=1').fetchone()
+            if existing:
+                saved = self._checked_result(existing[0])
+                require({k: v for k, v in saved.items() if k != 'authorized_utc'}
+                        == {k: v for k, v in receipt.items() if k != 'authorized_utc'},
+                        'Changed transport timeout authorization')
+                return saved
+            db.execute('INSERT INTO transport_timeout VALUES (1, ?)',
+                       (canonical({**receipt, 'record_sha256': digest(receipt)}),))
+        return receipt
+
     def request(self, *, identity, system, payload, schema, validate):
         request = {"identity": identity, "system": system, "payload": payload, "schema": schema,
                    "profile": asdict(self.config)}
         key = digest(request)
         with self.connection() as db:
             saved = db.execute("SELECT result FROM attempts WHERE key=?", (key,)).fetchone()
+            authorization = db.execute("SELECT value FROM retry_authorizations WHERE key=?", (key,)).fetchone()
+            transport_row = db.execute('SELECT value FROM transport_timeout WHERE id=1').fetchone()
+        transport = self._checked_result(transport_row[0]) if transport_row else None
+        if transport:
+            require(self.config.stage == 'editor'
+                    and transport['schema_version'] == 'skillrl.phase3.transport_timeout.v1'
+                    and transport['profile_sha256'] == digest(asdict(self.config))
+                    and self.config.timeout_seconds <= transport['timeout_seconds'] <= 600,
+                    'Changed transport timeout profile')
+        retry = None
+        if authorization:
+            require(saved is not None, "Missing original retry attempt")
+            original = self._checked_result(saved[0])
+            retry = strict_json(authorization[0])
+            expected_type = {'skillrl.phase3.editor_timeout_retry.v1': 'APITimeoutError',
+                             'skillrl.phase3.editor_response_retry.v1': 'ProtocolError'}.get(retry.get('schema_version'))
+            require(self.config.stage == "editor" and original["status"] == "failed"
+                    and expected_type is not None and original.get("failure", {}).get("type") == expected_type
+                    and retry["original_request_sha256"] == key
+                    and retry["original_result_sha256"] == digest(original)
+                    and retry["additional_attempts"] == 1 and 0 < retry["timeout_seconds"] <= 600,
+                    "Changed timeout recovery authorization")
+            request["explicit_retry"] = retry
+            key = digest(request)
+            with self.connection() as db:
+                saved = db.execute("SELECT result FROM attempts WHERE key=?", (key,)).fetchone()
         if saved:
-            require(saved[0] is not None, "Ambiguous prior API call; manual reconciliation required")
-            record = strict_json(saved[0])
-            checksum = record.pop("record_sha256", None)
-            require(checksum == digest(record), "Changed API result ledger")
+            record = self._checked_result(saved[0])
             require(record["status"] == "success", "Prior API failure; automatic retry is prohibited")
             validate(record["value"])
             return record["value"], {**record["accounting"], "cache_hit": True, "api_calls": 0,
@@ -123,17 +246,34 @@ class JSONClient:
                   "reasoning_effort": "medium" if self.config.stage == "editor" else "none"}
         if self.config.stage == "router":
             kwargs["temperature"] = 0
+        if transport:
+            kwargs['timeout'] = transport['timeout_seconds']
+        if retry:
+            kwargs["timeout"] = retry["timeout_seconds"]
         failure, value = None, None
+        phase, diagnostic = 'transport', {}
         try:
             response = client.chat.completions.create(**kwargs)
+            phase = 'completion'
+            diagnostic['choice_count'] = len(response.choices)
+            diagnostic['finish_reason'] = safe_label(response.choices[0].finish_reason) if response.choices else None
             require(len(response.choices) == 1 and response.choices[0].finish_reason == "stop", "Incomplete API response")
             message = response.choices[0].message
+            phase = 'message'
             require(not getattr(message, "refusal", None) and not getattr(message, "tool_calls", None), "API refusal or tools")
+            phase = 'json'
+            if isinstance(message.content, str):
+                diagnostic['content_sha256'] = digest(message.content)
+                diagnostic['content_characters'] = len(message.content)
             value = strict_json(message.content)
+            phase = 'validation'
             validate(value)
         except Exception as error:
             status = getattr(error, "status_code", None)
             failure = {"type": type(error).__name__, "http_status": status if type(status) is int else None}
+            failure['phase'] = phase
+            if isinstance(error, ProtocolError) and str(error) in SAFE_CONSTRAINTS:
+                failure['constraint'] = str(error)
         from agent_system.memory.external_skill_router import _usage
         usage = _usage(response)
         if (self.config.stage == "router" and usage["prompt_tokens"] is not None
@@ -147,8 +287,16 @@ class JSONClient:
                       "usage": usage, "input_token_estimate": estimate,
                       "latency_seconds": time.monotonic() - started, "provider_cost": None,
                       "api_calls": 1, "cache_hit": False, "request_sha256": key}
+        if transport:
+            accounting.update(effective_timeout_seconds=kwargs['timeout'],
+                              transport_timeout_sha256=digest(transport))
+        if retry:
+            accounting.update(explicit_retry_of=retry["original_request_sha256"],
+                              effective_timeout_seconds=retry["timeout_seconds"])
         record = {"status": "failed" if failure else "success", "value": None if failure else value,
                   "accounting": accounting, "failure": failure}
+        if failure:
+            record['response_diagnostic'] = diagnostic
         record["record_sha256"] = digest(record)
         with self.connection() as db:
             db.execute("UPDATE attempts SET result=? WHERE key=?", (canonical(record), key))

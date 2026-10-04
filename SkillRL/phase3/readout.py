@@ -134,7 +134,7 @@ class CompactReadout:
     batch. Full-vocabulary distributions are discarded after each add(). The
     compact per-token scalars reproduce Phase2's game-equal hierarchy exactly.
     """
-    def __init__(self, identity: WindowIdentity, active_versions, *, tau_delta=1e-8):
+    def __init__(self, identity: WindowIdentity, active_versions, *, tau_delta=1e-8, stable_only=False):
         self.identity = identity
         self.versions = dict(active_versions)
         for version in self.versions.values():
@@ -144,6 +144,7 @@ class CompactReadout:
         self.states = defaultdict(lambda: {"tokens": [], "decisions": set(), "games": set(),
                                           "trajectories": set()})
         self.seen = set()
+        self.stable_only = stable_only
 
     def add(self, *, skill_id, skill_version_sha256, decision_id, game_id, trajectory_id,
             old_original, new_original, old_placebo, new_placebo, actions, advantages):
@@ -152,7 +153,10 @@ class CompactReadout:
         require(all(isinstance(value, str) and value for value in (decision_id, game_id, trajectory_id)),
                 "Missing natural decision/game/trajectory identity")
         require(decision_id not in self.seen, "Duplicate decision (including distributed padding)")
-        from phase2.stable_direction import token_signals
+        if self.stable_only:
+            from .fast_direction import token_signals
+        else:
+            from phase2.stable_direction import token_signals
         import torch
         signals = token_signals(old_original, new_original, old_placebo, new_placebo,
                                 actions, advantages, tau_delta=self.tau_delta, tau_c=0., epsilon=1e-12)
@@ -174,6 +178,32 @@ class CompactReadout:
             state["decisions"].add(decision_id)
             state["games"].add(game_id)
             state["trajectories"].add(trajectory_id)
+
+    def export_state(self):
+        """Compact scalars only; preserve token order for exact shard merging."""
+        return {"identity": asdict(self.identity), "versions": self.versions,
+                "tau_delta": self.tau_delta, "seen": sorted(self.seen),
+                "states": {sid: {key: list(value) if key == 'tokens' else sorted(value)
+                                  for key, value in state.items()}
+                           for sid, state in self.states.items()}}
+
+    def merge_state(self, record):
+        require(record['identity'] == asdict(self.identity) and record['versions'] == self.versions
+                and record['tau_delta'] == self.tau_delta, 'Foreign compact prediction shard')
+        seen = set(record['seen'])
+        require(len(seen) == len(record['seen']) and not self.seen & seen, 'Duplicate shard decisions')
+        tokens_seen = set()
+        require(set(record['states']) <= set(self.versions), 'Unknown shard skill')
+        for state in record['states'].values():
+            tokens_seen.update(row['decision_id'] for row in state['tokens'])
+            require(set(state['decisions']) <= {row['decision_id'] for row in state['tokens']},
+                    'Foreign shard support')
+        require(tokens_seen == seen, 'Missing or foreign shard decision tokens')
+        self.seen.update(seen)
+        for sid, incoming in record['states'].items():
+            self.states[sid]['tokens'].extend(incoming['tokens'])
+            for key in ('decisions', 'games', 'trajectories'):
+                self.states[sid][key].update(incoming[key])
 
     def bundle(self):
         import numpy as np

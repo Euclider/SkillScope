@@ -195,7 +195,8 @@ def retire_penultimate_checkpoint(root, event, end, current_native, world_size):
     write_new(event / 'penultimate_retention_complete.json', {**intent, 'target_absent': True})
 
 
-def execute(preparation, root, branch, stop_update=None, resume_update=None, repair_prediction=False):
+def execute(preparation, root, branch, stop_update=None, resume_update=None, repair_prediction=False,
+            retry_editor_request=None):
     from skillnet_cohort.common import exclusive_writer
     from skillnet_cohort.runtime import disk_gate
     from skillnet_cohort.assets import LocalTokenizer, neutral_control
@@ -254,6 +255,9 @@ def execute(preparation, root, branch, stop_update=None, resume_update=None, rep
         bank.save(root / 'banks')
         router = create_provider(runtime['router'], root, branch)
         editor = JSONClient(APIConfig(stage='editor', model='gpt-5.5', **runtime['editor']), root / 'editor.sqlite3', allow_live=True)
+        if retry_editor_request is not None:
+            receipt = editor.authorize_timeout_retry(retry_editor_request, timeout_seconds=600)
+            write_new(root / 'recovery' / f'editor-retry-{retry_editor_request}.json', receipt)
         tokenizer = LocalTokenizer(runtime['model_path'])
         old_path, old_hash = Path(runtime['model_path']), initial_model['identity_sha256']
         try:
@@ -397,10 +401,13 @@ def main():
     p.add_argument('--resume-update', type=int, help='Explicit intra-window native checkpoint recovery; never automatic')
     p.add_argument('--repair-prediction', action='store_true',
                    help='Explicit, non-overwriting precision recovery after a recorded parity failure')
+    p.add_argument('--retry-editor-request',
+                   help='Original SHA-256 of one recorded editor timeout explicitly authorized for a single retry')
     p.add_argument('--execute', action='store_true')
     a = p.parse_args()
     if a.execute:
-        execute(a.preparation, a.root, a.branch, a.stop_update, a.resume_update, a.repair_prediction)
+        execute(a.preparation, a.root, a.branch, a.stop_update, a.resume_update, a.repair_prediction,
+                a.retry_editor_request)
     else:
         from .common import canonical
         print(canonical(plan(a.preparation, a.root, a.branch, a.stop_update)))

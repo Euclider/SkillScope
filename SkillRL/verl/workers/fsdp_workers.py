@@ -52,6 +52,7 @@ from verl.utils.fsdp_utils import (
     load_fsdp_optimizer,
     offload_fsdp_model_to_cpu,
     offload_fsdp_optimizer,
+    release_cuda_cache_after,
     layered_summon_lora_params,
 )
 from verl.utils.import_utils import import_external_libs
@@ -654,6 +655,7 @@ class ActorRolloutRefWorker(Worker):
             )
 
     @register(dispatch_mode=Dispatch.DP_COMPUTE_PROTO)
+    @release_cuda_cache_after
     def update_actor(self, data: DataProto):
         from verl.workers.sharding_manager.fsdp_vllm_v1 import suspend_vllm_rollouts
         suspend_vllm_rollouts()
@@ -665,6 +667,11 @@ class ActorRolloutRefWorker(Worker):
             load_fsdp_model_to_gpu(self.actor_module_fsdp)
         if self._is_offload_optimizer and os.environ.get("PHASE2_CPU_ADAM")!="1":
             load_fsdp_optimizer(optimizer=self.actor_optimizer, device_id=get_torch_device().current_device())
+
+        speed_audit = self.config.actor.get('speed_audit_root')
+        if speed_audit:
+            from phase2.capture import optimizer_counter
+            speed_adam_before = optimizer_counter(self.actor_optimizer)
 
         with self.ulysses_sharding_manager:
             data = self.ulysses_sharding_manager.preprocess_data(data=data)
@@ -682,6 +689,23 @@ class ActorRolloutRefWorker(Worker):
             lr = self.actor_lr_scheduler.get_last_lr()[0]
             metrics["actor/lr"] = lr
             self.actor_lr_scheduler.step()
+
+            if speed_audit:
+                from pathlib import Path
+                from phase3.common import require, write_new
+                import math
+                count = optimizer_counter(self.actor_optimizer) - speed_adam_before
+                expected = math.ceil(len(data) / self.config.actor.ppo_mini_batch_size) * self.config.actor.ppo_epochs
+                require(count == metrics['actor/optimizer_steps'] == expected,
+                        'Speed profile changed the optimizer update count')
+                write_new(Path(speed_audit) / f"u{data.meta_info['speed_audit_update']:04d}-rank{self.rank}.json",
+                    {'rank': self.rank, 'local_decision_rows': len(data), 'local_minibatch': self.config.actor.ppo_mini_batch_size,
+                     'adam_step_before': speed_adam_before, 'adam_step_after': optimizer_counter(self.actor_optimizer),
+                     'optimizer_steps': count, 'expected_optimizer_steps': expected,
+                     'actor_seconds': delta_time, 'peak_allocated_gib': metrics['perf/max_memory_allocated_gb'],
+                     'peak_reserved_gib': metrics['perf/max_memory_reserved_gb'],
+                     'receipt_sha256': self.config.actor.speed_receipt_sha256,
+                     'finite_grad_norms': all(math.isfinite(x) for x in metrics['actor/grad_norm'])})
 
             # TODO: here, we should return all metrics
             output = DataProto(meta_info={"metrics": metrics})

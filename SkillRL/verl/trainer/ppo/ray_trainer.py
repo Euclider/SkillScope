@@ -1661,6 +1661,8 @@ class RayPPOTrainer:
                     # implement critic warmup
                     if self.config.trainer.critic_warmup <= self.global_steps:
                         # update actor
+                        if self.config.get('phase3', {}).get('speed_receipt'):
+                            batch.meta_info['speed_audit_update'] = int(self.global_steps)
                         with _timer("update_actor", timing_raw):
                             batch.meta_info["multi_turn"] = self.config.actor_rollout_ref.rollout.multi_turn.enable
                             actor_output = self.actor_rollout_wg.update_actor(batch)

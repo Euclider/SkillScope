@@ -470,7 +470,12 @@ def compute_policy_loss(
     assert clip_ratio_c > 1.0, "The lower bound of the clip_ratio_c for dual-clip PPO should be greater than 1.0," + f" but get the value: {clip_ratio_c}."
 
     negative_approx_kl = log_prob - old_log_prob
-    ratio = torch.exp(negative_approx_kl)
+    # The dual-clipped objective is already constant above both clip bounds.
+    # Bound only that saturated region before exp: exp overflow followed by
+    # a zero clamp derivative otherwise produces 0 * inf = NaN in backward.
+    upper_clip = 1 + (cliprange if cliprange_high is None else cliprange_high)
+    exp_ceiling = max(20.0, float(np.log(max(clip_ratio_c, upper_clip))) + 1.0)
+    ratio = torch.exp(negative_approx_kl.clamp(max=exp_ceiling))
     ppo_kl = verl_F.masked_mean(-negative_approx_kl, response_mask)
 
     pg_losses1 = -advantages * ratio
@@ -636,7 +641,9 @@ def kl_penalty(logprob: torch.FloatTensor, ref_logprob: torch.FloatTensor, kl_pe
     # J. Schulman. Approximating kl divergence, 2020.
     # # URL http://joschu.net/blog/kl-approx.html.
     if kl_penalty in ("low_var_kl", "k3"):
-        kl = ref_logprob - logprob
+        kl = (ref_logprob - logprob).clamp(max=20.0)
+        # For kl >= 20 the existing clamp below is already saturated at 10.
+        # Preserve its value and zero derivative without overflowing exp.
         ratio = torch.exp(kl)
         kld = (ratio - kl - 1).contiguous()
         return torch.clamp(kld, min=-10, max=10)

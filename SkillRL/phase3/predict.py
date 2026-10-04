@@ -19,7 +19,8 @@ def endpoint_forward_precision(start):
     return 'bfloat16', 'matched-offline-BF16-weights-FP32-logsoftmax-SDPA-full-vocabulary-v3'
 
 
-def predict(*, bank, old_path, new_path, identity, batch_path, output, calibration_path, parity_atol):
+def predict(*, bank, old_path, new_path, identity, batch_path, output, calibration_path, parity_atol,
+            shard_index=None, shard_count=None, stable_only=False):
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
     from phase2.measure import counter_input
@@ -36,6 +37,8 @@ def predict(*, bank, old_path, new_path, identity, batch_path, output, calibrati
               'numerical_version': 'fp64_zero_sum_readout_v1',
               'score': 'shadow_only' if identity.branch_id == 'skillrl_failure' else 'all_registered_readouts',
               'decision_use': identity.branch_id != 'skillrl_failure', 'parity_atol': parity_atol}
+    if shard_index is not None:
+        source['partition'] = {'index': shard_index, 'count': shard_count}
     with exclusive_writer(output):
         write_new(output / 'source.json', source)
         if (output / 'complete.json').exists():
@@ -93,6 +96,11 @@ def predict(*, bank, old_path, new_path, identity, batch_path, output, calibrati
         # Outcome-blind repeated same-checkpoint noise calibration; frozen on
         # the first block and never chosen to improve downstream labels.
         calibration_path = Path(calibration_path)
+        if shard_index not in (None, 0):
+            deadline = time.monotonic() + 600
+            while not calibration_path.exists() and time.monotonic() < deadline:
+                time.sleep(1)
+            require(calibration_path.exists(), 'Calibration worker did not publish its result')
         if calibration_path.exists():
             calibration = strict_json(calibration_path.read_text())
             require(calibration['branch_id'] == bank.branch_id, 'Foreign calibration')
@@ -109,7 +117,12 @@ def predict(*, bank, old_path, new_path, identity, batch_path, output, calibrati
                 'batch_sha256': metadata['sha256'], 'method': '8 decisions x two same-checkpoint forwards; L2 p95; fixed before edit/gate',
                 'tau_delta': max(1e-8, 10 * p95), 'noise_p95': p95, 'target_outcomes_read': False}
             write_new(calibration_path, calibration)
-        aggregate = CompactReadout(identity, bank.active_versions, tau_delta=calibration['tau_delta'])
+        aggregate = CompactReadout(identity, bank.active_versions, tau_delta=calibration['tau_delta'],
+                                   stable_only=stable_only)
+        if shard_index is not None:
+            from .parallel_predict import partition
+            lo, hi = partition(len(rows), shard_index, shard_count)
+            rows = rows[lo:hi]
         parity_max = 0.
         for index, (row, meta) in enumerate(rows):
             info = meta['info']
@@ -138,10 +151,14 @@ def predict(*, bank, old_path, new_path, identity, batch_path, output, calibrati
                 print(f'Phase3 prediction {index + 1}/{len(rows)}', flush=True)
         bundle = aggregate.bundle()
         write_new(output / 'readout.json', bundle)
+        compact = aggregate.export_state() if shard_index is not None else None
+        if compact is not None:
+            write_new(output / 'compact.json', compact)
         write_new(output / 'complete.json', {'readout_sha256': digest(bundle), 'source_sha256': digest(source),
             'decisions': len(rows), 'forward_calls': forward_calls, 'forward_input_tokens': forward_tokens,
             'wall_seconds': time.monotonic() - started, 'chosen_logprob_max_abs_error': parity_max,
-            'calibration_sha256': digest(calibration), 'full_vocab_saved': False, 'utility_gold_computed': False})
+            'calibration_sha256': digest(calibration), 'full_vocab_saved': False, 'utility_gold_computed': False,
+            **({'compact_sha256': digest(compact)} if compact is not None else {})})
         return bundle
 
 
@@ -151,10 +168,18 @@ def main():
         p.add_argument('--' + name, type=Path, required=True)
     p.add_argument('--bank-sha256', required=True)
     p.add_argument('--parity-atol', type=float, required=True)
+    p.add_argument('--shard-index', type=int)
+    p.add_argument('--shard-count', type=int)
+    p.add_argument('--stable-only', action='store_true')
     a = p.parse_args()
+    if a.shard_index is None:
+        from .parallel_predict import maybe_dispatch
+        if maybe_dispatch(a):
+            return
     predict(bank=Bank.load(a.bank, a.bank_sha256), old_path=a.old_path, new_path=a.new_path,
             identity=WindowIdentity(**strict_json(a.identity.read_text())), batch_path=a.batch,
-            output=a.output, calibration_path=a.calibration, parity_atol=a.parity_atol)
+            output=a.output, calibration_path=a.calibration, parity_atol=a.parity_atol,
+            shard_index=a.shard_index, shard_count=a.shard_count, stable_only=a.stable_only)
 
 
 if __name__ == '__main__':

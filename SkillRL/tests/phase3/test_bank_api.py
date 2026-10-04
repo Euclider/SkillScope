@@ -72,6 +72,75 @@ def api(tmp_path, value, stage='editor', budget=5, model=None):
     return JSONClient(config, tmp_path / f'{stage}.sqlite3', client=fake, token_counter=lambda _: 50), fake
 
 
+def test_editor_protocol_failure_has_safe_constraint_diagnostic(tmp_path):
+    b = bank()
+    client, _ = api(tmp_path, {'operations': []})
+    with pytest.raises(ProtocolError):
+        propose(b, api=client, event_id='u35', evidence=[{'evidence_id':'e'}], selector='failure_driven')
+    with client.connection() as db:
+        record = strict_json(db.execute('SELECT result FROM attempts').fetchone()[0])
+    assert record['failure']['phase'] == 'validation'
+    assert record['failure']['constraint'] == 'Invalid operation count'
+    assert record['response_diagnostic']['finish_reason'] == 'stop'
+    assert record['value'] is None
+
+
+def test_explicit_response_retry_keeps_request_and_failed_history(tmp_path):
+    b = bank()
+    client, fake = api(tmp_path, {'operations': []})
+    args = dict(bank=b, api=client, event_id='u35', evidence=[{'evidence_id':'e'}], selector='failure_driven')
+    with pytest.raises(ProtocolError):
+        propose(**args)
+    with client.connection() as db:
+        original = db.execute('SELECT key,request,result FROM attempts').fetchone()
+    with pytest.raises(ProtocolError, match='automatic retry'):
+        propose(**args)
+    receipt = client.authorize_response_retry(original[0])
+    assert client.authorize_response_retry(original[0]) == receipt
+    fake.value = {'operations':[operation('NOOP', b)]}
+    result = propose(**args)
+    assert result['changes']['noop']
+    assert result['accounting']['explicit_retry_of'] == original[0]
+    assert fake.calls[0]['messages'] == fake.calls[1]['messages']
+    assert fake.calls[0]['response_format'] == fake.calls[1]['response_format']
+    with client.connection() as db:
+        assert db.execute('SELECT key,request,result FROM attempts ORDER BY id').fetchall()[0] == original
+    assert propose(**args)['accounting']['cache_hit']
+    assert len(fake.calls) == 2
+
+
+def test_response_retry_keeps_budget_and_rejects_success(tmp_path):
+    client, _ = api(tmp_path, {}, budget=1)
+    args = dict(identity={'event':'u35'}, system='same', payload={}, schema={}, validate=lambda _: None)
+    client.request(**args)
+    with client.connection() as db:
+        key = db.execute('SELECT key FROM attempts').fetchone()[0]
+    with pytest.raises(ProtocolError):
+        client.authorize_response_retry(key)
+
+
+def test_response_retry_is_one_shot_and_counts_against_cap(tmp_path):
+    b = bank()
+    client, fake = api(tmp_path, {'operations': []}, budget=2)
+    args = dict(bank=b, api=client, event_id='u35', evidence=[{'evidence_id':'e'}], selector='failure_driven')
+    with pytest.raises(ProtocolError):
+        propose(**args)
+    with client.connection() as db:
+        key = db.execute('SELECT key FROM attempts').fetchone()[0]
+    client.authorize_response_retry(key)
+    with pytest.raises(ProtocolError):
+        propose(**args)
+    with pytest.raises(ProtocolError, match='automatic retry'):
+        propose(**args)
+    with client.connection() as db:
+        rows = db.execute('SELECT key FROM attempts ORDER BY id').fetchall()
+    assert len(rows) == len(fake.calls) == 2
+    with pytest.raises(ProtocolError):
+        client.authorize_response_retry(rows[-1][0])
+    with pytest.raises(ProtocolError, match='budget exhausted'):
+        client.request(identity={'different':1}, system='same', payload={}, schema={}, validate=lambda _:None)
+
+
 def episode(b):
     return {'trajectory_id': 'e', 'game_id': 'train/game', 'split': 'train', 'task': 'Put the object', 'success': False,
             'bank_sha256': b.manifest_sha256, 'global_update': 1,
@@ -182,6 +251,121 @@ def test_api_failure_does_not_retry_or_log_exception_text(tmp_path):
         with pytest.raises(ProtocolError):
             client.request(**args)
     assert len(fake.calls) == 1 and b'sensitive-private-header' not in client.path.read_bytes()
+
+
+def timeout_attempt(client):
+    args = dict(identity={'event_id': 'u0015'}, system='x', payload={'evidence': ['same']},
+                schema={}, validate=lambda _: None)
+    with pytest.raises(ProtocolError):
+        client.request(**args)
+    with client.connection() as db:
+        row = db.execute('SELECT key, request, result FROM attempts').fetchone()
+    return args, row
+
+
+def test_authorized_transport_timeout_preserves_profile_cache_and_survives_restart(tmp_path):
+    client, fake = api(tmp_path, {'ok': True})
+    args = dict(identity={'event': 1}, system='x', payload={}, schema={}, validate=lambda _: None)
+    client.request(**args)
+    with client.connection() as db:
+        profile = db.execute('SELECT value FROM profile').fetchone()
+        original = db.execute('SELECT key,request,result FROM attempts').fetchone()
+    receipt = client.authorize_transport_timeout(timeout_seconds=600)
+    assert receipt == client.authorize_transport_timeout(timeout_seconds=600)
+    assert client.request(**args)[1]['cache_hit'] is True
+    resumed = JSONClient(client.config, client.path, client=fake, token_counter=lambda _: 50)
+    _, accounting = resumed.request(**{**args, 'identity': {'event': 2}})
+    assert fake.calls[-1]['timeout'] == 600
+    assert accounting['effective_timeout_seconds'] == 600
+    assert accounting['transport_timeout_sha256'] == digest(receipt)
+    with resumed.connection() as db:
+        assert db.execute('SELECT value FROM profile').fetchone() == profile
+        assert db.execute('SELECT key,request,result FROM attempts ORDER BY id').fetchone() == original
+    assert len(fake.calls) == 2
+
+
+def test_longer_transport_timeout_does_not_implicitly_retry_failure(tmp_path):
+    client, fake = api(tmp_path, type('APITimeoutError', (Exception,), {})())
+    args, original = timeout_attempt(client)
+    client.authorize_transport_timeout(timeout_seconds=600)
+    with pytest.raises(ProtocolError, match='automatic retry'):
+        client.request(**args)
+    assert len(fake.calls) == 1
+    client.authorize_timeout_retry(original[0], timeout_seconds=600)
+    fake.value = {}
+    assert client.request(**args)[1]['effective_timeout_seconds'] == 600
+    assert len(fake.calls) == 2
+
+
+def test_transport_override_rejects_router_and_invalid_or_changed_timeout(tmp_path):
+    client, _ = api(tmp_path, {})
+    for value in (0, 601, float('nan'), True):
+        with pytest.raises(ProtocolError):
+            client.authorize_transport_timeout(timeout_seconds=value)
+    client.authorize_transport_timeout(timeout_seconds=600)
+    with pytest.raises(ProtocolError):
+        client.authorize_transport_timeout(timeout_seconds=300)
+    router, _ = api(tmp_path, {}, stage='router')
+    with pytest.raises(ProtocolError):
+        router.authorize_transport_timeout(timeout_seconds=600)
+
+
+def test_explicit_timeout_retry_preserves_history_and_survives_restart(tmp_path):
+    client, fake = api(tmp_path, type('APITimeoutError', (Exception,), {})())
+    args, original = timeout_attempt(client)
+    receipt = client.authorize_timeout_retry(original[0], timeout_seconds=600)
+    assert receipt == client.authorize_timeout_retry(original[0], timeout_seconds=600)
+    fake.value = {'operations': []}
+    value, accounting = client.request(**args)
+    assert value == fake.value and accounting['explicit_retry_of'] == original[0]
+    assert fake.calls[1]['timeout'] == 600
+    assert {k: v for k, v in fake.calls[1].items() if k != 'timeout'} == fake.calls[0]
+    with client.connection() as db:
+        assert db.execute('SELECT key, request, result FROM attempts ORDER BY id').fetchall()[0] == original
+        assert db.execute('SELECT COUNT(*) FROM attempts').fetchone()[0] == 2
+    replacement = JSONClient(client.config, client.path, client=fake, token_counter=lambda _: 50)
+    assert replacement.request(**args)[1]['cache_hit'] is True
+    assert len(fake.calls) == 2
+    from phase3.report import api_totals
+    totals = api_totals(client.path)
+    assert totals['attempts'] == 2 and totals['failed'] == 1 and totals['completed_responses'] == 1
+
+
+def test_explicit_timeout_retry_cannot_retry_a_second_failure(tmp_path):
+    client, fake = api(tmp_path, type('APITimeoutError', (Exception,), {})())
+    args, original = timeout_attempt(client)
+    client.authorize_timeout_retry(original[0], timeout_seconds=600)
+    for _ in range(2):
+        with pytest.raises(ProtocolError):
+            client.request(**args)
+    assert len(fake.calls) == 2
+    with client.connection() as db:
+        second_key = db.execute('SELECT key FROM attempts ORDER BY id DESC').fetchone()[0]
+    with pytest.raises(ProtocolError, match='second retry'):
+        client.authorize_timeout_retry(second_key, timeout_seconds=600)
+
+
+def test_explicit_timeout_retry_keeps_total_call_budget(tmp_path):
+    client, fake = api(tmp_path, type('APITimeoutError', (Exception,), {})(), budget=1)
+    args, original = timeout_attempt(client)
+    client.authorize_timeout_retry(original[0], timeout_seconds=600)
+    fake.value = {}
+    with pytest.raises(ProtocolError, match='budget exhausted'):
+        client.request(**args)
+    assert len(fake.calls) == 1
+
+
+def test_explicit_timeout_retry_rejects_unknown_non_timeout_and_pending_calls(tmp_path):
+    client, _ = api(tmp_path, RuntimeError('not a timeout'))
+    _, original = timeout_attempt(client)
+    with pytest.raises(ProtocolError, match='timeout'):
+        client.authorize_timeout_retry(original[0], timeout_seconds=600)
+    with pytest.raises(ProtocolError, match='Unknown'):
+        client.authorize_timeout_retry('0' * 64, timeout_seconds=600)
+    with client.connection() as db:
+        db.execute('UPDATE attempts SET result=NULL')
+    with pytest.raises(ProtocolError, match='Ambiguous'):
+        client.authorize_timeout_retry(original[0], timeout_seconds=600)
 
 
 def test_editor_local_input_cap_not_enforced_but_router_cap_is(tmp_path):
