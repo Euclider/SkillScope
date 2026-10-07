@@ -14,7 +14,7 @@ from webshop_phase12.envs import ShopWorld
 from webshop_phase12.prompts import action_list, build_state_prompt, project_action,policy_inputs
 from webshop_phase12.visible_state import VisibleMemory,replay_visible
 from webshop_phase12.router import RouterClient
-from webshop_phase12.accelerated import COMPACT,DENSE,load_forward_contract
+from webshop_phase12.accelerated import BUCKET,DENSE,load_forward_contract,prompt_multiple
 
 
 def run(seed_dir,new_model,prepared,*,smoke=False):
@@ -38,8 +38,9 @@ def run(seed_dir,new_model,prepared,*,smoke=False):
         memory.transition(action,valid,obs,action_list(info['available_actions']),info['visible_page'])
 
     @torch.inference_mode()
-    def generate(model,prompt,seed):
-        inputs=policy_inputs(tokenizer,prompt,device='cuda',compact=contract==COMPACT)
+    def generate(model,prompt,seed,reference_prompt=None):
+        inputs=policy_inputs(tokenizer,prompt,device='cuda',compact=contract!=DENSE,
+                             prompt_multiple=prompt_multiple(contract),reference_prompt=reference_prompt)
         length=inputs['input_ids'].shape[-1]
         if length>16384:
             raise ValueError('Paired continuation prompt exceeds registered budget')
@@ -87,7 +88,8 @@ def run(seed_dir,new_model,prepared,*,smoke=False):
             sid=target if step==anchor['anchor_step'] else router.route_many([visible])[0]['selected_skill_id']
             payload='' if control and sid==target else bank.get(sid).payload
             prompt=build_state_prompt(visible,payload)
-            text,ntokens=generate(models[checkpoint],prompt,seed*1000+step-anchor['anchor_step'])
+            reference_prompt=build_state_prompt(visible,bank.get(sid).payload) if contract==BUCKET else None
+            text,ntokens=generate(models[checkpoint],prompt,seed*1000+step-anchor['anchor_step'],reference_prompt)
             action,_=project_action(text);previous=obs
             obs,_,done,info=world.step_one(0,action);used+=ntokens
             transition(memory,action,obs,info)
@@ -119,9 +121,9 @@ def run(seed_dir,new_model,prepared,*,smoke=False):
     (out/'manifest.json').write_text(json.dumps({'schema_version':'skillscope.webshop_paired_utility.v1','reference_tasks':len(spec['eval_ids']),
         'anchors':len(anchors),'continuation_seeds':continuation_seeds,'bank_frozen':True,'same_prefix_replay_verified':True,
         'same_visible_memory_replay_verified':True,'router_frozen':True,'state_version':'webshop-visible-evidence-v1',
-        'dense_prompt_width':None if contract==COMPACT else 16384,'same_prompt_padding_budget_as_training':True,
+        'dense_prompt_width':16384 if contract==DENSE else None,'same_prompt_padding_budget_as_training':True,
         'prompt_budget':16384,'prompt_storage_width':16384,'forward_contract':contract,
-        'generation_padding':'exact-valid-length' if contract==COMPACT else 'dense-16384',
+        'generation_padding':'bucket256-shared-skill-control' if contract==BUCKET else ('dense-16384' if contract==DENSE else 'exact-valid-length'),
         'estimand':'success_skill-success_control; delta_M=M_new-M_old','control':'target payload only, selected ID and candidate pool retained',
         'gold_used_by_readout':False,'smoke':smoke},indent=2)+'\n')
     router.close()

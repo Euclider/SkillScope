@@ -1,0 +1,20 @@
+defaults:
+  - webshop54_phase12_accel_v2
+  - _self_
+
+webshop_phase12:
+  forward_contract: hf-bucket256-v3
+
+alignment_run:
+  run_id: webshop54-s${webshop_run.seed}-phase12-accel-v3
+
+actor_rollout_ref:
+  actor:
+    prompt_padding_multiple: 256
+  ref:
+    prompt_padding_multiple: 256
+  rollout:
+    prompt_padding_multiple: 256
+
+trainer:
+  project_name: webshop54_phase12_accel_v3

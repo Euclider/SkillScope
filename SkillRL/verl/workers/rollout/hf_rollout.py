@@ -55,7 +55,8 @@ class HFRollout(BaseRollout):
         if self.config.get('n',1)!=1:
             raise ValueError('Compact generation requires externally replicated trajectories')
         from webshop_phase12.accelerated import generation_groups
-        groups=generation_groups(prompts.batch['attention_mask'],limit)
+        multiple=int(self.config.get('prompt_padding_multiple',1))
+        groups=generation_groups(prompts.batch['attention_mask'],limit,prompt_multiple=multiple)
         parameter_context=contextlib.nullcontext()
         if isinstance(self.module,FSDP):
             # Different ranks may have different exact-length group counts.
@@ -72,11 +73,13 @@ class HFRollout(BaseRollout):
         order=torch.tensor([index for group in groups for index in group])
         output.reorder(order.argsort())
         output.meta_info.update(hf_generation_seconds=time.monotonic()-started,
-                                hf_generation_groups=len(groups),hf_forward_contract='hf-exact-length-v2')
+                                hf_generation_groups=len(groups),hf_prompt_padding_multiple=multiple,
+                                hf_forward_contract='hf-bucket256-v3' if multiple==256 else 'hf-exact-length-v2')
         print(json.dumps({'webshop_hf_generation':{
             'rank':torch.distributed.get_rank() if torch.distributed.is_initialized() else 0,
             'rows':batch_size,'groups':len(groups),'seconds':output.meta_info['hf_generation_seconds'],
-            'max_microbatch':max(map(len,groups)),'storage_prompt_width':prompts.batch['input_ids'].shape[-1]}}),flush=True)
+            'max_microbatch':max(map(len,groups)),'prompt_multiple':multiple,
+            'storage_prompt_width':prompts.batch['input_ids'].shape[-1]}}),flush=True)
         return output
 
     @torch.no_grad()
@@ -130,13 +133,15 @@ class HFRollout(BaseRollout):
         compact=bool(self.config.get('trim_common_padding',False))
         if compact:
             lengths=attention_mask.bool().sum(-1)
-            if not torch.equal(lengths,lengths[:1].expand_as(lengths)):
-                raise ValueError('Compact generation groups must share exact valid prompt length')
-            generation_length=int(lengths[0].item())
+            multiple=int(self.config.get('prompt_padding_multiple',1))
+            widths=((lengths+multiple-1)//multiple)*multiple
+            if not torch.equal(widths,widths[:1].expand_as(widths)):
+                raise ValueError('Compact generation groups must share canonical prompt width')
+            generation_length=int(widths[0].item())
+            if generation_length>prompt_length:raise ValueError('Generation bucket exceeds stored prompt budget')
             idx=idx[:,-generation_length:]
             attention_mask=attention_mask[:,-generation_length:]
             position_ids=position_ids[...,-generation_length:]
-            if not attention_mask.bool().all():raise ValueError('Compact generation contains padding')
         else:generation_length=prompt_length
 
         # used to construct attention_mask

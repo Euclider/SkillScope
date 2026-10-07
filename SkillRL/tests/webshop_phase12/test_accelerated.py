@@ -14,6 +14,34 @@ def test_generation_groups_share_exact_prompt_length_and_restore_every_row():
     assert sorted(i for g in generation_groups(mask,3) for i in g)==list(range(5))
 
 
+def test_length_buckets_allow_batching_without_changing_canonical_row_width():
+    from webshop_phase12.accelerated import generation_groups
+    mask=torch.tensor([[0,0,0,0,1,1],[0,0,0,1,1,1],[0,0,1,1,1,1]])
+    assert generation_groups(mask,16,prompt_multiple=4)==[[0,1,2]]
+    from verl.workers.actor.padded_forward import trim_common_left_padding
+    ids=torch.arange(10)[None];attn=torch.tensor([[0,0,0,0,1,1,1,1,1,0]])
+    pos=torch.arange(10)[None]
+    trimmed=trim_common_left_padding(ids,attn,pos,4,prompt_multiple=4)
+    assert trimmed[0].shape[-1]==8
+    control=attn.clone();control[:,:6]=torch.tensor([[0,0,0,0,0,1]])
+    same=trim_common_left_padding(ids,control,pos,4,prompt_width=4)
+    assert same[0].shape[-1]==8
+
+
+def test_bucketed_policy_control_uses_the_full_guidance_reference_width():
+    from transformers import AutoTokenizer
+    from webshop_phase12.assets import BASE_MODEL
+    from webshop_phase12.prompts import policy_inputs
+    tokenizer=AutoTokenizer.from_pretrained(BASE_MODEL,local_files_only=True)
+    full='Find a blue shirt. '+('More detailed skill guidance. '*8)
+    skill=policy_inputs(tokenizer,full,device='cpu',budget=256,compact=True,prompt_multiple=64)
+    control=policy_inputs(tokenizer,'Find a blue shirt.',device='cpu',budget=256,compact=True,
+                          prompt_multiple=64,reference_prompt=full)
+    assert skill['input_ids'].shape==control['input_ids'].shape
+    assert skill['input_ids'].shape[-1]%64==0
+    assert control['attention_mask'].sum()<skill['attention_mask'].sum()
+
+
 @pytest.mark.parametrize('mask,limit',[(torch.zeros(1,4),2),(torch.tensor([[0,1,0,1]]),2),
                                      (torch.ones(2,4),0)])
 def test_generation_groups_reject_empty_or_non_left_padding(mask,limit):
@@ -91,16 +119,20 @@ def test_compact_policy_inputs_keep_complete_prompt_and_overflow_guard():
     with pytest.raises(ValueError):policy_inputs(tokenizer,'Find a blue shirt.',device='cpu',budget=8,compact=True)
 
 
-def test_accelerated_hydra_config_keeps_registered_rl_scale(monkeypatch):
+@pytest.mark.parametrize('name,contract,multiple',[
+    ('webshop54_phase12_accel_v2','hf-exact-length-v2',1),
+    ('webshop54_phase12_accel_v3','hf-bucket256-v3',256)])
+def test_accelerated_hydra_config_keeps_registered_rl_scale(monkeypatch,name,contract,multiple):
     from hydra import compose,initialize_config_dir
     from pathlib import Path
     from webshop_phase12.accelerated import forward_contract
     from webshop_phase12.assets import ROOT
     monkeypatch.setenv('WEBSHOP_BASE_MODEL','/model/qwen')
     with initialize_config_dir(config_dir=str(ROOT/'verl/trainer/config'),version_base=None):
-        cfg=compose(config_name='webshop54_phase12_accel_v2',overrides=[
+        cfg=compose(config_name=name,overrides=[
             'webshop_run.seed=404','webshop_run.prepared=/prepared','webshop_run.run_root=/run'])
-    assert forward_contract(cfg)=='hf-exact-length-v2'
+    assert forward_contract(cfg)==contract
+    assert cfg.actor_rollout_ref.rollout.get('prompt_padding_multiple',1)==multiple
     assert cfg.data.max_prompt_length==16384 and cfg.data.max_response_length==512
     assert cfg.env.rollout.n==8 and cfg.webshop_run.tasks_per_update==128
     assert cfg.actor_rollout_ref.actor.ppo_mini_batch_size==128

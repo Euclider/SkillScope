@@ -5,7 +5,7 @@ GUIDANCE_START = '\n\n## Frozen skill guidance\n'
 GUIDANCE_END = '\n## End frozen skill guidance\n'
 
 
-def policy_inputs(tokenizer,prompt,*,device,budget=16384,compact=False):
+def policy_inputs(tokenizer,prompt,*,device,budget=16384,compact=False,prompt_multiple=1,reference_prompt=None):
     """Match native WebShop prompt width; reject overflow without truncation."""
     import torch
     chat=tokenizer.apply_chat_template([{'role':'user','content':prompt}],
@@ -13,8 +13,16 @@ def policy_inputs(tokenizer,prompt,*,device,budget=16384,compact=False):
     ids=tokenizer(chat,add_special_tokens=False,return_tensors='pt')['input_ids']
     length=ids.shape[-1]
     if length>budget:raise ValueError('Paired continuation prompt exceeds registered dense budget')
+    registered_budget=budget
     if compact:
-        return {'input_ids':ids.to(device),'attention_mask':torch.ones_like(ids).to(device)}
+        from verl.workers.actor.padded_forward import prompt_bucket_width
+        reference_length=length
+        if reference_prompt is not None:
+            reference_chat=tokenizer.apply_chat_template([{'role':'user','content':reference_prompt}],
+                add_generation_prompt=True,tokenize=False,enable_thinking=False)
+            reference_length=len(tokenizer.encode(reference_chat,add_special_tokens=False))
+        budget=prompt_bucket_width(reference_length,prompt_multiple)
+        if budget<length or budget>registered_budget:raise ValueError('Canonical generation width outside registered budget')
     padding=tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id
     dense=torch.full((1,budget),padding,dtype=torch.long)
     mask=torch.zeros_like(dense)

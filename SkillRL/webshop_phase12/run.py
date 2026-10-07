@@ -74,8 +74,9 @@ def wait_idle(ids,root,stage):
 
 
 def pipeline(root,prepared,*,smoke=False,gpus=(3,4),evaluation_gpu=7,router_gpu=7,config='webshop54_phase12_v1'):
-    if config not in ('webshop54_phase12_v1','webshop54_phase12_accel_v2'):
+    if config not in ('webshop54_phase12_v1','webshop54_phase12_accel_v2','webshop54_phase12_accel_v3'):
         raise ValueError('Unknown registered WebShop training configuration')
+    accelerated=config!='webshop54_phase12_v1'
     routers=list(router_gpu) if isinstance(router_gpu,(list,tuple)) else [router_gpu]
     root.mkdir(exist_ok=False)
     spec=json.loads((prepared/'manifest.json').read_text())
@@ -84,7 +85,7 @@ def pipeline(root,prepared,*,smoke=False,gpus=(3,4),evaluation_gpu=7,router_gpu=
         'router':'frozen-Qwen3.5-4B-local-vllm-all54','state_version':'webshop-visible-evidence-v1',
         'router_model_receipt_sha256':hashlib.sha256((RUN_ROOT/'frozen-router-model.json').read_bytes()).hexdigest(),
         'smoke':smoke,'config':config,
-        'forward_contract':'hf-exact-length-v2' if config.endswith('accel_v2') else 'hf-dense-v1',
+        'forward_contract':('hf-bucket256-v3' if config.endswith('accel_v3') else 'hf-exact-length-v2') if accelerated else 'hf-dense-v1',
         'native_full_vocabulary_files_retained':False,'four_condition_HF_recompute':True,'automatic_retries':0,
         'registered_stage_timeout_hours':96})
     python=sys.executable
@@ -99,8 +100,8 @@ def pipeline(root,prepared,*,smoke=False,gpus=(3,4),evaluation_gpu=7,router_gpu=
         temporary.mkdir(parents=True,exist_ok=False)
         (seed_dir/'checkpoints').symlink_to(temporary,target_is_directory=True)
         write(seed_dir/'checkpoint-storage.json',{'native_checkpoint_root':str(temporary),'persistent_model_root':str(seed_dir/'merged-endpoint'),
-            'model_optimizer_rng_preserved':not (smoke and config.endswith('accel_v2')),
-            'smoke_model_only_checkpoint':bool(smoke and config.endswith('accel_v2')),
+            'model_optimizer_rng_preserved':not (smoke and accelerated),
+            'smoke_model_only_checkpoint':bool(smoke and accelerated),
             'native_checkpoint_medium':'RAM-backed tmpfs; lost on reboot','automatic_deletion':False})
         wait_idle(sorted(set(gpus)|set(routers)),root,f'seed{seed}-training')
         command=[python,'-B','-m','verl.trainer.main_ppo','--config-name',config,
@@ -110,7 +111,7 @@ def pipeline(root,prepared,*,smoke=False,gpus=(3,4),evaluation_gpu=7,router_gpu=
             f'trainer.n_gpus_per_node={len(gpus)}']
         if smoke:
             command+=['env.max_steps=8']
-            if config.endswith('accel_v2'):
+            if accelerated:
                 # Optimizer steps are still witnessed; only this disposable
                 # preflight endpoint omits restart state to reserve tmpfs.
                 command+=['actor_rollout_ref.actor.checkpoint.contents=[model]',
@@ -144,5 +145,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--prepared',type=Path,required=True)
     p.add_argument('--smoke',action='store_true');p.add_argument('--gpus',default='3,4');p.add_argument('--evaluation-gpu',type=int,default=7)
     p.add_argument('--router-gpu',type=int,default=7)
-    p.add_argument('--config',default='webshop54_phase12_v1',choices=('webshop54_phase12_v1','webshop54_phase12_accel_v2'))
+    p.add_argument('--config',default='webshop54_phase12_v1',choices=('webshop54_phase12_v1','webshop54_phase12_accel_v2','webshop54_phase12_accel_v3'))
     a=p.parse_args();pipeline(a.root,a.prepared,smoke=a.smoke,gpus=tuple(map(int,a.gpus.split(','))),evaluation_gpu=a.evaluation_gpu,router_gpu=a.router_gpu,config=a.config)

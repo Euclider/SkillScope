@@ -238,7 +238,8 @@ class DataParallelPPOActor(BasePPOActor):
                     # archived for readouts. Enable only after model parity tests.
                     from verl.workers.actor.padded_forward import trim_common_left_padding
                     input_ids, attention_mask, position_ids = trim_common_left_padding(
-                        input_ids, attention_mask, position_ids, response_length)
+                        input_ids, attention_mask, position_ids, response_length,
+                        prompt_multiple=int(self.config.get('prompt_padding_multiple',1)))
                 if self.response_logits_only:
                     extra_args["logits_to_keep"] = response_length + 1
                 if self.use_fused_kernels:
