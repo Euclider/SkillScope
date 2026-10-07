@@ -14,11 +14,16 @@ from webshop_phase12.envs import ShopWorld
 from webshop_phase12.prompts import action_list, build_state_prompt, project_action,policy_inputs
 from webshop_phase12.visible_state import VisibleMemory,replay_visible
 from webshop_phase12.router import RouterClient
+from webshop_phase12.accelerated import COMPACT,DENSE,load_forward_contract
 
 
 def run(seed_dir,new_model,prepared,*,smoke=False):
     if not (seed_dir/'readout/prediction-locked.json').is_file():
         raise ValueError('Readout must be locked before collecting independent outcomes')
+    contract=load_forward_contract(seed_dir)
+    prediction=json.loads((seed_dir/'readout/prediction-locked.json').read_text())
+    if prediction.get('forward_contract',DENSE)!=contract:
+        raise ValueError('Readout and paired evaluation forward contracts differ')
     out=seed_dir/'paired_eval';out.mkdir(exist_ok=False)
     spec=json.loads((prepared/'manifest.json').read_text())
     bank=WebshopBank();world=ShopWorld(1);router=RouterClient(f'eval-{seed_dir.name}')
@@ -34,7 +39,7 @@ def run(seed_dir,new_model,prepared,*,smoke=False):
 
     @torch.inference_mode()
     def generate(model,prompt,seed):
-        inputs=policy_inputs(tokenizer,prompt,device='cuda')
+        inputs=policy_inputs(tokenizer,prompt,device='cuda',compact=contract==COMPACT)
         length=inputs['input_ids'].shape[-1]
         if length>16384:
             raise ValueError('Paired continuation prompt exceeds registered budget')
@@ -114,7 +119,9 @@ def run(seed_dir,new_model,prepared,*,smoke=False):
     (out/'manifest.json').write_text(json.dumps({'schema_version':'skillscope.webshop_paired_utility.v1','reference_tasks':len(spec['eval_ids']),
         'anchors':len(anchors),'continuation_seeds':continuation_seeds,'bank_frozen':True,'same_prefix_replay_verified':True,
         'same_visible_memory_replay_verified':True,'router_frozen':True,'state_version':'webshop-visible-evidence-v1',
-        'dense_prompt_width':16384,'same_prompt_padding_budget_as_training':True,
+        'dense_prompt_width':None if contract==COMPACT else 16384,'same_prompt_padding_budget_as_training':True,
+        'prompt_budget':16384,'prompt_storage_width':16384,'forward_contract':contract,
+        'generation_padding':'exact-valid-length' if contract==COMPACT else 'dense-16384',
         'estimand':'success_skill-success_control; delta_M=M_new-M_old','control':'target payload only, selected ID and candidate pool retained',
         'gold_used_by_readout':False,'smoke':smoke},indent=2)+'\n')
     router.close()

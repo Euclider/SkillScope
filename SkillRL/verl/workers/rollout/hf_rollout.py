@@ -19,6 +19,8 @@ to perform generation.
 """
 
 import contextlib
+import json
+import time
 
 import torch
 import torch.distributed
@@ -46,9 +48,35 @@ class HFRollout(BaseRollout):
         batch_size = prompts.batch.batch_size[0]
         limit=int(self.config.get('micro_batch_size',batch_size))
         if limit<1:raise ValueError('HF micro_batch_size must be positive')
-        batch_prompts=[prompts[start:start+limit] for start in range(0,batch_size,limit)]
-        output = [self._generate_minibatch(p) for p in batch_prompts]
-        output = DataProto.concat(output)
+        compact=bool(self.config.get('trim_common_padding',False))
+        if not compact:
+            batch_prompts=[prompts[start:start+limit] for start in range(0,batch_size,limit)]
+            return DataProto.concat([self._generate_minibatch(p) for p in batch_prompts])
+        if self.config.get('n',1)!=1:
+            raise ValueError('Compact generation requires externally replicated trajectories')
+        from webshop_phase12.accelerated import generation_groups
+        groups=generation_groups(prompts.batch['attention_mask'],limit)
+        parameter_context=contextlib.nullcontext()
+        if isinstance(self.module,FSDP):
+            # Different ranks may have different exact-length group counts.
+            # Gather once before the entire request, never inside its groups.
+            parameter_context=FSDP.summon_full_params(self.module,writeback=False,recurse=False)
+        started=time.monotonic();self.module.eval()
+        self._full_params_active=True
+        try:
+            with parameter_context,torch.no_grad(),torch.autocast(device_type='cuda',dtype=torch.bfloat16):
+                output=DataProto.concat([self._generate_minibatch(prompts[indices]) for indices in groups])
+        finally:
+            self._full_params_active=False
+            self.module.train()
+        order=torch.tensor([index for group in groups for index in group])
+        output.reorder(order.argsort())
+        output.meta_info.update(hf_generation_seconds=time.monotonic()-started,
+                                hf_generation_groups=len(groups),hf_forward_contract='hf-exact-length-v2')
+        print(json.dumps({'webshop_hf_generation':{
+            'rank':torch.distributed.get_rank() if torch.distributed.is_initialized() else 0,
+            'rows':batch_size,'groups':len(groups),'seconds':output.meta_info['hf_generation_seconds'],
+            'max_microbatch':max(map(len,groups)),'storage_prompt_width':prompts.batch['input_ids'].shape[-1]}}),flush=True)
         return output
 
     @torch.no_grad()
@@ -92,10 +120,24 @@ class HFRollout(BaseRollout):
                 "num_return_sequences": self.config.n,
             }
 
-        idx = prompts.batch["input_ids"]  # (bs, prompt_length)
-        prompt_length = idx.size(1)
+        original_idx = prompts.batch["input_ids"]
+        idx = original_idx  # (bs, prompt_length)
+        prompt_length = original_idx.size(1)
         attention_mask = prompts.batch["attention_mask"]  # left-padded attention_mask
         position_ids = prompts.batch["position_ids"]
+        original_attention_mask=attention_mask
+        original_position_ids=position_ids
+        compact=bool(self.config.get('trim_common_padding',False))
+        if compact:
+            lengths=attention_mask.bool().sum(-1)
+            if not torch.equal(lengths,lengths[:1].expand_as(lengths)):
+                raise ValueError('Compact generation groups must share exact valid prompt length')
+            generation_length=int(lengths[0].item())
+            idx=idx[:,-generation_length:]
+            attention_mask=attention_mask[:,-generation_length:]
+            position_ids=position_ids[...,-generation_length:]
+            if not attention_mask.bool().all():raise ValueError('Compact generation contains padding')
+        else:generation_length=prompt_length
 
         # used to construct attention_mask
         eos_token_id = prompts.meta_info["eos_token_id"]
@@ -126,7 +168,7 @@ class HFRollout(BaseRollout):
         self.module.eval()
         param_ctx = contextlib.nullcontext()
 
-        if isinstance(self.module, FSDP):
+        if isinstance(self.module, FSDP) and not getattr(self,'_full_params_active',False):
             # recurse need to set to False according to https://github.com/pytorch/pytorch/issues/100069
             param_ctx = FSDP.summon_full_params(self.module, writeback=False, recurse=False)
         with param_ctx, torch.autocast(device_type="cuda", dtype=torch.bfloat16):
@@ -145,6 +187,12 @@ class HFRollout(BaseRollout):
         # TODO: filter out the seq with no answers like ds-chat
         seq = output.sequences
         generated_batch_size = seq.size(0)  # bs * num_return_sequences
+        if compact:
+            # Archive/training tensors retain their 16K storage width. The
+            # versioned actor/readout contract removes the same prefix later.
+            seq=torch.cat([original_idx,seq[:,generation_length:]],dim=1)
+            attention_mask=original_attention_mask
+            position_ids=original_position_ids
 
         # huggingface generate will stop generating when all the batch reaches [EOS].
         # We have to pad to response_length
@@ -191,7 +239,7 @@ class HFRollout(BaseRollout):
         )
 
         # empty cache before compute old_log_prob
-        get_torch_device().empty_cache()
+        if not compact:get_torch_device().empty_cache()
 
-        self.module.train()
+        if not getattr(self,'_full_params_active',False):self.module.train()
         return DataProto(batch=batch)

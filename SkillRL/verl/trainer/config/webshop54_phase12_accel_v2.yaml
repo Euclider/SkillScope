@@ -1,0 +1,28 @@
+defaults:
+  - webshop54_phase12_v1
+  - _self_
+
+webshop_phase12:
+  forward_contract: hf-exact-length-v2
+
+alignment_run:
+  run_id: webshop54-s${webshop_run.seed}-phase12-accel-v2
+
+phase2:
+  compress_training_batch: true
+
+actor_rollout_ref:
+  actor:
+    trim_common_padding: true
+  ref:
+    trim_common_padding: true
+    response_logits_only: true
+    fsdp_config:
+      param_offload: false
+      cpu_offload: false
+  rollout:
+    trim_common_padding: true
+    micro_batch_size: 16
+
+trainer:
+  project_name: webshop54_phase12_accel_v2

@@ -62,6 +62,8 @@ class TaskRunner:
             from skillnet_cohort.runtime import seed_process
             seed_process(int(config.logicbench_run.seed))
         if config.get("webshop_phase12", {}).get("enabled", False):
+            from webshop_phase12.accelerated import forward_contract
+            forward_contract(config)
             from skillnet_cohort.runtime import seed_process
             seed_process(int(config.webshop_run.seed))
         # print initial config

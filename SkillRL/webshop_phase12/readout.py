@@ -15,16 +15,19 @@ from webshop_phase12.dense_scoring import recorded_inputs,control_inputs,score_d
 from phase2.stable_direction import token_signals
 from webshop_phase12.assets import BASE_MODEL, WebshopBank
 from webshop_phase12.prompts import remove_guidance
+from webshop_phase12.accelerated import COMPACT,load_forward_contract
+from webshop_phase12.training_storage import load_training_archive
 
 
 def run(seed_dir, new_model, *, smoke=False,output=None,devices=('cuda','cuda')):
     output=output or seed_dir/'readout';output.mkdir(exist_ok=False)
     bank=WebshopBank()
     tokenizer=AutoTokenizer.from_pretrained(BASE_MODEL,local_files_only=True)
-    archive=torch.load(seed_dir/'phase2/batches/u0001/training_batch.pt',map_location='cpu',weights_only=False)
+    archive=load_training_archive(seed_dir/'phase2/batches/u0001')
     if archive['schema_version']!='phase2.exact_training_batch.v1':
         raise ValueError('Wrong actual-training-batch schema')
     tensors,metadata=archive['tensors'],archive['metadata']
+    contract=load_forward_contract(seed_dir);trim_padding=contract==COMPACT
     old=_load_model(BASE_MODEL,devices[0]);new=_load_model(new_model,devices[1])
     primary_device=next(old.parameters()).device
     executor=ThreadPoolExecutor(max_workers=2)
@@ -52,16 +55,16 @@ def run(seed_dir, new_model, *, smoke=False,output=None,devices=('cuda','cuda'))
         padding=tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id
         dense_control=control_inputs(tensors,i,control,pad_token_id=padding)
         response_length=tensors['responses'].shape[-1]
-        old_future=executor.submit(score_dense,old,dense,response_length,mask)
-        new_future=executor.submit(score_dense,new,dense,response_length,mask)
+        old_future=executor.submit(score_dense,old,dense,response_length,mask,trim_padding=trim_padding)
+        new_future=executor.submit(score_dense,new,dense,response_length,mask,trim_padding=trim_padding)
         oo=old_future.result();no=new_future.result().to(primary_device)
         actions=torch.tensor(response,dtype=torch.long,device=primary_device)
         if 'old_log_probs' not in tensors:raise ValueError('Native old-logprob parity witness missing')
         error=(oo.gather(1,actions[:,None]).flatten().cpu()-tensors['old_log_probs'][i,mask].float()).abs().max().item()
         chosen_max_error=max(chosen_max_error,error)
         if error>1e-3:raise ValueError(f'Native old-forward parity failed in row {i}: {error}')
-        old_future=executor.submit(score_dense,old,dense_control,response_length,mask)
-        new_future=executor.submit(score_dense,new,dense_control,response_length,mask)
+        old_future=executor.submit(score_dense,old,dense_control,response_length,mask,trim_padding=trim_padding)
+        new_future=executor.submit(score_dense,new,dense_control,response_length,mask,trim_padding=trim_padding)
         oc=old_future.result();nc=new_future.result().to(primary_device)
         advantage=tensors['advantages'][i,mask].to(primary_device)
         signals=token_signals(oo,no,oc,nc,actions,advantage)
@@ -96,7 +99,8 @@ def run(seed_dir, new_model, *, smoke=False,output=None,devices=('cuda','cuda'))
     (output/'prediction-locked.json').write_text(json.dumps({'status':'locked_before_independent_eval',
         'training_decisions':original_prompt_matches,'training_loss_tokens':len(frame),'skills':len(records),
         'all_recorded_prompts_verified':True,'full_vocabulary':True,'actual_GRPO_advantages':True,
-        'four_condition_backend':'same HF bf16 SDPA; recorded dense padding, masks and positions',
+        'four_condition_backend':'same HF bf16 SDPA; versioned padding, recorded masks/positions and all response slots',
+        'forward_contract':contract,'trim_common_padding':trim_padding,
         'native_old_forward_parity_passed':True,'native_old_forward_parity_tolerance':1e-3,
         'native_old_chosen_max_abs_difference':chosen_max_error,
         'gold_outcomes_used':False,'primary_score':'D_sign_balance','primary_aggregation':'token mean',

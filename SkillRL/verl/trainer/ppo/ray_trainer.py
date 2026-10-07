@@ -1639,6 +1639,8 @@ class RayPPOTrainer:
 
                     if self.config.get("phase2", {}).get("enabled", False):
                         from phase2.capture import archive_batch
+                        if self.config.get('webshop_phase12',{}).get('enabled',False):
+                            from webshop_phase12.capture import archive_batch
                         from skillnet_cohort.capture_scope import full_capture
                         if full_capture(self.config.phase2, self.global_steps):
                             archive_batch(batch, root=self.config.phase2.root,
