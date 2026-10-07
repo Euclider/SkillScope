@@ -52,8 +52,8 @@
     },
     {
       "path": "SkillRL/docs/webshop/SMALL_COHORT_V4.md",
-      "sha256": "da640d7fa8834f4ba814765b3b791599fe3ca6a350d1ae710f320230fcf668ed",
-      "bytes": 5203
+      "sha256": "3beb365ddeda0527e78a9c95a2a789323c33763e5b646b35a2284057bf38c477",
+      "bytes": 6152
     },
     {
       "path": "SkillRL/logicbench_phase12/metrics.py",
@@ -139,6 +139,11 @@
       "path": "SkillRL/tests/webshop_phase12/test_portable_settings.py",
       "sha256": "0fff419a7acb75798687901accefa3d3bd1244414c0fc39d002f8a162645bddd",
       "bytes": 1307
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_router_cost.py",
+      "sha256": "327e70e195ceb718a7325765e419c0469239e076da866ab909cb41439b0de9c4",
+      "bytes": 698
     },
     {
       "path": "SkillRL/tests/webshop_phase12/test_router_startup.py",
@@ -336,14 +341,19 @@
       "bytes": 3040
     },
     {
+      "path": "SkillRL/webshop_phase12/router_cost.py",
+      "sha256": "b348a481fbc7f82243d85e264dfd104be60f3ead936f1ed3023127c9262ce746",
+      "bytes": 1005
+    },
+    {
       "path": "SkillRL/webshop_phase12/run.py",
-      "sha256": "b04dd13d5a1d8a309e97de2f64ca9a442a22d41f8eb35add8d1d1916bb7f91bf",
-      "bytes": 10587
+      "sha256": "885f4ccc2c50f0e1c13af663778c4e57b24cca87bd750263c7ab5c42b6942e0c",
+      "bytes": 10857
     },
     {
       "path": "SkillRL/webshop_phase12/small_run.py",
-      "sha256": "15f78da4e15e9c8129781b947fcc4e2055cdb939667302399aab26270b9b9b2f",
-      "bytes": 7592
+      "sha256": "4958611978d6cf6d7f2f583c48d550c34d59b9b4bbac56b9c52a9d46584558f4",
+      "bytes": 10332
     },
     {
       "path": "SkillRL/webshop_phase12/snapshot.py",

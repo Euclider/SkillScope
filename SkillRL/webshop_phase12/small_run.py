@@ -74,7 +74,7 @@ def evaluations(root, prepared, gpus=(5, 7), *, smoke=False):
     write(root/'status.json', {'status': 'complete', 'smoke': smoke, 'updated_at_utc': now()})
 
 
-def main(queue, gpus):
+def main(queue, gpus, reuse_training=None):
     queue.mkdir(exist_ok=False)
     write(RUN_ROOT/'ACTIVE_WEBSHOP_RUN.json', {'pid': os.getpid(), 'queue': str(queue),
           'status_file': str(queue/'status.json'), 'source': str(ROOT), 'tmux_session': 'ws12-small-v4-20261007'})
@@ -88,8 +88,37 @@ def main(queue, gpus):
             raise ValueError('Real two-rank optimization probe has not passed')
         smoke = queue/'smoke'
         write(queue/'status.json', {'status': 'running_preflight', 'formal_started': False, 'updated_at_utc': now()})
-        pipeline(smoke, RUN_ROOT/'prepared-smoke', smoke=True, gpus=gpus, evaluation_gpu=gpus[0],
-                 router_gpu=(gpus[-1],), config=CONFIG, train_only=True)
+        if reuse_training is None:
+            pipeline(smoke, RUN_ROOT/'prepared-smoke', smoke=True, gpus=gpus, evaluation_gpu=gpus[0],
+                     router_gpu=(gpus[-1],), config=CONFIG, train_only=True)
+        else:
+            import math
+            from webshop_phase12.router_cost import update_router_cost
+            routing=update_router_cost(json.loads((reuse_training/'router-performance-train-s404.json').read_text()),
+                                       (reuse_training/'seed404-training.log').read_text())
+            registered=json.loads((reuse_training.parent/'registered-source-manifest-llm-v1.json').read_text())
+            for row in registered['files']:
+                if row['path'] in ('webshop_phase12/small_run.py','webshop_phase12/run.py'):continue
+                if hashlib.sha256((ROOT/row['path']).read_bytes()).hexdigest()!=row['sha256']:
+                    raise ValueError('Reusable preflight runtime math/environment source changed')
+            if hashlib.sha256((reuse_training.parent/'registered-frozen-router-model.json').read_bytes()).hexdigest()!=hashlib.sha256((RUN_ROOT/'frozen-router-model.json').read_bytes()).hexdigest():
+                raise ValueError('Reusable preflight frozenmodel receipt changed')
+            archive=json.loads((reuse_training/'seed404/phase2/batches/u0001/manifest.json').read_text())
+            if archive['config']['webshop_phase12']['forward_contract']!='hf-bucket256-active-v4':
+                raise ValueError('Reusable preflight numericalcontract differs')
+            expected=math.ceil(archive['row_count']/128)
+            for rank in range(len(gpus)):
+                rows=[json.loads(x) for x in (reuse_training/f'seed404/phase2/optimizer_steps/u0001-rank{rank}.jsonl').read_text().splitlines()]
+                if len(rows)!=expected or any(r['adam_step_after']!=i+1 or not math.isfinite(r['grad_norm']) for i,r in enumerate(rows)):
+                    raise ValueError('Reusable preflight optimizerwitness incomplete')
+            smoke.mkdir()
+            (smoke/'seed404').symlink_to((reuse_training/'seed404').resolve(),target_is_directory=True)
+            shutil.copy2(reuse_training/'protocol.json',smoke/'protocol.json')
+            write(smoke/'actual-training-reused.json',{'source':str(reuse_training),'all_real_optimizer_steps_verified':expected,
+                  'native_math_source_unchanged':True,'routing_execution_unchanged':True,'complete_RL_router_cost_admission':routing})
+            checkpoint=smoke/'seed404/checkpoints/global_step_1/actor'
+            run_stage('seed404-merge',[sys.executable,'-B','scripts/model_merger.py','merge','--backend','fsdp',
+                      '--local_dir',str(checkpoint),'--target_dir',str(smoke/'seed404/merged-endpoint')],smoke,[])
         evaluations(smoke, RUN_ROOT/'prepared-smoke', gpus, smoke=True)
         path = smoke/'seed404'
         locked = json.loads((path/'readout/prediction-locked.json').read_text())
@@ -127,5 +156,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--queue', type=Path, required=True)
     parser.add_argument('--gpus', default='5,7')
+    parser.add_argument('--reuse-preflight-training', type=Path)
     args = parser.parse_args()
-    main(args.queue, tuple(map(int, args.gpus.split(','))))
+    main(args.queue, tuple(map(int, args.gpus.split(','))), args.reuse_preflight_training)

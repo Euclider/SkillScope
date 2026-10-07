@@ -125,8 +125,12 @@ def pipeline(root,prepared,*,smoke=False,gpus=(3,4),evaluation_gpu=7,router_gpu=
         run_stage(f'seed{seed}-training',command,root,gpus,router_gpu)
         performance_path=root/f'router-performance-train-s{seed}.json'
         performance=json.loads(performance_path.read_text())
-        if smoke and (performance['step_calls']<2 or performance['router_fraction_of_observed_rollout']>.20):
-            raise RuntimeError('Router exceeded the registered 20% rollout-time gate; formal training not admitted')
+        if smoke:
+            if config.endswith('small_v4'):
+                from webshop_phase12.router_cost import update_router_cost
+                write(root/'router-cost-admission.json',update_router_cost(performance,(root/f'seed{seed}-training.log').read_text()))
+            elif performance['step_calls']<2 or performance['router_fraction_of_observed_rollout']>.20:
+                raise RuntimeError('Router exceeded the registered 20% rollout-time gate; formal training not admitted')
         checkpoint=seed_dir/f'checkpoints/global_step_{spec["updates"]}/actor'
         if not (seed_dir/'phase2/batches/u0001/manifest.json').is_file() or not checkpoint.is_dir():
             raise RuntimeError('U1 training evidence or endpoint checkpoint missing')
