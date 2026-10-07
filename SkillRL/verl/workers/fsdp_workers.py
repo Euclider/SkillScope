@@ -651,6 +651,7 @@ class ActorRolloutRefWorker(Worker):
                 lr_scheduler=self.actor_lr_scheduler,
                 processing_class=self.processor if self.processor is not None else self.tokenizer,
                 checkpoint_contents=self.config.actor.checkpoint.contents,
+                export_model_only=bool(self.config.actor.checkpoint.get('export_model_only',False)),
                 low_memory_native_restore=bool(self.config.actor.fsdp_config.get("cpu_shard_init", False)),
             )
 

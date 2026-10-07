@@ -9,6 +9,29 @@ import torch
 from phase1.archive import atomic_write_json,sha256_file
 
 
+def save_gzip_training_archive(path,value):
+    path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
+    temporary=path.with_suffix(path.suffix+'.partial')
+    digest=hashlib.sha256();size=0
+    class HashedWriter:
+        def __init__(self,stream):self.stream=stream
+        def write(self,data):
+            nonlocal size
+            digest.update(data);size+=len(data)
+            return self.stream.write(data)
+        def flush(self):return self.stream.flush()
+    with gzip.open(temporary,'wb',compresslevel=1) as stream:
+        torch.save(value,HashedWriter(stream))
+    check=hashlib.sha256()
+    with gzip.open(temporary,'rb') as stream:
+        for block in iter(lambda:stream.read(4*1024**2),b''):check.update(block)
+    if check.hexdigest()!=digest.hexdigest():raise ValueError('Compressed training bytes do not match native serialization')
+    temporary.replace(path)
+    return {'batch_file':path.name,'batch_compression':'gzip-lossless-level1',
+            'uncompressed_batch_sha256':digest.hexdigest(),'uncompressed_bytes':size,
+            'compressed_bytes':path.stat().st_size}
+
+
 def compress_training_archive(directory):
     directory=Path(directory);original=directory/'training_batch.pt'
     target=directory/'training_batch.pt.gz';temporary=directory/'training_batch.pt.gz.partial'

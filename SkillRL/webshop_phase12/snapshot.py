@@ -39,6 +39,7 @@ def main():
         'agent_system/multi_turn_rollout/rollout_loop.py','verl/trainer/main_ppo.py','verl/trainer/ppo/ray_trainer.py',
         'verl/workers/rollout/hf_rollout.py','verl/workers/actor/dp_actor.py',
         'verl/workers/actor/padded_forward.py','verl/workers/fsdp_workers.py',
+        'verl/utils/checkpoint/fsdp_checkpoint_manager.py','phase2/capture.py',
         'verl/trainer/config/webshop54_phase12_v1.yaml','verl/trainer/config/webshop54_phase12_accel_v2.yaml',
         'memory_data/webshop/claude_style_skills.json')))
     source_path.write_text(json.dumps({'source_copy':str(ROOT),'protocol':'webshop-visible-evidence-frozen-qwen35-v1',

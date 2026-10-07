@@ -8,8 +8,8 @@ def mark_batch(batch, *, root, update, full_vocab=True, copies=2):
 
 
 def archive_batch(batch,*,root,update,config):
-    native_archive(batch,root=root,update=update,config=config)
     if config.phase2.get('compress_training_batch',False):
-        from pathlib import Path
-        from webshop_phase12.training_storage import compress_training_archive
-        compress_training_archive(Path(root)/'batches'/f'u{update:04d}')
+        from webshop_phase12.training_storage import save_gzip_training_archive
+        native_archive(batch,root=root,update=update,config=config,
+                       tensor_writer=save_gzip_training_archive,tensor_name='training_batch.pt.gz')
+    else:native_archive(batch,root=root,update=update,config=config)

@@ -69,7 +69,7 @@ def mark_batch(batch, *, root: str, update: int, full_vocab=True, copies=2) -> N
     batch.meta_info["phase2_capture"] = {"root": root, "update": int(update), "full_vocab": full_vocab}
 
 
-def archive_batch(batch, *, root: str, update: int, config) -> None:
+def archive_batch(batch, *, root: str, update: int, config,tensor_writer=None,tensor_name='training_batch.pt') -> None:
     from omegaconf import OmegaConf
 
     target = Path(root) / "batches" / f"u{update:04d}"
@@ -83,7 +83,8 @@ def archive_batch(batch, *, root: str, update: int, config) -> None:
     if not torch.isfinite(tensors["advantages"][mask.bool()]).all():
         raise ValueError("Non-finite training advantage")
     tensors["phase2_actual_loss_mask"] = mask.clone()
-    save_tensor_file(target / "training_batch.pt", {
+    writer=tensor_writer or save_tensor_file
+    storage=writer(target / tensor_name, {
         "schema_version": "phase2.exact_training_batch.v1",
         "tensors": tensors, "metadata": metadata,
         "non_tensor_batch": jsonable(batch.non_tensor_batch),
@@ -94,7 +95,8 @@ def archive_batch(batch, *, root: str, update: int, config) -> None:
         "row_count": len(metadata),
         "unique_decisions": len({x["decision_id"] for x in metadata}),
         "loss_tokens": int(mask.sum()),
-        "batch_sha256": sha256_file(target / "training_batch.pt"),
+        "batch_sha256": sha256_file(target / tensor_name),
+        **(storage or {}),
         "config": OmegaConf.to_container(config, resolve=True),
         "capture_point": "after actual GRPO advantages, before any optimizer step",
     })

@@ -19,11 +19,13 @@
 
 ## 训练证据与存储
 
-新 U1 `training_batch.pt` 在捕获后进行 gzip level-1 无损压缩。先验证解压后的**原始文件 SHA256**完全一致，再登记 `training_batch.pt.gz` 的 hash，并移除本次生成的重复未压缩文件。张量 dtype、输入、positions、mask、GRPO advantages 和 native old log-prob 都不改动。旧实验文件不清理。
+新 U1 证据直接将原生 `torch.save` 字节流写入 gzip level-1，避免未压缩大文件的写盘峰值。边写边记录未压缩字节的 SHA256，写完后验证 gzip 解压流的 SHA256 完全一致，再登记 `training_batch.pt.gz`。张量 dtype、输入、positions、mask、GRPO advantages 和 native old log-prob 都不改动。旧实验文件不清理。
 
 读取使用 `webshop_phase12.training_storage.load_training_archive`；训练 manifest 提供 `batch_file / batch_compression / batch_sha256 / uncompressed_batch_sha256`。Phase3 消费者应使用该 helper，不假定证据只存在 `.pt` 文件。
 
 仅 8-task 预检的 native checkpoint 保存 model；仍保留真实 optimizer-step 日志。正式两个 seed 保存 model/optimizer/RNG 全状态，native checkpoint 继续位于专属 `/dev/shm`，merged endpoint 与训练证据在持久盘。
+
+预检使用明确的 `checkpoint.export_model_only=true`，并标记 `model_export_only.json` 为不可 resume；默认 FSDP checkpoint 仍强制保存 model/optimizer/extra。Ray object store 固定为 16GiB，避免预检自动预留约 140GB；本实验进程的 `local_fs_capacity_threshold=0.999`，启动时仍检查持久盘 ≥25GiB、tmpfs ≥55GiB，不修改其他作业配置。
 
 ## 验证与运行
 

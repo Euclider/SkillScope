@@ -113,9 +113,10 @@ def pipeline(root,prepared,*,smoke=False,gpus=(3,4),evaluation_gpu=7,router_gpu=
             if config.endswith('accel_v2'):
                 # Optimizer steps are still witnessed; only this disposable
                 # preflight endpoint omits restart state to reserve tmpfs.
-                command+=['actor_rollout_ref.actor.checkpoint.contents=[model]']
+                command+=['actor_rollout_ref.actor.checkpoint.contents=[model]',
+                          '+actor_rollout_ref.actor.checkpoint.export_model_only=true']
         else:
-            command+=['+ray_init.object_store_memory=8589934592']
+            if config=='webshop54_phase12_v1':command+=['+ray_init.object_store_memory=8589934592']
         run_stage(f'seed{seed}-training',command,root,gpus,router_gpu)
         performance_path=root/f'router-performance-train-s{seed}.json'
         performance=json.loads(performance_path.read_text())

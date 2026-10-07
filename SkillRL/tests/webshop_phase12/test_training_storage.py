@@ -25,3 +25,15 @@ def test_legacy_uncompressed_training_archive_remains_loadable(tmp_path):
     torch.save({'schema_version':'phase2.exact_training_batch.v1','value':torch.tensor([7])},tmp_path/'training_batch.pt')
     (tmp_path/'manifest.json').write_text('{}')
     assert load_training_archive(tmp_path)['value'].item()==7
+
+
+def test_direct_gzip_writer_never_creates_uncompressed_disk_copy(tmp_path):
+    import gzip,hashlib
+    from phase1.archive import sha256_file
+    from webshop_phase12.training_storage import save_gzip_training_archive,load_training_archive
+    target=tmp_path/'training_batch.pt.gz'
+    metadata=save_gzip_training_archive(target,{'value':torch.arange(20)})
+    assert not (tmp_path/'training_batch.pt').exists()
+    assert hashlib.sha256(gzip.decompress(target.read_bytes())).hexdigest()==metadata['uncompressed_batch_sha256']
+    (tmp_path/'manifest.json').write_text(json.dumps({**metadata,'batch_file':target.name,'batch_sha256':sha256_file(target)}))
+    assert torch.equal(load_training_archive(tmp_path)['value'],torch.arange(20))

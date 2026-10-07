@@ -26,3 +26,8 @@ actor_rollout_ref:
 
 trainer:
   project_name: webshop54_phase12_accel_v2
+
+ray_init:
+  object_store_memory: 17179869184
+  _system_config:
+    local_fs_capacity_threshold: 0.999
