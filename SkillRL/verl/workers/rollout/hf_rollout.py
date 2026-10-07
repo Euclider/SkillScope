@@ -59,6 +59,8 @@ class HFRollout(BaseRollout):
         groups=generation_groups(prompts.batch['attention_mask'],limit,prompt_multiple=multiple)
         parameter_context=contextlib.nullcontext()
         if isinstance(self.module,FSDP):
+            if any(isinstance(child,FSDP) for child in list(self.module.modules())[1:]):
+                raise ValueError('Compact HF generation requires a single root FSDP wrapper')
             # Different ranks may have different exact-length group counts.
             # Gather once before the entire request, never inside its groups.
             parameter_context=FSDP.summon_full_params(self.module,writeback=False,recurse=False)
@@ -182,6 +184,11 @@ class HFRollout(BaseRollout):
             # that helper and fails at the rotary embedding.
             from logicbench_phase12.qwen35_positions import is_qwen35
             position_kwargs = {} if is_qwen35(self.module) else {"position_ids": position_ids}
+            if compact:
+                # All weights are already gathered. Transformers otherwise
+                # detects FSDP and inserts one all-reduce per decode token;
+                # unequal local bucket counts would deadlock across ranks.
+                position_kwargs['synced_gpus']=False
             output = self.module.generate(
                 input_ids=idx,
                 attention_mask=attention_mask,

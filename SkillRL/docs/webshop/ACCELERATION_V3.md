@@ -7,6 +7,7 @@
 对含完整所选 skill guidance 的 prompt，令真实 token 长度为 L，规范宽度为 `W=256*ceil(L/256)`，上限 16,384；不截断文本。
 
 - 每个 rank 按 W 分组，每批最多 16 条。每条只计算其所属桶中的左侧 padding，最多 255 个；结果恢复原始行顺序与 16K 证据存储宽度。
+- FSDP 仅在整次生成请求的边界聚合/释放完整参数，要求单一 root wrapper；桶内设置 `synced_gpus=False`。Transformers 会自动检测 FSDP 并逐 token all-reduce，必须显式关闭，否则不同 rank 的桶数不同会造成 collective 顺序不一致。
 - actor/reference 的逐行前向使用同一 W，保留所有 512 个 response slots、原始 positions 与 mask。native actor/reference log-prob 和训练 microbatch 都为 1。
 - 同一训练决策的 old/new × skill/control 四条件 **全部使用含 skill 的原始 prompt 所定义的 W**。control 只删除 guidance，保留 W，避免移除技能时顺带改变前向桶宽。
 - paired continuation 的 skill/control 同样从当前完整 guidance prompt 定义 W；control 的实际输入移除目标 guidance 后补齐到该 W。U0 自然锚点、环境 prefix 与事实包重放仍保持原协议。

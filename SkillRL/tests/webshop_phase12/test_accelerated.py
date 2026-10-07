@@ -89,6 +89,7 @@ def test_trimmed_hf_generation_preserves_dense_storage_and_original_row_order():
             self.config=SimpleNamespace(model_type='test');self.seen=[]
         def generate(self,input_ids,attention_mask,generation_config,**kwargs):
             self.seen.append((input_ids.shape[-1],len(input_ids)))
+            assert kwargs.get('synced_gpus') is False
             assert attention_mask.all()
             response=torch.stack([input_ids[:,-1]+1,torch.full_like(input_ids[:,-1],2)],dim=1)
             return SimpleNamespace(sequences=torch.cat([input_ids,response],dim=1))
