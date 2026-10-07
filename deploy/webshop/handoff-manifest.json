@@ -1,0 +1,244 @@
+{
+  "schema_version": "skillscope.webshop_handoff.v1",
+  "base_commit": "b2ce0e998735407fe0e3a61df402943ed94ba19d",
+  "source": "validated isolated WebShop Phase1/2 implementation, portable publication overlay",
+  "phase3_editor_implemented": false,
+  "model_data_checkpoint_included": false,
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "6a47067275fc2df9384c10f7b9dfb9c02c8e6109aaa1ed2a856db1455702ac2d",
+      "bytes": 2324
+    },
+    {
+      "path": "SkillRL/agent_system/memory/frozen_skill_bank.py",
+      "sha256": "2be60019878cd7b5b1e3892f2b46bbf6562ce2e6de6c712122ef331b6d9722b6",
+      "bytes": 18776
+    },
+    {
+      "path": "SkillRL/agent_system/memory/router_cache.py",
+      "sha256": "87b878a95633f42f28992c8c2266fdbaded558004f5e009b5af5f457c2409c75",
+      "bytes": 10292
+    },
+    {
+      "path": "SkillRL/agent_system/multi_turn_rollout/rollout_loop.py",
+      "sha256": "b4a7ec0f8fa76036413f56fb3b72157e74c2c04e105eeced7ba5c6569324236f",
+      "bytes": 28078
+    },
+    {
+      "path": "SkillRL/docs/webshop/PHASE3_HANDOFF.md",
+      "sha256": "95825805dccfe43bd265f2b4464e609ce20cc686b7a52f92091fd55eaf2feee0",
+      "bytes": 9110
+    },
+    {
+      "path": "SkillRL/docs/webshop/PROTOCOL.md",
+      "sha256": "30c6207f1966a8450c379db945a33170bde0599c412b158d64aa21e87d81130c",
+      "bytes": 11463
+    },
+    {
+      "path": "SkillRL/docs/webshop/ROUTER_FIXED_PREFIX.txt",
+      "sha256": "3b503a1a43beeb16899ab198e84c4590ba65b3b3deee56a7fec430474a886573",
+      "bytes": 16760
+    },
+    {
+      "path": "SkillRL/memory_data/webshop/claude_style_skills.json",
+      "sha256": "79c6c60b6757b6b730e7471b537781936ce0e9cdbd8df6188b57c535893aec20",
+      "bytes": 26311
+    },
+    {
+      "path": "SkillRL/requirements-webshop-observed.txt",
+      "sha256": "b65b42e1e1b7ac55362b98892d5e427c007b8e19c5e0df5513e167daa0a6fa43",
+      "bytes": 480
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/fixtures/oversized_menu_state.json",
+      "sha256": "16b4650dddc659c1610aa57bfd536b1754d035a1d596362a983e4352972487f2",
+      "bytes": 32720
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_active_rollout.py",
+      "sha256": "9fa1e33ef14e22135b43e4f7e8ec40044ec0dfa2bada13215e7833714c26df87",
+      "bytes": 2049
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_contracts.py",
+      "sha256": "08d605d0e73bc25312489c2fdcb2c49ce34d4da4ddfb90a7d3384b4211f52979",
+      "bytes": 3210
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_dense_scoring.py",
+      "sha256": "326370239acf48f8c8b9e2634c4d3fcfc6282a95ad74e868d9ea890e5ce9d45a",
+      "bytes": 2675
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_handoff_manifest.py",
+      "sha256": "d8393d43f47548c93408680a76cc9f0b1b2492eca22842173c7249c8746fbcce",
+      "bytes": 869
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_inference_replica.py",
+      "sha256": "a8c1062bf452a9a8a77946d31f8f786bf1e3be4afa16c4a781bb29bc2252c518",
+      "bytes": 954
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_long_menu_budget.py",
+      "sha256": "995b63a3b8edc7348e826c3c63cfc64f9f04bef58059cfe35d24140cd16253ad",
+      "bytes": 2147
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_portable_settings.py",
+      "sha256": "0fff419a7acb75798687901accefa3d3bd1244414c0fc39d002f8a162645bddd",
+      "bytes": 1307
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_session_reset.py",
+      "sha256": "64ca36b9710a3e45807d963c04e5c0107afeebc92d7c3194e44ad4a511339311",
+      "bytes": 1686
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_training_lifecycle.py",
+      "sha256": "e2637ddb0dba9ffb893ab651f0c0fa51bb42a2ccc08bad101dc604e449ac51c0",
+      "bytes": 864
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_visible_llm_router.py",
+      "sha256": "a22d6c665adb00fd36bf201fb359ca05992ef72d77ff8acbf03ec08c41e2297a",
+      "bytes": 10610
+    },
+    {
+      "path": "SkillRL/verl/trainer/config/webshop54_phase12_v1.yaml",
+      "sha256": "7efe82d7a18dbf6f467ee239ad32f1e8cf0a6ee94c1fb6ff07edf2dd41acda3d",
+      "bytes": 2208
+    },
+    {
+      "path": "SkillRL/verl/trainer/main_ppo.py",
+      "sha256": "75b59904526de497ac257a6282f5a1540be757ea89e3a1a5ed5351a016879388",
+      "bytes": 11658
+    },
+    {
+      "path": "SkillRL/verl/trainer/ppo/ray_trainer.py",
+      "sha256": "43a311cc07a35002e299b2d2004ee32880b101c82c45c83a7b445a89204aa4d2",
+      "bytes": 91841
+    },
+    {
+      "path": "SkillRL/verl/workers/rollout/hf_rollout.py",
+      "sha256": "c176a1c1947d47244d7d061dd08b340394d28e06bf00c3bafd11f579110070d1",
+      "bytes": 8650
+    },
+    {
+      "path": "SkillRL/webshop_phase12/__init__.py",
+      "sha256": "0213a2f422f7833560b1ba51bdf19f585a999f9d61c0b17d2411f8a57d54fd8a",
+      "bytes": 53
+    },
+    {
+      "path": "SkillRL/webshop_phase12/active_rollout.py",
+      "sha256": "518ea4d80d80c2c7613e949d70f896696d7dff062d5ec05fa5d132192dea1e84",
+      "bytes": 1446
+    },
+    {
+      "path": "SkillRL/webshop_phase12/assets.py",
+      "sha256": "19842e5c2a734da6c0861fb7b14652e91494632577db7d8e993225b65ac2f92a",
+      "bytes": 3396
+    },
+    {
+      "path": "SkillRL/webshop_phase12/capture.py",
+      "sha256": "43677be234c6ec1d975376b5b8094a9dc6937c2dabb5a33e890deaf5ec714610",
+      "bytes": 386
+    },
+    {
+      "path": "SkillRL/webshop_phase12/coordinate_llm.py",
+      "sha256": "8bff1aa3e564688885da57279ef36f145e9e0bccde9afbba47548327907cf050",
+      "bytes": 4312
+    },
+    {
+      "path": "SkillRL/webshop_phase12/dense_scoring.py",
+      "sha256": "657442b38666d79ac5f2855d3173e197040c5953fee5a2b2b2f15961c4e69a05",
+      "bytes": 1908
+    },
+    {
+      "path": "SkillRL/webshop_phase12/envs.py",
+      "sha256": "ed003589b1f160a431f68d806bcf2c737def9d86961887451920b34693b0bfa7",
+      "bytes": 10500
+    },
+    {
+      "path": "SkillRL/webshop_phase12/evaluate.py",
+      "sha256": "711f66cc16edcd20a24b5b8b57e622eb6917033b612107331d7983395f8e0adb",
+      "bytes": 8099
+    },
+    {
+      "path": "SkillRL/webshop_phase12/gpu_probe.py",
+      "sha256": "f1c137e1a84d436ffede512df6970362c6e22f1eaedac4936b7112b378778d99",
+      "bytes": 3400
+    },
+    {
+      "path": "SkillRL/webshop_phase12/inference_replica.py",
+      "sha256": "2e595cd8e95d9c594d42fa6e98040156c47244489c3b144dd82255aedb009516",
+      "bytes": 881
+    },
+    {
+      "path": "SkillRL/webshop_phase12/lifecycle.py",
+      "sha256": "0a47610cee1bcd661dad2c0eb2c446693ff856348b28c1d5d3a6218dd31e26dc",
+      "bytes": 232
+    },
+    {
+      "path": "SkillRL/webshop_phase12/llm_router.py",
+      "sha256": "d5db272ac4063da024b6aa75c0416a5962ce50aa8318cffb1158df00814b65a6",
+      "bytes": 6411
+    },
+    {
+      "path": "SkillRL/webshop_phase12/llm_service.py",
+      "sha256": "bfa264653ee9a4411456793aedba3c70d4fa975ac0c511ae211fb51cf8e9b397",
+      "bytes": 11634
+    },
+    {
+      "path": "SkillRL/webshop_phase12/metrics.py",
+      "sha256": "102e0276a3d3f7994c3d3bfa1e2f9ea785de075b758c93f3231aedf779df324a",
+      "bytes": 1279
+    },
+    {
+      "path": "SkillRL/webshop_phase12/prepare.py",
+      "sha256": "c3733c6ab42e472d93b3327ac744642c1209e3bf0780de87439f4ca78c30ed8f",
+      "bytes": 2168
+    },
+    {
+      "path": "SkillRL/webshop_phase12/prompts.py",
+      "sha256": "c1259f408d3742aa1d5f777447763f67dfe3674041f9c1f951db96e69c4f9ab5",
+      "bytes": 6988
+    },
+    {
+      "path": "SkillRL/webshop_phase12/readout.py",
+      "sha256": "f2e7fee30f63460209d385c97a15ab10ce6a21311de674f9f0a42918abe2f975",
+      "bytes": 7137
+    },
+    {
+      "path": "SkillRL/webshop_phase12/router.py",
+      "sha256": "0919982a171786dfc54e744944ba7c1175a5b8bed72167f6c06784bb17df3551",
+      "bytes": 2794
+    },
+    {
+      "path": "SkillRL/webshop_phase12/run.py",
+      "sha256": "6c62f76ee045cd1157221cd85b50a8f0f53b7dd8c6877cbccd7258c3845105a2",
+      "bytes": 9026
+    },
+    {
+      "path": "SkillRL/webshop_phase12/snapshot.py",
+      "sha256": "5b9c64201ed2f67dd7619ffe10d7b72efca9ac151b621735ed84905c7148d285",
+      "bytes": 2505
+    },
+    {
+      "path": "SkillRL/webshop_phase12/visible_state.py",
+      "sha256": "b901a1acf142140d0ea00f08f9f6efa6f1f16b3a8cede0b87e8c675b46e5c9bf",
+      "bytes": 3973
+    },
+    {
+      "path": "WEBSHOP_PHASE3_START.md",
+      "sha256": "e63cdc034046b700825a9cb427c6a691837ae39f5dc90505f8cc6a814d088970",
+      "bytes": 3231
+    },
+    {
+      "path": "deploy/webshop/verify_handoff.py",
+      "sha256": "acbc50ca0ad219de8ecc6fa97616966f9cca0b77492fff4ef6cdbe0d1b107cdb",
+      "bytes": 915
+    }
+  ]
+}

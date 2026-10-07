@@ -61,6 +61,9 @@ class TaskRunner:
         if config.get("logicbench_phase12", {}).get("enabled", False):
             from skillnet_cohort.runtime import seed_process
             seed_process(int(config.logicbench_run.seed))
+        if config.get("webshop_phase12", {}).get("enabled", False):
+            from skillnet_cohort.runtime import seed_process
+            seed_process(int(config.webshop_run.seed))
         # print initial config
         from pprint import pprint
 
@@ -77,6 +80,9 @@ class TaskRunner:
         logicbench_phase12 = config.get("logicbench_phase12", {}).get("enabled", False)
         if logicbench_phase12:
             envs, val_envs = None, None
+        elif config.get("webshop_phase12", {}).get("enabled", False):
+            from webshop_phase12.envs import make_envs
+            envs, val_envs = make_envs(config)
         else:
             from agent_system.environments import make_envs
             envs, val_envs = make_envs(config)
@@ -201,8 +207,12 @@ class TaskRunner:
             envs=envs,
             val_envs=val_envs,
         )
-        trainer.init_workers()
-        trainer.fit()
+        if config.get('webshop_phase12',{}).get('enabled',False):
+            from webshop_phase12.lifecycle import train_and_close_environment
+            train_and_close_environment(trainer,envs)
+        else:
+            trainer.init_workers()
+            trainer.fit()
 
 
 def create_rl_dataset(data_paths, data_config, tokenizer, processor):

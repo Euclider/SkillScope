@@ -108,6 +108,38 @@ class RouterCache:
         with self._transaction() as connection:
             connection.execute("INSERT INTO cache_hits (key, at) VALUES (?, ?)", (key, utc_now()))
 
+    def lookup_many(self, keys):
+        """Read a local routing batch in one transaction, retaining integrity checks."""
+        keys=list(dict.fromkeys(keys));result={key:None for key in keys}
+        with self._transaction() as connection:
+            for offset in range(0,len(keys),500):
+                subset=keys[offset:offset+500]
+                placeholders=','.join('?' for _ in subset)
+                for key,raw,checksum in connection.execute(
+                    f'SELECT key,record,hash FROM decisions WHERE key IN ({placeholders})',subset):
+                    record=json.loads(raw)
+                    if digest(record)!=checksum or record.get('cache_key')!=key or record.get('protocol_hash')!=self.protocol_hash:
+                        raise RouterCacheError('Cached decision failed integrity validation')
+                    result[key]=record
+        return result
+
+    def note_hits(self, keys):
+        keys=list(keys)
+        if not keys:return
+        with self._transaction() as connection:
+            at=utc_now()
+            connection.executemany('INSERT INTO cache_hits (key,at) VALUES (?,?)',[(key,at) for key in keys])
+
+    def finish_many(self, items):
+        """Publish all valid local choices atomically, without per-state fsync."""
+        with self._transaction() as connection:
+            for attempt,record in items:
+                row=connection.execute('SELECT key,status FROM attempts WHERE id=?',(attempt,)).fetchone()
+                if row!=(record['cache_key'],'started'):raise RouterCacheError('Invalid local reservation')
+                raw=canonical_json(record)
+                connection.execute('INSERT INTO decisions VALUES (?,?,?)',(record['cache_key'],raw,digest(record)))
+                connection.execute("UPDATE attempts SET status='success',data=? WHERE id=?",(raw,attempt))
+
     def reserve(self, key: str, visible_input: dict) -> int:
         with self._transaction() as connection:
             count = connection.execute("SELECT COUNT(*) FROM attempts").fetchone()[0]

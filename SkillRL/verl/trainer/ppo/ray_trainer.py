@@ -1439,6 +1439,8 @@ class RayPPOTrainer:
                                                                 is_train=True,
                                                                 global_step=self.global_steps,
                                                                 )
+                    if self.config.get('webshop_phase12',{}).get('enabled',False):
+                        self.envs.suspend_router()
                     if self.config.algorithm.adv_estimator == AdvantageEstimator.REMAX:
                         with _timer("gen_max", timing_raw):
                             gen_baseline_batch = deepcopy(gen_batch)
@@ -1486,6 +1488,8 @@ class RayPPOTrainer:
 
                     if self.config.get("phase2", {}).get("enabled", False):
                         from phase2.capture import mark_batch
+                        if self.config.get('webshop_phase12', {}).get('enabled', False):
+                            from webshop_phase12.capture import mark_batch
                         from skillnet_cohort.capture_scope import full_capture, capture_post
                         mark_batch(batch, root=self.config.phase2.root, update=self.global_steps,
                                    full_vocab=full_capture(self.config.phase2, self.global_steps),

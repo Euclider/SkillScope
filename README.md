@@ -14,6 +14,10 @@ python3 deploy/5090/verify_project.py
 
 然后按 [SETUP_5090.md](SETUP_5090.md) 创建环境、下载固定 revision 的 Qwen3.5-4B 与 ALFWorld 文本数据，并运行部署检查。说明中的安装方案尚未在目标 5090 验证；新训练需另设配置与输出目录。
 
+## WebShop Phase3 实现交接
+
+新增 [WebShop 状态、冻结路由与 Phase3 接入入口](WEBSHOP_PHASE3_START.md)。包括完整状态记忆、全 54-skill LLM 选择、verl/GRPO 接入、dense readout、测试和服务器路径配置。
+
 ## 研究与历史结果
 
 - [交接说明](HANDOFF.md)与[技术附录](HANDOFF-DETAILS.md)。

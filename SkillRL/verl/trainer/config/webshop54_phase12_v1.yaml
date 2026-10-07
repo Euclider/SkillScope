@@ -1,0 +1,91 @@
+defaults:
+  - alfworld_skillnet37_skillrl_v1
+  - _self_
+
+webshop_run:
+  seed: ???
+  prepared: ???
+  run_root: ???
+  tasks_per_update: 128
+  updates: 5
+
+webshop_phase12:
+  enabled: true
+  active_only_generation: true
+
+alignment_run:
+  seed: ${webshop_run.seed}
+  model_path: ${oc.env:WEBSHOP_BASE_MODEL}
+  train_files: ${webshop_run.prepared}/seed${webshop_run.seed}/train.parquet
+  val_files: ${webshop_run.prepared}/seed${webshop_run.seed}/dev.parquet
+  run_id: webshop54-s${webshop_run.seed}-phase12
+  output_dir: ${webshop_run.run_root}/seed${webshop_run.seed}/checkpoints
+  archive_dir: ${webshop_run.run_root}/seed${webshop_run.seed}/phase1
+  router_cache: ${webshop_run.run_root}/router.sqlite3
+  ray_temp_dir: /tmp/ws12-${webshop_run.seed}
+
+data:
+  train_batch_size: ${webshop_run.tasks_per_update}
+  val_batch_size: 2
+  max_prompt_length: 16384
+  max_response_length: 512
+  filter_overlong_prompts: false
+  truncation: error
+  shuffle: false
+
+actor_rollout_ref:
+  actor:
+    response_logits_only: true
+    fsdp_config:
+      optimizer_offload: true
+  rollout:
+    name: hf
+    micro_batch_size: 4
+    response_length: 512
+    multi_turn:
+      enable: false
+
+env:
+  env_name: webshop
+  seed: ${webshop_run.seed}
+  max_steps: 50
+  history_length: 2
+  rollout:
+    n: 8
+  use_skills_only_memory: false
+  skills_only_memory:
+    enable_dynamic_update: false
+    update_skills_from_train: false
+    step_routing:
+      enabled: false
+  phase1_archive:
+    enabled: true
+    run_id: ${alignment_run.run_id}
+    output_dir: ${alignment_run.archive_dir}
+
+phase2:
+  enabled: true
+  root: ${webshop_run.run_root}/seed${webshop_run.seed}/phase2
+  capture_scope: window_start_old_only_v1
+  capture_updates: [1]
+  progress_journal: true
+  save_pre_forward_batch: false
+
+trainer:
+  project_name: webshop54_phase12_v1
+  experiment_name: ${alignment_run.run_id}
+  n_gpus_per_node: 2
+  nnodes: 1
+  total_epochs: 1
+  total_training_steps: ${webshop_run.updates}
+  test_freq: 0
+  save_freq: ${webshop_run.updates}
+  val_before_train: false
+  resume_mode: disable
+  default_local_dir: ${alignment_run.output_dir}
+  logger: [console]
+
+ray_init:
+  address: local
+  _temp_dir: ${alignment_run.ray_temp_dir}
+  num_cpus: 24

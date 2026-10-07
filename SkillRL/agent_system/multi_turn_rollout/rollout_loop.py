@@ -350,10 +350,15 @@ class TrajectoryCollector:
             batch_input.meta_info = gen_batch.meta_info
 
             # pad to be divisible by dp_size
-            batch_input_padded, pad_size = pad_dataproto_to_divisor(batch_input, actor_rollout_wg.world_size)
-            batch_output_padded = actor_rollout_wg.generate_sequences(batch_input_padded)
-            # # unpad
-            batch_output = unpad_dataproto(batch_output_padded, pad_size=pad_size)
+            if self.config.get('webshop_phase12',{}).get('active_only_generation',False):
+                from webshop_phase12.active_rollout import generate_active
+                padding=self.tokenizer.pad_token_id
+                if padding is None:padding=self.tokenizer.eos_token_id
+                batch_output=generate_active(actor_rollout_wg,batch_input,active_masks,pad_token_id=padding)
+            else:
+                batch_input_padded, pad_size = pad_dataproto_to_divisor(batch_input, actor_rollout_wg.world_size)
+                batch_output_padded = actor_rollout_wg.generate_sequences(batch_input_padded)
+                batch_output = unpad_dataproto(batch_output_padded, pad_size=pad_size)
 
             batch.non_tensor_batch['uid'] = uid_batch
             batch.non_tensor_batch['traj_uid'] = traj_uid
