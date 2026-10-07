@@ -23,12 +23,18 @@ def parallel(stages):
             future.result()
 
 
-def evaluations(root, prepared, gpus=(5, 7), *, smoke=False):
+def evaluations(root, prepared, gpus=(5, 7), *, smoke=False, reuse_locked=False):
     spec = json.loads((prepared/'manifest.json').read_text())
     seeds = list(spec['seeds'])
     # Both readouts are locked before the first independent reward is collected.
     jobs = []
     for i, seed in enumerate(seeds):
+        locked_path=root/f'seed{seed}'/'readout/prediction-locked.json'
+        if reuse_locked and locked_path.exists():
+            locked=json.loads(locked_path.read_text())
+            if locked['status']!='locked_before_independent_eval' or not locked['native_old_forward_parity_passed'] or locked['native_old_chosen_max_abs_difference']>1e-3:
+                raise ValueError('Reusable lockedreadout is invalid')
+            continue
         stage_root = root/'parallel'/f'readout-s{seed}'
         stage_root.mkdir(parents=True, exist_ok=False)
         path = root/f'seed{seed}'
@@ -37,7 +43,7 @@ def evaluations(root, prepared, gpus=(5, 7), *, smoke=False):
         jobs.append((f'seed{seed}-readout', command, stage_root, [gpus[i % len(gpus)]]))
     wait_idle(gpus, root, 'parallel-readout')
     write(root/'status.json', {'status': 'running', 'stage': 'parallel-readout', 'updated_at_utc': now()})
-    parallel(jobs)
+    if jobs:parallel(jobs)
     first = None
     for seed in seeds:
         path = root/f'seed{seed}'
@@ -99,6 +105,12 @@ def main(queue, gpus, reuse_training=None):
             registered=json.loads((reuse_training.parent/'registered-source-manifest-llm-v1.json').read_text())
             for row in registered['files']:
                 if row['path'] in ('webshop_phase12/small_run.py','webshop_phase12/run.py'):continue
+                if row['path']=='webshop_phase12/envs.py':
+                    from webshop_phase12.replay_identity import environment_behavior_fingerprint
+                    amendment=json.loads((RUN_ROOT/'environment-replay-amendment.json').read_text())
+                    if amendment['training_source_sha256']!=row['sha256'] or environment_behavior_fingerprint((ROOT/row['path']).read_text())!=amendment['unchanged_training_behavior_sha256']:
+                        raise ValueError('Environment behavior changed beyond transportreplay identity')
+                    continue
                 if hashlib.sha256((ROOT/row['path']).read_bytes()).hexdigest()!=row['sha256']:
                     raise ValueError('Reusable preflight runtime math/environment source changed')
             if hashlib.sha256((reuse_training.parent/'registered-frozen-router-model.json').read_bytes()).hexdigest()!=hashlib.sha256((RUN_ROOT/'frozen-router-model.json').read_bytes()).hexdigest():
@@ -117,9 +129,13 @@ def main(queue, gpus, reuse_training=None):
             write(smoke/'actual-training-reused.json',{'source':str(reuse_training),'all_real_optimizer_steps_verified':expected,
                   'native_math_source_unchanged':True,'routing_execution_unchanged':True,'complete_RL_router_cost_admission':routing})
             checkpoint=smoke/'seed404/checkpoints/global_step_1/actor'
-            run_stage('seed404-merge',[sys.executable,'-B','scripts/model_merger.py','merge','--backend','fsdp',
-                      '--local_dir',str(checkpoint),'--target_dir',str(smoke/'seed404/merged-endpoint')],smoke,[])
-        evaluations(smoke, RUN_ROOT/'prepared-smoke', gpus, smoke=True)
+            if not (smoke/'seed404/merged-endpoint').is_dir():
+                run_stage('seed404-merge',[sys.executable,'-B','scripts/model_merger.py','merge','--backend','fsdp',
+                          '--local_dir',str(checkpoint),'--target_dir',str(smoke/'seed404/merged-endpoint')],smoke,[])
+            else:
+                write(smoke/'merged-endpoint-reused.json',{'source':str(reuse_training/'seed404/merged-endpoint'),
+                      'same_endpoint_as_locked_readout':True})
+        evaluations(smoke, RUN_ROOT/'prepared-smoke', gpus, smoke=True, reuse_locked=reuse_training is not None)
         path = smoke/'seed404'
         locked = json.loads((path/'readout/prediction-locked.json').read_text())
         paired = json.loads((path/'paired_eval/manifest.json').read_text())

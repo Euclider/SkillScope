@@ -8,6 +8,7 @@ import random
 import sys
 import time
 from pathlib import Path
+from urllib.parse import urlsplit, urlunsplit, unquote
 
 import numpy as np
 from webshop_phase12.assets import ROOT, RUN_ROOT, WebshopBank, digest
@@ -87,8 +88,14 @@ class ShopWorld:
     def state_digest(self,i):
         from phase1.archive import jsonable
         env=self.envs[i]
+        url=urlsplit(env.browser.current_url)
+        # The PID-derived session address names a transport endpoint, not a
+        # different shopping state. Retain every other navigation component.
+        path='/'.join('__session__' if unquote(part)==str(env.session) else part for part in url.path.split('/'))
+        canonical_url=urlunsplit((url.scheme,url.netloc,path,url.query,url.fragment))
         return digest({'session':jsonable(self.server.user_sessions[env.session]),
-            'url':env.browser.current_url,'random_state':jsonable(self.random_states[i])})
+            'url':canonical_url,'random_state':jsonable(self.random_states[i]),
+            'digest_version':'canonical-session-url-v2'})
 
 
 class Manager:
