@@ -51,6 +51,11 @@
       "bytes": 16760
     },
     {
+      "path": "SkillRL/logicbench_phase12/metrics.py",
+      "sha256": "5303150e8e962e97a8a7cb3cc548afa3628733bec515074962cee33986781cf6",
+      "bytes": 5215
+    },
+    {
       "path": "SkillRL/memory_data/webshop/claude_style_skills.json",
       "sha256": "79c6c60b6757b6b730e7471b537781936ce0e9cdbd8df6188b57c535893aec20",
       "bytes": 26311
@@ -104,6 +109,11 @@
       "path": "SkillRL/tests/webshop_phase12/test_long_menu_budget.py",
       "sha256": "995b63a3b8edc7348e826c3c63cfc64f9f04bef58059cfe35d24140cd16253ad",
       "bytes": 2147
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_metrics_handoff.py",
+      "sha256": "2dda07d49018fae0e0e6e20380193b1e2acb5ce4c1678d4b07406456de9d0ec0",
+      "bytes": 813
     },
     {
       "path": "SkillRL/tests/webshop_phase12/test_portable_settings.py",
