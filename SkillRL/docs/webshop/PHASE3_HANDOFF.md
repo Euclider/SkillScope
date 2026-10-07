@@ -63,7 +63,7 @@ reset 建立新 memory，禁止跨 episode 混入旧证据。点击失败不能�
 
 ## 5. readout 与效用评估
 
-以下 16K dense 前向说明适用于原 `hf-dense-v1` 配置。新加速 cohort 使用 [hf-exact-length-v2](ACCELERATION_V2.md)：实际输入、response slots 和 positions 完整保留，前向按其登记的 trim 规则执行。不得把新训练记录按旧 dense-v1 重算，也不得把两个配置的 outcomes 混合。读取归档使用 `training_storage.load_training_archive`，通过 manifest 校验 `.pt` / `.pt.gz` 与 native-forward 契约。
+以下 16K dense 前向说明适用于原 `hf-dense-v1` 配置。正式加速 cohort 使用 [hf-bucket256-v3](ACCELERATION_V3.md)：实际输入、response slots 和 positions 完整保留，四条件按同一原始 prompt 的规范桶宽前向。exact-length-v2 也有独立配置与记录。不得把新训练记录按旧 dense-v1 重算，也不得混合不同配置的 outcomes。读取归档使用 `training_storage.load_training_archive`，通过 manifest 校验 `.pt` / `.pt.gz` 与 native-forward 契约。
 
 使用实际训练的 `phase2_actual_loss_mask`、GRPO advantage、原始动作 token。`score_dense` 保留记录的完整 input IDs、attention mask、position IDs、16384 prompt 宽度与全部 512 响应位置；前向完成后才选真实 loss-token 位置。
 
