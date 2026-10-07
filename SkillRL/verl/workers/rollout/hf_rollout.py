@@ -74,12 +74,9 @@ class HFRollout(BaseRollout):
             self.module.train()
         order=torch.tensor([index for group in groups for index in group])
         output.reorder(order.argsort())
-        output.meta_info.update(hf_generation_seconds=time.monotonic()-started,
-                                hf_generation_groups=len(groups),hf_prompt_padding_multiple=multiple,
-                                hf_forward_contract='hf-bucket256-v3' if multiple==256 else 'hf-exact-length-v2')
         print(json.dumps({'webshop_hf_generation':{
             'rank':torch.distributed.get_rank() if torch.distributed.is_initialized() else 0,
-            'rows':batch_size,'groups':len(groups),'seconds':output.meta_info['hf_generation_seconds'],
+            'rows':batch_size,'groups':len(groups),'seconds':time.monotonic()-started,
             'max_microbatch':max(map(len,groups)),'prompt_multiple':multiple,
             'storage_prompt_width':prompts.batch['input_ids'].shape[-1]}}),flush=True)
         return output

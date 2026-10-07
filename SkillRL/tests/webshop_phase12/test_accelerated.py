@@ -106,6 +106,9 @@ def test_trimmed_hf_generation_preserves_dense_storage_and_original_row_order():
     assert result.batch['responses'].tolist()==[[5,2,0,0],[8,2,0,0],[10,2,0,0]]
     assert result.batch['input_ids'].shape==(3,10)
     assert torch.equal(batch.batch['input_ids'],ids)
+    from verl.utils.py_functional import union_two_dict
+    second=HFRollout(model,config).generate_sequences(batch)
+    union_two_dict(result.meta_info,second.meta_info)
 
 
 def test_compact_policy_inputs_keep_complete_prompt_and_overflow_guard():
