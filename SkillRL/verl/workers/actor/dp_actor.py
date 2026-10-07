@@ -69,6 +69,7 @@ class DataParallelPPOActor(BasePPOActor):
 
         self.use_remove_padding = self.config.get("use_remove_padding", False)
         self.response_logits_only = self.config.get("response_logits_only", False)
+        self.active_response_logits_only = self.config.get("active_response_logits_only", False)
         self.trim_common_padding = self.config.get("trim_common_padding", False)
         if (self.response_logits_only or self.trim_common_padding) and (
             self.use_remove_padding or self.config.get("use_fused_kernels", False)
@@ -242,6 +243,11 @@ class DataParallelPPOActor(BasePPOActor):
                         prompt_multiple=int(self.config.get('prompt_padding_multiple',1)))
                 if self.response_logits_only:
                     extra_args["logits_to_keep"] = response_length + 1
+                if self.active_response_logits_only:
+                    from verl.workers.actor.active_logits import response_position_indices
+                    projected_mask = micro_batch["attention_mask"][:, -response_length:].bool()
+                    projected_indices, active_positions = response_position_indices(input_ids.shape[-1], projected_mask)
+                    extra_args["logits_to_keep"] = projected_indices
                 if self.use_fused_kernels:
                     extra_args["temperature"] = temperature
                 output = self.actor_module(
@@ -261,12 +267,25 @@ class DataParallelPPOActor(BasePPOActor):
                     logits = output.logits
 
                     logits.div_(temperature)
-                    logits = logits[:, -response_length - 1 : -1, :]  # (bsz, response_length, vocab_size)
-                    log_probs = logprobs_from_logits(logits, micro_batch["responses"])
+                    if self.active_response_logits_only:
+                        from verl.workers.actor.active_logits import scatter_response_values
+                        if len(active_positions):
+                            selected_tokens = micro_batch["responses"][:, active_positions]
+                            selected_probs = logprobs_from_logits(logits, selected_tokens)
+                        else:
+                            selected_probs = logits.sum(-1)*0
+                        log_probs = scatter_response_values(selected_probs, active_positions, response_length)
+                        if calculate_entropy:
+                            entropy = scatter_response_values(verl_F.entropy_from_logits(logits), active_positions, response_length)
+                        if getattr(self, "_phase2_capture", None) and self._phase2_capture.get('full_vocab', True):
+                            raise ValueError('Active projection uses reconstructed full-vocabulary readout; native dense capture is disabled')
+                    else:
+                        logits = logits[:, -response_length - 1 : -1, :]  # (bsz, response_length, vocab_size)
+                        log_probs = logprobs_from_logits(logits, micro_batch["responses"])
                     if getattr(self, "_phase2_capture", None) and "phase2_row_index" in micro_batch:
                         from phase2.capture import capture_old_logits
                         capture_old_logits(logits, log_probs, micro_batch, self._phase2_capture)
-                    if calculate_entropy:
+                    if calculate_entropy and not self.active_response_logits_only:
                         entropy = verl_F.entropy_from_logits(logits)  # (bsz, response_length)
 
             return entropy, log_probs

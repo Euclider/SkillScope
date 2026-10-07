@@ -4,7 +4,9 @@
 
 先读 [状态与路由协议](SkillRL/docs/webshop/PROTOCOL.md)，再读 [Phase3 接入与服务器配置](SkillRL/docs/webshop/PHASE3_HANDOFF.md)。源码入口为 [webshop_phase12](SkillRL/webshop_phase12/)。
 
-正式加速运行使用 [hf-bucket256-v3 契约](SkillRL/docs/webshop/ACCELERATION_V3.md) 与 `webshop54_phase12_accel_v3` 配置。它保留完整状态与 16K prompt 上限，按 256-token 桶并行生成，native forward/readout/paired evaluation 使用同一规范宽度；skill/control 共享含 skill 的原始 prompt 所定义的桶宽。消费 Phase3 证据前必须检查实际训练 manifest 的 `forward_contract`，并通过 `training_storage.load_training_archive` 读取可能的无损 gzip 归档。
+历史加速运行使用 [hf-bucket256-v3 契约](SkillRL/docs/webshop/ACCELERATION_V3.md) 与 `webshop54_phase12_accel_v3` 配置。它保留完整状态与 16K prompt 上限，按 256-token 桶并行生成，native forward/readout/paired evaluation 使用同一规范宽度；skill/control 共享含 skill 的原始 prompt 所定义的桶宽。消费 Phase3 证据前必须检查实际训练 manifest 的 `forward_contract`，并通过 `training_storage.load_training_archive` 读取可能的无损 gzip 归档。
+
+当前部分任务实验采用[SMALL_COHORT_V4.md](SkillRL/docs/webshop/SMALL_COHORT_V4.md)：每轮16任务×8轨迹，独立50任务提供U0锚点，每锚点8次采样；配置为`webshop54_phase12_small_v4`。新forward contract为`hf-bucket256-active-v4`，完整输入和归档槽保留，输出仅计算有效响应位置；梯度累积与评估分片采用独立版本。端到端验收以运行回执为准。
 
 | 需求 | 文件 |
 |---|---|

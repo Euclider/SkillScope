@@ -18,6 +18,10 @@ class RouterClient:
         self.process = subprocess.Popen([os.environ.get('WEBSHOP_ROUTER_PYTHON',sys.executable),'-B','-u','-m','webshop_phase12.llm_service'],
             cwd=ROOT,env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=self.log,text=True,bufsize=1)
         self.sleeping=False
+        # vLLM profiles device-wide memory. Finish startup before the trainer
+        # can allocate actor/reference weights on the shared device.
+        self.control('ready')
+        if os.environ.get('WEBSHOP_ROUTER_SHARED')=='1':self.sleep()
 
     def control(self,command):
         self.process.stdin.write(json.dumps({'command':command})+'\n');self.process.stdin.flush()

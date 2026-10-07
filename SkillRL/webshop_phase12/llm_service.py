@@ -213,6 +213,9 @@ def main():
         for line in sys.stdin:
             request=json.loads(line)
             if request.get('close'):break
+            if request.get('command')=='ready':
+                print(json.dumps({'ack':'ready'}),file=protocol_output,flush=True)
+                continue
             if request.get('command') in ('sleep','wake'):
                 getattr(backend,request['command'])()
                 print(json.dumps({'ack':request['command']}),file=protocol_output,flush=True)

@@ -1,0 +1,51 @@
+# WebShop Phase1/2：部分任务实验 v4
+
+## 固定设置
+
+本实验验证冻结技能库上的读出与效用变化，使用预先固定的部分任务。历史128任务实验及其日志保留，结果不混合。
+
+| 项目 | 设置 |
+|---|---|
+| 训练种子 | 404、505 |
+| RL更新 | 每个种子5轮，从原始U0开始 |
+| 每轮任务 | 16个不同任务实例，每个8条轨迹，共128条轨迹 |
+| 训练任务 | 每个种子80个不同任务，原生Train ID≥1500 |
+| 效用锚点任务 | 原生Eval ID0–499中固定抽取50个，抽样seed20261007 |
+| 锚点重复 | 8个continuation seed：0–7 |
+| 对照条件 | U0/U5×skill/control，使用相同锚点和配对随机种子 |
+| 交互上限 | 每条轨迹50步；响应张量512槽；prompt存储16384槽 |
+| 冻结资产 | 原始Qwen3.5-4B U0、独立冻结router、全部54条SkillRL技能 |
+
+训练任务使用random.Random(训练seed)无放回抽样，按16个任务分为5轮。Eval任务在观察任何结果前抽取；不按奖励、路由选择或读出分数筛选。完整任务清单保存在prepared/manifest.json。结果仅涉及这一部分任务；未在U1调用的技能不记为零分，报告调用与独立锚点支持数。
+
+## 状态、bank与router
+
+沿用[PROTOCOL.md](PROTOCOL.md)中的状态定义、bank来源和完整prompt。状态包含任务目标、完整执行动作历史、最近两轮页面反馈、当前页面、可执行动作和此前观察到的商品证据。机械去重保留可见事实，不使用LLM生成摘要。
+
+Bank来自SkillRL提交8e66726的claude_style_skills.json，原文54条技能保持不变，SHA256为79c6c60b6757b6b730e7471b537781936ce0e9cdbd8df6188b57c535893aec20。Router使用原始本地Qwen3.5-4B U0，无微调；每步读取状态与全部54条描述，以受限单token贪心选择Top-1。路由不读取任务答案、隐藏奖励信息或技能gold标注。
+
+## 独立效用测量
+
+50个Eval任务用来生成U0参考轨迹。每个(task,skill)取首次自然调用前的锚点，保存任务、动作前缀、当前观察、可执行动作、可见记忆、环境状态摘要哈希及技能正文哈希。
+
+从同一锚点恢复环境后，U0和U5分别在skill/control条件下续跑，各使用8个配对seed。Control在目标技能被选择时只移除其指导正文；候选池、选择ID和其他状态信息保留。后续步骤仍由同一个冻结router自然选择技能。定义M_old=success(old_skill)−success(old_control)，M_new同理，ΔM=M_new−M_old。
+
+读出使用真实U1训练token、loss mask和GRPO优势值；两份读出在收集独立结果之前锁定。RL训练数据与效用锚点数据分开，保持此前ALFWorld和LogicBench的设置。
+
+## 数值执行路径
+
+Forward contract为hf-bucket256-active-v4。Actor/reference保持microbatch1、原始mask/position IDs及全部512个响应条件槽。输出层仅投影有效响应token的前驱hidden位置，保留每个有效位置的完整词表分布；返回的log-prob和entropy恢复为512槽，masked槽为零。归档训练张量不变。
+
+四条件Oo/No/Oc/Nc读出使用同一投影路径。Skill/control共享由完整技能prompt决定的256-token桶宽，防止不同padding宽度干扰比较。完整词表读出在有效loss位置重算，native旧策略chosen log-prob验收容差为1e-3。
+
+Actor在一个全局128决策PPO minibatch内累积梯度，最后一个microbatch再同步。FP32主参数、loss权重、GRPO分组、Adam更新边界及scheduler计数保留。BF16累积顺序会改变，v4属于独立数值执行版本，不声称训练轨迹逐位等价。Reference改为常驻GPU的整模型FSDP，验证log-prob对齐后启用。
+
+两卡真实Qwen探针，每卡64条真实样本：原actor小批656.3秒；有效位置输出单独660.9秒，没有明显提速；加入延迟同步后223.1秒，约2.94倍。梯度余弦≥0.999868，相对L2≤0.016246。参考模型8条/卡由约14.4秒降到0.9秒，log-prob差异0。探针结果不等于完整RL更新或最终验证的提速倍数。
+
+## 调度与验收
+
+训练和合并两个种子后，并行计算读出，再收集独立结果。U0参考锚点生成一次，第二个种子复用相同文件。锚点按全局ID确定性分为两个GPU进程；每条续跑仍为单样本HF生成，每次生成重置RNG。合并校验完整锚点、8个seed、四条件及原始效用运算。验证来源哈希后，U0续跑结果跨训练种子复用，U5结果单独计算。
+
+训练使用GPU5、7，router共享GPU7。Router先完成vLLM显存profiling并进入sleep，再初始化训练模型，避免共享GPU启动竞态。配对评估的两个分片各使用一张GPU与独立的冻结router。
+
+正式启动前要求CPU回归、完整小批梯度/显存探针、真实U1优化器更新、native读出对齐、并行锚点重放及统计输出全部通过。完整正式模型/optimizer/RNG检查点保存在专用tmpfs，重启服务器后会丢失；合并模型、日志和无损训练证据保存在持久盘。每个种子启动前要求持久盘至少12GiB、tmpfs至少55GiB。只在预检证据完整后回收本次新建的临时预检权重，历史实验数据保留。

@@ -24,7 +24,7 @@ def control_inputs(tensors,index,prompt_ids,*,pad_token_id):
 
 
 @torch.inference_mode()
-def score_dense(model,inputs,response_length,loss_mask,*,trim_padding=False,prompt_multiple=1,prompt_width=None):
+def score_dense(model,inputs,response_length,loss_mask,*,trim_padding=False,prompt_multiple=1,prompt_width=None,active_positions=False):
     device=next(model.parameters()).device
     forwarded={key:value.to(device) for key,value in inputs.items()}
     if trim_padding:
@@ -34,6 +34,12 @@ def score_dense(model,inputs,response_length,loss_mask,*,trim_padding=False,prom
                                         prompt_multiple=prompt_multiple,prompt_width=prompt_width)
         forwarded=dict(zip(('input_ids','attention_mask','position_ids'),values))
     if forwarded['position_ids'].ndim==3:forwarded['position_ids']=forwarded['position_ids'].transpose(0,1)
+    if active_positions:
+        from verl.workers.actor.active_logits import response_position_indices
+        indices,active=response_position_indices(forwarded['input_ids'].shape[-1],loss_mask.to(device)[None])
+        if not len(active):raise ValueError('Readout requires real loss tokens')
+        output=model(**forwarded,use_cache=False,logits_to_keep=indices)
+        return torch.log_softmax(output.logits[0].float(),dim=-1)
     output=model(**forwarded,use_cache=False,logits_to_keep=response_length+1)
     logits=output.logits[0,-response_length-1:-1]
     if logits.shape[0]!=response_length or loss_mask.numel()!=response_length:

@@ -127,3 +127,7 @@ native checkpoint 默认保留在独立 `/dev/shm`，机器重启会丢失；若
 - 原有 ALFWorld/LogicBench 的 Phase3 speed audit 仍保留。本次只在 WebShop flag 下选择新的环境、捕获与清理逻辑。
 
 集成源文件位于 `verl/trainer/main_ppo.py`、`verl/trainer/ppo/ray_trainer.py`、`agent_system/multi_turn_rollout/rollout_loop.py`、`verl/workers/rollout/hf_rollout.py`，cache bulk API 位于 `agent_system/memory/router_cache.py`。
+
+## 部分任务v4的接入
+
+参见[SMALL_COHORT_V4.md](SMALL_COHORT_V4.md)。`active_logits.py`提供有效响应位置输出；`pairing.py`提供锚点分片和严格合并；`small_run.py`先训练两个种子再做独立效用测量。读取manifest的forward_contract与实际配置，不把v3/v4结果合并。状态、原始54条bank和冻结router逻辑沿用原协议。正式U1与并行重放验收回执必须由目标服务器核实。

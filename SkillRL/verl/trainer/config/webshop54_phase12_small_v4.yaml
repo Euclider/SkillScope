@@ -1,0 +1,25 @@
+defaults:
+  - webshop54_phase12_accel_v3
+  - _self_
+
+webshop_run:
+  tasks_per_update: 16
+
+webshop_phase12:
+  forward_contract: hf-bucket256-active-v4
+
+actor_rollout_ref:
+  actor:
+    active_response_logits_only: true
+    accumulate_no_sync: true
+  ref:
+    active_response_logits_only: true
+    fsdp_config:
+      wrap_policy:
+        disable: true
+
+alignment_run:
+  run_id: webshop54-s${webshop_run.seed}-phase12-small-v4
+
+trainer:
+  project_name: webshop54_phase12_small_v4

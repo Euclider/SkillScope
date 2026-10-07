@@ -1,6 +1,6 @@
 {
   "schema_version": "skillscope.webshop_handoff.v1",
-  "base_commit": "f2dd4a14a15d1751c81da3fa64e4c4c7cbb205e9",
+  "base_commit": "2887b7f4d5c238fb5ac9086306503419faba4a6d",
   "source": "validated isolated WebShop Phase1/2 implementation, portable publication overlay",
   "phase3_editor_implemented": false,
   "model_data_checkpoint_included": false,
@@ -37,8 +37,8 @@
     },
     {
       "path": "SkillRL/docs/webshop/PHASE3_HANDOFF.md",
-      "sha256": "677a30503b817f1ae9691d5fac7ef743ee5f66fcf28a8f0ddf5b49e111a40896",
-      "bytes": 9626
+      "sha256": "ff88ce5a09aea3f3b6e90dbf079ff65aacb1c4a917c5bb91aae537a1f224898f",
+      "bytes": 10074
     },
     {
       "path": "SkillRL/docs/webshop/PROTOCOL.md",
@@ -49,6 +49,11 @@
       "path": "SkillRL/docs/webshop/ROUTER_FIXED_PREFIX.txt",
       "sha256": "3b503a1a43beeb16899ab198e84c4590ba65b3b3deee56a7fec430474a886573",
       "bytes": 16760
+    },
+    {
+      "path": "SkillRL/docs/webshop/SMALL_COHORT_V4.md",
+      "sha256": "da640d7fa8834f4ba814765b3b791599fe3ca6a350d1ae710f320230fcf668ed",
+      "bytes": 5203
     },
     {
       "path": "SkillRL/logicbench_phase12/metrics.py",
@@ -71,6 +76,11 @@
       "bytes": 480
     },
     {
+      "path": "SkillRL/scripts/benchmark_webshop_small_fsdp.py",
+      "sha256": "c22a49d0b9eb02172b2b7390f7e2f2b152253c42607886ddc298e0224260be22",
+      "bytes": 8522
+    },
+    {
       "path": "SkillRL/tests/webshop_phase12/fixtures/oversized_menu_state.json",
       "sha256": "16b4650dddc659c1610aa57bfd536b1754d035a1d596362a983e4352972487f2",
       "bytes": 32720
@@ -79,6 +89,11 @@
       "path": "SkillRL/tests/webshop_phase12/test_accelerated.py",
       "sha256": "bcbd2b16f034a613ffd2bb42911a668fbff17acad20e9794fdd841b1a9b22edf",
       "bytes": 8151
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_active_logits.py",
+      "sha256": "10a5a9189048d4bef1c94e73533772bcec37b03631acece9c2454c75e2d17709",
+      "bytes": 4258
     },
     {
       "path": "SkillRL/tests/webshop_phase12/test_active_rollout.py",
@@ -116,14 +131,29 @@
       "bytes": 813
     },
     {
+      "path": "SkillRL/tests/webshop_phase12/test_paired_sharding.py",
+      "sha256": "c482b615529f8dbe5ba89dd9e4c3b3c6cd05039d9c2d05bf25d82f06b573d40b",
+      "bytes": 2033
+    },
+    {
       "path": "SkillRL/tests/webshop_phase12/test_portable_settings.py",
       "sha256": "0fff419a7acb75798687901accefa3d3bd1244414c0fc39d002f8a162645bddd",
       "bytes": 1307
     },
     {
+      "path": "SkillRL/tests/webshop_phase12/test_router_startup.py",
+      "sha256": "7d03f522cc93eba509f4490ec015618087176f93c1b08d4cef66266e850afe68",
+      "bytes": 1183
+    },
+    {
       "path": "SkillRL/tests/webshop_phase12/test_session_reset.py",
       "sha256": "64ca36b9710a3e45807d963c04e5c0107afeebc92d7c3194e44ad4a511339311",
       "bytes": 1686
+    },
+    {
+      "path": "SkillRL/tests/webshop_phase12/test_small_cohort.py",
+      "sha256": "c9cbf2bfceea9af1054ca3accf95b43fec5268e828c44e210803a993ffbc0a7b",
+      "bytes": 1907
     },
     {
       "path": "SkillRL/tests/webshop_phase12/test_smoke_export.py",
@@ -156,6 +186,11 @@
       "bytes": 379
     },
     {
+      "path": "SkillRL/verl/trainer/config/webshop54_phase12_small_v4.yaml",
+      "sha256": "1cea2cda9c13074cb74fbc746ad35c364ee95a28c838c66b706e29a5ec692807",
+      "bytes": 476
+    },
+    {
       "path": "SkillRL/verl/trainer/config/webshop54_phase12_v1.yaml",
       "sha256": "7efe82d7a18dbf6f467ee239ad32f1e8cf0a6ee94c1fb6ff07edf2dd41acda3d",
       "bytes": 2208
@@ -176,9 +211,14 @@
       "bytes": 14726
     },
     {
+      "path": "SkillRL/verl/workers/actor/active_logits.py",
+      "sha256": "08972052f6305234fdcf6c58c437539ec0fe21c87f2ae497191a70a607a85870",
+      "bytes": 1227
+    },
+    {
       "path": "SkillRL/verl/workers/actor/dp_actor.py",
-      "sha256": "38e7cb30912dfde84ceb3f7648fb441db9484a9213a7b77465aa8201e9d38f7b",
-      "bytes": 28330
+      "sha256": "9d0c11d961009beb89d85b7be0a8d35951ddfd6ceb2f0f18c5cfecc16a276261",
+      "bytes": 29956
     },
     {
       "path": "SkillRL/verl/workers/actor/padded_forward.py",
@@ -202,8 +242,8 @@
     },
     {
       "path": "SkillRL/webshop_phase12/accelerated.py",
-      "sha256": "2b12e30f3dd8d47b009b97da4ae9f439b6f16f80f0bf865c1d44ead569418d37",
-      "bytes": 2715
+      "sha256": "36d31c737d68b1f124bf8638c83b2532074949b8657ae470bdc7abc688f93c98",
+      "bytes": 3006
     },
     {
       "path": "SkillRL/webshop_phase12/active_rollout.py",
@@ -212,8 +252,8 @@
     },
     {
       "path": "SkillRL/webshop_phase12/assets.py",
-      "sha256": "19842e5c2a734da6c0861fb7b14652e91494632577db7d8e993225b65ac2f92a",
-      "bytes": 3396
+      "sha256": "6657b36b611f748a4a2b6e28760965a232dbea27bc13cfa29c2ca95ea55ef8cb",
+      "bytes": 3799
     },
     {
       "path": "SkillRL/webshop_phase12/capture.py",
@@ -227,8 +267,8 @@
     },
     {
       "path": "SkillRL/webshop_phase12/dense_scoring.py",
-      "sha256": "27a241b835f5cd7f54449c976b0a3172c415969d45418ec2bcca61ac3559230e",
-      "bytes": 2421
+      "sha256": "5badde3a7911e74af96f3193409701471cd5ee4f51233f8d62105fa5149092d6",
+      "bytes": 2878
     },
     {
       "path": "SkillRL/webshop_phase12/envs.py",
@@ -237,8 +277,8 @@
     },
     {
       "path": "SkillRL/webshop_phase12/evaluate.py",
-      "sha256": "e603aa4b7009a7f116821746504e0400d36ff1f8325604fa26cc4e85687d2a59",
-      "bytes": 9004
+      "sha256": "3df29be57116b0ad3c73f9503cde7d7e178e013417e782a3688e73a398c15049",
+      "bytes": 14331
     },
     {
       "path": "SkillRL/webshop_phase12/gpu_probe.py",
@@ -262,8 +302,8 @@
     },
     {
       "path": "SkillRL/webshop_phase12/llm_service.py",
-      "sha256": "bfa264653ee9a4411456793aedba3c70d4fa975ac0c511ae211fb51cf8e9b397",
-      "bytes": 11634
+      "sha256": "5ed860e3408ab9667515fd1bb596664bff326aa385f71b79a2689c2b11f11ba8",
+      "bytes": 11790
     },
     {
       "path": "SkillRL/webshop_phase12/metrics.py",
@@ -271,9 +311,14 @@
       "bytes": 1279
     },
     {
+      "path": "SkillRL/webshop_phase12/pairing.py",
+      "sha256": "c9b4cbb1972e7a057675d307d2f8eb0ebaeec98c6934e8dfd8806a598dfe73ea",
+      "bytes": 2482
+    },
+    {
       "path": "SkillRL/webshop_phase12/prepare.py",
-      "sha256": "c3733c6ab42e472d93b3327ac744642c1209e3bf0780de87439f4ca78c30ed8f",
-      "bytes": 2168
+      "sha256": "f033c7aa20d7b325248f81c694e6f7f81c9fb38829d0542fabd409427ba60203",
+      "bytes": 2649
     },
     {
       "path": "SkillRL/webshop_phase12/prompts.py",
@@ -282,23 +327,28 @@
     },
     {
       "path": "SkillRL/webshop_phase12/readout.py",
-      "sha256": "dc48a205ac86fda7a1085f93809740b76e7ef3192118eae8588f2fb9cbba3d6b",
-      "bytes": 7731
+      "sha256": "f7598decb81c6dc0d4c8453f035af837c9ad083c417de1535efbba813a2578b1",
+      "bytes": 7785
     },
     {
       "path": "SkillRL/webshop_phase12/router.py",
-      "sha256": "0919982a171786dfc54e744944ba7c1175a5b8bed72167f6c06784bb17df3551",
-      "bytes": 2794
+      "sha256": "b0b713a6bf3c40a281a5fca3c74ca648aecde49830db4a3d7b13e2fcd1ee8aba",
+      "bytes": 3040
     },
     {
       "path": "SkillRL/webshop_phase12/run.py",
-      "sha256": "a75dee82f1fb792abb419cea102fc8d0f7730cdddd62a5fae5165ceaaa2348d6",
-      "bytes": 10051
+      "sha256": "b04dd13d5a1d8a309e97de2f64ca9a442a22d41f8eb35add8d1d1916bb7f91bf",
+      "bytes": 10587
+    },
+    {
+      "path": "SkillRL/webshop_phase12/small_run.py",
+      "sha256": "15f78da4e15e9c8129781b947fcc4e2055cdb939667302399aab26270b9b9b2f",
+      "bytes": 7592
     },
     {
       "path": "SkillRL/webshop_phase12/snapshot.py",
-      "sha256": "bed0527ba3d74de8cc450e98224724bcb96c60a5641d50850c421104c6e26d82",
-      "bytes": 2823
+      "sha256": "3b13311db90d46adec237f1a43f0b8b690a2a0512297014ef99364d3446879bf",
+      "bytes": 3408
     },
     {
       "path": "SkillRL/webshop_phase12/training_storage.py",
@@ -312,8 +362,8 @@
     },
     {
       "path": "WEBSHOP_PHASE3_START.md",
-      "sha256": "57917e6a022ff89b96a28e2c42720180084c7cc4f60be86a51e4cb1eca804a29",
-      "bytes": 3748
+      "sha256": "070da2dbe0f91dbe1d87a35cbb3970385c97e1162e6e7494c22f45e1221e4b75",
+      "bytes": 4168
     },
     {
       "path": "deploy/webshop/verify_handoff.py",
@@ -324,6 +374,7 @@
   "forward_contracts": [
     "hf-dense-v1",
     "hf-exact-length-v2",
-    "hf-bucket256-v3"
+    "hf-bucket256-v3",
+    "hf-bucket256-active-v4"
   ]
 }

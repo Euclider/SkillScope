@@ -66,14 +66,18 @@ class WebshopBank:
         return [{'skill_id':s.skill_id,'name':s.name,'description':s.description} for s in self._skills]
 
 
-def make_schedule(number_of_goals):
+def make_schedule(number_of_goals, *, tasks_per_update=128, eval_tasks=500, eval_seed=20261007):
+    if tasks_per_update < 2 or tasks_per_update % 2 or not 1 <= eval_tasks <= 500:
+        raise ValueError('Expected positive even training budget and1..500 Eval tasks')
     ntrain = number_of_goals-1500
-    per_update = min(128, ntrain//5)//2*2
+    per_update = min(tasks_per_update, ntrain//5)//2*2
     if per_update < 2:
         raise ValueError('Insufficient train tasks for five distinct-task updates')
     seeds = {}
     for seed in (404,505):
         seeds[str(seed)] = random.Random(seed).sample(range(1500,number_of_goals),per_update*5)
+    evaluation = list(range(500)) if eval_tasks == 500 else sorted(random.Random(eval_seed).sample(range(500), eval_tasks))
     return {'number_of_goals':number_of_goals,'native_split_seed':0,'train_ids':list(range(1500,number_of_goals)),
-        'dev_ids':list(range(500,1500)),'eval_ids':list(range(500)),'tasks_per_update':per_update,'updates':5,
+        'dev_ids':list(range(500,1500)),'eval_ids':evaluation,'eval_sampling_seed':eval_seed,
+        'tasks_per_update':per_update,'updates':5,
         'repeats':8,'seeds':seeds,'sampling':'unique tasks across all five updates within each training seed'}

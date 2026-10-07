@@ -38,11 +38,18 @@ def main():
     files.update(map(Path,('agent_system/memory/router_cache.py','agent_system/memory/frozen_skill_bank.py',
         'agent_system/multi_turn_rollout/rollout_loop.py','verl/trainer/main_ppo.py','verl/trainer/ppo/ray_trainer.py',
         'verl/workers/rollout/hf_rollout.py','verl/workers/actor/dp_actor.py',
-        'verl/workers/actor/padded_forward.py','verl/workers/fsdp_workers.py',
+        'verl/workers/actor/padded_forward.py','verl/workers/actor/active_logits.py','verl/workers/fsdp_workers.py',
         'verl/utils/checkpoint/fsdp_checkpoint_manager.py','phase2/capture.py',
         'verl/trainer/config/webshop54_phase12_v1.yaml','verl/trainer/config/webshop54_phase12_accel_v2.yaml',
         'verl/trainer/config/webshop54_phase12_accel_v3.yaml',
+        'verl/trainer/config/webshop54_phase12_small_v4.yaml','scripts/benchmark_webshop_small_fsdp.py',
+        'logicbench_phase12/metrics.py',
         'memory_data/webshop/claude_style_skills.json')))
+    # Bind inherited configuration and the external native simulator actually imported.
+    files.update(p.relative_to(ROOT) for p in (ROOT/'verl/trainer/config').rglob('*.yaml'))
+    import os
+    environment=Path(os.environ.get('WEBSHOP_ENV_ROOT',str(ROOT/'agent_system/environments/env_package/webshop/webshop')))
+    files.update(p.resolve() for p in (environment/'web_agent_site').rglob('*.py'))
     source_path.write_text(json.dumps({'source_copy':str(ROOT),'protocol':'webshop-visible-evidence-frozen-qwen35-v1',
         'files':[{'path':str(path),'sha256':file_hash(ROOT/path)} for path in sorted(files)]},indent=2)+'\n')
     print(json.dumps({'model_receipt':str(model_path),'source_receipt':str(source_path),'source_files':len(files)}))

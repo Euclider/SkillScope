@@ -15,7 +15,7 @@ from webshop_phase12.dense_scoring import recorded_inputs,control_inputs,score_d
 from phase2.stable_direction import token_signals
 from webshop_phase12.assets import BASE_MODEL, WebshopBank
 from webshop_phase12.prompts import remove_guidance
-from webshop_phase12.accelerated import DENSE,BUCKET,load_forward_contract,prompt_multiple
+from webshop_phase12.accelerated import DENSE,BUCKET,ACTIVE,load_forward_contract,prompt_multiple
 from webshop_phase12.training_storage import load_training_archive
 
 
@@ -55,8 +55,8 @@ def run(seed_dir, new_model, *, smoke=False,output=None,devices=('cuda','cuda'))
         padding=tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id
         dense_control=control_inputs(tensors,i,control,pad_token_id=padding)
         response_length=tensors['responses'].shape[-1]
-        options={'trim_padding':trim_padding,'prompt_multiple':prompt_multiple(contract)}
-        if contract==BUCKET:
+        options={'trim_padding':trim_padding,'prompt_multiple':prompt_multiple(contract),'active_positions':contract==ACTIVE}
+        if contract in (BUCKET,ACTIVE):
             from verl.workers.actor.padded_forward import prompt_bucket_width
             options['prompt_width']=prompt_bucket_width(len(original),256)
         old_future=executor.submit(score_dense,old,dense,response_length,mask,**options)

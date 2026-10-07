@@ -73,8 +73,8 @@ def wait_idle(ids,root,stage):
             time.sleep(20)
 
 
-def pipeline(root,prepared,*,smoke=False,gpus=(3,4),evaluation_gpu=7,router_gpu=7,config='webshop54_phase12_v1'):
-    if config not in ('webshop54_phase12_v1','webshop54_phase12_accel_v2','webshop54_phase12_accel_v3'):
+def pipeline(root,prepared,*,smoke=False,gpus=(3,4),evaluation_gpu=7,router_gpu=7,config='webshop54_phase12_v1',train_only=False):
+    if config not in ('webshop54_phase12_v1','webshop54_phase12_accel_v2','webshop54_phase12_accel_v3','webshop54_phase12_small_v4'):
         raise ValueError('Unknown registered WebShop training configuration')
     accelerated=config!='webshop54_phase12_v1'
     routers=list(router_gpu) if isinstance(router_gpu,(list,tuple)) else [router_gpu]
@@ -85,7 +85,8 @@ def pipeline(root,prepared,*,smoke=False,gpus=(3,4),evaluation_gpu=7,router_gpu=
         'router':'frozen-Qwen3.5-4B-local-vllm-all54','state_version':'webshop-visible-evidence-v1',
         'router_model_receipt_sha256':hashlib.sha256((RUN_ROOT/'frozen-router-model.json').read_bytes()).hexdigest(),
         'smoke':smoke,'config':config,
-        'forward_contract':('hf-bucket256-v3' if config.endswith('accel_v3') else 'hf-exact-length-v2') if accelerated else 'hf-dense-v1',
+        'forward_contract':('hf-bucket256-active-v4' if config.endswith('small_v4') else
+                           ('hf-bucket256-v3' if config.endswith('accel_v3') else 'hf-exact-length-v2')) if accelerated else 'hf-dense-v1',
         'native_full_vocabulary_files_retained':False,'four_condition_HF_recompute':True,'automatic_retries':0,
         'registered_stage_timeout_hours':96})
     python=sys.executable
@@ -93,9 +94,12 @@ def pipeline(root,prepared,*,smoke=False,gpus=(3,4),evaluation_gpu=7,router_gpu=
         seed_dir=root/f'seed{seed}';seed_dir.mkdir()
         # Complete native model/optimizer/RNG state is kept in dedicated tmpfs;
         # merged endpoints, evidence and results remain on persistent disk.
-        if shutil.disk_usage(RUN_ROOT).free < 25*1024**3 or shutil.disk_usage('/dev/shm').free < 55*1024**3:
+        minimum_disk=12 if config.endswith('small_v4') else 25
+        if shutil.disk_usage(RUN_ROOT).free < minimum_disk*1024**3 or shutil.disk_usage('/dev/shm').free < 55*1024**3:
             raise RuntimeError('Insufficient persistent disk or RAM-backed checkpoint storage; no data deleted')
         checkpoint_namespace=str(root.relative_to(RUN_ROOT)).replace('/','-')
+        if config.endswith('small_v4'):
+            checkpoint_namespace=hashlib.sha256(str(root).encode()).hexdigest()[:10]+'-'+checkpoint_namespace
         temporary=Path('/dev/shm')/f'wangyifan-webshop-phase12-20261006-{checkpoint_namespace}'/f'seed{seed}'/'checkpoints'
         temporary.mkdir(parents=True,exist_ok=False)
         (seed_dir/'checkpoints').symlink_to(temporary,target_is_directory=True)
@@ -128,6 +132,7 @@ def pipeline(root,prepared,*,smoke=False,gpus=(3,4),evaluation_gpu=7,router_gpu=
             raise RuntimeError('U1 training evidence or endpoint checkpoint missing')
         merged=seed_dir/'merged-endpoint'
         run_stage(f'seed{seed}-merge',[python,'-B','scripts/model_merger.py','merge','--backend','fsdp','--local_dir',str(checkpoint),'--target_dir',str(merged)],root,[])
+        if train_only:continue
         wait_idle([evaluation_gpu],root,f'seed{seed}-readout')
         run_stage(f'seed{seed}-readout',[python,'-B','-m','webshop_phase12.readout','--seed-dir',str(seed_dir),'--new-model',str(merged)],root,[evaluation_gpu])
         command=[python,'-B','-m','webshop_phase12.evaluate','--seed-dir',str(seed_dir),'--new-model',str(merged),'--prepared',str(prepared)]
@@ -137,8 +142,9 @@ def pipeline(root,prepared,*,smoke=False,gpus=(3,4),evaluation_gpu=7,router_gpu=
         wait_idle(sorted({evaluation_gpu,routers[0]}),root,f'seed{seed}-paired-eval')
         run_stage(f'seed{seed}-paired-eval',command,root,[evaluation_gpu],routers[0])
         run_stage(f'seed{seed}-metrics',[python,'-B','-m','webshop_phase12.metrics','--seed-dir',str(seed_dir)],root,[])
-    write(root/'complete.json',{'status':'complete','smoke':smoke,'finished_at_utc':now(),'seeds':list(spec['seeds'])})
-    write(root/'status.json',{'status':'complete','smoke':smoke,'updated_at_utc':now()})
+    completed='training-complete.json' if train_only else 'complete.json'
+    write(root/completed,{'status':'training_complete' if train_only else 'complete','smoke':smoke,'finished_at_utc':now(),'seeds':list(spec['seeds'])})
+    write(root/'status.json',{'status':'training_complete' if train_only else 'complete','smoke':smoke,'updated_at_utc':now()})
 
 
 if __name__=='__main__':

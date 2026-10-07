@@ -7,6 +7,7 @@ from pathlib import Path
 DENSE='hf-dense-v1'
 COMPACT='hf-exact-length-v2'
 BUCKET='hf-bucket256-v3'
+ACTIVE='hf-bucket256-active-v4'
 
 
 def generation_groups(attention_mask,limit,*,prompt_multiple=1):
@@ -26,7 +27,7 @@ def generation_groups(attention_mask,limit,*,prompt_multiple=1):
 
 def forward_contract(config):
     contract=config.get('webshop_phase12',{}).get('forward_contract',DENSE)
-    if contract not in (DENSE,COMPACT,BUCKET):raise ValueError('Unknown WebShop forward contract')
+    if contract not in (DENSE,COMPACT,BUCKET,ACTIVE):raise ValueError('Unknown WebShop forward contract')
     parts=config.get('actor_rollout_ref',{})
     flags=[bool(parts.get(key,{}).get('trim_common_padding',False)) for key in ('actor','ref','rollout')]
     if contract!=DENSE:
@@ -39,7 +40,9 @@ def forward_contract(config):
             raise ValueError('Compact GRPO trajectories must be replicated outside generation')
         if parts['rollout'].get('log_prob_micro_batch_size_per_gpu',1)!=1:
             raise ValueError('Compact native old-logprob scoring requires one row per microbatch')
-        multiple=256 if contract==BUCKET else 1
+        if contract==ACTIVE and not all(parts[key].get('active_response_logits_only',False) for key in ('actor','ref')):
+            raise ValueError('Active contract requires actor/reference active-position projection together')
+        multiple=256 if contract in (BUCKET,ACTIVE) else 1
         if any(parts[key].get('prompt_padding_multiple',1)!=multiple for key in ('actor','ref','rollout')):
             raise ValueError('Actor/reference/generation prompt bucket sizes differ')
     elif any(flags):raise ValueError('Dense contract cannot silently enable compact forwards')
@@ -47,7 +50,7 @@ def forward_contract(config):
 
 
 def prompt_multiple(contract):
-    return 256 if contract==BUCKET else 1
+    return 256 if contract in (BUCKET,ACTIVE) else 1
 
 
 def load_forward_contract(seed_dir):

@@ -9,16 +9,23 @@ from webshop_phase12.envs import ShopWorld
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--smoke',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--smoke',action='store_true')
+    parser.add_argument('--tasks-per-update',type=int,default=128)
+    parser.add_argument('--eval-tasks',type=int,default=500)
+    parser.add_argument('--continuation-seeds',type=int,default=16)
+    args=parser.parse_args()
+    if not 1<=args.continuation_seeds<=16:raise ValueError('Expected1..16 continuation seeds')
     world=ShopWorld(1)
-    plan=make_schedule(len(world.server.goals))
+    plan=make_schedule(len(world.server.goals),tasks_per_update=args.tasks_per_update,eval_tasks=args.eval_tasks)
+    plan['continuation_seeds']=list(range(args.continuation_seeds))
     bank=WebshopBank()
     destination=RUN_ROOT/('prepared-smoke' if args.smoke else 'prepared')
     destination.mkdir(exist_ok=False)
     (destination/'bank-manifest.json').write_text(json.dumps(bank.manifest,ensure_ascii=False,indent=2)+'\n')
     if args.smoke:
-        plan['updates']=1;plan['tasks_per_update']=8
-        plan['seeds']={'404':plan['seeds']['404'][:8]}
+        count=min(16,args.tasks_per_update)
+        plan['updates']=1;plan['tasks_per_update']=count
+        plan['seeds']={'404':plan['seeds']['404'][:count]}
         plan['eval_ids']=[1500,1501]
         plan['smoke_training_tasks_used_for_pipeline_check_only']=True
     for seed,ids in plan['seeds'].items():
